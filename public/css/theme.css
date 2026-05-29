@@ -5,3 +5,56 @@ button,input,select,textarea{font:inherit}.muted{color:var(--muted)}.card{backgr
 .btn{border:1px solid var(--border);border-radius:12px;background:#182033;color:var(--text);padding:10px 14px;font-weight:800;cursor:pointer}.btn.primary{background:var(--primary-gradient);border-color:transparent;color:white;box-shadow:0 12px 25px rgba(56,189,248,.25)}.btn.accent{background:var(--orange);border-color:var(--orange)}.btn.danger{background:var(--red);border-color:var(--red)}.btn.small{padding:7px 10px;font-size:12px}
 .icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:#151d2e;color:var(--text);cursor:pointer}
 .badge{display:inline-flex;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:800;border:1px solid rgba(255,255,255,.08);margin:2px}.green{background:rgba(22,163,74,.16);color:#86efac}.orange{background:rgba(249,115,22,.16);color:#fdba74}.red{background:rgba(220,38,38,.16);color:#fca5a5}.amber{background:rgba(245,158,11,.16);color:#fcd34d}.blue{background:rgba(37,99,235,.16);color:#93c5fd}.purple{background:rgba(124,58,237,.16);color:#c4b5fd}.gray{background:rgba(156,163,175,.12);color:#d1d5db}
+
+
+/* Global compact typography */
+body{
+  font-size:14px;
+  line-height:1.45;
+}
+
+.card h3{
+  font-size:15px;
+  line-height:1.3;
+}
+
+.card p,
+.muted{
+  font-size:13px;
+}
+
+.btn{
+  font-size:13px;
+}
+
+.badge{
+  font-size:11px;
+  padding:4px 9px;
+}
+
+.chip{
+  font-size:12px;
+  padding:7px 11px;
+}
+
+input,
+select,
+textarea{
+  font-size:13px;
+}
+
+label{
+  font-size:12px;
+}
+
+.nav-link{
+  font-size:13px;
+}
+
+.topbar h2{
+  font-size:20px;
+}
+
+.topbar p{
+  font-size:12px;
+}

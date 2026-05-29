@@ -296,3 +296,42 @@
     padding-bottom:80px;
   }
 }
+
+
+/* Mobile compact typography */
+@media(max-width:720px){
+  body{
+    font-size:13px;
+  }
+
+  .card h3{
+    font-size:16px;
+    line-height:1.25;
+  }
+
+  .card p,
+  .card .muted{
+    font-size:13px;
+    line-height:1.45;
+  }
+
+  .kpi strong{
+    font-size:32px;
+  }
+
+  .mobile-header .brand.mini h1{
+    font-size:12px;
+  }
+
+  .mobile-header .brand.mini p{
+    font-size:10px;
+  }
+
+  .btn{
+    font-size:13px;
+  }
+
+  table{
+    font-size:12px;
+  }
+}
