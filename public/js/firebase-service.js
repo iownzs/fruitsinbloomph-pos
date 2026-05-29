@@ -95,6 +95,15 @@
       return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     };
 
+
+
+    window.FIB.getProductStocks = async function(){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      const snapshot = await window.db.collection("productStocks").orderBy("productName").get();
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    };
+
     window.FIB.getIngredientStocks = async function(){
       if(!window.db) throw new Error("Firestore not ready.");
 

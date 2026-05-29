@@ -440,3 +440,54 @@
     display:none;
   }
 }
+
+/* Product Stocks mobile card layout */
+.stocks-mobile-cards{
+  display:none;
+}
+
+@media(max-width:720px){
+  .stocks-desktop-table{
+    display:none;
+  }
+
+  .stocks-mobile-cards{
+    display:grid;
+    gap:12px;
+  }
+
+  .stock-mobile-card{
+    padding:14px;
+  }
+
+  .stock-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin:12px 0;
+  }
+
+  .stock-grid div{
+    background:#0b1220;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:10px;
+  }
+
+  .stock-grid span{
+    display:block;
+    color:var(--muted);
+    font-size:11px;
+    margin-bottom:4px;
+  }
+
+  .stock-grid strong{
+    font-size:18px;
+  }
+}
+
+@media(min-width:721px){
+  .stocks-mobile-cards{
+    display:none;
+  }
+}
