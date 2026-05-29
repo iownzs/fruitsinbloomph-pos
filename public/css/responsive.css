@@ -119,3 +119,33 @@
     min-width:820px;
   }
 }
+
+
+/* Mobile typography cleanup */
+@media(max-width:720px){
+  .card h3{
+    font-size:20px;
+    line-height:1.25;
+    margin:0 0 12px;
+    word-break:normal;
+  }
+
+  .card p,
+  .card .muted{
+    font-size:15px;
+    line-height:1.5;
+  }
+
+  .kpi strong{
+    font-size:38px;
+    line-height:1.1;
+  }
+
+  .content .card{
+    margin-bottom:14px;
+  }
+
+  .grid{
+    gap:14px;
+  }
+}
