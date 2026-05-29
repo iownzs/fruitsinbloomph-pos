@@ -16,6 +16,12 @@ function showDeliveryItems(orderId){
   openModal('Items', `<ul>${o.items.map(i => `<li>${i}</li>`).join('')}</ul>`);
 }
 
+function showDeliveryAddress(orderId){
+  const o = FIB_DATA.orders.find(x => x.id === orderId);
+  if(!o) return;
+  openModal('Full Delivery Address', `<p>${o.address}</p>`);
+}
+
 const rows = FIB_DATA.orders.filter(o => o.type === 'Delivery').map(o => `
 <tr>
   <td>${o.id}<br>${badge(o.priority)}</td>
@@ -24,7 +30,10 @@ const rows = FIB_DATA.orders.filter(o => o.type === 'Delivery').map(o => `
   <td>${o.source}</td>
   <td>${o.customer}<br><small>${o.customerNo}</small></td>
   <td>${o.recipient}<br><small>${o.recipientNo}</small></td>
-  <td><div class="truncate">${o.address}</div></td>
+  <td>
+    <button class="btn small" onclick="showDeliveryAddress('${o.id}')">Preview</button>
+    <div class="truncate">${o.address}</div>
+  </td>
   <td>BFC</td>
   <td><button class="icon-btn" onclick="showDeliveryItems('${o.id}')">🧺</button></td>
   <td><button class="icon-btn" onclick="showDeliveryCardMessage('${o.id}')">💌</button></td>
