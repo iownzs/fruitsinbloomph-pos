@@ -380,3 +380,63 @@
     0 7px 14px rgba(0,0,0,.25),
     inset 0 1px 0 rgba(255,255,255,.2) !important;
 }
+
+/* Products mobile card layout */
+.products-mobile-cards{
+  display:none;
+}
+
+@media(max-width:720px){
+  .products-desktop-table{
+    display:none;
+  }
+
+  .products-mobile-cards{
+    display:grid;
+    gap:12px;
+  }
+
+  .product-mobile-card{
+    padding:14px;
+  }
+
+  .product-mobile-head{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:flex-start;
+  }
+
+  .product-mobile-head h3{
+    margin:0 0 4px;
+  }
+
+  .product-mobile-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin:10px 0;
+  }
+
+  .product-mobile-price{
+    font-weight:900;
+    font-size:18px;
+    margin:10px 0;
+  }
+
+  .product-mobile-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .product-mobile-actions .btn{
+    flex:1;
+  }
+}
+
+@media(min-width:721px){
+  .products-mobile-cards{
+    display:none;
+  }
+}
