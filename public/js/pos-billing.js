@@ -1,0 +1,2 @@
+
+shell(`<div class="grid cols-3"><div class="card kpi"><span>Current Plan</span><strong>Basic</strong>${badge('Unified-Message Locked')}</div><div class="card kpi"><span>Monthly Rate</span><strong>₱3,000</strong></div><div class="card kpi"><span>Status</span><strong>Active</strong>${badge('Enabled')}</div></div><div class="card" style="margin-top:16px"><h3>Payment Options</h3><p>1 / 3 / 6 / 9 / 12 months · GCash, Maya, Bank Transfer, Other</p></div>`);

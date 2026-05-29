@@ -1,0 +1,2 @@
+
+shell(`<div class="grid" style="grid-template-columns:260px 1fr"><div class="card"><h3>Channels</h3>${['System Message','General','Sales','Kitchen','Delivery','Riders','Schedule','Issues','Chitchat'].map((c,i)=>`<div class="nav-link ${i===0?'active':''}">${c}</div>`).join('')}</div><div class="card"><h3>System Message</h3><p class="muted">Read-only system logs appear here.</p><div class="card">Order ORD-1024 sent to Delivery.</div></div></div>`);
