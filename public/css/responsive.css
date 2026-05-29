@@ -184,3 +184,29 @@
     white-space:normal;
   }
 }
+
+
+/* POS Terminal mobile stack */
+@media(max-width:1050px){
+  .pos-layout{
+    grid-template-columns:1fr;
+  }
+
+  .product-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:720px){
+  .pos-layout{
+    gap:14px;
+  }
+
+  .product-grid{
+    gap:14px;
+  }
+
+  .pos-layout .card{
+    width:100%;
+  }
+}
