@@ -25,6 +25,50 @@ shell(`
     <p class="muted">Firestore connection status:</p>
     ${firebaseStatus}
     <p class="muted" style="margin-top:10px">${firebaseMessage}</p>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+      <button class="btn primary" onclick="writeFirebaseStatus()">Write Test</button>
+      <button class="btn" onclick="readFirebaseStatus()">Read Test</button>
+    </div>
+
+    <div id="firebaseStatusResult" class="card" style="margin-top:14px;background:#0b1220">
+      Firestore test result will show here.
+    </div>
   </div>
 </div>
 `);
+
+async function writeFirebaseStatus(){
+  const result = document.getElementById("firebaseStatusResult");
+
+  try{
+    result.innerHTML = "Writing to Firestore...";
+    await window.FIB.setSystemStatus();
+    result.innerHTML = `${badge('Write Success')}<p class="muted">systemStatus/app saved to Firestore.</p>`;
+  }catch(error){
+    result.innerHTML = `${badge('Write Failed')}<p class="muted">${error.message}</p>`;
+  }
+}
+
+async function readFirebaseStatus(){
+  const result = document.getElementById("firebaseStatusResult");
+
+  try{
+    result.innerHTML = "Reading from Firestore...";
+    const data = await window.FIB.getSystemStatus();
+
+    if(!data){
+      result.innerHTML = `${badge('No Data')}<p class="muted">Click Write Test first.</p>`;
+      return;
+    }
+
+    result.innerHTML = `
+      ${badge('Read Success')}
+      <p><strong>Phase:</strong> ${data.phase || ''}</p>
+      <p><strong>Connected:</strong> ${data.firebaseConnected ? 'Yes' : 'No'}</p>
+      <p><strong>Message:</strong> ${data.message || ''}</p>
+    `;
+  }catch(error){
+    result.innerHTML = `${badge('Read Failed')}<p class="muted">${error.message}</p>`;
+  }
+}

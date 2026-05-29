@@ -22,6 +22,33 @@
     window.db = firebase.firestore();
     window.FIB_FIREBASE_READY = true;
 
+    window.FIB = window.FIB || {};
+
+    window.FIB.setSystemStatus = async function(){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      await window.db.collection("systemStatus").doc("app").set({
+        phase: "Phase 2",
+        firebaseConnected: true,
+        message: "Firestore connected successfully",
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      return true;
+    };
+
+    window.FIB.getSystemStatus = async function(){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      const doc = await window.db.collection("systemStatus").doc("app").get();
+
+      if(!doc.exists){
+        return null;
+      }
+
+      return doc.data();
+    };
+
     console.log("Firebase connected:", window.firebaseConfig.projectId);
   }catch(error){
     window.FIB_FIREBASE_READY = false;
