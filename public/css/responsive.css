@@ -357,3 +357,26 @@
       inset 0 1px 0 rgba(255,255,255,.2);
   }
 }
+
+
+/* Force Pickup / Delivery toggle to cyan 3D */
+.toggle button.active,
+.toggle button#pickupBtn.active,
+.toggle button#deliveryBtn.active{
+  background:var(--primary-gradient) !important;
+  border-color:transparent !important;
+  color:#F8FAFC !important;
+  box-shadow:
+    0 5px 0 var(--primary-dark),
+    0 10px 20px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.25) !important;
+  text-shadow:0 1px 1px rgba(0,0,0,.35);
+}
+
+.toggle button.active:active{
+  transform:translateY(3px);
+  box-shadow:
+    0 2px 0 var(--primary-dark),
+    0 7px 14px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
