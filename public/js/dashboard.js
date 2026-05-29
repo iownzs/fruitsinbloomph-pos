@@ -2,6 +2,10 @@ const firebaseStatus = window.FIB_FIREBASE_READY
   ? badge('Firebase Connected')
   : badge('Firebase Offline');
 
+const firebaseMessage = window.FIB_FIREBASE_READY
+  ? 'Firestore is initialized and ready.'
+  : (window.FIB_FIREBASE_ERROR || 'Firebase did not initialize.');
+
 shell(`
 <div class="grid cols-4">
   <div class="card kpi"><span>Orders Today</span><strong>24</strong>${badge('+12%')}</div>
@@ -20,6 +24,7 @@ shell(`
     <h3>Phase 2 Firebase</h3>
     <p class="muted">Firestore connection status:</p>
     ${firebaseStatus}
+    <p class="muted" style="margin-top:10px">${firebaseMessage}</p>
   </div>
 </div>
 `);

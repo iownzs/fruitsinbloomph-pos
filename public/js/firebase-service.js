@@ -1,52 +1,31 @@
-// Firebase service helpers for fruitsinbloomph POS
+(function(){
+  window.FIB_FIREBASE_READY = false;
+  window.FIB_FIREBASE_ERROR = "";
 
-firebase.initializeApp(window.firebaseConfig);
-
-const db = firebase.firestore();
-
-window.FIB_FIREBASE = {
-  db,
-
-  async getOrders(){
-    const snapshot = await db.collection("orders").orderBy("createdAt", "desc").get();
-    return snapshot.docs.map(doc => ({
-      firebaseId: doc.id,
-      ...doc.data()
-    }));
-  },
-
-  async createOrder(order){
-    const now = firebase.firestore.FieldValue.serverTimestamp();
-
-    const payload = {
-      ...order,
-      createdAt: now,
-      updatedAt: now
-    };
-
-    const ref = await db.collection("orders").doc(order.id).set(payload);
-    return ref;
-  },
-
-  async getProducts(){
-    const snapshot = await db.collection("products").orderBy("name", "asc").get();
-    return snapshot.docs.map(doc => ({
-      firebaseId: doc.id,
-      ...doc.data()
-    }));
-  },
-
-  async createProduct(product){
-    const now = firebase.firestore.FieldValue.serverTimestamp();
-
-    const payload = {
-      ...product,
-      createdAt: now,
-      updatedAt: now
-    };
-
-    await db.collection("products").doc(product.id).set(payload);
+  if(!window.firebaseConfig){
+    window.FIB_FIREBASE_ERROR = "Firebase config missing.";
+    console.warn(window.FIB_FIREBASE_ERROR);
+    return;
   }
-};
 
-console.log("Firebase connected:", window.firebaseConfig.projectId);
+  if(typeof firebase === "undefined"){
+    window.FIB_FIREBASE_ERROR = "Firebase SDK failed to load.";
+    console.error(window.FIB_FIREBASE_ERROR);
+    return;
+  }
+
+  try{
+    if(!firebase.apps.length){
+      firebase.initializeApp(window.firebaseConfig);
+    }
+
+    window.db = firebase.firestore();
+    window.FIB_FIREBASE_READY = true;
+
+    console.log("Firebase connected:", window.firebaseConfig.projectId);
+  }catch(error){
+    window.FIB_FIREBASE_READY = false;
+    window.FIB_FIREBASE_ERROR = error.message || String(error);
+    console.error("Firebase init error:", error);
+  }
+})();
