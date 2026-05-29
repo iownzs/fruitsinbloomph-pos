@@ -97,6 +97,55 @@
 
 
 
+
+
+    window.FIB.createOrder = async function(orderData){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      const counterRef = window.db.collection("counters").doc("orders");
+
+      const orderId = await window.db.runTransaction(async transaction => {
+        const counterDoc = await transaction.get(counterRef);
+
+        let nextNumber = 1001;
+
+        if(counterDoc.exists){
+          nextNumber = (counterDoc.data().nextNumber || 1001);
+        }
+
+        const generatedOrderId = "ORD-" + nextNumber;
+
+        transaction.set(counterRef, {
+          nextNumber: nextNumber + 1,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        const orderRef = window.db.collection("orders").doc(generatedOrderId);
+
+        transaction.set(orderRef, {
+          ...orderData,
+          orderId: generatedOrderId,
+          status: "Created",
+          kitchenStatus: "new",
+          deliveryStatus: orderData.orderType === "Delivery" ? "not_started" : "",
+          pickupStatus: orderData.orderType === "Pickup" ? "waiting_pickup" : "",
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        return generatedOrderId;
+      });
+
+      return orderId;
+    };
+
+    window.FIB.getOrders = async function(){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      const snapshot = await window.db.collection("orders").orderBy("createdAt", "desc").get();
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    };
+
     window.FIB.getProductStocks = async function(){
       if(!window.db) throw new Error("Firestore not ready.");
 

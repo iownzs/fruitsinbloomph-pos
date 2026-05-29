@@ -200,7 +200,7 @@ function cartPanelHtml(){
 
     <br>
 
-    <button class="btn primary" onclick="openModal('Checkout Sample','<p>Order save to Firestore comes next in Phase 2.</p>')">
+    <button class="btn primary" onclick="checkoutOrder()">
       Checkout
     </button>
   `;
@@ -296,3 +296,153 @@ document.getElementById("posProductSearch").addEventListener("input", () => appl
 setType('pickup');
 renderCart();
 loadPOSProducts();
+
+function getActiveChipText(chipTexts, fallback){
+  for(const text of chipTexts){
+    const buttons = [...document.querySelectorAll(".chip")];
+    const active = buttons.find(btn => btn.textContent.trim() === text && btn.classList.contains("active"));
+    if(active) return text;
+  }
+  return fallback;
+}
+
+function getCartFormData(){
+  const isDelivery = [...document.querySelectorAll("#deliveryBtn")].some(btn => btn.classList.contains("active"));
+  const orderType = isDelivery ? "Delivery" : "Pickup";
+
+  const panels = [...document.querySelectorAll(".pos-cart-panel, #cartSheetContent")];
+  const visiblePanel = panels.find(panel => {
+    const rect = panel.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0;
+  }) || panels[0];
+
+  const inputs = visiblePanel ? [...visiblePanel.querySelectorAll("input, textarea, select")] : [];
+
+  const valueAt = index => inputs[index] ? inputs[index].value.trim() : "";
+
+  const customerName = valueAt(0);
+  const customerContact = valueAt(1);
+
+  let details = {};
+
+  if(orderType === "Pickup"){
+    details = {
+      pickupPersonName: valueAt(2),
+      pickupPersonContact: valueAt(3),
+      pickupDate: valueAt(4),
+      pickupTime: valueAt(5),
+      cardMessage: valueAt(6),
+      pickupNotes: valueAt(7),
+      paymentMethod: valueAt(8) || "Cash"
+    };
+  }else{
+    details = {
+      recipientName: valueAt(2),
+      recipientContact: valueAt(3),
+      deliveryAddress: valueAt(4),
+      cityArea: valueAt(5),
+      landmark: valueAt(6),
+      deliveryDate: valueAt(7),
+      deliveryTime: valueAt(8),
+      deliveryType: valueAt(9),
+      cardMessage: valueAt(10),
+      paymentMethod: valueAt(11) || "Cash"
+    };
+  }
+
+  return {
+    orderType,
+    customerName,
+    customerContact,
+    ...details
+  };
+}
+
+async function checkoutOrder(){
+  try{
+    if(!window.FIB_FIREBASE_READY || !window.FIB.createOrder){
+      throw new Error("Firebase order service is not ready.");
+    }
+
+    if(!cart.length){
+      openModal("Cart Empty", "<p>Please add at least one product before checkout.</p>");
+      return;
+    }
+
+    const form = getCartFormData();
+    const total = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.qty || 1)), 0);
+
+    const orderData = {
+      orderType: form.orderType,
+      orderSource: "Facebook",
+      sourceType: "Organic",
+      priority: "Normal",
+
+      customer: {
+        name: form.customerName || "Walk-in Customer",
+        contact: form.customerContact || ""
+      },
+
+      pickup: form.orderType === "Pickup" ? {
+        pickupPersonName: form.pickupPersonName || "",
+        pickupPersonContact: form.pickupPersonContact || "",
+        pickupDate: form.pickupDate || "",
+        pickupTime: form.pickupTime || "",
+        pickupNotes: form.pickupNotes || ""
+      } : null,
+
+      delivery: form.orderType === "Delivery" ? {
+        recipientName: form.recipientName || "",
+        recipientContact: form.recipientContact || "",
+        deliveryAddress: form.deliveryAddress || "",
+        cityArea: form.cityArea || "",
+        landmark: form.landmark || "",
+        deliveryDate: form.deliveryDate || "",
+        deliveryTime: form.deliveryTime || "",
+        deliveryType: form.deliveryType || "BFC"
+      } : null,
+
+      cardMessage: form.cardMessage || "",
+
+      items: cart.map(item => ({
+        productId: item.productId || "",
+        name: item.name || "",
+        price: item.price || 0,
+        qty: item.qty || 1,
+        subtotal: (item.price || 0) * (item.qty || 1)
+      })),
+
+      subtotal: total,
+      discount: 0,
+      total: total,
+
+      payment: {
+        method: form.paymentMethod || "Cash",
+        status: "Paid"
+      },
+
+      createdBy: {
+        name: "Admin",
+        role: "Owner/Admin"
+      }
+    };
+
+    const orderId = await window.FIB.createOrder(orderData);
+
+    cart = [];
+    renderCart();
+    closeCartSheet();
+
+    openModal(
+      "Order Created",
+      `
+        <p><strong>${orderId}</strong> saved to Firestore.</p>
+        <p class="muted">Next: Orders page will read this order from Firestore.</p>
+      `,
+      `<button class="btn primary" onclick="location.href='./orders.html'">Open Orders</button>
+       <button class="btn" onclick="closeModal()">Close</button>`
+    );
+  }catch(error){
+    openModal("Checkout Failed", `<p>${error.message}</p>`);
+  }
+}
