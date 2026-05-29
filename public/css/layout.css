@@ -55,3 +55,17 @@
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:16px;
 }
+
+
+/* Mobile POS cart bottom sheet */
+.mobile-cart-button{
+  display:none;
+}
+
+.cart-sheet-overlay{
+  display:none;
+}
+
+.cart-bottom-sheet{
+  display:none;
+}
