@@ -144,3 +144,43 @@ label{
     0 7px 14px rgba(0,0,0,.25),
     inset 0 1px 0 rgba(255,255,255,.2);
 }
+
+
+/* Navy-teal sidebar theme */
+:root{
+  --sidebar:#061826;
+  --sidebar-2:#042F3A;
+  --sidebar-gradient:linear-gradient(180deg,#061826 0%,#042F3A 55%,#021018 100%);
+}
+
+/* Sidebar background */
+.sidebar{
+  background:var(--sidebar-gradient) !important;
+  border-right:1px solid rgba(37,183,216,.12);
+}
+
+/* Sidebar group labels */
+.nav-group{
+  color:#7DD3FC !important;
+  opacity:.75;
+}
+
+/* Sidebar links */
+.nav-link{
+  color:#D8F3FF !important;
+}
+
+/* Sidebar active / hover state */
+.nav-link:hover,
+.nav-link.active{
+  background:rgba(37,183,216,.16) !important;
+  color:#FFFFFF !important;
+  box-shadow:
+    inset 3px 0 0 #25B7D8,
+    0 8px 22px rgba(37,183,216,.08);
+}
+
+/* Sidebar logo stays cyan */
+.sidebar .logo{
+  background:linear-gradient(135deg,#38C7E8,#0B7F9F) !important;
+}
