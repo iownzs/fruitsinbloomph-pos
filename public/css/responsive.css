@@ -335,3 +335,25 @@
     font-size:12px;
   }
 }
+
+
+/* Cyan 3D floating cart button */
+@media(max-width:720px){
+  .mobile-cart-button{
+    background:var(--primary-gradient);
+    border:1px solid rgba(120,230,255,.35);
+    box-shadow:
+      0 7px 0 var(--primary-dark),
+      0 18px 40px rgba(0,0,0,.42),
+      inset 0 1px 0 rgba(255,255,255,.25);
+    text-shadow:0 1px 1px rgba(0,0,0,.35);
+  }
+
+  .mobile-cart-button:active{
+    transform:translateY(4px);
+    box-shadow:
+      0 3px 0 var(--primary-dark),
+      0 12px 28px rgba(0,0,0,.35),
+      inset 0 1px 0 rgba(255,255,255,.2);
+  }
+}
