@@ -1,30 +1,24 @@
-
-const productCards = FIB_DATA.products.map(p => `
-  <div class="card product-card">
-    <h3>${p.name}</h3>
-    <p class="muted">${p.details}</p>
-    ${badge(p.category)} ${badge('Stock ' + p.stock)}
-    <p><strong>${money(p.price)}</strong></p>
-    <button class="btn primary" onclick="addCart('${p.name}', ${p.price})">Add</button>
-  </div>
-`).join('');
+let cart = [];
+let posProducts = [];
 
 shell(`
   <div class="pos-layout">
     <div class="pos-products">
       <div class="toolbar">
-        <input placeholder="Search product, SKU, barcode">
+        <input id="posProductSearch" placeholder="Search product, SKU, barcode">
         <button class="btn">Barcode Scan</button>
       </div>
 
-      <div class="chips pos-category-chips">
-        ${['All','FIB Pantry',"Mother's Day","Father's Day",'Gift Basket'].map((c,i) => `
-          <button class="chip ${i === 0 ? 'active' : ''}">${c}</button>
-        `).join('')}
+      <div class="chips pos-category-chips" id="posCategoryChips">
+        <button class="chip active" onclick="filterPOSCategory('')">All</button>
       </div>
 
-      <div class="product-grid">
-        ${productCards}
+      <div id="posProductsStatus" class="muted" style="margin:12px 0">
+        Loading products from Firestore...
+      </div>
+
+      <div class="product-grid" id="posProductGrid">
+        <div class="card">Loading products...</div>
       </div>
     </div>
 
@@ -51,7 +45,108 @@ shell(`
   </div>
 `);
 
-let cart = [];
+async function loadPOSProducts(){
+  const status = document.getElementById("posProductsStatus");
+
+  try{
+    if(window.FIB_FIREBASE_READY && window.FIB.getProducts){
+      status.innerHTML = "Reading products from Firestore...";
+      posProducts = await window.FIB.getProducts();
+      status.innerHTML = `${badge('Firestore Loaded')} ${posProducts.length} products found.`;
+    }else{
+      posProducts = FIB_DATA.products || [];
+      status.innerHTML = `${badge('Sample Data')} Firebase not ready. Showing sample products.`;
+    }
+
+    renderPOSCategories(posProducts);
+    renderPOSProducts(posProducts);
+  }catch(error){
+    posProducts = FIB_DATA.products || [];
+    status.innerHTML = `${badge('Load Failed')} ${error.message}. Showing sample products.`;
+    renderPOSCategories(posProducts);
+    renderPOSProducts(posProducts);
+  }
+}
+
+function renderPOSCategories(products){
+  const wrap = document.getElementById("posCategoryChips");
+  const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+
+  wrap.innerHTML = `
+    <button class="chip active" onclick="filterPOSCategory('')">All</button>
+    ${categories.map(category => `
+      <button class="chip" onclick="filterPOSCategory('${category.replaceAll("'", "\\'")}')">${category}</button>
+    `).join('')}
+  `;
+}
+
+function renderPOSProducts(products){
+  const grid = document.getElementById("posProductGrid");
+
+  if(!products.length){
+    grid.innerHTML = `<div class="card">No products found.</div>`;
+    return;
+  }
+
+  grid.innerHTML = products.map(product => `
+    <div class="card product-card">
+      <h3>${product.name || ''}</h3>
+      <p class="muted">${product.details || ''}</p>
+
+      <div class="chips">
+        ${badge(product.category || 'No Category')}
+        ${badge('Stock ' + (product.stock ?? 0))}
+      </div>
+
+      <p><strong>${money(product.price || 0)}</strong></p>
+
+      <button class="btn primary" onclick="addCart('${escapeText(product.id || product.name)}')">
+        Add
+      </button>
+    </div>
+  `).join('');
+}
+
+function filterPOSCategory(category){
+  document.querySelectorAll("#posCategoryChips .chip").forEach(btn => {
+    btn.classList.toggle("active", btn.textContent === (category || "All"));
+  });
+
+  applyPOSFilters(category);
+}
+
+function applyPOSFilters(categoryOverride){
+  const search = document.getElementById("posProductSearch").value.toLowerCase();
+  const activeCategory = categoryOverride !== undefined
+    ? categoryOverride
+    : getActivePOSCategory();
+
+  const filtered = posProducts.filter(product => {
+    const searchText = [
+      product.name,
+      product.id,
+      product.category,
+      product.details
+    ].join(" ").toLowerCase();
+
+    const matchSearch = !search || searchText.includes(search);
+    const matchCategory = !activeCategory || product.category === activeCategory;
+
+    return matchSearch && matchCategory;
+  });
+
+  renderPOSProducts(filtered);
+}
+
+function getActivePOSCategory(){
+  const active = document.querySelector("#posCategoryChips .chip.active");
+  if(!active || active.textContent === "All") return "";
+  return active.textContent;
+}
+
+function escapeText(text){
+  return String(text).replace(/'/g, "\\'");
+}
 
 function cartPanelHtml(){
   return `
@@ -105,7 +200,7 @@ function cartPanelHtml(){
 
     <br>
 
-    <button class="btn primary" onclick="openModal('Checkout Sample','<p>Order saved to sample Orders. Firebase connection comes in Phase 2.</p>')">
+    <button class="btn primary" onclick="openModal('Checkout Sample','<p>Order save to Firestore comes next in Phase 2.</p>')">
       Checkout
     </button>
   `;
@@ -127,8 +222,17 @@ function renderCart(){
   }
 }
 
-function addCart(name, price){
-  cart.push({name, price});
+function addCart(productId){
+  const product = posProducts.find(p => p.id === productId || p.name === productId);
+  if(!product) return;
+
+  cart.push({
+    productId: product.id,
+    name: product.name,
+    price: product.price || 0,
+    qty: 1
+  });
+
   renderCart();
 }
 
@@ -187,5 +291,8 @@ function closeCartSheet(){
   document.getElementById('cartSheetOverlay')?.classList.remove('open');
 }
 
+document.getElementById("posProductSearch").addEventListener("input", () => applyPOSFilters());
+
 setType('pickup');
 renderCart();
+loadPOSProducts();
