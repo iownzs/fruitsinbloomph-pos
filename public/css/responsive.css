@@ -514,28 +514,37 @@
   }
 }
 
-/* Orders mobile card layout */
+
+/* Orders mobile compact table layout */
 .orders-mobile-cards{
-  display:none;
+  display:none !important;
+}
+
+.orders-desktop-table{
+  display:block;
 }
 
 @media(max-width:720px){
   .orders-desktop-table{
-    display:none;
+    display:block !important;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
   }
 
-  .orders-mobile-cards{
-    display:grid;
-    gap:12px;
+  .orders-desktop-table table{
+    min-width:1200px;
   }
 
-  .order-mobile-card{
-    padding:14px;
+  .orders-desktop-table th,
+  .orders-desktop-table td{
+    white-space:nowrap;
+    font-size:11px;
+    padding:8px;
   }
-}
 
-@media(min-width:721px){
-  .orders-mobile-cards{
-    display:none;
+  .orders-desktop-table .btn.small,
+  .orders-desktop-table .icon-btn{
+    font-size:11px;
+    padding:6px 8px;
   }
 }

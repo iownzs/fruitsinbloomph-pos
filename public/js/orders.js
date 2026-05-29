@@ -85,7 +85,7 @@ async function loadOrders(){
 
 function renderOrders(orders){
   renderOrdersTable(orders);
-  renderOrdersCards(orders);
+  // Mobile uses compact horizontal table, not cards.
 }
 
 function formatCreatedAt(order){
