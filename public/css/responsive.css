@@ -491,3 +491,25 @@
     display:none;
   }
 }
+
+/* Ingredient Stocks mobile card layout */
+.ingredient-stocks-mobile-cards{
+  display:none;
+}
+
+@media(max-width:720px){
+  .ingredient-stocks-desktop-table{
+    display:none;
+  }
+
+  .ingredient-stocks-mobile-cards{
+    display:grid;
+    gap:12px;
+  }
+}
+
+@media(min-width:721px){
+  .ingredient-stocks-mobile-cards{
+    display:none;
+  }
+}
