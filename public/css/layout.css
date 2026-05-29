@@ -13,3 +13,31 @@
 .mobile-overlay{
   display:none;
 }
+
+
+/* Unified-Message layout */
+.unified-layout{
+  display:grid;
+  grid-template-columns:280px 1fr 320px;
+  gap:16px;
+}
+
+.conversation-card{
+  margin-top:12px;
+}
+
+.chat-message{
+  background:#0b1220;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  margin:12px 0;
+  line-height:1.45;
+}
+
+.order-actions{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:flex-start;
+}

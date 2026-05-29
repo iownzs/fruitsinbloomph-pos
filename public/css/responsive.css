@@ -149,3 +149,38 @@
     gap:14px;
   }
 }
+
+
+/* Unified-Message mobile stack */
+@media(max-width:1050px){
+  .unified-layout{
+    grid-template-columns:1fr;
+  }
+
+  .unified-layout .card{
+    width:100%;
+  }
+
+  .order-actions{
+    width:100%;
+  }
+
+  .order-actions .btn{
+    width:100%;
+  }
+}
+
+@media(max-width:720px){
+  .chat-message{
+    font-size:15px;
+    line-height:1.45;
+  }
+
+  .unified-layout .chips{
+    gap:8px;
+  }
+
+  .unified-layout .chip{
+    white-space:normal;
+  }
+}
