@@ -513,3 +513,29 @@
     display:none;
   }
 }
+
+/* Orders mobile card layout */
+.orders-mobile-cards{
+  display:none;
+}
+
+@media(max-width:720px){
+  .orders-desktop-table{
+    display:none;
+  }
+
+  .orders-mobile-cards{
+    display:grid;
+    gap:12px;
+  }
+
+  .order-mobile-card{
+    padding:14px;
+  }
+}
+
+@media(min-width:721px){
+  .orders-mobile-cards{
+    display:none;
+  }
+}

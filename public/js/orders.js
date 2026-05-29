@@ -1,82 +1,368 @@
+shell(`
+  <div class="toolbar">
+    <input id="orderSearch" placeholder="Search order, customer, recipient">
+    <select id="statusFilter">
+      <option value="">All Status</option>
+      <option>Created</option>
+      <option>Sent to Kitchen</option>
+      <option>Preparing</option>
+      <option>Ready</option>
+      <option>Completed</option>
+    </select>
+    <select id="typeFilter">
+      <option value="">All Type</option>
+      <option>Delivery</option>
+      <option>Pickup</option>
+    </select>
+    <button class="btn primary">New Order</button>
+  </div>
 
-function showCardMessage(orderId){
-  const o = FIB_DATA.orders.find(x => x.id === orderId);
-  if(!o) return;
+  <div class="card">
+    <h3>Orders from Firestore</h3>
+    <p class="muted">Orders are loaded from Firebase Firestore.</p>
+
+    <div id="ordersStatus" class="muted" style="margin:12px 0">
+      Loading orders...
+    </div>
+
+    <div class="orders-desktop-table table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID / Priority</th>
+            <th>Order Created / Created By</th>
+            <th>Source</th>
+            <th>Source Type</th>
+            <th>Customer</th>
+            <th>Recipient / Pickup</th>
+            <th>Date & Time</th>
+            <th>Address / City</th>
+            <th>Order Type</th>
+            <th>Items</th>
+            <th>Card Message</th>
+            <th>Total</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>QR / Tracking</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="ordersTableBody">
+          <tr><td colspan="16">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="ordersMobileCards" class="orders-mobile-cards">
+      Loading...
+    </div>
+  </div>
+`);
+
+let allOrders = [];
+
+async function loadOrders(){
+  const status = document.getElementById("ordersStatus");
+  const body = document.getElementById("ordersTableBody");
+  const cards = document.getElementById("ordersMobileCards");
+
+  try{
+    if(!window.FIB_FIREBASE_READY || !window.FIB.getOrders){
+      throw new Error(window.FIB_FIREBASE_ERROR || "Firebase orders service is not ready.");
+    }
+
+    status.innerHTML = "Reading orders from Firestore...";
+    allOrders = await window.FIB.getOrders();
+
+    renderOrders(allOrders);
+    status.innerHTML = `${badge('Firestore Loaded')} ${allOrders.length} orders found.`;
+  }catch(error){
+    status.innerHTML = `${badge('Load Failed')} ${error.message}`;
+    body.innerHTML = `<tr><td colspan="16">${error.message}</td></tr>`;
+    cards.innerHTML = `<div class="mini-card">${error.message}</div>`;
+  }
+}
+
+function renderOrders(orders){
+  renderOrdersTable(orders);
+  renderOrdersCards(orders);
+}
+
+function formatCreatedAt(order){
+  try{
+    if(order.createdAt && order.createdAt.toDate){
+      return order.createdAt.toDate().toLocaleString();
+    }
+  }catch(e){}
+  return "Just now";
+}
+
+function getRecipientText(order){
+  if(order.orderType === "Delivery"){
+    return `
+      <strong>${order.delivery?.recipientName || ''}</strong>
+      <br>
+      <small>${order.delivery?.recipientContact || ''}</small>
+    `;
+  }
+
+  return `
+    <strong>${order.pickup?.pickupPersonName || order.customer?.name || ''}</strong>
+    <br>
+    <small>${order.pickup?.pickupPersonContact || order.customer?.contact || ''}</small>
+  `;
+}
+
+function getScheduleText(order){
+  if(order.orderType === "Delivery"){
+    return `${order.delivery?.deliveryDate || ''}<br><small>${order.delivery?.deliveryTime || ''}</small>`;
+  }
+
+  return `${order.pickup?.pickupDate || ''}<br><small>${order.pickup?.pickupTime || ''}</small>`;
+}
+
+function getAddressText(order){
+  if(order.orderType === "Delivery"){
+    return `${order.delivery?.deliveryAddress || ''} ${order.delivery?.cityArea || ''}`;
+  }
+
+  return "Pickup order";
+}
+
+function renderOrdersTable(orders){
+  const body = document.getElementById("ordersTableBody");
+
+  if(!orders.length){
+    body.innerHTML = `<tr><td colspan="16">No orders found. Create an order from POS Terminal.</td></tr>`;
+    return;
+  }
+
+  body.innerHTML = orders.map(order => `
+    <tr>
+      <td>
+        <strong>${order.orderId || order.id}</strong>
+        <br>
+        ${badge(order.priority || 'Normal')}
+      </td>
+
+      <td>
+        ${formatCreatedAt(order)}
+        <br>
+        <small>${order.createdBy?.name || 'Admin'} (${order.createdBy?.role || 'Owner/Admin'})</small>
+      </td>
+
+      <td>${order.orderSource || ''}</td>
+      <td>${badge(order.sourceType || 'Organic')}</td>
+
+      <td>
+        <strong>${order.customer?.name || ''}</strong>
+        <br>
+        <small>${order.customer?.contact || ''}</small>
+      </td>
+
+      <td>${getRecipientText(order)}</td>
+
+      <td>${getScheduleText(order)}</td>
+
+      <td>
+        <button class="icon-btn" onclick="showAddress('${order.id}')">📍</button>
+      </td>
+
+      <td>${order.orderType || ''}</td>
+
+      <td>
+        <button class="icon-btn" onclick="showItems('${order.id}')">🧺</button>
+      </td>
+
+      <td>
+        <button class="icon-btn" onclick="showCardMessage('${order.id}')">💌</button>
+      </td>
+
+      <td><strong>${money(order.total || 0)}</strong></td>
+
+      <td>
+        ${order.payment?.method || ''}
+        <br>
+        ${badge(order.payment?.status || '')}
+      </td>
+
+      <td>${badge(order.status || 'Created')}</td>
+
+      <td>
+        <button class="btn small" onclick="openQr('${order.id}')">QR</button>
+        ${order.orderType === 'Delivery' ? `<button class="btn small" onclick="openTrack('${order.id}')">Track</button>` : ''}
+      </td>
+
+      <td>
+        <button class="btn small" onclick="showOrder('${order.id}')">View</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderOrdersCards(orders){
+  const cards = document.getElementById("ordersMobileCards");
+
+  if(!orders.length){
+    cards.innerHTML = `<div class="mini-card">No orders found.</div>`;
+    return;
+  }
+
+  cards.innerHTML = orders.map(order => `
+    <div class="mini-card order-mobile-card">
+      <div class="product-mobile-head">
+        <div>
+          <h3>${order.orderId || order.id}</h3>
+          <p class="muted">${formatCreatedAt(order)}</p>
+        </div>
+        ${badge(order.status || 'Created')}
+      </div>
+
+      <div class="product-mobile-meta">
+        ${badge(order.priority || 'Normal')}
+        ${badge(order.orderType || '')}
+        ${badge(order.sourceType || 'Organic')}
+      </div>
+
+      <p>
+        <strong>Customer:</strong> ${order.customer?.name || ''}<br>
+        <span class="muted">${order.customer?.contact || ''}</span>
+      </p>
+
+      <p>
+        <strong>${order.orderType === 'Delivery' ? 'Recipient' : 'Pickup'}:</strong>
+        ${order.orderType === 'Delivery' ? (order.delivery?.recipientName || '') : (order.pickup?.pickupPersonName || order.customer?.name || '')}
+      </p>
+
+      <div class="stock-grid">
+        <div><span>Total</span><strong>${money(order.total || 0)}</strong></div>
+        <div><span>Payment</span><strong>${order.payment?.status || ''}</strong></div>
+        <div><span>Items</span><strong>${Array.isArray(order.items) ? order.items.length : 0}</strong></div>
+        <div><span>Source</span><strong>${order.orderSource || ''}</strong></div>
+      </div>
+
+      <div class="product-mobile-actions">
+        <button class="btn small" onclick="showOrder('${order.id}')">View</button>
+        <button class="btn small" onclick="showItems('${order.id}')">Items</button>
+        <button class="btn small" onclick="showCardMessage('${order.id}')">Card</button>
+      </div>
+
+      <div class="product-mobile-actions" style="margin-top:8px">
+        <button class="btn small" onclick="openQr('${order.id}')">QR Details</button>
+        ${order.orderType === 'Delivery' ? `<button class="btn small primary" onclick="openTrack('${order.id}')">Live Track</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function findOrder(orderId){
+  return allOrders.find(order => order.id === orderId || order.orderId === orderId);
+}
+
+function showAddress(orderId){
+  const order = findOrder(orderId);
+  if(!order) return;
+
   openModal(
-    'Card Message',
-    `<p>${o.card}</p>`,
-    `<button class="btn primary" onclick="copyText(FIB_DATA.orders.find(x => x.id === '${orderId}').card)">Copy Card Message</button>
+    "Address / City",
+    `<p>${getAddressText(order)}</p>`,
+    `<button class="btn" onclick="copyText('${escapeModalText(getAddressText(order))}')">Copy Address</button>
      <button class="btn" onclick="closeModal()">Close</button>`
   );
 }
 
 function showItems(orderId){
-  const o = FIB_DATA.orders.find(x => x.id === orderId);
-  if(!o) return;
-  openModal('Items', `<ul>${o.items.map(i => `<li>${i}</li>`).join('')}</ul>`);
-}
+  const order = findOrder(orderId);
+  if(!order) return;
 
-function showAddress(orderId){
-  const o = FIB_DATA.orders.find(x => x.id === orderId);
-  if(!o) return;
-  openModal('Full Address', `<p>${o.address}</p>`);
-}
+  const items = Array.isArray(order.items) ? order.items : [];
 
-function showLinks(orderId){
   openModal(
-    'Links',
-    `<p>QR: qr-order-details.html?order=${orderId}</p>
-     <p>Track: live-track.html?order=${orderId}</p>`
+    `${order.orderId || order.id} Items`,
+    items.length
+      ? `<ul>${items.map(item => `<li>${item.name} x${item.qty || 1} — ${money(item.subtotal || item.price || 0)}</li>`).join('')}</ul>`
+      : `<p class="muted">No items saved.</p>`,
+    `<button class="btn" onclick="closeModal()">Close</button>`
   );
 }
 
-const rows = FIB_DATA.orders.map(o => `
-<tr>
-  <td><strong>${o.id}</strong><br>${badge(o.priority)}</td>
-  <td>${o.created}<br><small>Cashier</small></td>
-  <td>${o.source}</td>
-  <td>${badge(o.sourceType)}</td>
-  <td>${o.customer}<br><small>${o.customerNo}</small></td>
-  <td>${o.recipient}<br><small>${o.recipientNo}</small></td>
-  <td>${o.date}</td>
-  <td>
-    <button class="btn small" onclick="showAddress('${o.id}')">Preview</button>
-    <div class="truncate">${o.address}</div>
-  </td>
-  <td>${o.type}</td>
-  <td><button class="icon-btn" onclick="showItems('${o.id}')">🧺</button></td>
-  <td><button class="icon-btn" onclick="showCardMessage('${o.id}')">💌</button></td>
-  <td>${money(o.total)}</td>
-  <td>${o.payment}</td>
-  <td>${badge(o.status)}</td>
-  <td><button class="btn small" onclick="showLinks('${o.id}')">Links</button></td>
-  <td><button class="btn small">View</button> <button class="btn small accent">Send</button></td>
-</tr>
-`).join('');
+function showCardMessage(orderId){
+  const order = findOrder(orderId);
+  if(!order) return;
 
-shell(
-  `<div class="toolbar">
-    <input placeholder="Search orders">
-    <select><option>All Status</option></select>
-    <select><option>All Source</option></select>
-    <button class="btn primary">New Order</button>
-  </div>` +
-  table(rows, [
-    'Order ID / Priority',
-    'Order Created / Created By',
-    'Source',
-    'Source Type',
-    'Customer',
-    'Recipient',
-    'Date & Time',
-    'Address / City',
-    'Order Type',
-    'Items',
-    'Card Message',
-    'Total',
-    'Payment',
-    'Status',
-    'QR / Tracking',
-    'Actions'
-  ])
-);
+  const message = order.cardMessage || "No card message.";
+
+  openModal(
+    "Card Message",
+    `<p>${message}</p>`,
+    `<button class="btn" onclick="copyText('${escapeModalText(message)}')">Copy Card Message</button>
+     <button class="btn" onclick="closeModal()">Close</button>`
+  );
+}
+
+function showOrder(orderId){
+  const order = findOrder(orderId);
+  if(!order) return;
+
+  openModal(
+    order.orderId || order.id,
+    `
+      <p><strong>Status:</strong> ${order.status || ''}</p>
+      <p><strong>Type:</strong> ${order.orderType || ''}</p>
+      <p><strong>Customer:</strong> ${order.customer?.name || ''} / ${order.customer?.contact || ''}</p>
+      <p><strong>Total:</strong> ${money(order.total || 0)}</p>
+      <p><strong>Payment:</strong> ${order.payment?.method || ''} / ${order.payment?.status || ''}</p>
+    `,
+    `<button class="btn" onclick="closeModal()">Close</button>`
+  );
+}
+
+function openQr(orderId){
+  location.href = `./qr-order-details.html?order=${encodeURIComponent(orderId)}`;
+}
+
+function openTrack(orderId){
+  location.href = `./live-track.html?order=${encodeURIComponent(orderId)}`;
+}
+
+function escapeModalText(text){
+  return String(text || '').replace(/'/g, "\\'").replace(/\n/g, " ");
+}
+
+function copyText(text){
+  navigator.clipboard?.writeText(text);
+  closeModal();
+}
+
+function applyOrderFilters(){
+  const search = document.getElementById("orderSearch").value.toLowerCase();
+  const status = document.getElementById("statusFilter").value;
+  const type = document.getElementById("typeFilter").value;
+
+  const filtered = allOrders.filter(order => {
+    const searchText = [
+      order.orderId,
+      order.id,
+      order.customer?.name,
+      order.customer?.contact,
+      order.delivery?.recipientName,
+      order.pickup?.pickupPersonName,
+      order.status,
+      order.orderType
+    ].join(" ").toLowerCase();
+
+    const matchSearch = !search || searchText.includes(search);
+    const matchStatus = !status || order.status === status;
+    const matchType = !type || order.orderType === type;
+
+    return matchSearch && matchStatus && matchType;
+  });
+
+  renderOrders(filtered);
+}
+
+document.getElementById("orderSearch").addEventListener("input", applyOrderFilters);
+document.getElementById("statusFilter").addEventListener("change", applyOrderFilters);
+document.getElementById("typeFilter").addEventListener("change", applyOrderFilters);
+
+loadOrders();
