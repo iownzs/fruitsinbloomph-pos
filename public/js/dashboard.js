@@ -29,6 +29,7 @@ shell(`
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
       <button class="btn primary" onclick="writeFirebaseStatus()">Write Test</button>
       <button class="btn" onclick="readFirebaseStatus()">Read Test</button>
+      <button class="btn primary" onclick="seedInitialData()">Seed Products</button>
     </div>
 
     <div id="firebaseStatusResult" class="card" style="margin-top:14px;background:#0b1220">
@@ -70,5 +71,23 @@ async function readFirebaseStatus(){
     `;
   }catch(error){
     result.innerHTML = `${badge('Read Failed')}<p class="muted">${error.message}</p>`;
+  }
+}
+
+async function seedInitialData(){
+  const result = document.getElementById("firebaseStatusResult");
+
+  try{
+    result.innerHTML = "Seeding products and ingredients...";
+    const saved = await window.FIB.seedInitialData();
+
+    result.innerHTML = `
+      ${badge('Seed Success')}
+      <p><strong>Products:</strong> ${saved.products}</p>
+      <p><strong>Ingredients:</strong> ${saved.ingredients}</p>
+      <p class="muted">Products, Product Stocks, and Ingredient Stocks saved to Firestore.</p>
+    `;
+  }catch(error){
+    result.innerHTML = `${badge('Seed Failed')}<p class="muted">${error.message}</p>`;
   }
 }
