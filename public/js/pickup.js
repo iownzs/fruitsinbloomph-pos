@@ -37,12 +37,11 @@ shell(`
             <th>Total</th>
             <th>Payment</th>
             <th>Status</th>
-            <th>Timer</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody id="pickupTableBody">
-          <tr><td colspan="13">Loading...</td></tr>
+          <tr><td colspan="12">Loading...</td></tr>
         </tbody>
       </table>
     </div>
@@ -68,7 +67,7 @@ async function loadPickupOrders(){
     status.innerHTML = `${badge('Firestore Loaded')} ${allPickupOrders.length} pickup orders found.`;
   }catch(error){
     status.innerHTML = `${badge('Load Failed')} ${error.message}`;
-    body.innerHTML = `<tr><td colspan="13">${error.message}</td></tr>`;
+    body.innerHTML = `<tr><td colspan="12">${error.message}</td></tr>`;
   }
 }
 
@@ -119,7 +118,7 @@ function renderPickupOrders(){
   });
 
   if(!orders.length){
-    body.innerHTML = `<tr><td colspan="13">No pickup orders in this section.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="12">No pickup orders in this section.</td></tr>`;
     return;
   }
 
@@ -164,8 +163,6 @@ function renderPickupOrders(){
       </td>
 
       <td>${badge(order.status || "Waiting Pickup")}</td>
-
-      <td>${order.timer || "00:00:00"}</td>
 
       <td>${pickupActions(order)}</td>
     </tr>
