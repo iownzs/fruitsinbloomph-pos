@@ -139,6 +139,40 @@
       return orderId;
     };
 
+
+
+    window.FIB.getKitchenOrders = async function(){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      const snapshot = await window.db
+        .collection("orders")
+        .orderBy("createdAt", "desc")
+        .get();
+
+      return snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(order => ["new","sent","preparing","ready"].includes(order.kitchenStatus));
+    };
+
+    window.FIB.updateKitchenStatus = async function(orderId, kitchenStatus){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      const statusMap = {
+        new: "Created",
+        sent: "Sent to Kitchen",
+        preparing: "Preparing",
+        ready: "Ready"
+      };
+
+      await window.db.collection("orders").doc(orderId).set({
+        kitchenStatus,
+        status: statusMap[kitchenStatus] || "Created",
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      return true;
+    };
+
     window.FIB.getOrders = async function(){
       if(!window.db) throw new Error("Firestore not ready.");
 

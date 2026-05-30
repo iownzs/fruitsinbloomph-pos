@@ -548,3 +548,38 @@
     padding:6px 8px;
   }
 }
+
+/* Kitchen board */
+.kitchen-board{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.kitchen-column{
+  background:#0b1220;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:12px;
+  min-height:180px;
+}
+
+.kitchen-list{
+  display:grid;
+  gap:10px;
+}
+
+.kitchen-order-card h4{
+  margin-bottom:6px;
+}
+
+.kitchen-order-card ul{
+  margin:8px 0;
+  padding-left:18px;
+}
+
+@media(max-width:900px){
+  .kitchen-board{
+    grid-template-columns:1fr;
+  }
+}
