@@ -677,3 +677,43 @@
   color:#fecaca;
   border-color:#7f1d1d;
 }
+
+/* Pickup Firestore table */
+.pickup-tabs{
+  display:grid;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.pickup-tab{
+  border:1px solid var(--border);
+  background:#0b1220;
+  color:var(--text);
+  border-radius:14px;
+  padding:10px;
+  font-weight:800;
+}
+
+.pickup-tab.active{
+  background:linear-gradient(180deg,#33c7df,#0b879c);
+  color:white;
+  box-shadow:0 8px 18px rgba(11,135,156,.35);
+}
+
+.pickup-table-wrap{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.pickup-table-wrap table{
+  min-width:1100px;
+}
+
+@media(max-width:720px){
+  .pickup-table-wrap th,
+  .pickup-table-wrap td{
+    white-space:nowrap;
+    font-size:11px;
+    padding:8px;
+  }
+}

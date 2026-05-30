@@ -190,6 +190,21 @@
         .filter(order => order.orderType === "Delivery" && ["waiting_rider","out_for_delivery","delivered"].includes(order.deliveryStatus));
     };
 
+
+
+    window.FIB.markOrderPickedUp = async function(orderId){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      await window.db.collection("orders").doc(orderId).set({
+        pickupStatus: "picked_up",
+        status: "Picked Up",
+        pickedUpAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      return true;
+    };
+
     window.FIB.getPickupOrders = async function(){
       if(!window.db) throw new Error("Firestore not ready.");
 
