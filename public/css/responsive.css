@@ -717,3 +717,43 @@
     padding:8px;
   }
 }
+
+/* Delivery Firestore table */
+.delivery-tabs{
+  display:grid;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.delivery-tab{
+  border:1px solid var(--border);
+  background:#0b1220;
+  color:var(--text);
+  border-radius:14px;
+  padding:10px;
+  font-weight:800;
+}
+
+.delivery-tab.active{
+  background:linear-gradient(180deg,#33c7df,#0b879c);
+  color:white;
+  box-shadow:0 8px 18px rgba(11,135,156,.35);
+}
+
+.delivery-table-wrap{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.delivery-table-wrap table{
+  min-width:1250px;
+}
+
+@media(max-width:720px){
+  .delivery-table-wrap th,
+  .delivery-table-wrap td{
+    white-space:nowrap;
+    font-size:11px;
+    padding:8px;
+  }
+}
