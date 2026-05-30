@@ -312,6 +312,7 @@ function showOrder(orderId){
       <p><strong>Customer:</strong> ${order.customer?.name || ''} / ${order.customer?.contact || ''}</p>
       <p><strong>Total:</strong> ${money(order.total || 0)}</p>
       <p><strong>Payment:</strong> ${order.payment?.method || ''} / ${order.payment?.status || ''}</p>
+      <p><strong>Item Notes:</strong> ${order.itemNotes || 'No item notes.'}</p>
     `,
     `<button class="btn" onclick="closeModal()">Close</button>`
   );

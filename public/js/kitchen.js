@@ -147,8 +147,8 @@ function getKitchenSchedule(order){
 function getKitchenNotes(order){
   const notes = [];
 
+  if(order.itemNotes) notes.push(order.itemNotes);
   if(order.customer?.notes) notes.push(order.customer.notes);
-  if(order.pickup?.pickupNotes) notes.push(order.pickup.pickupNotes);
   if(order.delivery?.deliveryNotes) notes.push(order.delivery.deliveryNotes);
   if(order.notes) notes.push(order.notes);
 

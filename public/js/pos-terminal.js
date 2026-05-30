@@ -178,6 +178,8 @@ function cartPanelHtml(){
     <label>Name<input></label>
     <br>
     <label>Contact<input></label>
+    <br>
+    <label>Item Notes / Order Item Notes<textarea placeholder="Example: Change logo from Happy Birthday to Congratulations"></textarea></label>
 
     <div id="typeFields"></div>
 
@@ -246,8 +248,7 @@ function setType(t){
     <label>Pickup Person Contact<input></label><br>
     <label>Pickup Date<input type="date"></label><br>
     <label>Pickup Time<input type="time"></label><br>
-    <label>Card Message<textarea></textarea></label><br>
-    <label>Pickup Notes<textarea></textarea></label>
+    <label>Card Message<textarea></textarea></label>
   `;
 
   const deliveryFields = `
@@ -322,31 +323,33 @@ function getCartFormData(){
 
   const customerName = valueAt(0);
   const customerContact = valueAt(1);
+  const itemNotes = valueAt(2);
 
   let details = {};
 
   if(orderType === "Pickup"){
     details = {
-      pickupPersonName: valueAt(2),
-      pickupPersonContact: valueAt(3),
-      pickupDate: valueAt(4),
-      pickupTime: valueAt(5),
-      cardMessage: valueAt(6),
-      pickupNotes: valueAt(7),
+      itemNotes,
+      pickupPersonName: valueAt(3),
+      pickupPersonContact: valueAt(4),
+      pickupDate: valueAt(5),
+      pickupTime: valueAt(6),
+      cardMessage: valueAt(7),
       paymentMethod: valueAt(8) || "Cash"
     };
   }else{
     details = {
-      recipientName: valueAt(2),
-      recipientContact: valueAt(3),
-      deliveryAddress: valueAt(4),
-      cityArea: valueAt(5),
-      landmark: valueAt(6),
-      deliveryDate: valueAt(7),
-      deliveryTime: valueAt(8),
-      deliveryType: valueAt(9),
-      cardMessage: valueAt(10),
-      paymentMethod: valueAt(11) || "Cash"
+      itemNotes,
+      recipientName: valueAt(3),
+      recipientContact: valueAt(4),
+      deliveryAddress: valueAt(5),
+      cityArea: valueAt(6),
+      landmark: valueAt(7),
+      deliveryDate: valueAt(8),
+      deliveryTime: valueAt(9),
+      deliveryType: valueAt(10),
+      cardMessage: valueAt(11),
+      paymentMethod: valueAt(12) || "Cash"
     };
   }
 
@@ -387,8 +390,7 @@ async function checkoutOrder(){
         pickupPersonName: form.pickupPersonName || "",
         pickupPersonContact: form.pickupPersonContact || "",
         pickupDate: form.pickupDate || "",
-        pickupTime: form.pickupTime || "",
-        pickupNotes: form.pickupNotes || ""
+        pickupTime: form.pickupTime || ""
       } : null,
 
       delivery: form.orderType === "Delivery" ? {
@@ -403,6 +405,7 @@ async function checkoutOrder(){
       } : null,
 
       cardMessage: form.cardMessage || "",
+      itemNotes: form.itemNotes || "",
 
       items: cart.map(item => ({
         productId: item.productId || "",
