@@ -114,6 +114,36 @@ function statusLabel(order){
   return order.status || "Waiting for Rider";
 }
 
+
+function getDeliveryTimer(order){
+  if(String(order.deliveryStatus || "").toLowerCase() !== "out_for_delivery"){
+    return "00:00:00";
+  }
+
+  let startedAt = null;
+
+  try{
+    if(order.deliveryStartedAt?.toDate){
+      startedAt = order.deliveryStartedAt.toDate();
+    }else if(order.deliveryStartedAt){
+      startedAt = new Date(order.deliveryStartedAt);
+    }
+  }catch(e){}
+
+  if(!startedAt || isNaN(startedAt.getTime())){
+    return "00:00:00";
+  }
+
+  const diff = Math.max(0, Date.now() - startedAt.getTime());
+  const totalSeconds = Math.floor(diff / 1000);
+
+  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+  const seconds = String(totalSeconds % 60).padStart(2, "0");
+
+  return `${hours}:${minutes}:${seconds}`;
+}
+
 function renderDeliveryOrders(){
   const body = document.getElementById("deliveryTableBody");
   const search = document.getElementById("deliverySearch").value.toLowerCase();
@@ -200,7 +230,7 @@ function renderDeliveryOrders(){
 
       <td>${badge(statusLabel(order))}</td>
 
-      <td>${order.timer || "00:00:00"}</td>
+      <td>${getDeliveryTimer(order)}</td>
 
       <td>${deliveryActions(order)}</td>
     </tr>
@@ -211,7 +241,7 @@ function deliveryActions(order){
   const status = String(order.deliveryStatus || "").toLowerCase();
 
   if(status === "waiting_rider"){
-    return `<button class="btn small primary" onclick="assignRider('${order.id}')">Assign Rider</button>`;
+    return `<button class="btn small primary" onclick="openAssignRider('${order.id}')">Assign Rider</button>`;
   }
 
   if(status === "out_for_delivery"){
@@ -284,10 +314,38 @@ function showDeliveryOrder(orderId){
   );
 }
 
+function openAssignRider(orderId){
+  const riderOptions = ["Rider 1", "Rider 2", "Rider 3", "Grab", "Lalamove"];
+
+  openModal(
+    "Assign Rider",
+    `
+      <label>
+        Select Rider
+        <select id="assignRiderName">
+          ${riderOptions.map(r => `<option>${r}</option>`).join("")}
+        </select>
+      </label>
+    `,
+    `<button class="btn primary" onclick="assignRider('${orderId}')">Assign & Start</button>
+     <button class="btn" onclick="closeModal()">Cancel</button>`
+  );
+}
+
 async function assignRider(orderId){
   try{
-    await window.FIB.assignDeliveryRider(orderId, "Rider 1");
+    const riderName = document.getElementById("assignRiderName")?.value || "Rider 1";
+
+    await window.FIB.assignDeliveryRider(orderId, riderName);
+
+    closeModal();
     await loadDeliveryOrders();
+
+let deliveryTimerInterval = setInterval(() => {
+  if(activeDeliveryTab === "out_for_delivery" && allDeliveryOrders.length){
+    renderDeliveryOrders();
+  }
+}, 1000);
     setDeliveryTab("out_for_delivery");
   }catch(error){
     openModal("Assign Failed", `<p>${error.message}</p>`);
@@ -298,6 +356,12 @@ async function markDelivered(orderId){
   try{
     await window.FIB.markOrderDelivered(orderId);
     await loadDeliveryOrders();
+
+let deliveryTimerInterval = setInterval(() => {
+  if(activeDeliveryTab === "out_for_delivery" && allDeliveryOrders.length){
+    renderDeliveryOrders();
+  }
+}, 1000);
     setDeliveryTab("delivered");
   }catch(error){
     openModal("Delivery Failed", `<p>${error.message}</p>`);
@@ -308,3 +372,9 @@ document.getElementById("deliverySearch").addEventListener("input", renderDelive
 document.getElementById("riderFilter").addEventListener("change", renderDeliveryOrders);
 
 loadDeliveryOrders();
+
+let deliveryTimerInterval = setInterval(() => {
+  if(activeDeliveryTab === "out_for_delivery" && allDeliveryOrders.length){
+    renderDeliveryOrders();
+  }
+}, 1000);
