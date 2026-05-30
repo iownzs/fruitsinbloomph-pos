@@ -218,9 +218,15 @@ function kitchenActionButtons(order){
   }
 
   if(order.kitchenStatus === "ready"){
-    return `
-      <button class="btn small" onclick="openModal('Ready','<p>This order is ready. Delivery/Pickup send flow comes next.</p>')">Ready</button>
-    `;
+    if(order.orderType === "Delivery"){
+      return `<button class="btn primary" onclick="sendReadyOrder('${order.id}')">Send to Delivery</button>`;
+    }
+
+    if(order.orderType === "Pickup"){
+      return `<button class="btn primary" onclick="sendReadyOrder('${order.id}')">Send to Pickup</button>`;
+    }
+
+    return `<button class="btn small">Ready</button>`;
   }
 
   return "";
@@ -243,3 +249,21 @@ document.getElementById("kitchenSearch").addEventListener("input", applyKitchenF
 document.getElementById("kitchenStatusFilter").addEventListener("change", applyKitchenFilters);
 
 loadKitchenOrders();
+
+
+async function sendReadyOrder(orderId){
+  try{
+    const nextStep = await window.FIB.sendReadyOrderToNextStep(orderId);
+
+    openModal(
+      "Order Sent",
+      `<p>Order sent to ${nextStep} successfully.</p>`,
+      `<button class="btn primary" onclick="location.href='./${nextStep.toLowerCase()}.html'">Open ${nextStep}</button>
+       <button class="btn" onclick="closeModal(); loadKitchenOrders();">Stay</button>`
+    );
+
+    await loadKitchenOrders();
+  }catch(error){
+    openModal("Send Failed", `<p>${error.message}</p>`);
+  }
+}

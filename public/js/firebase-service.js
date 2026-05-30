@@ -141,6 +141,65 @@
 
 
 
+
+
+    window.FIB.sendReadyOrderToNextStep = async function(orderId){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      const ref = window.db.collection("orders").doc(orderId);
+      const doc = await ref.get();
+
+      if(!doc.exists) throw new Error("Order not found.");
+
+      const order = doc.data();
+
+      if(order.orderType === "Delivery"){
+        await ref.set({
+          status: "Waiting Rider",
+          kitchenStatus: "sent_to_delivery",
+          deliveryStatus: "waiting_rider",
+          pickupStatus: "",
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        return "Delivery";
+      }
+
+      if(order.orderType === "Pickup"){
+        await ref.set({
+          status: "Waiting Pickup",
+          kitchenStatus: "sent_to_pickup",
+          pickupStatus: "waiting_pickup",
+          deliveryStatus: "",
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        return "Pickup";
+      }
+
+      throw new Error("Unknown order type.");
+    };
+
+    window.FIB.getDeliveryOrders = async function(){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      const snapshot = await window.db.collection("orders").orderBy("createdAt", "desc").get();
+
+      return snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(order => order.orderType === "Delivery" && ["waiting_rider","out_for_delivery","delivered"].includes(order.deliveryStatus));
+    };
+
+    window.FIB.getPickupOrders = async function(){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      const snapshot = await window.db.collection("orders").orderBy("createdAt", "desc").get();
+
+      return snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(order => order.orderType === "Pickup" && ["waiting_pickup","picked_up"].includes(order.pickupStatus));
+    };
+
     window.FIB.getKitchenOrders = async function(){
       if(!window.db) throw new Error("Firestore not ready.");
 
