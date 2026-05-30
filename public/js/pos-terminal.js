@@ -260,17 +260,6 @@ function setType(t){
 
   const pickupFields = `
     <h3>Pickup Details</h3>
-
-    <label class="same-customer-row">
-      <input type="checkbox" class="same-as-customer" checked onchange="toggleSameAsCustomer(this)">
-      Same as customer
-    </label>
-
-    <div class="pickup-person-fields" style="display:none">
-      <label>Pickup Person Name<input class="pickup-person-name"></label><br>
-      <label>Pickup Person Contact<input class="pickup-person-contact"></label><br>
-    </div>
-
     <label>Pickup Date<input class="pickup-date" type="date"></label><br>
     <label>Pickup Time<input class="pickup-time" type="time"></label>
   `;
@@ -303,14 +292,6 @@ function setType(t){
   document.querySelectorAll('#typeFields').forEach(el => {
     el.innerHTML = t === 'pickup' ? pickupFields : deliveryFields;
   });
-}
-
-function toggleSameAsCustomer(checkbox){
-  const panel = checkbox.closest(".pos-cart-panel, #cartSheetContent");
-  const fields = panel?.querySelector(".pickup-person-fields");
-  if(fields){
-    fields.style.display = checkbox.checked ? "none" : "block";
-  }
 }
 
 function openCartSheet(){
@@ -361,12 +342,7 @@ function getCartFormData(){
   let details = {};
 
   if(orderType === "Pickup"){
-    const sameAsCustomer = isChecked(".same-as-customer");
-
     details = {
-      sameAsCustomer,
-      pickupPersonName: sameAsCustomer ? customerName : getValue(".pickup-person-name"),
-      pickupPersonContact: sameAsCustomer ? customerContact : getValue(".pickup-person-contact"),
       pickupDate: getValue(".pickup-date"),
       pickupTime: getValue(".pickup-time"),
       itemNotes,
@@ -423,8 +399,6 @@ async function checkoutOrder(){
       },
 
       pickup: form.orderType === "Pickup" ? {
-        pickupPersonName: form.pickupPersonName || "",
-        pickupPersonContact: form.pickupPersonContact || "",
         pickupDate: form.pickupDate || "",
         pickupTime: form.pickupTime || ""
       } : null,

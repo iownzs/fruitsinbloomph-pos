@@ -108,9 +108,9 @@ function getRecipientText(order){
   }
 
   return `
-    <strong>${order.pickup?.pickupPersonName || order.customer?.name || ''}</strong>
+    <strong>${order.customer?.name || ''}</strong>
     <br>
-    <small>${order.pickup?.pickupPersonContact || order.customer?.contact || ''}</small>
+    <small>${order.customer?.contact || ''}</small>
   `;
 }
 
@@ -260,7 +260,7 @@ function renderOrdersCards(orders){
 
       <p>
         <strong>${order.orderType === 'Delivery' ? 'Recipient' : 'Pickup'}:</strong>
-        ${order.orderType === 'Delivery' ? (order.delivery?.recipientName || '') : (order.pickup?.pickupPersonName || order.customer?.name || '')}
+        ${order.orderType === 'Delivery' ? (order.delivery?.recipientName || '') : (order.customer?.name || '')}
       </p>
 
       <div class="stock-grid">
