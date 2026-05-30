@@ -152,10 +152,12 @@
       if(!doc.exists) throw new Error("Order not found.");
 
       const order = doc.data();
+      const orderType = String(order.orderType || "").toLowerCase();
 
-      if(order.orderType === "Delivery"){
+      if(orderType === "delivery"){
         await ref.set({
-          status: "Waiting Rider",
+          orderType: "Delivery",
+          status: "Waiting for Rider",
           kitchenStatus: "sent_to_delivery",
           deliveryStatus: "waiting_rider",
           pickupStatus: "",
@@ -165,8 +167,9 @@
         return "Delivery";
       }
 
-      if(order.orderType === "Pickup"){
+      if(orderType === "pickup"){
         await ref.set({
+          orderType: "Pickup",
           status: "Waiting Pickup",
           kitchenStatus: "sent_to_pickup",
           pickupStatus: "waiting_pickup",
@@ -187,22 +190,16 @@
 
       return snapshot.docs
         .map(doc => ({ id: doc.id, ...doc.data() }))
-        .filter(order => order.orderType === "Delivery" && ["waiting_rider","out_for_delivery","delivered"].includes(order.deliveryStatus));
-    };
+        .filter(order => {
+          const orderType = String(order.orderType || "").toLowerCase();
+          const deliveryStatus = String(order.deliveryStatus || "");
+          const kitchenStatus = String(order.kitchenStatus || "");
 
-
-
-    window.FIB.markOrderPickedUp = async function(orderId){
-      if(!window.db) throw new Error("Firestore not ready.");
-
-      await window.db.collection("orders").doc(orderId).set({
-        pickupStatus: "picked_up",
-        status: "Picked Up",
-        pickedUpAt: firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-
-      return true;
+          return orderType === "delivery" && (
+            ["waiting_rider","out_for_delivery","delivered"].includes(deliveryStatus) ||
+            kitchenStatus === "sent_to_delivery"
+          );
+        });
     };
 
     window.FIB.getPickupOrders = async function(){

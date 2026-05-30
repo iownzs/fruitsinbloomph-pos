@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <title>Fix Delivery Status</title>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="./js/firebase-service.js"></script>
+</head>
+<body style="font-family:Arial;padding:24px;background:#0f172a;color:white">
+  <h1>Fix Delivery Status</h1>
+  <button onclick="fixDelivery()">Fix Sent Delivery Orders</button>
+  <pre id="log"></pre>
+
+  <script>
+    async function fixDelivery(){
+      const log = document.getElementById("log");
+      log.textContent = "Checking orders...";
+
+      const snap = await window.db.collection("orders").get();
+      let count = 0;
+
+      for(const doc of snap.docs){
+        const order = doc.data();
+        const orderType = String(order.orderType || "").toLowerCase();
+
+        if(
+          orderType === "delivery" &&
+          (
+            order.kitchenStatus === "sent_to_delivery" ||
+            order.status === "Waiting for Rider"
+          ) &&
+          order.deliveryStatus !== "waiting_rider"
+        ){
+          await doc.ref.set({
+            orderType: "Delivery",
+            status: "Waiting for Rider",
+            kitchenStatus: "sent_to_delivery",
+            deliveryStatus: "waiting_rider",
+            pickupStatus: "",
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge:true });
+
+          count++;
+        }
+      }
+
+      log.textContent = `Fixed ${count} delivery orders.`;
+    }
+  </script>
+</body>
+</html>
