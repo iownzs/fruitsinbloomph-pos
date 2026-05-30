@@ -130,6 +130,30 @@ function getAddressText(order){
   return "Pickup order";
 }
 
+
+function sourceLogo(source){
+  const key = String(source || "Other").toLowerCase();
+
+  const map = {
+    facebook: { label: "FB", name: "Facebook", cls: "source-facebook" },
+    instagram: { label: "IG", name: "Instagram", cls: "source-instagram" },
+    tiktok: { label: "TT", name: "TikTok", cls: "source-tiktok" },
+    viber: { label: "VB", name: "Viber", cls: "source-viber" },
+    whatsapp: { label: "WA", name: "WhatsApp", cls: "source-whatsapp" },
+    website: { label: "WEB", name: "Website", cls: "source-website" },
+    other: { label: "OT", name: "Other", cls: "source-other" }
+  };
+
+  const item = map[key] || map.other;
+
+  return `
+    <span class="source-logo ${item.cls}">
+      <span>${item.label}</span>
+    </span>
+    <small>${item.name}</small>
+  `;
+}
+
 function renderOrdersTable(orders){
   const body = document.getElementById("ordersTableBody");
 
@@ -152,7 +176,7 @@ function renderOrdersTable(orders){
         <small>${order.createdBy?.name || 'Admin'} (${order.createdBy?.role || 'Owner/Admin'})</small>
       </td>
 
-      <td>${order.orderSource || ''}</td>
+      <td class="source-cell">${sourceLogo(order.orderSource)}</td>
       <td>${badge(order.sourceType || 'Organic')}</td>
 
       <td>

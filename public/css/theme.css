@@ -184,3 +184,51 @@ label{
 .sidebar .logo{
   background:linear-gradient(135deg,#38C7E8,#0B7F9F) !important;
 }
+
+/* Order source logo badges */
+.source-cell{
+  white-space:nowrap;
+}
+
+.source-logo{
+  display:inline-grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  font-size:11px;
+  font-weight:900;
+  color:white;
+  margin-right:6px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    0 8px 18px rgba(0,0,0,.25);
+}
+
+.source-facebook{
+  background:linear-gradient(135deg,#1877F2,#0B5BD3);
+}
+
+.source-instagram{
+  background:linear-gradient(135deg,#F58529,#DD2A7B,#8134AF);
+}
+
+.source-tiktok{
+  background:linear-gradient(135deg,#111827,#06B6D4,#EF4444);
+}
+
+.source-viber{
+  background:linear-gradient(135deg,#7360F2,#4F3CC9);
+}
+
+.source-whatsapp{
+  background:linear-gradient(135deg,#25D366,#128C7E);
+}
+
+.source-website{
+  background:linear-gradient(135deg,#38C7E8,#0B7F9F);
+}
+
+.source-other{
+  background:linear-gradient(135deg,#64748B,#334155);
+}
