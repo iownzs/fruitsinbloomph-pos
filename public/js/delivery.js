@@ -315,26 +315,31 @@ function showDeliveryOrder(orderId){
 }
 
 function openAssignRider(orderId){
-  const riderOptions = ["Rider 1", "Rider 2", "Rider 3", "Grab", "Lalamove"];
-
   openModal(
     "Assign Rider",
     `
       <label>
-        Select Rider
-        <select id="assignRiderName">
-          ${riderOptions.map(r => `<option>${r}</option>`).join("")}
-        </select>
+        Rider Name
+        <input id="assignRiderName" placeholder="Enter rider name, Grab, or Lalamove">
       </label>
     `,
     `<button class="btn primary" onclick="assignRider('${orderId}')">Assign & Start</button>
      <button class="btn" onclick="closeModal()">Cancel</button>`
   );
+
+  setTimeout(() => {
+    document.getElementById("assignRiderName")?.focus();
+  }, 100);
 }
 
 async function assignRider(orderId){
   try{
-    const riderName = document.getElementById("assignRiderName")?.value || "Rider 1";
+    const riderName = document.getElementById("assignRiderName")?.value?.trim();
+
+    if(!riderName){
+      alert("Please enter rider name.");
+      return;
+    }
 
     await window.FIB.assignDeliveryRider(orderId, riderName);
 
