@@ -128,7 +128,7 @@
           status: "Kitchen",
           kitchenStatus: "new",
           deliveryStatus: orderData.orderType === "Delivery" ? "not_started" : "",
-          pickupStatus: orderData.orderType === "Pickup" ? "waiting_pickup" : "",
+          pickupStatus: orderData.orderType === "Pickup" ? "not_started" : "",
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
@@ -212,7 +212,13 @@
 
       return snapshot.docs
         .map(doc => ({ id: doc.id, ...doc.data() }))
-        .filter(order => order.orderType === "Pickup" && ["waiting_pickup","picked_up"].includes(order.pickupStatus));
+        .filter(order =>
+          order.orderType === "Pickup" &&
+          (
+            (order.kitchenStatus === "sent_to_pickup" && order.pickupStatus === "waiting_pickup") ||
+            order.pickupStatus === "picked_up"
+          )
+        );
     };
 
     window.FIB.getKitchenOrders = async function(){
