@@ -609,3 +609,14 @@
 .kitchen-info-grid strong{
   font-size:13px;
 }
+
+/* Revised Kitchen board: Kitchen / Preparing / Ready */
+.kitchen-board{
+  grid-template-columns:repeat(3,1fr);
+}
+
+@media(max-width:900px){
+  .kitchen-board{
+    grid-template-columns:1fr;
+  }
+}

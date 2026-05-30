@@ -125,7 +125,7 @@
         transaction.set(orderRef, {
           ...orderData,
           orderId: generatedOrderId,
-          status: "Created",
+          status: "Kitchen",
           kitchenStatus: "new",
           deliveryStatus: orderData.orderType === "Delivery" ? "not_started" : "",
           pickupStatus: orderData.orderType === "Pickup" ? "waiting_pickup" : "",
@@ -210,15 +210,14 @@
 
       return snapshot.docs
         .map(doc => ({ id: doc.id, ...doc.data() }))
-        .filter(order => ["new","sent","preparing","ready"].includes(order.kitchenStatus));
+        .filter(order => ["new","preparing","ready"].includes(order.kitchenStatus));
     };
 
     window.FIB.updateKitchenStatus = async function(orderId, kitchenStatus){
       if(!window.db) throw new Error("Firestore not ready.");
 
       const statusMap = {
-        new: "Created",
-        sent: "Sent to Kitchen",
+        new: "Kitchen",
         preparing: "Preparing",
         ready: "Ready"
       };

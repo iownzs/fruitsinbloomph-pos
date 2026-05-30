@@ -3,8 +3,7 @@ shell(`
     <input id="kitchenSearch" placeholder="Search order, customer, item">
     <select id="kitchenStatusFilter">
       <option value="">All Kitchen Status</option>
-      <option value="new">New Orders</option>
-      <option value="sent">Sent to Kitchen</option>
+      <option value="new">Kitchen</option>
       <option value="preparing">Preparing</option>
       <option value="ready">Ready</option>
     </select>
@@ -21,13 +20,8 @@ shell(`
 
     <div class="kitchen-board">
       <div class="kitchen-column">
-        <h3>New Orders</h3>
+        <h3>Kitchen</h3>
         <div id="newOrders" class="kitchen-list"></div>
-      </div>
-
-      <div class="kitchen-column">
-        <h3>Sent to Kitchen</h3>
-        <div id="sentOrders" class="kitchen-list"></div>
       </div>
 
       <div class="kitchen-column">
@@ -66,7 +60,6 @@ async function loadKitchenOrders(){
 function renderKitchenOrders(orders){
   const groups = {
     new: document.getElementById("newOrders"),
-    sent: document.getElementById("sentOrders"),
     preparing: document.getElementById("preparingOrders"),
     ready: document.getElementById("readyOrders")
   };
@@ -111,8 +104,7 @@ function renderKitchenOrders(orders){
 
 function kitchenStatusLabel(status){
   const labels = {
-    new: "New Order",
-    sent: "Sent to Kitchen",
+    new: "Kitchen",
     preparing: "Preparing",
     ready: "Ready"
   };
@@ -206,10 +198,6 @@ function kitchenCard(order){
 
 function kitchenActionButtons(order){
   if(order.kitchenStatus === "new"){
-    return `<button class="btn primary" onclick="updateKitchen('${order.id}','sent')">Send to Kitchen</button>`;
-  }
-
-  if(order.kitchenStatus === "sent"){
     return `<button class="btn primary" onclick="updateKitchen('${order.id}','preparing')">Start Preparing</button>`;
   }
 
@@ -218,15 +206,14 @@ function kitchenActionButtons(order){
   }
 
   if(order.kitchenStatus === "ready"){
-    if(order.orderType === "Delivery"){
-      return `<button class="btn primary" onclick="sendReadyOrder('${order.id}')">Send to Delivery</button>`;
-    }
+    const sendButton = order.orderType === "Delivery"
+      ? `<button class="btn primary" onclick="sendReadyOrder('${order.id}')">Send to Delivery</button>`
+      : `<button class="btn primary" onclick="sendReadyOrder('${order.id}')">Send to Pickup</button>`;
 
-    if(order.orderType === "Pickup"){
-      return `<button class="btn primary" onclick="sendReadyOrder('${order.id}')">Send to Pickup</button>`;
-    }
-
-    return `<button class="btn small">Ready</button>`;
+    return `
+      ${sendButton}
+      <button class="btn small" onclick="updateKitchen('${order.id}','preparing')">Re-prep</button>
+    `;
   }
 
   return "";
