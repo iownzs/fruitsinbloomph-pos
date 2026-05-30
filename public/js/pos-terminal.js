@@ -159,39 +159,55 @@ function cartPanelHtml(){
 
     <h3>Order Info</h3>
 
+    <p class="muted">Source</p>
     <div class="chips">
       ${['Facebook','Instagram','TikTok','Viber','WhatsApp','Website','Other'].map(x => `
-        <button class="chip">${x}</button>
+        <button class="chip ${x === 'Facebook' ? 'active' : ''}" data-source="${x}">${x}</button>
       `).join('')}
     </div>
 
     <br>
 
+    <p class="muted">Source Type</p>
     <div class="chips">
-      <button class="chip active">Organic</button>
-      <button class="chip">Ads</button>
-      <button class="chip active">Normal</button>
-      <button class="chip">Rush</button>
+      <button class="chip active" data-source-type="Organic">Organic</button>
+      <button class="chip" data-source-type="Ads">Ads</button>
+    </div>
+
+    <br>
+
+    <p class="muted">Priority</p>
+    <div class="chips">
+      <button class="chip active" data-priority="Normal">Normal</button>
+      <button class="chip" data-priority="Rush">Rush</button>
     </div>
 
     <h3>Customer</h3>
-    <label>Name<input></label>
+    <label>Customer Name<input class="customer-name"></label>
     <br>
-    <label>Contact<input></label>
-    <br>
-    <label>Item Notes / Order Item Notes<textarea placeholder="Example: Change logo from Happy Birthday to Congratulations"></textarea></label>
+    <label>Customer Contact<input class="customer-contact"></label>
 
     <div id="typeFields"></div>
 
     <h3>Cart Items</h3>
     <div id="cartList" class="muted">No items yet.</div>
 
+    <label>
+      Item Notes for Kitchen
+      <textarea class="item-notes" placeholder="Example: Change logo from Happy Birthday to Congratulations"></textarea>
+    </label>
+
+    <label>
+      Card Message
+      <textarea class="card-message" placeholder="Message for recipient card"></textarea>
+    </label>
+
     <h3>Total</h3>
     <p>Grand Total: <strong id="grand">${money(0)}</strong></p>
 
     <label>
       Payment Method
-      <select>
+      <select class="payment-method">
         <option>Cash</option>
         <option>Card</option>
         <option>E-wallet</option>
@@ -244,42 +260,57 @@ function setType(t){
 
   const pickupFields = `
     <h3>Pickup Details</h3>
-    <label>Pickup Person Name<input></label><br>
-    <label>Pickup Person Contact<input></label><br>
-    <label>Pickup Date<input type="date"></label><br>
-    <label>Pickup Time<input type="time"></label><br>
-    <label>Card Message<textarea></textarea></label>
+
+    <label class="same-customer-row">
+      <input type="checkbox" class="same-as-customer" checked onchange="toggleSameAsCustomer(this)">
+      Same as customer
+    </label>
+
+    <div class="pickup-person-fields" style="display:none">
+      <label>Pickup Person Name<input class="pickup-person-name"></label><br>
+      <label>Pickup Person Contact<input class="pickup-person-contact"></label><br>
+    </div>
+
+    <label>Pickup Date<input class="pickup-date" type="date"></label><br>
+    <label>Pickup Time<input class="pickup-time" type="time"></label>
   `;
 
   const deliveryFields = `
     <h3>Delivery Details</h3>
-    <label>Recipient Name<input></label><br>
-    <label>Recipient Contact<input></label><br>
-    <label>Delivery Address<textarea></textarea></label><br>
+    <label>Recipient Name<input class="recipient-name"></label><br>
+    <label>Recipient Contact<input class="recipient-contact"></label><br>
+    <label>Delivery Address<textarea class="delivery-address"></textarea></label><br>
     <label>
       City / Area
-      <select>
+      <select class="city-area">
         <option>Quezon City</option>
         <option>Makati</option>
         <option>Manila</option>
       </select>
     </label><br>
-    <label>Landmark<input></label><br>
-    <label>Delivery Date<input type="date"></label><br>
-    <label>Delivery Time<input type="time"></label><br>
+    <label>Landmark<input class="landmark"></label><br>
+    <label>Delivery Date<input class="delivery-date" type="date"></label><br>
+    <label>Delivery Time<input class="delivery-time" type="time"></label><br>
     <label>
       Delivery Type
-      <select>
+      <select class="delivery-type">
         <option>BFC</option>
         <option>INH</option>
       </select>
-    </label><br>
-    <label>Card Message<textarea></textarea></label>
+    </label>
   `;
 
   document.querySelectorAll('#typeFields').forEach(el => {
     el.innerHTML = t === 'pickup' ? pickupFields : deliveryFields;
   });
+}
+
+function toggleSameAsCustomer(checkbox){
+  const panel = checkbox.closest(".pos-cart-panel, #cartSheetContent");
+  const fields = panel?.querySelector(".pickup-person-fields");
+  if(fields){
+    fields.style.display = checkbox.checked ? "none" : "block";
+  }
 }
 
 function openCartSheet(){
@@ -317,39 +348,44 @@ function getCartFormData(){
     return rect.width > 0 && rect.height > 0;
   }) || panels[0];
 
-  const inputs = visiblePanel ? [...visiblePanel.querySelectorAll("input, textarea, select")] : [];
+  const getValue = selector => visiblePanel?.querySelector(selector)?.value?.trim() || "";
+  const isChecked = selector => !!visiblePanel?.querySelector(selector)?.checked;
 
-  const valueAt = index => inputs[index] ? inputs[index].value.trim() : "";
+  const customerName = getValue(".customer-name");
+  const customerContact = getValue(".customer-contact");
 
-  const customerName = valueAt(0);
-  const customerContact = valueAt(1);
-  const itemNotes = valueAt(2);
+  const itemNotes = getValue(".item-notes");
+  const cardMessage = getValue(".card-message");
+  const paymentMethod = getValue(".payment-method") || "Cash";
 
   let details = {};
 
   if(orderType === "Pickup"){
+    const sameAsCustomer = isChecked(".same-as-customer");
+
     details = {
+      sameAsCustomer,
+      pickupPersonName: sameAsCustomer ? customerName : getValue(".pickup-person-name"),
+      pickupPersonContact: sameAsCustomer ? customerContact : getValue(".pickup-person-contact"),
+      pickupDate: getValue(".pickup-date"),
+      pickupTime: getValue(".pickup-time"),
       itemNotes,
-      pickupPersonName: valueAt(3),
-      pickupPersonContact: valueAt(4),
-      pickupDate: valueAt(5),
-      pickupTime: valueAt(6),
-      cardMessage: valueAt(7),
-      paymentMethod: valueAt(8) || "Cash"
+      cardMessage,
+      paymentMethod
     };
   }else{
     details = {
+      recipientName: getValue(".recipient-name"),
+      recipientContact: getValue(".recipient-contact"),
+      deliveryAddress: getValue(".delivery-address"),
+      cityArea: getValue(".city-area"),
+      landmark: getValue(".landmark"),
+      deliveryDate: getValue(".delivery-date"),
+      deliveryTime: getValue(".delivery-time"),
+      deliveryType: getValue(".delivery-type") || "BFC",
       itemNotes,
-      recipientName: valueAt(3),
-      recipientContact: valueAt(4),
-      deliveryAddress: valueAt(5),
-      cityArea: valueAt(6),
-      landmark: valueAt(7),
-      deliveryDate: valueAt(8),
-      deliveryTime: valueAt(9),
-      deliveryType: valueAt(10),
-      cardMessage: valueAt(11),
-      paymentMethod: valueAt(12) || "Cash"
+      cardMessage,
+      paymentMethod
     };
   }
 

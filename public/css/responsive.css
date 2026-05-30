@@ -620,3 +620,20 @@
     grid-template-columns:1fr;
   }
 }
+
+/* POS pickup same-as-customer row */
+.same-customer-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#0b1220;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:10px 12px;
+  margin:8px 0 12px;
+  font-weight:800;
+}
+
+.same-customer-row input{
+  width:auto;
+}
