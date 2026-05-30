@@ -207,16 +207,31 @@
     window.FIB.markOrderDelivered = async function(orderId){
       if(!window.db) throw new Error("Firestore not ready.");
 
-      await window.db.collection("orders").doc(orderId).set({
+      const ref = window.db.collection("orders").doc(orderId);
+      const doc = await ref.get();
+
+      if(!doc.exists) throw new Error("Order not found.");
+
+      const order = doc.data();
+      let durationSeconds = 0;
+
+      try{
+        if(order.deliveryStartedAt && order.deliveryStartedAt.toDate){
+          const startedAt = order.deliveryStartedAt.toDate();
+          durationSeconds = Math.max(0, Math.floor((Date.now() - startedAt.getTime()) / 1000));
+        }
+      }catch(e){}
+
+      await ref.set({
         status: "Delivered",
         deliveryStatus: "delivered",
         deliveredAt: firebase.firestore.FieldValue.serverTimestamp(),
+        deliveryDurationSeconds: durationSeconds,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
 
       return true;
     };
-
 
     window.FIB.getDeliveryOrders = async function(){
       if(!window.db) throw new Error("Firestore not ready.");

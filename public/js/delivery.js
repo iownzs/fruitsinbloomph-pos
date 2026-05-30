@@ -115,9 +115,31 @@ function statusLabel(order){
 }
 
 
+function formatDuration(totalSeconds){
+  totalSeconds = Math.max(0, Number(totalSeconds || 0));
+
+  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+  const seconds = String(Math.floor(totalSeconds % 60)).padStart(2, "0");
+
+  return `${hours}:${minutes}:${seconds}`;
+}
+
 function getDeliveryTimer(order){
-  if(String(order.deliveryStatus || "").toLowerCase() !== "out_for_delivery"){
-    return "00:00:00";
+  const status = String(order.deliveryStatus || "").toLowerCase();
+
+  if(status === "waiting_rider"){
+    return "—";
+  }
+
+  if(status === "delivered"){
+    return order.deliveryDurationSeconds
+      ? formatDuration(order.deliveryDurationSeconds)
+      : "Completed";
+  }
+
+  if(status !== "out_for_delivery"){
+    return "—";
   }
 
   let startedAt = null;
@@ -137,14 +159,27 @@ function getDeliveryTimer(order){
   const diff = Math.max(0, Date.now() - startedAt.getTime());
   const totalSeconds = Math.floor(diff / 1000);
 
-  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
-  const seconds = String(totalSeconds % 60).padStart(2, "0");
+  return formatDuration(totalSeconds);
+}
 
-  return `${hours}:${minutes}:${seconds}`;
+
+function timerHeaderLabel(){
+  if(activeDeliveryTab === "waiting_rider") return "Timer";
+  if(activeDeliveryTab === "out_for_delivery") return "Running Timer";
+  if(activeDeliveryTab === "delivered") return "Final Duration";
+  return "Timer";
+}
+
+function updateTimerHeader(){
+  const headers = [...document.querySelectorAll("th")];
+  const timerHeader = headers.find(th => th.textContent.trim() === "Timer" || th.textContent.trim() === "Running Timer" || th.textContent.trim() === "Final Duration");
+  if(timerHeader){
+    timerHeader.textContent = timerHeaderLabel();
+  }
 }
 
 function renderDeliveryOrders(){
+  updateTimerHeader();
   const body = document.getElementById("deliveryTableBody");
   const search = document.getElementById("deliverySearch").value.toLowerCase();
   const rider = document.getElementById("riderFilter").value;
