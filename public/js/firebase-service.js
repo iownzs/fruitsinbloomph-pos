@@ -183,6 +183,40 @@
       throw new Error("Unknown order type.");
     };
 
+    
+
+    window.FIB.assignDeliveryRider = async function(orderId, riderName){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      await window.db.collection("orders").doc(orderId).set({
+        rider: {
+          name: riderName || "Rider 1",
+          assignedAt: firebase.firestore.FieldValue.serverTimestamp()
+        },
+        status: "Out for Delivery",
+        deliveryStatus: "out_for_delivery",
+        kitchenStatus: "sent_to_delivery",
+        deliveryStartedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      return true;
+    };
+
+    window.FIB.markOrderDelivered = async function(orderId){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      await window.db.collection("orders").doc(orderId).set({
+        status: "Delivered",
+        deliveryStatus: "delivered",
+        deliveredAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      return true;
+    };
+
+
     window.FIB.getDeliveryOrders = async function(){
       if(!window.db) throw new Error("Firestore not ready.");
 
