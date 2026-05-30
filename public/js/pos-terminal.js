@@ -272,6 +272,7 @@ function addCart(productId){
     });
   }
 
+  setupCartChipSelection();
   renderCart();
 }
 
@@ -364,6 +365,32 @@ function getActiveChipText(chipTexts, fallback){
   return fallback;
 }
 
+
+function setupCartChipSelection(){
+  document.querySelectorAll(".pos-cart-panel, #cartSheetContent").forEach(panel => {
+    panel.querySelectorAll("[data-source]").forEach(btn => {
+      btn.onclick = () => {
+        panel.querySelectorAll("[data-source]").forEach(x => x.classList.remove("active"));
+        btn.classList.add("active");
+      };
+    });
+
+    panel.querySelectorAll("[data-source-type]").forEach(btn => {
+      btn.onclick = () => {
+        panel.querySelectorAll("[data-source-type]").forEach(x => x.classList.remove("active"));
+        btn.classList.add("active");
+      };
+    });
+
+    panel.querySelectorAll("[data-priority]").forEach(btn => {
+      btn.onclick = () => {
+        panel.querySelectorAll("[data-priority]").forEach(x => x.classList.remove("active"));
+        btn.classList.add("active");
+      };
+    });
+  });
+}
+
 function getCartFormData(){
   const isDelivery = [...document.querySelectorAll("#deliveryBtn")].some(btn => btn.classList.contains("active"));
   const orderType = isDelivery ? "Delivery" : "Pickup";
@@ -383,6 +410,10 @@ function getCartFormData(){
   const itemNotes = getValue(".item-notes");
   const cardMessage = getValue(".card-message");
   const paymentMethod = getValue(".payment-method") || "Cash";
+
+  const orderSource = visiblePanel?.querySelector("[data-source].active")?.dataset.source || "Facebook";
+  const sourceType = visiblePanel?.querySelector("[data-source-type].active")?.dataset.sourceType || "Organic";
+  const priority = visiblePanel?.querySelector("[data-priority].active")?.dataset.priority || "Normal";
 
   let details = {};
 
@@ -414,6 +445,9 @@ function getCartFormData(){
     orderType,
     customerName,
     customerContact,
+    orderSource,
+    sourceType,
+    priority,
     ...details
   };
 }
@@ -434,9 +468,9 @@ async function checkoutOrder(){
 
     const orderData = {
       orderType: form.orderType,
-      orderSource: "Facebook",
-      sourceType: "Organic",
-      priority: "Normal",
+      orderSource: form.orderSource || "Facebook",
+      sourceType: form.sourceType || "Organic",
+      priority: form.priority || "Normal",
 
       customer: {
         name: form.customerName || "Walk-in Customer",
