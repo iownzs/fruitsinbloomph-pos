@@ -192,13 +192,10 @@
         .map(doc => ({ id: doc.id, ...doc.data() }))
         .filter(order => {
           const orderType = String(order.orderType || "").toLowerCase();
-          const deliveryStatus = String(order.deliveryStatus || "");
-          const kitchenStatus = String(order.kitchenStatus || "");
+          const deliveryStatus = String(order.deliveryStatus || "").toLowerCase();
 
-          return orderType === "delivery" && (
-            ["waiting_rider","out_for_delivery","delivered"].includes(deliveryStatus) ||
-            kitchenStatus === "sent_to_delivery"
-          );
+          return orderType === "delivery" &&
+            ["waiting_rider","out_for_delivery","delivered"].includes(deliveryStatus);
         });
     };
 
