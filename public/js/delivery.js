@@ -37,6 +37,7 @@ shell(`
             <th>Address</th>
             <th>Type</th>
             <th>Items</th>
+            <th>Item Notes</th>
             <th>Card</th>
             <th>Total</th>
             <th>Payment</th>
@@ -47,7 +48,7 @@ shell(`
           </tr>
         </thead>
         <tbody id="deliveryTableBody">
-          <tr><td colspan="16">Loading...</td></tr>
+          <tr><td colspan="17">Loading...</td></tr>
         </tbody>
       </table>
     </div>
@@ -73,7 +74,7 @@ async function loadDeliveryOrders(){
     status.innerHTML = `${badge("Firestore Loaded")} ${allDeliveryOrders.length} delivery orders found.`;
   }catch(error){
     status.innerHTML = `${badge("Load Failed")} ${error.message}`;
-    body.innerHTML = `<tr><td colspan="16">${error.message}</td></tr>`;
+    body.innerHTML = `<tr><td colspan="17">${error.message}</td></tr>`;
   }
 }
 
@@ -210,7 +211,7 @@ function renderDeliveryOrders(){
   });
 
   if(!orders.length){
-    body.innerHTML = `<tr><td colspan="16">No delivery orders in this section.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="17">No delivery orders in this section.</td></tr>`;
     return;
   }
 
@@ -248,6 +249,10 @@ function renderDeliveryOrders(){
 
       <td>
         <button class="icon-btn" onclick="showDeliveryItems('${order.id}')">🧺</button>
+      </td>
+
+      <td>
+        <button class="icon-btn" onclick="showDeliveryItemNotes('${order.id}')">📝</button>
       </td>
 
       <td>
@@ -303,7 +308,8 @@ function showDeliveryAddress(orderId){
       <p>${address}</p>
       <p><strong>Landmark:</strong> ${landmark || "None"}</p>
     `,
-    `<button class="btn" onclick="closeModal()">Close</button>`
+    `<button class="btn primary" onclick="copyDeliveryAddress('${order.id}')">Copy Address</button>
+     <button class="btn" onclick="closeModal()">Close</button>`
   );
 }
 
@@ -320,6 +326,39 @@ function showDeliveryItems(orderId){
       : `<p class="muted">No items.</p>`,
     `<button class="btn" onclick="closeModal()">Close</button>`
   );
+}
+
+
+function showDeliveryItemNotes(orderId){
+  const order = findDeliveryOrder(orderId);
+  if(!order) return;
+
+  const notes = order.itemNotes || "No item notes.";
+
+  openModal(
+    "Item Notes for Kitchen",
+    `<p>${notes}</p>`,
+    `<button class="btn primary" onclick="copyText('${escapeDeliveryText(notes)}')">Copy Item Notes</button>
+     <button class="btn" onclick="closeModal()">Close</button>`
+  );
+}
+
+function copyDeliveryAddress(orderId){
+  const order = findDeliveryOrder(orderId);
+  if(!order) return;
+
+  const address = `${order.delivery?.deliveryAddress || ""} ${order.delivery?.cityArea || ""}`;
+  const landmark = order.delivery?.landmark ? ` Landmark: ${order.delivery.landmark}` : "";
+  copyText(`${address}${landmark}`);
+}
+
+function escapeDeliveryText(text){
+  return String(text || "").replace(/'/g, "\\'").replace(/\n/g, " ");
+}
+
+function copyText(text){
+  navigator.clipboard?.writeText(text);
+  closeModal();
 }
 
 function showDeliveryCard(orderId){
