@@ -583,3 +583,29 @@
     grid-template-columns:1fr;
   }
 }
+
+/* Kitchen order date/info boxes */
+.kitchen-info-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+  margin:12px 0;
+}
+
+.kitchen-info-grid div{
+  background:#0b1220;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:10px;
+}
+
+.kitchen-info-grid span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:4px;
+}
+
+.kitchen-info-grid strong{
+  font-size:13px;
+}

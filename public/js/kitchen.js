@@ -108,6 +108,53 @@ function renderKitchenOrders(orders){
   });
 }
 
+
+function kitchenStatusLabel(status){
+  const labels = {
+    new: "New Order",
+    sent: "Sent to Kitchen",
+    preparing: "Preparing",
+    ready: "Ready"
+  };
+
+  return labels[status] || "New Order";
+}
+
+function formatKitchenDate(value){
+  if(!value) return "";
+
+  try{
+    if(value.toDate){
+      return value.toDate().toLocaleString();
+    }
+  }catch(e){}
+
+  return String(value);
+}
+
+function getKitchenSchedule(order){
+  if(order.orderType === "Delivery"){
+    const date = order.delivery?.deliveryDate || "";
+    const time = order.delivery?.deliveryTime || "";
+    return `${date}${time ? " / " + time : ""}`;
+  }
+
+  const date = order.pickup?.pickupDate || "";
+  const time = order.pickup?.pickupTime || "";
+  return `${date}${time ? " / " + time : ""}`;
+}
+
+function getKitchenNotes(order){
+  const notes = [];
+
+  if(order.customer?.notes) notes.push(order.customer.notes);
+  if(order.pickup?.pickupNotes) notes.push(order.pickup.pickupNotes);
+  if(order.delivery?.deliveryNotes) notes.push(order.delivery.deliveryNotes);
+  if(order.notes) notes.push(order.notes);
+
+  return notes.filter(Boolean);
+}
+
 function kitchenCard(order){
   const items = Array.isArray(order.items) ? order.items : [];
   const itemsHtml = items.length
@@ -126,15 +173,29 @@ function kitchenCard(order){
 
       <div class="product-mobile-meta">
         ${badge(order.orderType || "")}
-        ${badge(order.status || "Created")}
+        ${badge(kitchenStatusLabel(order.kitchenStatus || "new"))}
+      </div>
+
+      <div class="kitchen-info-grid">
+        <div>
+          <span>Order Created</span>
+          <strong>${formatKitchenDate(order.createdAt)}</strong>
+        </div>
+        <div>
+          <span>${order.orderType === "Delivery" ? "Delivery Date" : "Pickup Date"}</span>
+          <strong>${getKitchenSchedule(order) || "No schedule"}</strong>
+        </div>
       </div>
 
       <h4>Items</h4>
       ${itemsHtml}
 
-      ${order.cardMessage ? `
-        <p><strong>Card:</strong> ${order.cardMessage}</p>
-      ` : ""}
+      <h4>Notes</h4>
+      ${
+        getKitchenNotes(order).length
+          ? `<ul>${getKitchenNotes(order).map(note => `<li>${note}</li>`).join("")}</ul>`
+          : `<p class="muted">No notes.</p>`
+      }
 
       <div class="product-mobile-actions">
         ${kitchenActionButtons(order)}
