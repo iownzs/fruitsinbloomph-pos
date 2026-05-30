@@ -637,3 +637,43 @@
 .same-customer-row input{
   width:auto;
 }
+
+/* Editable cart items */
+.cart-item-row{
+  display:grid;
+  gap:8px;
+  background:#0b1220;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:10px;
+  margin-bottom:8px;
+}
+
+.cart-item-info{
+  display:grid;
+  gap:3px;
+}
+
+.cart-item-info span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.cart-item-actions{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.cart-qty{
+  min-width:28px;
+  text-align:center;
+  font-weight:900;
+}
+
+.btn.danger{
+  background:#2a1115;
+  color:#fecaca;
+  border-color:#7f1d1d;
+}

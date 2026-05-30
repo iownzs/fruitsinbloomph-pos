@@ -226,17 +226,32 @@ function cartPanelHtml(){
 
 function renderCart(){
   const itemHtml = cart.length
-    ? cart.map(i => `<div>${i.name} - ${money(i.price)}</div>`).join('')
+    ? cart.map((item, index) => `
+      <div class="cart-item-row">
+        <div class="cart-item-info">
+          <strong>${item.name}</strong>
+          <span>${money(item.price)} x ${item.qty} = ${money((item.price || 0) * (item.qty || 1))}</span>
+        </div>
+
+        <div class="cart-item-actions">
+          <button class="btn small" onclick="decreaseCartQty(${index})">−</button>
+          <span class="cart-qty">${item.qty}</span>
+          <button class="btn small" onclick="increaseCartQty(${index})">+</button>
+          <button class="btn small danger" onclick="removeCartItem(${index})">Remove</button>
+        </div>
+      </div>
+    `).join('')
     : 'No items yet.';
 
-  const total = cart.reduce((a,b) => a + b.price, 0);
+  const total = cart.reduce((a,b) => a + ((b.price || 0) * (b.qty || 1)), 0);
 
   document.querySelectorAll('#cartList').forEach(el => el.innerHTML = itemHtml);
   document.querySelectorAll('#grand').forEach(el => el.textContent = money(total));
 
   const mobileBtn = document.getElementById('mobileCartButton');
   if(mobileBtn){
-    mobileBtn.textContent = `🛒 Cart • ${cart.length} item${cart.length === 1 ? '' : 's'} • ${money(total)}`;
+    const totalQty = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+    mobileBtn.textContent = `🛒 Cart • ${totalQty} item${totalQty === 1 ? '' : 's'} • ${money(total)}`;
   }
 }
 
@@ -244,13 +259,43 @@ function addCart(productId){
   const product = posProducts.find(p => p.id === productId || p.name === productId);
   if(!product) return;
 
-  cart.push({
-    productId: product.id,
-    name: product.name,
-    price: product.price || 0,
-    qty: 1
-  });
+  const existing = cart.find(item => item.productId === product.id);
 
+  if(existing){
+    existing.qty += 1;
+  }else{
+    cart.push({
+      productId: product.id,
+      name: product.name,
+      price: product.price || 0,
+      qty: 1
+    });
+  }
+
+  renderCart();
+}
+
+function increaseCartQty(index){
+  if(!cart[index]) return;
+  cart[index].qty += 1;
+  renderCart();
+}
+
+function decreaseCartQty(index){
+  if(!cart[index]) return;
+
+  cart[index].qty -= 1;
+
+  if(cart[index].qty <= 0){
+    cart.splice(index, 1);
+  }
+
+  renderCart();
+}
+
+function removeCartItem(index){
+  if(!cart[index]) return;
+  cart.splice(index, 1);
   renderCart();
 }
 
