@@ -39,6 +39,7 @@ shell(`
             <th>Address / City</th>
             <th>Order Type</th>
             <th>Items</th>
+            <th>Item Notes</th>
             <th>Card Message</th>
             <th>Total</th>
             <th>Payment</th>
@@ -48,7 +49,7 @@ shell(`
           </tr>
         </thead>
         <tbody id="ordersTableBody">
-          <tr><td colspan="16">Loading...</td></tr>
+          <tr><td colspan="17">Loading...</td></tr>
         </tbody>
       </table>
     </div>
@@ -78,7 +79,7 @@ async function loadOrders(){
     status.innerHTML = `${badge('Firestore Loaded')} ${allOrders.length} orders found.`;
   }catch(error){
     status.innerHTML = `${badge('Load Failed')} ${error.message}`;
-    body.innerHTML = `<tr><td colspan="16">${error.message}</td></tr>`;
+    body.innerHTML = `<tr><td colspan="17">${error.message}</td></tr>`;
     cards.innerHTML = `<div class="mini-card">${error.message}</div>`;
   }
 }
@@ -133,7 +134,7 @@ function renderOrdersTable(orders){
   const body = document.getElementById("ordersTableBody");
 
   if(!orders.length){
-    body.innerHTML = `<tr><td colspan="16">No orders found. Create an order from POS Terminal.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="17">No orders found. Create an order from POS Terminal.</td></tr>`;
     return;
   }
 
@@ -172,6 +173,10 @@ function renderOrdersTable(orders){
 
       <td>
         <button class="icon-btn" onclick="showItems('${order.id}')">🧺</button>
+      </td>
+
+      <td>
+        <button class="icon-btn" onclick="showItemNotes('${order.id}')">📝</button>
       </td>
 
       <td>
@@ -244,6 +249,7 @@ function renderOrdersCards(orders){
       <div class="product-mobile-actions">
         <button class="btn small" onclick="showOrder('${order.id}')">View</button>
         <button class="btn small" onclick="showItems('${order.id}')">Items</button>
+        <button class="btn small" onclick="showItemNotes('${order.id}')">Notes</button>
         <button class="btn small" onclick="showCardMessage('${order.id}')">Card</button>
       </div>
 
@@ -283,6 +289,21 @@ function showItems(orderId){
       ? `<ul>${items.map(item => `<li>${item.name} x${item.qty || 1} — ${money(item.subtotal || item.price || 0)}</li>`).join('')}</ul>`
       : `<p class="muted">No items saved.</p>`,
     `<button class="btn" onclick="closeModal()">Close</button>`
+  );
+}
+
+
+function showItemNotes(orderId){
+  const order = findOrder(orderId);
+  if(!order) return;
+
+  const notes = order.itemNotes || "No item notes.";
+
+  openModal(
+    "Item Notes",
+    `<p>${notes}</p>`,
+    `<button class="btn" onclick="copyText('${escapeModalText(notes)}')">Copy Item Notes</button>
+     <button class="btn" onclick="closeModal()">Close</button>`
   );
 }
 
