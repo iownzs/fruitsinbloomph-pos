@@ -89,20 +89,26 @@ function renderPOSProducts(products){
   }
 
   grid.innerHTML = products.map(product => `
-    <div class="card product-card">
-      <h3>${product.name || ''}</h3>
-      <p class="muted">${product.details || ''}</p>
+    <div class="card product-card pos-product-compact-card">
+      <div class="pos-product-main">
+        <div class="pos-product-text">
+          <div class="pos-product-title-row">
+            <h3>${product.name || ''}</h3>
+            <strong class="pos-product-price">${money(product.price || 0)}</strong>
+          </div>
 
-      <div class="chips">
-        ${badge(product.category || 'No Category')}
-        ${badge('Stock ' + (product.stock ?? 0))}
+          <div class="pos-product-badges">
+            ${badge(product.category || 'No Category')}
+            ${badge('Stock ' + (product.stock ?? 0))}
+          </div>
+
+          <p class="muted pos-product-desc">${product.details || ''}</p>
+        </div>
+
+        <button class="btn primary pos-product-add" onclick="addCart('${escapeText(product.id || product.name)}')">
+          Add
+        </button>
       </div>
-
-      <p><strong>${money(product.price || 0)}</strong></p>
-
-      <button class="btn primary" onclick="addCart('${escapeText(product.id || product.name)}')">
-        Add
-      </button>
     </div>
   `).join('');
 }
