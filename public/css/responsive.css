@@ -1225,3 +1225,12 @@
     right:18px !important;
   }
 }
+
+/* Hide empty mobile cart and center visible cart bar */
+@media(max-width:720px){
+  #mobileCartButton,
+  .mobile-cart-button{
+    align-items:center;
+    justify-content:center;
+  }
+}

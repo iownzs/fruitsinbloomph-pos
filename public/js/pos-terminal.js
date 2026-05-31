@@ -252,6 +252,7 @@ function renderCart(){
   if(mobileBtn){
     const totalQty = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
     mobileBtn.textContent = `🛒 Cart • ${totalQty} item${totalQty === 1 ? '' : 's'} • ${money(total)}`;
+    mobileBtn.style.display = totalQty > 0 ? "flex" : "none";
   }
 }
 
