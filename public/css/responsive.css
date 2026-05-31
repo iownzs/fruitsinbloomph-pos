@@ -1657,3 +1657,106 @@
     flex:0 0 auto !important;
   }
 }
+
+/* POS Terminal mobile fix after horizontal card test */
+@media(max-width:720px){
+
+  /* Toolbar: search full width, barcode below it */
+  body[data-page="pos-terminal"] .toolbar{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+
+  body[data-page="pos-terminal"] #posProductSearch{
+    width:100% !important;
+    height:42px !important;
+    min-height:42px !important;
+  }
+
+  body[data-page="pos-terminal"] .barcode-scan{
+    width:58% !important;
+    max-width:260px !important;
+    min-width:160px !important;
+    height:34px !important;
+    min-height:34px !important;
+    padding:6px 10px !important;
+    margin:0 auto 8px !important;
+    font-size:12px !important;
+    border-radius:12px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  /* Product cards: compact but Add button stays inside */
+  body[data-page="pos-terminal"] .pos-product-compact-card{
+    width:100% !important;
+    max-width:100% !important;
+    margin:0 0 10px !important;
+    padding:12px 14px !important;
+    border-radius:15px !important;
+    overflow:hidden !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-main{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-title-row{
+    display:grid !important;
+    grid-template-columns:1fr auto !important;
+    align-items:start !important;
+    gap:10px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-title-row h3{
+    max-width:100% !important;
+    font-size:15px !important;
+    line-height:1.15 !important;
+    margin:0 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-price{
+    font-size:13px !important;
+    white-space:nowrap !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-badges{
+    display:flex !important;
+    gap:6px !important;
+    flex-wrap:wrap !important;
+    margin:4px 0 !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-desc{
+    font-size:11.5px !important;
+    line-height:1.25 !important;
+    margin:0 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-add{
+    width:64px !important;
+    min-width:64px !important;
+    height:34px !important;
+    min-height:34px !important;
+    padding:6px 10px !important;
+    font-size:12px !important;
+    border-radius:11px !important;
+    justify-self:start !important;
+    margin-top:2px !important;
+  }
+
+  body[data-page="pos-terminal"] #posProductGrid{
+    overflow:hidden !important;
+    padding-bottom:130px !important;
+  }
+}
