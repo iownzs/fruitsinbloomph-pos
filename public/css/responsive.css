@@ -1234,3 +1234,94 @@
     justify-content:center;
   }
 }
+
+/* POS mobile compact cards + barcode scan */
+@media(max-width:720px){
+
+  /* Smaller barcode scan button */
+  button,
+  .btn{
+    line-height:1.1;
+  }
+
+  button:has-text("Barcode Scan"){
+    min-height:40px !important;
+  }
+
+  .barcode-scan,
+  .barcode-btn,
+  #barcodeScan,
+  [data-action="barcode"],
+  .scan-button{
+    height:40px !important;
+    min-height:40px !important;
+    padding:8px 12px !important;
+    border-radius:14px !important;
+    font-size:14px !important;
+    margin-bottom:10px !important;
+  }
+
+  /* If barcode is just a normal button in POS page */
+  .pos-main button:not(.chip):not(.mobile-cart-button):not(#mobileCartButton),
+  .pos-products button:not(.chip):not(.mobile-cart-button):not(#mobileCartButton){
+    min-height:40px;
+  }
+
+  /* Product card shorter */
+  .product-card,
+  .pos-product-card{
+    padding:14px 16px !important;
+    border-radius:16px !important;
+    margin-bottom:10px !important;
+  }
+
+  .product-card h3,
+  .pos-product-card h3{
+    font-size:17px !important;
+    margin-bottom:6px !important;
+    line-height:1.18 !important;
+  }
+
+  .product-card p,
+  .pos-product-card p,
+  .product-card .muted,
+  .pos-product-card .muted,
+  .product-card .product-details,
+  .pos-product-card .product-details{
+    font-size:12.5px !important;
+    line-height:1.32 !important;
+    margin-bottom:8px !important;
+    -webkit-line-clamp:2 !important;
+    max-height:36px !important;
+  }
+
+  .product-card .chip,
+  .pos-product-card .chip,
+  .product-card .badge,
+  .pos-product-card .badge{
+    font-size:10.5px !important;
+    padding:5px 9px !important;
+  }
+
+  .product-card .price,
+  .pos-product-card .price,
+  .product-card strong,
+  .pos-product-card strong{
+    font-size:14px;
+  }
+
+  .product-card .btn,
+  .pos-product-card .btn{
+    min-height:36px !important;
+    padding:8px 14px !important;
+    border-radius:12px !important;
+    font-size:13px !important;
+  }
+
+  /* Reduce product grid gaps */
+  .product-grid,
+  .products-grid,
+  #productsGrid{
+    gap:10px !important;
+  }
+}
