@@ -539,3 +539,38 @@ async function checkoutOrder(){
     openModal("Checkout Failed", `<p>${error.message}</p>`);
   }
 }
+
+/* POS mobile compact class helper */
+function applyPosMobileCompactClasses(){
+  document.body.classList.add("pos-terminal-page");
+
+  document.querySelectorAll("button").forEach(btn => {
+    const text = btn.textContent.trim().toLowerCase();
+
+    if(text === "barcode scan"){
+      btn.classList.add("pos-barcode-scan");
+    }
+
+    if(text === "add"){
+      let card = btn.parentElement;
+
+      for(let i = 0; i < 8 && card; i++){
+        const hasTitle = !!card.querySelector("h3, h2, strong");
+        const hasStock = card.textContent.includes("Stock");
+        const hasPrice = card.textContent.includes("₱");
+
+        if(hasTitle && hasPrice && hasStock){
+          card.classList.add("pos-compact-product-card");
+          card.parentElement?.classList.add("pos-compact-product-list");
+          break;
+        }
+
+        card = card.parentElement;
+      }
+    }
+  });
+}
+
+setInterval(applyPosMobileCompactClasses, 700);
+setTimeout(applyPosMobileCompactClasses, 100);
+setTimeout(applyPosMobileCompactClasses, 1000);
