@@ -6,7 +6,7 @@ shell(`
     <div class="pos-products">
       <div class="toolbar">
         <input id="posProductSearch" placeholder="Search product, SKU, barcode">
-        <button class="btn barcode-scan" class="barcode-scan">Barcode Scan</button>
+        <button class="btn barcode-scan">Barcode Scan</button>
       </div>
 
       <div class="chips pos-category-chips" id="posCategoryChips">

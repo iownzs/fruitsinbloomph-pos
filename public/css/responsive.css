@@ -1463,3 +1463,76 @@
     border-radius:11px !important;
   }
 }
+
+/* POS Terminal exact frontend compact fix */
+@media(max-width:900px){
+
+  /* Barcode Scan exact class */
+  .barcode-scan{
+    width:88% !important;
+    max-width:420px !important;
+    height:34px !important;
+    min-height:34px !important;
+    padding:6px 10px !important;
+    margin:8px auto 10px !important;
+    border-radius:13px !important;
+    font-size:13px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  /* Product card exact class from pos-terminal.js */
+  .card.product-card{
+    width:88% !important;
+    max-width:420px !important;
+    margin:0 auto 10px !important;
+    padding:10px 12px !important;
+    border-radius:14px !important;
+    min-height:unset !important;
+  }
+
+  .card.product-card h3{
+    font-size:15px !important;
+    line-height:1.15 !important;
+    margin:0 0 5px !important;
+    letter-spacing:.04em !important;
+  }
+
+  .card.product-card p{
+    font-size:11.5px !important;
+    line-height:1.25 !important;
+    margin:0 0 7px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+    display:block !important;
+    max-height:16px !important;
+  }
+
+  .card.product-card .chip,
+  .card.product-card .badge{
+    font-size:10px !important;
+    padding:4px 8px !important;
+  }
+
+  .card.product-card strong,
+  .card.product-card .price{
+    font-size:13px !important;
+  }
+
+  .card.product-card .btn{
+    height:32px !important;
+    min-height:32px !important;
+    padding:5px 12px !important;
+    font-size:12px !important;
+    border-radius:10px !important;
+  }
+
+  .product-grid,
+  .products-grid,
+  #productsGrid{
+    gap:8px !important;
+    justify-items:center !important;
+  }
+}
