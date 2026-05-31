@@ -1392,3 +1392,74 @@
     font-size:14px !important;
   }
 }
+
+/* POS mobile narrow card + barcode width fix */
+@media(max-width:720px){
+
+  /* Make barcode scan not full width */
+  .pos-terminal-page .pos-barcode-scan,
+  .barcode-scan{
+    width:calc(100% - 42px) !important;
+    max-width:520px !important;
+    margin:8px auto 12px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    height:38px !important;
+    min-height:38px !important;
+    padding:6px 12px !important;
+    border-radius:14px !important;
+    font-size:13px !important;
+  }
+
+  /* Make product cards narrower, not long to the right edge */
+  .pos-terminal-page .pos-compact-product-card,
+  .product-card,
+  .pos-product-card{
+    width:calc(100% - 34px) !important;
+    max-width:520px !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    padding:12px 14px !important;
+    border-radius:15px !important;
+  }
+
+  /* Keep product list centered */
+  .pos-terminal-page .pos-compact-product-list,
+  .product-grid,
+  .products-grid,
+  #productsGrid{
+    width:100% !important;
+    max-width:100% !important;
+    justify-items:center !important;
+    gap:10px !important;
+  }
+
+  /* Make card text tighter */
+  .pos-terminal-page .pos-compact-product-card h3,
+  .product-card h3,
+  .pos-product-card h3{
+    font-size:16px !important;
+    line-height:1.15 !important;
+    margin-bottom:6px !important;
+  }
+
+  .pos-terminal-page .pos-compact-product-card p,
+  .product-card p,
+  .pos-product-card p{
+    font-size:12px !important;
+    line-height:1.25 !important;
+    max-height:32px !important;
+    margin-bottom:7px !important;
+  }
+
+  .pos-terminal-page .pos-compact-product-card button,
+  .product-card button,
+  .pos-product-card button{
+    min-height:34px !important;
+    height:34px !important;
+    padding:6px 13px !important;
+    font-size:12px !important;
+    border-radius:11px !important;
+  }
+}

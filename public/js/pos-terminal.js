@@ -574,3 +574,16 @@ function applyPosMobileCompactClasses(){
 setInterval(applyPosMobileCompactClasses, 700);
 setTimeout(applyPosMobileCompactClasses, 100);
 setTimeout(applyPosMobileCompactClasses, 1000);
+
+/* POS barcode class helper */
+function applyBarcodeScanClass(){
+  document.querySelectorAll("button").forEach(btn => {
+    if(btn.textContent.trim().toLowerCase() === "barcode scan"){
+      btn.classList.add("pos-barcode-scan");
+    }
+  });
+}
+
+setTimeout(applyBarcodeScanClass, 100);
+setTimeout(applyBarcodeScanClass, 800);
+setInterval(applyBarcodeScanClass, 1200);
