@@ -109,7 +109,7 @@ function renderIngredientStocksTable(stocks){
       <td>${badge(stock.status || 'In Stock')}</td>
       <td>
         <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
-        <button class="btn small primary" onclick="openIngredientForm(\'${stock.id}\')">Edit</button>
+        <button class="btn small primary" onclick="openIngredientForm('${stock.id}')">Edit</button>
       </td>
     </tr>
   `).join('');
@@ -148,7 +148,7 @@ function renderIngredientStocksCards(stocks){
 
       <div class="product-mobile-actions">
         <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
-        <button class="btn small primary" onclick="openIngredientForm(\'${stock.id}\')">Edit</button>
+        <button class="btn small primary" onclick="openIngredientForm('${stock.id}')">Edit</button>
       </div>
     </div>
   `).join('');
@@ -203,3 +203,89 @@ document.getElementById("categoryFilter").addEventListener("change", applyIngred
 document.getElementById("stockStatusFilter").addEventListener("change", applyIngredientFilters);
 
 loadIngredientStocks();
+
+/* Ingredient Add/Edit Form */
+function openIngredientForm(ingredientId = ""){
+  const ingredient = ingredientId
+    ? allIngredientStocks.find(item => item.id === ingredientId || item.ingredientId === ingredientId)
+    : null;
+
+  openModal(
+    ingredient ? "Edit Ingredient" : "Add Ingredient",
+    `
+      <label>
+        Ingredient Name
+        <input id="ingredientName" value="${ingredient?.name || ""}" placeholder="Example: Mango">
+      </label>
+
+      <label>
+        Category
+        <select id="ingredientCategory">
+          ${["Fruits","Dairy","Dry Goods","Sweeteners","Toppings","Packaging","Others"].map(category => `
+            <option value="${category}" ${ingredient?.category === category ? "selected" : ""}>${category}</option>
+          `).join("")}
+        </select>
+      </label>
+
+      <label>
+        Unit
+        <select id="ingredientUnit">
+          ${["pcs","g","kg","ml","L","cup","tbsp","tsp","pack","box","bottle","jar","tray","bag"].map(unit => `
+            <option value="${unit}" ${ingredient?.unit === unit ? "selected" : ""}>${unit}</option>
+          `).join("")}
+        </select>
+      </label>
+
+      <label>
+        Current Stock
+        <input id="ingredientCurrentStock" type="number" value="${ingredient?.currentStock ?? 0}">
+      </label>
+
+      <label>
+        Reorder Level
+        <input id="ingredientReorderLevel" type="number" value="${ingredient?.reorderLevel ?? 0}">
+      </label>
+
+      <label>
+        Ingredient Cost
+        <input id="ingredientCost" type="number" value="${ingredient?.cost ?? 0}">
+      </label>
+    `,
+    `<button class="btn primary" onclick="saveIngredientForm('${ingredient?.id || ingredient?.ingredientId || ""}')">Save Ingredient</button>
+     <button class="btn" onclick="closeModal()">Cancel</button>`
+  );
+}
+
+async function saveIngredientForm(existingId = ""){
+  try{
+    if(!window.FIB || !window.FIB.saveIngredientStock){
+      throw new Error("Ingredient save service is not ready.");
+    }
+
+    const ingredient = {
+      id: existingId,
+      name: document.getElementById("ingredientName").value.trim(),
+      category: document.getElementById("ingredientCategory").value,
+      unit: document.getElementById("ingredientUnit").value,
+      currentStock: Number(document.getElementById("ingredientCurrentStock").value || 0),
+      reorderLevel: Number(document.getElementById("ingredientReorderLevel").value || 0),
+      cost: Number(document.getElementById("ingredientCost").value || 0)
+    };
+
+    if(!ingredient.name){
+      alert("Ingredient name is required.");
+      return;
+    }
+
+    await window.FIB.saveIngredientStock(ingredient);
+
+    closeModal();
+    await loadIngredientStocks();
+  }catch(error){
+    openModal("Save Failed", `<p>${error.message}</p>`);
+  }
+}
+
+/* Expose for onclick buttons */
+window.openIngredientForm = openIngredientForm;
+window.saveIngredientForm = saveIngredientForm;
