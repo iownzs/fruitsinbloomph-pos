@@ -6,7 +6,7 @@ shell(`
     <div class="pos-products">
       <div class="toolbar">
         <input id="posProductSearch" placeholder="Search product, SKU, barcode">
-        <button class="btn barcode-scan">Barcode Scan</button>
+        <button class="btn barcode-scan" onclick="openSmartScan()">Smart Scan</button>
       </div>
 
       <div class="chips pos-category-chips" id="posCategoryChips">
@@ -547,3 +547,229 @@ async function checkoutOrder(){
 }
 
 
+
+function openSmartScan(){
+  openModal(
+    "Smart Scan",
+    `
+      <p class="muted">Upload an order form screenshot or paste order text. Scan result is draft only; unmatched products will not be added to cart.</p>
+
+      <label>
+        Upload Image
+        <input id="smartScanImage" type="file" accept="image/*">
+      </label>
+
+      <label>
+        Paste Order Text
+        <textarea id="smartScanText" placeholder="Paste customer order form or message here..."></textarea>
+      </label>
+
+      <div id="smartScanResult" class="card" style="margin-top:12px;background:#0b1220">
+        Extracted details will show here.
+      </div>
+    `,
+    `<button class="btn primary" onclick="runSmartScan()">Scan</button>
+     <button class="btn" onclick="closeModal()">Cancel</button>`
+  );
+}
+
+function fileToBase64(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const result = String(reader.result || "");
+      const base64 = result.split(",")[1] || "";
+      resolve({
+        mimeType: file.type || "image/jpeg",
+        base64
+      });
+    };
+
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function runSmartScan(){
+  const resultBox = document.getElementById("smartScanResult");
+  const textInput = document.getElementById("smartScanText");
+  const imageInput = document.getElementById("smartScanImage");
+
+  try{
+    resultBox.innerHTML = "Scanning...";
+
+    const pastedText = textInput?.value?.trim() || "";
+    const file = imageInput?.files?.[0] || null;
+
+    let image = null;
+
+    if(file){
+      image = await fileToBase64(file);
+    }
+
+    if(!pastedText && !image){
+      resultBox.innerHTML = `${badge("Missing Input")} <p class="muted">Please upload an image or paste order text.</p>`;
+      return;
+    }
+
+    const response = await fetch("/api/scan-order-form", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        text: pastedText,
+        image
+      })
+    });
+
+    const data = await response.json();
+
+    if(!response.ok){
+      throw new Error(data.error || "Smart Scan failed.");
+    }
+
+    window.smartScanDraft = data.result;
+
+    resultBox.innerHTML = smartScanPreview(data.result);
+  }catch(error){
+    resultBox.innerHTML = `${badge("Scan Failed")} <p class="muted">${error.message}</p>`;
+  }
+}
+
+function smartScanPreview(data){
+  const items = Array.isArray(data.items) ? data.items : [];
+
+  return `
+    ${badge("Draft Extracted")}
+    <p><strong>Order Type:</strong> ${data.orderType || ""}</p>
+    <p><strong>Customer:</strong> ${data.customerName || ""} / ${data.customerContact || ""}</p>
+    <p><strong>Recipient:</strong> ${data.recipientName || ""} / ${data.recipientContact || ""}</p>
+    <p><strong>Address:</strong> ${data.deliveryAddress || ""}</p>
+    <p><strong>Delivery Date/Time:</strong> ${data.deliveryDate || ""} ${data.deliveryTime || ""}</p>
+    <p><strong>Pickup Date/Time:</strong> ${data.pickupDate || ""} ${data.pickupTime || ""}</p>
+    <p><strong>Items:</strong></p>
+    <ul>
+      ${items.length ? items.map(item => `<li>${item.productName || ""} x${item.quantity || 1}</li>`).join("") : "<li>No items detected</li>"}
+    </ul>
+    <p><strong>Item Notes:</strong> ${data.itemNotes || ""}</p>
+    <p><strong>Card Message:</strong> ${data.cardMessage || ""}</p>
+    <p><strong>Payment:</strong> ${data.paymentMethod || ""}</p>
+
+    <button class="btn primary" onclick="quickFillCartFromSmartScan()">Quick Fill Draft</button>
+  `;
+}
+
+function setFieldValue(selector, value){
+  document.querySelectorAll(selector).forEach(el => {
+    if(value !== undefined && value !== null && String(value).trim() !== ""){
+      el.value = value;
+    }
+  });
+}
+
+function quickFillCartFromSmartScan(){
+  const data = window.smartScanDraft;
+
+  if(!data){
+    alert("No scan draft available.");
+    return;
+  }
+
+  const orderType = String(data.orderType || "").toLowerCase();
+
+  if(orderType === "delivery"){
+    setType("delivery");
+  }else{
+    setType("pickup");
+  }
+
+  setTimeout(() => {
+    setFieldValue(".customer-name", data.customerName || "");
+    setFieldValue(".customer-contact", data.customerContact || "");
+    setFieldValue(".item-notes", data.itemNotes || "");
+    setFieldValue(".card-message", data.cardMessage || "");
+
+    if(orderType === "delivery"){
+      setFieldValue(".recipient-name", data.recipientName || "");
+      setFieldValue(".recipient-contact", data.recipientContact || "");
+      setFieldValue(".delivery-address", data.deliveryAddress || "");
+      setFieldValue(".city-area", data.cityArea || "");
+      setFieldValue(".landmark", data.landmark || "");
+      setFieldValue(".delivery-date", data.deliveryDate || "");
+      setFieldValue(".delivery-time", data.deliveryTime || "");
+      setFieldValue(".delivery-type", data.deliveryType || "");
+    }else{
+      setFieldValue(".pickup-date", data.pickupDate || "");
+      setFieldValue(".pickup-time", data.pickupTime || "");
+    }
+
+    quickFillItemsFromSmartScan(data.items || []);
+    closeModal();
+  }, 150);
+}
+
+function quickFillItemsFromSmartScan(items){
+  if(!Array.isArray(items)) return;
+
+  const matchedItems = [];
+  const unmatchedItems = [];
+
+  items.forEach(scanItem => {
+    const scanName = String(scanItem.productName || "").trim();
+    const name = scanName.toLowerCase();
+    const qty = Number(scanItem.quantity || 1);
+
+    if(!name){
+      return;
+    }
+
+    const product = posProducts.find(p => {
+      const productName = String(p.name || "").toLowerCase();
+      return productName.includes(name) || name.includes(productName);
+    });
+
+    if(product){
+      matchedItems.push({
+        scanName,
+        productName: product.name,
+        qty
+      });
+
+      for(let i = 0; i < qty; i++){
+        addCart(product.id || product.name);
+      }
+    }else{
+      unmatchedItems.push({
+        productName: scanName,
+        quantity: qty
+      });
+    }
+  });
+
+  window.smartScanUnmatchedItems = unmatchedItems;
+
+  if(unmatchedItems.length){
+    openModal(
+      "Smart Scan Review Draft",
+      `
+        ${badge("Review Needed")}
+        <p class="muted">Some scanned products did not match existing products. Cart was left empty for unmatched items. Please review and manually add the correct products.</p>
+
+        <h4>Unmatched Items</h4>
+        <ul>
+          ${unmatchedItems.map(item => `<li>${item.productName} x${item.quantity || 1}</li>`).join("")}
+        </ul>
+
+        ${matchedItems.length ? `
+          <h4>Matched Items Added</h4>
+          <ul>
+            ${matchedItems.map(item => `<li>${item.productName} x${item.qty}</li>`).join("")}
+          </ul>
+        ` : `<p><strong>No products were added to cart.</strong></p>`}
+      `,
+      `<button class="btn primary" onclick="closeModal()">Review POS</button>`
+    );
+  }
+}
