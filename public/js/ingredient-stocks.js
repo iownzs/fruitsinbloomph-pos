@@ -16,7 +16,7 @@ shell(`
       <option>Low Stock</option>
       <option>Out of Stock</option>
     </select>
-    <button class="btn primary">Stock In</button>
+    <button class="btn primary" onclick="openIngredientForm()">Add Ingredient</button>
   </div>
 
   <div class="card">
@@ -109,7 +109,7 @@ function renderIngredientStocksTable(stocks){
       <td>${badge(stock.status || 'In Stock')}</td>
       <td>
         <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
-        <button class="btn small primary">Adjust</button>
+        <button class="btn small primary" onclick="openIngredientForm(\'${stock.id}\')">Edit</button>
       </td>
     </tr>
   `).join('');
@@ -148,7 +148,7 @@ function renderIngredientStocksCards(stocks){
 
       <div class="product-mobile-actions">
         <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
-        <button class="btn small primary">Adjust</button>
+        <button class="btn small primary" onclick="openIngredientForm(\'${stock.id}\')">Edit</button>
       </div>
     </div>
   `).join('');

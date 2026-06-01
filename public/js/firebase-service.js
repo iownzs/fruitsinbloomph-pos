@@ -336,3 +336,62 @@
     console.error("Firebase init error:", error);
   }
 })();
+
+/* Ingredient create/edit helpers */
+window.FIB.getIngredientStocks = async function(){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  const snap = await window.db.collection("ingredientStocks")
+    .orderBy("name", "asc")
+    .get();
+
+  return snap.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+};
+
+window.FIB.saveIngredientStock = async function(ingredient){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  const name = String(ingredient.name || "").trim();
+
+  if(!name){
+    throw new Error("Ingredient name is required.");
+  }
+
+  const ingredientId = ingredient.id || ingredient.ingredientId || (
+    "ING-" + name.toUpperCase()
+      .replace(/[^A-Z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+  );
+
+  const currentStock = Number(ingredient.currentStock || 0);
+  const reserved = Number(ingredient.reserved || 0);
+  const available = currentStock - reserved;
+
+  const data = {
+    ingredientId,
+    name,
+    category: ingredient.category || "Others",
+    unit: ingredient.unit || "pcs",
+    currentStock,
+    reserved,
+    available,
+    reorderLevel: Number(ingredient.reorderLevel || 0),
+    cost: Number(ingredient.cost || 0),
+    status: available <= 0 ? "Out of Stock" : available <= Number(ingredient.reorderLevel || 0) ? "Low Stock" : "In Stock",
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  const ref = window.db.collection("ingredientStocks").doc(ingredientId);
+  const doc = await ref.get();
+
+  if(!doc.exists){
+    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+  }
+
+  await ref.set(data, { merge: true });
+
+  return ingredientId;
+};
