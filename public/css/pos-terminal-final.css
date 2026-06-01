@@ -238,3 +238,32 @@
     font-size:12px !important;
   }
 }
+
+/* POS mobile: make product details readable */
+@media(max-width:720px){
+
+  body[data-page="pos-terminal"] .pos-product-desc{
+    font-size:12.5px !important;
+    line-height:1.35 !important;
+    margin:6px 0 8px !important;
+    white-space:normal !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+    display:-webkit-box !important;
+    -webkit-line-clamp:2 !important;
+    -webkit-box-orient:vertical !important;
+    max-height:34px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-compact-card{
+    padding:14px 16px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-title-row h3{
+    font-size:16px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-add{
+    margin-top:4px !important;
+  }
+}
