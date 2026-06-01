@@ -395,3 +395,69 @@ window.FIB.saveIngredientStock = async function(ingredient){
 
   return ingredientId;
 };
+
+/* Product create/edit helper with recipe */
+window.FIB.saveProduct = async function(product){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  const name = String(product.name || "").trim();
+
+  if(!name){
+    throw new Error("Product name is required.");
+  }
+
+  const productId = product.id || product.productId || (
+    "PROD-" + name.toUpperCase()
+      .replace(/[^A-Z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+  );
+
+  const stock = Number(product.stock || 0);
+  const reservedStock = Number(product.reservedStock || 0);
+  const availableStock = stock - reservedStock;
+  const reorderLevel = Number(product.reorderLevel || 0);
+
+  const productData = {
+    productId,
+    name,
+    details: product.details || "",
+    description: product.description || "",
+    category: product.category || "Others",
+    price: Number(product.price || 0),
+    cost: Number(product.cost || 0),
+    stock,
+    unit: product.unit || "pcs",
+    imageUrl: product.imageUrl || "",
+    status: product.status || "Active",
+    recipe: Array.isArray(product.recipe) ? product.recipe : [],
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  const productRef = window.db.collection("products").doc(productId);
+  const productDoc = await productRef.get();
+
+  if(!productDoc.exists){
+    productData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+  }
+
+  await productRef.set(productData, { merge: true });
+
+  await window.db.collection("productStocks").doc(productId).set({
+    productId,
+    productName: name,
+    category: productData.category,
+    currentStock: stock,
+    reservedStock,
+    availableStock,
+    unit: productData.unit,
+    reorderLevel,
+    stockStatus: availableStock <= 0
+      ? "Out of Stock"
+      : availableStock <= reorderLevel
+        ? "Low Stock"
+        : "In Stock",
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true });
+
+  return productId;
+};

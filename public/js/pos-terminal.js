@@ -91,6 +91,10 @@ function renderPOSProducts(products){
   grid.innerHTML = products.map(product => `
     <div class="card product-card pos-product-compact-card">
       <div class="pos-product-main">
+        <div class="pos-product-thumb">
+          ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name || 'Product'}">` : `<span>${(product.name || '?').slice(0,1)}</span>`}
+        </div>
+
         <div class="pos-product-text">
           <div class="pos-product-title-row">
             <h3>${product.name || ''}</h3>
