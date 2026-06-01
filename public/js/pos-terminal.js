@@ -156,7 +156,10 @@ function escapeText(text){
 
 function cartPanelHtml(){
   return `
-    <h3>Cart</h3>
+    <div class="cart-title-row">
+      <h3>Cart</h3>
+      <button class="btn small danger" onclick="resetCart()">Clear Cart</button>
+    </div>
 
     <div class="toggle">
       <button id="pickupBtn" class="active" onclick="setType('pickup')">Pickup</button>
@@ -772,4 +775,39 @@ function quickFillItemsFromSmartScan(items){
       `<button class="btn primary" onclick="closeModal()">Review POS</button>`
     );
   }
+}
+
+function resetCart(){
+  const confirmReset = confirm("Clear cart and reset all order details?");
+
+  if(!confirmReset){
+    return;
+  }
+
+  cart = [];
+
+  document.querySelectorAll(".pos-cart-panel input, .pos-cart-panel textarea, .pos-cart-panel select, #cartSheetContent input, #cartSheetContent textarea, #cartSheetContent select").forEach(field => {
+    if(field.tagName === "SELECT"){
+      field.selectedIndex = 0;
+    }else{
+      field.value = "";
+    }
+  });
+
+  document.querySelectorAll("[data-source]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.source === "Facebook");
+  });
+
+  document.querySelectorAll("[data-source-type]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.sourceType === "Organic");
+  });
+
+  document.querySelectorAll("[data-priority]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.priority === "Normal");
+  });
+
+  setType("pickup");
+  setupCartChipSelection();
+  renderCart();
+  closeCartSheet();
 }

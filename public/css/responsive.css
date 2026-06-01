@@ -1760,3 +1760,20 @@
     padding-bottom:130px !important;
   }
 }
+
+/* POS cart clear button */
+.cart-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.cart-title-row h3{
+  margin:0;
+}
+
+.cart-title-row .btn{
+  white-space:nowrap;
+}
