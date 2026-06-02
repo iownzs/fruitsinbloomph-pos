@@ -31,8 +31,15 @@ shell(`
       <option>Others</option>
     </select>
 
-    <input id="dateFromFilter" type="date" aria-label="Date from">
-    <input id="dateToFilter" type="date" aria-label="Date to">
+    <label class="date-filter-field">
+      <span>From</span>
+      <input id="dateFromFilter" type="date" aria-label="Date from">
+    </label>
+
+    <label class="date-filter-field">
+      <span>To</span>
+      <input id="dateToFilter" type="date" aria-label="Date to">
+    </label>
 
     <button class="btn" onclick="resetMovementFilters()">Reset</button>
   </div>
