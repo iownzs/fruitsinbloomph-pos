@@ -1745,3 +1745,92 @@ th{
     font-size: 12px !important;
   }
 }
+
+/* ==================================================
+   ABSOLUTE FINAL OVERRIDE:
+   Ingredient Add button uses only .ingredient-add-plus / .ingredient-add-label
+   Ignores old .add-circle and span:last-child rules
+================================================== */
+@media (max-width: 700px) {
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    width: 100% !important;
+
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+
+    padding: 0 12px !important;
+    margin: 0 !important;
+    border-radius: 15px !important;
+
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .ingredient-add-plus,
+  .ingredient-filter-card-2x2 .ingredient-add-btn .ingredient-add-label {
+    all: revert !important;
+    display: inline-block !important;
+    position: static !important;
+    transform: none !important;
+
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+
+    color: #ffffff !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .ingredient-add-plus {
+    font-size: 18px !important;
+    font-weight: 950 !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .ingredient-add-label {
+    font-size: 13px !important;
+    font-weight: 900 !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .add-circle,
+  .ingredient-filter-card-2x2 .ingredient-add-btn span.add-circle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    gap: 5px !important;
+    padding: 0 8px !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .ingredient-add-plus {
+    font-size: 16px !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .ingredient-add-label {
+    font-size: 12px !important;
+  }
+}
