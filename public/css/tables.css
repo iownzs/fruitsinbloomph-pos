@@ -1541,3 +1541,30 @@ th{
     display: none !important;
   }
 }
+
+/* FINAL: make Add plus icon a clean circle */
+@media (max-width: 700px) {
+  .ingredient-filter-card-2x2 .ingredient-add-btn .add-circle {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    flex: 0 0 26px !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-grid !important;
+    place-items: center !important;
+    background: rgba(255, 255, 255, 0.86) !important;
+    color: #0891b2 !important;
+    font-size: 16px !important;
+    font-weight: 950 !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    gap: 8px !important;
+  }
+}
