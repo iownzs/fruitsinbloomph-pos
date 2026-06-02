@@ -478,3 +478,102 @@ body:not(.login-page) .content {
     max-width: 100% !important;
   }
 }
+
+/* ==================================================
+   Fix phone browser "Desktop site" squeeze issue
+   Touch devices must use mobile/tablet layout
+================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  body:not(.login-page) {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    width: 100% !important;
+    position: static !important;
+  }
+
+  body:not(.login-page) #app,
+  body:not(.login-page) .app,
+  body:not(.login-page) .app main,
+  body:not(.login-page) .content {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  body:not(.login-page) .app {
+    display: block !important;
+    grid-template-columns: none !important;
+  }
+
+  body:not(.login-page) .sidebar {
+    display: block !important;
+    position: fixed !important;
+    left: -290px;
+    top: 0;
+    width: 280px !important;
+    max-width: 280px !important;
+    height: 100vh;
+    z-index: 300;
+    transition: left 0.2s ease;
+  }
+
+  body:not(.login-page) .sidebar.open {
+    left: 0;
+  }
+
+  body:not(.login-page) .mobile-header {
+    display: flex !important;
+    position: sticky;
+    top: 0;
+    z-index: 250;
+    background: #0f172a;
+    border-bottom: 1px solid #1f2937;
+  }
+
+  body:not(.login-page) .topbar {
+    display: none !important;
+  }
+
+  body:not(.login-page) .content {
+    padding: 16px 20px 100px !important;
+  }
+
+  body:not(.login-page) .card,
+  body:not(.login-page) .table-card,
+  body:not(.login-page) .mini-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Real desktop only */
+@media (hover: hover) and (pointer: fine) and (min-width: 901px) {
+  body:not(.login-page) .app {
+    display: grid !important;
+    grid-template-columns: 260px minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  body:not(.login-page) .sidebar {
+    position: sticky !important;
+    left: auto !important;
+    top: 0;
+    display: block !important;
+    width: 260px !important;
+    height: 100vh;
+  }
+
+  body:not(.login-page) .mobile-header {
+    display: none !important;
+  }
+
+  body:not(.login-page) .topbar {
+    display: flex !important;
+  }
+
+  body:not(.login-page) .content {
+    padding: 22px !important;
+  }
+}
