@@ -196,3 +196,54 @@
     display: flex;
   }
 }
+
+/* Force desktop topbar profile/logout visibility */
+.topbar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+}
+
+.topbar .actions,
+.topbar-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  margin-left: auto !important;
+}
+
+.topbar .user-profile {
+  display: flex !important;
+}
+
+.topbar .logout-btn,
+.topbar [data-logout] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+@media (min-width: 901px) {
+  .mobile-header {
+    display: none !important;
+  }
+
+  .app main {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #0f172a;
+    border-bottom: 1px solid #1f2937;
+  }
+
+  .topbar-actions .user-meta {
+    display: flex !important;
+  }
+}
