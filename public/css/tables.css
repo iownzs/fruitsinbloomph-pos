@@ -1194,15 +1194,15 @@ th{
 }
 
 /* ==================================================
-   Ingredient Filter Layout
-   Desktop restored, mobile 2x2 only
+   Ingredient Filter Layout FIX
+   Desktop restored / Mobile 2x2 only
 ================================================== */
 
-/* Desktop / tablet: restore clean horizontal toolbar */
+/* Desktop and tablet desktop-mode */
 @media (min-width: 701px) {
   .ingredient-filter-card-2x2 {
     display: grid !important;
-    grid-template-columns: minmax(280px, 1fr) 180px 180px 170px !important;
+    grid-template-columns: minmax(260px, 1fr) 180px 180px 170px !important;
     gap: 12px !important;
     align-items: center !important;
     width: 100% !important;
@@ -1216,16 +1216,16 @@ th{
     grid-column: 1 !important;
   }
 
-  .ingredient-filter-card-2x2 .ingredient-add-btn {
-    grid-column: 4 !important;
-  }
-
   .ingredient-filter-card-2x2 .ingredient-filter-bottom-row .ingredient-filter-field:first-child {
     grid-column: 2 !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-filter-bottom-row .ingredient-filter-field:last-child {
     grid-column: 3 !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    grid-column: 4 !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-filter-field,
@@ -1239,6 +1239,16 @@ th{
     box-sizing: border-box !important;
   }
 
+  .ingredient-filter-card-2x2 input,
+  .ingredient-filter-card-2x2 select {
+    height: 44px !important;
+    min-height: 44px !important;
+    line-height: normal !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    font-size: 13px !important;
+  }
+
   .ingredient-filter-card-2x2 .ingredient-add-btn {
     display: flex !important;
     align-items: center !important;
@@ -1248,24 +1258,25 @@ th{
     color: #fff !important;
     font-size: 12px !important;
     font-weight: 900 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-add-plus,
   .ingredient-filter-card-2x2 .ingredient-add-label {
     display: inline-block !important;
-    background: transparent !important;
-    color: #fff !important;
-    box-shadow: none !important;
     width: auto !important;
     height: auto !important;
     padding: 0 !important;
     margin: 0 !important;
+    background: transparent !important;
+    color: #fff !important;
+    box-shadow: none !important;
     line-height: 1 !important;
   }
 
   .ingredient-stocks-desktop-table {
     display: block !important;
-    overflow-x: auto !important;
   }
 
   .ingredient-stocks-mobile-cards {
@@ -1273,28 +1284,29 @@ th{
   }
 }
 
-/* Mobile only: 2x2 filter layout */
+/* Real mobile only */
 @media (max-width: 700px) {
   .ingredient-filter-card-2x2 {
     display: flex !important;
     flex-direction: column !important;
-    width: 100% !important;
     gap: 10px !important;
     padding: 12px !important;
+    width: 100% !important;
     box-sizing: border-box !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-filter-row {
     display: grid !important;
-    width: 100% !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 10px !important;
+    width: 100% !important;
     box-sizing: border-box !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-filter-field,
   .ingredient-filter-card-2x2 .ingredient-search-field,
   .ingredient-filter-card-2x2 .ingredient-add-btn {
+    position: relative !important;
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
@@ -1302,22 +1314,73 @@ th{
     min-height: 52px !important;
     max-height: 52px !important;
     border-radius: 15px !important;
-    box-sizing: border-box !important;
     margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-filter-icon {
+    position: absolute !important;
+    left: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 2 !important;
+    font-size: 15px !important;
+    line-height: 1 !important;
+  }
+
+  .ingredient-filter-card-2x2 input,
+  .ingredient-filter-card-2x2 select {
+    width: 100% !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    line-height: normal !important;
+    padding: 0 28px 0 38px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-sizing: border-box !important;
+    font-size: 12px !important;
+    font-weight: 850 !important;
+    color: #f8fafc !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .ingredient-filter-card-2x2 input::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+    font-size: 12px !important;
+    font-weight: 850 !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-filter-field::after {
+    content: "⌄" !important;
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    color: #cbd5e1 !important;
+    font-size: 14px !important;
+    pointer-events: none !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-search-field::after {
+    display: none !important;
+    content: none !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-add-btn {
-    padding: 0 12px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 7px !important;
+    padding: 0 12px !important;
     color: #ffffff !important;
     font-size: 13px !important;
     font-weight: 900 !important;
     line-height: 1 !important;
     white-space: nowrap !important;
-    overflow: hidden !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-add-plus,
@@ -1326,12 +1389,8 @@ th{
     position: static !important;
     width: auto !important;
     height: auto !important;
-    min-width: 0 !important;
-    max-width: none !important;
     padding: 0 !important;
     margin: 0 !important;
-    border: 0 !important;
-    border-radius: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
     color: #ffffff !important;
@@ -1361,8 +1420,8 @@ th{
 
 @media (max-width: 390px) {
   .ingredient-filter-card-2x2 .ingredient-add-btn {
-    padding: 0 8px !important;
     gap: 5px !important;
+    padding: 0 8px !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-add-plus {
