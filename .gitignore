@@ -2,3 +2,9 @@ node_modules
 .env
 .vercel
 .DS_Store
+
+# Local backup files
+*.bak
+*.before-*
+public/css/*.before-*
+public/js/*.before-*
