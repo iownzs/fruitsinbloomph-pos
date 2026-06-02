@@ -195,3 +195,46 @@ body.login-page {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* Login UI polish */
+.login-card .quick-login-title {
+  margin-top: 28px !important;
+  margin-bottom: 14px !important;
+  line-height: 1.2;
+}
+
+.login-card .login-quick-grid {
+  margin-top: 8px;
+}
+
+.login-card .login-btn {
+  margin-bottom: 8px;
+}
+
+@media (min-width: 901px) {
+  .login-layout {
+    grid-template-columns: 1.1fr 430px;
+  }
+
+  .login-brand-card {
+    min-height: 520px;
+  }
+
+  .login-card {
+    max-width: 430px;
+  }
+}
+
+@media (max-width: 520px) {
+  .login-card .quick-login-title {
+    margin-top: 26px !important;
+  }
+
+  .login-card .login-quick-grid {
+    gap: 12px;
+  }
+
+  .login-card .chip {
+    min-height: 48px;
+  }
+}
