@@ -123,3 +123,38 @@ th{
     padding: 7px 10px;
   }
 }
+
+/* Desktop Ingredient Actions: Stock row + Manage row */
+@media (min-width: 901px) {
+  .ingredient-action-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 210px;
+  }
+
+  .ingredient-action-group .stock-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .ingredient-action-group .manage-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .ingredient-action-group .btn.small {
+    width: 100%;
+    min-height: 34px;
+    padding: 7px 8px;
+    text-align: center;
+  }
+
+  .ingredient-stocks-desktop-table table th:last-child,
+  .ingredient-stocks-desktop-table table td:last-child {
+    min-width: 230px;
+    width: 230px;
+  }
+}
