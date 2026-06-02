@@ -367,8 +367,10 @@ window.FIB.saveIngredientStock = async function(ingredient){
   );
 
   const currentStock = Number(ingredient.currentStock || 0);
-  const reserved = Number(ingredient.reserved || 0);
-  const available = currentStock - reserved;
+  const reserved = Number(ingredient.reservedStock ?? ingredient.reserved ?? 0);
+  const available = Math.max(0, currentStock - reserved);
+  const reorderLevel = Number(ingredient.reorderLevel || 0);
+  const stockStatus = available <= 0 ? "Out of Stock" : available <= reorderLevel ? "Low Stock" : "In Stock";
 
   const data = {
     ingredientId,
@@ -377,10 +379,14 @@ window.FIB.saveIngredientStock = async function(ingredient){
     unit: ingredient.unit || "pcs",
     currentStock,
     reserved,
+    reservedStock: reserved,
     available,
-    reorderLevel: Number(ingredient.reorderLevel || 0),
+    availableStock: available,
+    reorderLevel,
     cost: Number(ingredient.cost || 0),
-    status: available <= 0 ? "Out of Stock" : available <= Number(ingredient.reorderLevel || 0) ? "Low Stock" : "In Stock",
+    ingredientCost: Number(ingredient.cost || ingredient.ingredientCost || 0),
+    status: stockStatus,
+    stockStatus,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   };
 
@@ -460,4 +466,107 @@ window.FIB.saveProduct = async function(product){
   }, { merge: true });
 
   return productId;
+};
+
+/* Ingredient Stock Movement Helper */
+window.FIB.adjustIngredientStock = async function(payload){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  const ingredientId = payload.ingredientId;
+  const movementType = payload.movementType;
+  const quantity = Number(payload.quantity || 0);
+  const reason = String(payload.reason || "").trim();
+  const notes = String(payload.notes || "").trim();
+
+  if(!ingredientId) throw new Error("Ingredient ID is required.");
+  if(!movementType) throw new Error("Movement type is required.");
+  if(quantity <= 0) throw new Error("Quantity must be greater than 0.");
+  if(!reason) throw new Error("Reason is required.");
+
+  const ingredientRef = window.db.collection("ingredientStocks").doc(ingredientId);
+
+  return await window.db.runTransaction(async transaction => {
+    const ingredientDoc = await transaction.get(ingredientRef);
+
+    if(!ingredientDoc.exists){
+      throw new Error("Ingredient stock not found.");
+    }
+
+    const ingredient = ingredientDoc.data() || {};
+    const previousStock = Number(ingredient.currentStock || 0);
+    const reservedStock = Number(ingredient.reservedStock ?? ingredient.reserved ?? 0);
+    const reorderLevel = Number(ingredient.reorderLevel || 0);
+
+    let newStock = previousStock;
+
+    if(movementType === "Stock In"){
+      newStock = previousStock + quantity;
+    }else if(movementType === "Stock Out"){
+      newStock = previousStock - quantity;
+    }else if(movementType === "Adjustment"){
+      newStock = quantity;
+    }else{
+      throw new Error("Invalid movement type.");
+    }
+
+    if(newStock < 0){
+      throw new Error("Stock cannot go below zero.");
+    }
+
+    const availableStock = Math.max(0, newStock - reservedStock);
+
+    let stockStatus = "In Stock";
+    if(availableStock <= 0){
+      stockStatus = "Out of Stock";
+    }else if(availableStock <= reorderLevel){
+      stockStatus = "Low Stock";
+    }
+
+    const now = firebase.firestore.FieldValue.serverTimestamp();
+
+    transaction.set(ingredientRef, {
+      currentStock: newStock,
+      reserved: reservedStock,
+      reservedStock,
+      available: availableStock,
+      availableStock,
+      status: stockStatus,
+      stockStatus,
+      updatedAt: now
+    }, { merge: true });
+
+    const movementRef = window.db.collection("stockMovements").doc();
+
+    transaction.set(movementRef, {
+      movementId: movementRef.id,
+      referenceId: ingredientId,
+      stockType: "Ingredient Stock",
+      itemId: ingredientId,
+      itemName: ingredient.name || ingredient.ingredientName || ingredientId,
+      itemDetails: ingredient.details || ingredient.ingredientDetails || "",
+      sku: ingredient.sku || ingredientId,
+      barcode: ingredient.barcode || "",
+      category: ingredient.category || "Others",
+      movementType,
+      quantity,
+      unit: ingredient.unit || "pcs",
+      previousStock,
+      newStock,
+      reason,
+      performedBy: payload.performedBy || "Admin",
+      performedByRole: payload.performedByRole || "Admin",
+      notes,
+      createdAt: now,
+      updatedAt: now
+    });
+
+    return {
+      ingredientId,
+      previousStock,
+      newStock,
+      availableStock,
+      stockStatus,
+      movementId: movementRef.id
+    };
+  });
 };

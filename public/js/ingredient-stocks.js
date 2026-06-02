@@ -108,8 +108,13 @@ function renderIngredientStocksTable(stocks){
       <td>${money(stock.cost || 0)}</td>
       <td>${badge(stock.status || 'In Stock')}</td>
       <td>
-        <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
-        <button class="btn small primary" onclick="openIngredientForm('${stock.id}')">Edit</button>
+        <div class="table-actions">
+          <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
+          <button class="btn small primary" onclick="openIngredientForm('${stock.id}')">Edit</button>
+          <button class="btn small primary" onclick="openIngredientMovement('${stock.id}', 'Stock In')">Stock In</button>
+          <button class="btn small warning" onclick="openIngredientMovement('${stock.id}', 'Stock Out')">Stock Out</button>
+          <button class="btn small" onclick="openIngredientMovement('${stock.id}', 'Adjustment')">Adjust</button>
+        </div>
       </td>
     </tr>
   `).join('');
@@ -147,8 +152,13 @@ function renderIngredientStocksCards(stocks){
       </div>
 
       <div class="product-mobile-actions">
-        <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
-        <button class="btn small primary" onclick="openIngredientForm('${stock.id}')">Edit</button>
+        <div class="table-actions">
+          <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
+          <button class="btn small primary" onclick="openIngredientForm('${stock.id}')">Edit</button>
+          <button class="btn small primary" onclick="openIngredientMovement('${stock.id}', 'Stock In')">Stock In</button>
+          <button class="btn small warning" onclick="openIngredientMovement('${stock.id}', 'Stock Out')">Stock Out</button>
+          <button class="btn small" onclick="openIngredientMovement('${stock.id}', 'Adjustment')">Adjust</button>
+        </div>
       </div>
     </div>
   `).join('');
@@ -289,3 +299,102 @@ async function saveIngredientForm(existingId = ""){
 /* Expose for onclick buttons */
 window.openIngredientForm = openIngredientForm;
 window.saveIngredientForm = saveIngredientForm;
+
+/* Ingredient Stock Movement UI */
+function getCurrentPOSUser(){
+  try{
+    return JSON.parse(sessionStorage.getItem("posUser") || localStorage.getItem("posUser") || "{}");
+  }catch(error){
+    return {};
+  }
+}
+
+function openIngredientMovement(ingredientId, movementType){
+  const stock = allIngredientStocks.find(item => item.id === ingredientId);
+
+  if(!stock){
+    openModal("Ingredient Not Found", "<p>Ingredient stock was not found.</p>");
+    return;
+  }
+
+  const quantityLabel = movementType === "Adjustment" ? "New Stock Quantity" : "Quantity";
+
+  openModal(
+    `${movementType}: ${stock.name || "Ingredient"}`,
+    `
+      <p class="muted">Current stock: <strong>${stock.currentStock ?? 0} ${stock.unit || ""}</strong></p>
+
+      <label>
+        ${quantityLabel}
+        <input id="movementQuantity" type="number" min="0" step="0.01" placeholder="Enter quantity">
+      </label>
+
+      <label>
+        Reason
+        <select id="movementReason">
+          <option value="">Select reason</option>
+          <option value="New stock received">New stock received</option>
+          <option value="Manual correction">Manual correction</option>
+          <option value="Used in production">Used in production</option>
+          <option value="Damaged">Damaged</option>
+          <option value="Expired">Expired</option>
+          <option value="Returned">Returned</option>
+          <option value="Transfer">Transfer</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+
+      <label>
+        Notes
+        <textarea id="movementNotes" placeholder="Optional notes"></textarea>
+      </label>
+    `,
+    `
+      <button class="btn primary" onclick="saveIngredientMovement('${ingredientId}', '${movementType}')">Save Movement</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    `
+  );
+}
+
+async function saveIngredientMovement(ingredientId, movementType){
+  try{
+    if(!window.FIB || !window.FIB.adjustIngredientStock){
+      throw new Error("Stock movement service is not ready.");
+    }
+
+    const quantity = Number(document.getElementById("movementQuantity").value || 0);
+    const reason = document.getElementById("movementReason").value;
+    const notes = document.getElementById("movementNotes").value;
+    const user = getCurrentPOSUser();
+
+    const result = await window.FIB.adjustIngredientStock({
+      ingredientId,
+      movementType,
+      quantity,
+      reason,
+      notes,
+      performedBy: user.name || user.username || "Admin",
+      performedByRole: user.role || "Admin"
+    });
+
+    closeModal();
+    await loadIngredientStocks();
+
+    openModal(
+      "Stock Movement Saved",
+      `
+        <p><strong>${movementType}</strong> saved successfully.</p>
+        <p>Previous Stock: <strong>${result.previousStock}</strong></p>
+        <p>New Stock: <strong>${result.newStock}</strong></p>
+        <p>Status: <strong>${result.stockStatus}</strong></p>
+        <p class="muted">Movement ID: ${result.movementId}</p>
+      `,
+      `<button class="btn primary" onclick="closeModal()">Done</button>`
+    );
+  }catch(error){
+    openModal("Movement Failed", `<p>${error.message}</p>`, `<button class="btn" onclick="closeModal()">Close</button>`);
+  }
+}
+
+window.openIngredientMovement = openIngredientMovement;
+window.saveIngredientMovement = saveIngredientMovement;
