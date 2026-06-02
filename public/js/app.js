@@ -1,6 +1,26 @@
 
 const groups=[['Main',[['📊','Dashboard','dashboard.html'],['🛒','POS Terminal','pos-terminal.html'],['📦','Orders','orders.html']]],['Operations',[['👩‍🍳','Kitchen','kitchen.html'],['🛵','Delivery','delivery.html'],['🧾','Pickup','pickup.html']]],['Inventory',[['🍓','Products','products.html'],['📦','Product Stocks','product-stocks.html'],['🥭','Ingredient Stocks','ingredient-stocks.html'],['🔁','Stock Movements','stock-movements.html']]],['Team & Reports',[['💬','Group Chat','group-chat.html'],['📨','Unified-Message','unified-message.html'],['📈','Reports','reports.html']]],['Business',[['👤','Account','account.html'],['💳','POS Billing','pos-billing.html'],['⚙️','Settings','settings.html']]]];
 const publicPages=['login','live-track','qr-order-details'];
+function getCurrentUser(){
+  try{
+    return JSON.parse(sessionStorage.getItem('posUser') || localStorage.getItem('posUser') || '{}');
+  }catch(e){
+    return {};
+  }
+}
+function userProfileHtml(){
+  const u=getCurrentUser();
+  const name=u.name || u.username || 'Staff';
+  const role=u.role || 'User';
+  const initials=String(name).trim().slice(0,1).toUpperCase() || 'U';
+  return `<div class="user-profile">
+    <div class="user-avatar">${initials}</div>
+    <div class="user-meta">
+      <strong>${name}</strong>
+      <span>${role}</span>
+    </div>
+  </div>`;
+}
 function money(n){return new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',maximumFractionDigits:0}).format(n)}
 function badge(t){let s=String(t).toLowerCase(),c='gray';if(s.includes('rush')||s.includes('unpaid')||s.includes('cancel'))c='red';if(s.includes('ready')||s.includes('paid')||s.includes('delivered')||s.includes('picked'))c='green';if(s.includes('waiting')||s.includes('partial'))c='amber';if(s.includes('preparing'))c='orange';if(s.includes('out'))c='purple';if(s.includes('ads'))c='blue';return `<span class="badge ${c}">${t}</span>`}
 function shell(content){
@@ -33,7 +53,7 @@ function shell(content){
           <p>${title}</p>
         </div>
       </div>
-      <div class="mobile-actions"><span class="badge green">Active</span><button class="btn small" type="button" data-logout>Logout</button></div>
+      <div class="mobile-actions">${userProfileHtml()}<button class="btn small" type="button" data-logout>Logout</button></div>
     </div>
 
     <div class="app">
@@ -54,9 +74,10 @@ function shell(content){
             <h2>${title}</h2>
             <p>Small working checkpoint · sample data only</p>
           </div>
-          <div class="actions">
+          <div class="actions topbar-actions">
             <span class="badge green">Active</span>
-            <button class="btn small" type="button" data-logout>Logout</button>
+            ${userProfileHtml()}
+            <button class="btn small logout-btn" type="button" data-logout>Logout</button>
           </div>
         </header>
 
