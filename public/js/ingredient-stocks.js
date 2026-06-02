@@ -1,13 +1,20 @@
 shell(`
-  <div class="ingredient-filter-card">
-    <div class="ingredient-search-wrap">
-      <span class="ingredient-control-icon">🔍</span>
-      <input id="ingredientSearch" placeholder="Search ingredient or category">
+  <div class="ingredient-filter-card ingredient-filter-card-2x2">
+    <div class="ingredient-filter-row ingredient-filter-top-row">
+      <div class="ingredient-filter-field ingredient-search-field">
+        <span class="ingredient-filter-icon">🔍</span>
+        <input id="ingredientSearch" placeholder="Search ingredient">
+      </div>
+
+      <button class="btn primary ingredient-add-btn" onclick="openIngredientForm()">
+        <span class="add-circle">＋</span>
+        <span>Add</span>
+      </button>
     </div>
 
-    <div class="ingredient-filter-grid">
-      <label class="ingredient-select-wrap">
-        <span class="ingredient-control-icon">▦</span>
+    <div class="ingredient-filter-row ingredient-filter-bottom-row">
+      <div class="ingredient-filter-field">
+        <span class="ingredient-filter-icon">▦</span>
         <select id="categoryFilter">
           <option value="">All Categories</option>
           <option>Fruits</option>
@@ -16,24 +23,20 @@ shell(`
           <option>Sweeteners</option>
           <option>Toppings</option>
           <option>Packaging</option>
+          <option>Others</option>
         </select>
-      </label>
+      </div>
 
-      <label class="ingredient-select-wrap">
-        <span class="ingredient-control-icon">▥</span>
+      <div class="ingredient-filter-field">
+        <span class="ingredient-filter-icon">▥</span>
         <select id="stockStatusFilter">
           <option value="">All Stock Status</option>
           <option>In Stock</option>
           <option>Low Stock</option>
           <option>Out of Stock</option>
         </select>
-      </label>
+      </div>
     </div>
-
-    <button class="btn primary ingredient-add-btn" onclick="openIngredientForm()">
-      <span>＋</span>
-      Add Ingredient
-    </button>
   </div>
 
   <div class="card">
