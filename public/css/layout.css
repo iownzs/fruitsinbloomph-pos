@@ -396,3 +396,85 @@ body:not(.login-page) .content {
     padding-bottom: 60px;
   }
 }
+
+/* Fix desktop/tablet dashboard width squeeze */
+body:not(.login-page) #app {
+  width: 100%;
+  min-width: 0;
+}
+
+body:not(.login-page) .app {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+body:not(.login-page) .app main {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+body:not(.login-page) .content {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Real desktop layout */
+@media (min-width: 901px) {
+  body:not(.login-page) .app {
+    display: grid !important;
+    grid-template-columns: 260px minmax(0, 1fr) !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+  }
+
+  body:not(.login-page) .sidebar {
+    display: block !important;
+    width: 260px !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
+  }
+
+  body:not(.login-page) .app main {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  body:not(.login-page) .topbar {
+    width: 100% !important;
+  }
+
+  body:not(.login-page) .content {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 22px !important;
+  }
+}
+
+/* Tablet / mobile browser desktop-mode fallback */
+@media (max-width: 900px) {
+  body:not(.login-page) .app {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  body:not(.login-page) .app main,
+  body:not(.login-page) .content {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  body:not(.login-page) .content {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  body:not(.login-page) .card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
