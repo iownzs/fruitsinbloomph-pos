@@ -398,3 +398,5 @@ async function saveIngredientMovement(ingredientId, movementType){
 
 window.openIngredientMovement = openIngredientMovement;
 window.saveIngredientMovement = saveIngredientMovement;
+
+/* Ingredient Stock Movement UI */
