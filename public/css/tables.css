@@ -188,3 +188,114 @@ th{
     box-sizing: border-box !important;
   }
 }
+
+/* ==================================================
+   Stock Movements polish
+================================================== */
+
+.stock-movements-toolbar {
+  align-items: center;
+}
+
+.movement-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  color: #e5e7eb;
+  background: rgba(148, 163, 184, 0.16);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  white-space: nowrap;
+}
+
+.movement-stock-in {
+  color: #bbf7d0;
+  background: rgba(22, 163, 74, 0.20);
+  border-color: rgba(22, 163, 74, 0.35);
+}
+
+.movement-stock-out {
+  color: #fecaca;
+  background: rgba(220, 38, 38, 0.18);
+  border-color: rgba(220, 38, 38, 0.35);
+}
+
+.movement-adjustment {
+  color: #bfdbfe;
+  background: rgba(37, 99, 235, 0.18);
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+.movement-ingredient-deduction {
+  color: #ddd6fe;
+  background: rgba(124, 58, 237, 0.18);
+  border-color: rgba(124, 58, 237, 0.35);
+}
+
+.movement-damaged {
+  color: #fed7aa;
+  background: rgba(234, 88, 12, 0.18);
+  border-color: rgba(234, 88, 12, 0.35);
+}
+
+.movement-expired {
+  color: #fecaca;
+  background: rgba(185, 28, 28, 0.20);
+  border-color: rgba(185, 28, 28, 0.38);
+}
+
+.movement-returned {
+  color: #f5d0fe;
+  background: rgba(192, 38, 211, 0.16);
+  border-color: rgba(192, 38, 211, 0.32);
+}
+
+.movement-transfer {
+  color: #e5e7eb;
+  background: rgba(100, 116, 139, 0.20);
+  border-color: rgba(100, 116, 139, 0.35);
+}
+
+@media (max-width: 700px) {
+  .stock-movements-mobile-cards {
+    gap: 16px !important;
+  }
+
+  .stock-movement-mobile-card {
+    padding: 18px !important;
+    border-radius: 18px !important;
+  }
+
+  .stock-movement-mobile-card .product-mobile-head {
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .stock-movement-mobile-card .product-mobile-head h3 {
+    font-size: 20px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .stock-movement-mobile-card .product-mobile-meta {
+    margin: 14px 0 !important;
+    gap: 8px !important;
+  }
+
+  .stock-movement-mobile-card .stock-grid {
+    gap: 12px !important;
+  }
+
+  .stock-movement-mobile-card .stock-grid div {
+    min-height: 78px !important;
+    padding: 14px !important;
+  }
+
+  .stock-movement-mobile-card .product-mobile-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}

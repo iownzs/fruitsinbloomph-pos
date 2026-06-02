@@ -1,5 +1,5 @@
 shell(`
-  <div class="toolbar">
+  <div class="toolbar stock-movements-toolbar">
     <input id="movementSearch" placeholder="Search movement, item, reason, performed by">
 
     <select id="stockTypeFilter">
@@ -20,6 +20,20 @@ shell(`
       <option>Transfer</option>
     </select>
 
+    <select id="categoryFilter">
+      <option value="">All Categories</option>
+      <option>Fruits</option>
+      <option>Dairy</option>
+      <option>Dry Goods</option>
+      <option>Sweeteners</option>
+      <option>Toppings</option>
+      <option>Packaging</option>
+      <option>Others</option>
+    </select>
+
+    <input id="dateFromFilter" type="date" aria-label="Date from">
+    <input id="dateToFilter" type="date" aria-label="Date to">
+
     <button class="btn" onclick="resetMovementFilters()">Reset</button>
   </div>
 
@@ -38,6 +52,7 @@ shell(`
             <th>Movement ID / Date</th>
             <th>Stock Type</th>
             <th>Item</th>
+            <th>Category</th>
             <th>Movement Type</th>
             <th>Quantity</th>
             <th>Previous</th>
@@ -48,7 +63,7 @@ shell(`
           </tr>
         </thead>
         <tbody id="stockMovementsTableBody">
-          <tr><td colspan="10">Loading...</td></tr>
+          <tr><td colspan="11">Loading...</td></tr>
         </tbody>
       </table>
     </div>
@@ -62,10 +77,11 @@ shell(`
 let allStockMovements = [];
 
 function movementDate(value){
-  if(!value) return "No date";
+  const date = movementDateValue(value);
+
+  if(!date) return "No date";
 
   try{
-    const date = value.toDate ? value.toDate() : new Date(value);
     return date.toLocaleString("en-PH", {
       year: "numeric",
       month: "short",
@@ -82,8 +98,25 @@ function safeText(value, fallback = ""){
   return value === undefined || value === null || value === "" ? fallback : value;
 }
 
+function movementDateValue(value){
+  if(!value) return null;
+
+  try{
+    return value.toDate ? value.toDate() : new Date(value);
+  }catch(error){
+    return null;
+  }
+}
+
+function movementCategory(movement){
+  return movement.category || movement.itemCategory || movement.productCategory || movement.ingredientCategory || "";
+}
+
 function movementBadge(type){
-  return badge(type || "Movement");
+  const label = type || "Movement";
+  const key = String(label).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+  return `<span class="movement-pill movement-${key}">${label}</span>`;
 }
 
 async function loadStockMovements(){
@@ -107,7 +140,7 @@ async function loadStockMovements(){
     status.innerHTML = `${badge("Firestore Loaded")} ${allStockMovements.length} stock movements found.`;
   }catch(error){
     status.innerHTML = `${badge("Load Failed")} ${error.message}`;
-    body.innerHTML = `<tr><td colspan="10">${error.message}</td></tr>`;
+    body.innerHTML = `<tr><td colspan="11">${error.message}</td></tr>`;
     cards.innerHTML = `<div class="mini-card">${error.message}</div>`;
   }
 }
@@ -121,7 +154,7 @@ function renderStockMovementsTable(movements){
   const body = document.getElementById("stockMovementsTableBody");
 
   if(!movements.length){
-    body.innerHTML = `<tr><td colspan="10">No stock movements found.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="11">No stock movements found.</td></tr>`;
     return;
   }
 
@@ -138,6 +171,7 @@ function renderStockMovementsTable(movements){
         <br>
         <small>${safeText(movement.itemId || movement.referenceId, "")}</small>
       </td>
+      <td>${badge(safeText(movementCategory(movement), "No Category"))}</td>
       <td>${movementBadge(movement.movementType)}</td>
       <td><strong>${safeText(movement.quantity, 0)}</strong> ${safeText(movement.unit, "")}</td>
       <td>${safeText(movement.previousStock, 0)}</td>
@@ -175,6 +209,7 @@ function renderStockMovementsCards(movements){
 
       <div class="product-mobile-meta">
         ${badge(safeText(movement.stockType, "Stock"))}
+        ${badge(safeText(movementCategory(movement), "No Category"))}
         ${badge(safeText(movement.unit, ""))}
         ${badge(safeText(movement.performedBy, "System"))}
       </div>
@@ -209,6 +244,7 @@ function showStockMovement(movementId){
       <p><strong>Stock Type:</strong> ${safeText(movement.stockType, "")}</p>
       <p><strong>Item:</strong> ${safeText(movement.itemName, "")}</p>
       <p><strong>Item ID:</strong> ${safeText(movement.itemId || movement.referenceId, "")}</p>
+      <p><strong>Category:</strong> ${safeText(movementCategory(movement), "")}</p>
       <p><strong>Movement Type:</strong> ${safeText(movement.movementType, "")}</p>
       <p><strong>Quantity:</strong> ${safeText(movement.quantity, 0)} ${safeText(movement.unit, "")}</p>
       <p><strong>Previous Stock:</strong> ${safeText(movement.previousStock, 0)}</p>
@@ -225,8 +261,16 @@ function applyMovementFilters(){
   const search = document.getElementById("movementSearch").value.toLowerCase();
   const stockType = document.getElementById("stockTypeFilter").value;
   const movementType = document.getElementById("movementTypeFilter").value;
+  const category = document.getElementById("categoryFilter").value;
+  const dateFrom = document.getElementById("dateFromFilter").value;
+  const dateTo = document.getElementById("dateToFilter").value;
+
+  const fromDate = dateFrom ? new Date(dateFrom + "T00:00:00") : null;
+  const toDate = dateTo ? new Date(dateTo + "T23:59:59") : null;
 
   const filtered = allStockMovements.filter(movement => {
+    const movementDateObj = movementDateValue(movement.createdAt);
+
     const searchText = [
       movement.id,
       movement.movementId,
@@ -235,15 +279,26 @@ function applyMovementFilters(){
       movement.itemName,
       movement.stockType,
       movement.movementType,
+      movementCategory(movement),
       movement.reason,
       movement.notes,
       movement.performedBy,
       movement.performedByRole
     ].join(" ").toLowerCase();
 
-    return (!search || searchText.includes(search))
-      && (!stockType || movement.stockType === stockType)
-      && (!movementType || movement.movementType === movementType);
+    const matchSearch = !search || searchText.includes(search);
+    const matchStockType = !stockType || movement.stockType === stockType;
+    const matchMovementType = !movementType || movement.movementType === movementType;
+    const matchCategory = !category || movementCategory(movement) === category;
+    const matchDateFrom = !fromDate || (movementDateObj && movementDateObj >= fromDate);
+    const matchDateTo = !toDate || (movementDateObj && movementDateObj <= toDate);
+
+    return matchSearch
+      && matchStockType
+      && matchMovementType
+      && matchCategory
+      && matchDateFrom
+      && matchDateTo;
   });
 
   renderStockMovements(filtered);
@@ -253,12 +308,19 @@ function resetMovementFilters(){
   document.getElementById("movementSearch").value = "";
   document.getElementById("stockTypeFilter").value = "";
   document.getElementById("movementTypeFilter").value = "";
+  document.getElementById("categoryFilter").value = "";
+  document.getElementById("dateFromFilter").value = "";
+  document.getElementById("dateToFilter").value = "";
+
   renderStockMovements(allStockMovements);
 }
 
 document.getElementById("movementSearch").addEventListener("input", applyMovementFilters);
 document.getElementById("stockTypeFilter").addEventListener("change", applyMovementFilters);
 document.getElementById("movementTypeFilter").addEventListener("change", applyMovementFilters);
+document.getElementById("categoryFilter").addEventListener("change", applyMovementFilters);
+document.getElementById("dateFromFilter").addEventListener("change", applyMovementFilters);
+document.getElementById("dateToFilter").addEventListener("change", applyMovementFilters);
 
 window.showStockMovement = showStockMovement;
 window.resetMovementFilters = resetMovementFilters;
