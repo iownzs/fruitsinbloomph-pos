@@ -1442,3 +1442,73 @@ th{
     font-size: 12px !important;
   }
 }
+
+/* FINAL FIX: Ingredient mobile Add button overlap */
+@media (max-width: 700px) {
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    display: grid !important;
+    grid-template-columns: 26px 1fr !important;
+    align-items: center !important;
+    justify-content: center !important;
+    column-gap: 8px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    padding: 0 12px !important;
+    overflow: hidden !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .add-circle {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    grid-column: 1 !important;
+    position: static !important;
+    transform: none !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn span:last-child {
+    grid-column: 2 !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    position: static !important;
+    transform: none !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    text-align: left !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    grid-template-columns: 24px 1fr !important;
+    column-gap: 6px !important;
+    padding: 0 10px !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .add-circle {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    max-width: 24px !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn span:last-child {
+    font-size: 12px !important;
+  }
+}
