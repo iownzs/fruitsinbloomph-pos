@@ -1,55 +1,30 @@
 shell(`
-  <div class="ingredient-filter-card ingredient-filter-card-2x2">
-    <div class="ingredient-filter-row ingredient-filter-top-row">
-      <div class="ingredient-filter-field ingredient-search-field">
-        <span class="ingredient-filter-icon">🔍</span>
-        <input id="ingredientSearch" placeholder="Search ingredient">
-      </div>
-
-      <button class="btn primary ingredient-add-btn" onclick="openIngredientForm()">
-        <span class="ingredient-add-plus">+</span>
-        <span class="ingredient-add-label">Add</span>
-      </button>
-    </div>
-
-    <div class="ingredient-filter-row ingredient-filter-bottom-row">
-      <div class="ingredient-filter-field">
-        <span class="ingredient-filter-icon">▦</span>
-        <select id="categoryFilter">
-          <option value="">All Categories</option>
-          <option>Fruits</option>
-          <option>Dairy</option>
-          <option>Dry Goods</option>
-          <option>Sweeteners</option>
-          <option>Toppings</option>
-          <option>Packaging</option>
-          <option>Others</option>
-        </select>
-      </div>
-
-      <div class="ingredient-filter-field">
-        <span class="ingredient-filter-icon">▥</span>
-        <select id="stockStatusFilter">
-          <option value="">All Stock Status</option>
-          <option>In Stock</option>
-          <option>Low Stock</option>
-          <option>Out of Stock</option>
-        </select>
-      </div>
-    </div>
+  <div class="toolbar">
+    <input id="ingredientSearch" placeholder="Search ingredient or category">
+    <select id="categoryFilter">
+      <option value="">All Categories</option>
+      <option>Fruits</option>
+      <option>Dairy</option>
+      <option>Dry Goods</option>
+      <option>Sweeteners</option>
+      <option>Toppings</option>
+      <option>Packaging</option>
+    </select>
+    <select id="stockStatusFilter">
+      <option value="">All Stock Status</option>
+      <option>In Stock</option>
+      <option>Low Stock</option>
+      <option>Out of Stock</option>
+    </select>
+    <button class="btn primary" onclick="openIngredientForm()">Add Ingredient</button>
   </div>
 
   <div class="card">
-    <div class="ingredient-firestore-head">
-      <div class="ingredient-cloud-icon">☁</div>
-      <div>
-        <h3>Ingredient Stocks from Firestore</h3>
-        <p class="muted">Raw ingredient and material stock quantities are loaded from Firebase Firestore.</p>
+    <h3>Ingredient Stocks from Firestore</h3>
+    <p class="muted">Raw ingredient and material stock quantities are loaded from Firebase Firestore.</p>
 
-        <div id="ingredientStocksStatus" class="muted" style="margin:12px 0">
-          Loading ingredient stocks...
-        </div>
-      </div>
+    <div id="ingredientStocksStatus" class="muted" style="margin:12px 0">
+      Loading ingredient stocks...
     </div>
 
     <div class="ingredient-stocks-desktop-table table-wrap">
@@ -131,17 +106,17 @@ function renderIngredientStocksTable(stocks){
       <td>${stock.unit || ''}</td>
       <td>${stock.reorderLevel ?? 0}</td>
       <td>${money(stock.cost || 0)}</td>
-      <td><span class="ingredient-status-pill"><span></span>${stock.status || 'In Stock'}</span></td>
+      <td>${badge(stock.status || 'In Stock')}</td>
       <td>
         <div class="ingredient-action-group">
           <div class="ingredient-action-row stock-actions">
-            <button class="btn small primary" onclick="openIngredientMovement('${stock.id}', 'Stock In')">↓ Stock In</button>
-            <button class="btn small warning" onclick="openIngredientMovement('${stock.id}', 'Stock Out')">↑ Stock Out</button>
+            <button class="btn small primary" onclick="openIngredientMovement('${stock.id}', 'Stock In')">Stock In</button>
+            <button class="btn small warning" onclick="openIngredientMovement('${stock.id}', 'Stock Out')">Stock Out</button>
           </div>
           <div class="ingredient-action-row manage-actions">
-            <button class="btn small" onclick="openIngredientMovement('${stock.id}', 'Adjustment')">☷ Adjust</button>
-            <button class="btn small" onclick="openIngredientForm('${stock.id}')">✎ Edit</button>
-            <button class="btn small" onclick="showIngredientStock('${stock.id}')">◉ View</button>
+            <button class="btn small" onclick="openIngredientMovement('${stock.id}', 'Adjustment')">Adjust</button>
+            <button class="btn small" onclick="openIngredientForm('${stock.id}')">Edit</button>
+            <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
           </div>
         </div>
       </td>
@@ -159,18 +134,12 @@ function renderIngredientStocksCards(stocks){
 
   cards.innerHTML = stocks.map(stock => `
     <div class="mini-card stock-mobile-card">
-      <div class="ingredient-mobile-main-head">
-        <div class="ingredient-avatar">
-          ${stock.imageUrl ? `<img src="${stock.imageUrl}" alt="${stock.name || 'Ingredient'}">` : `<span>${String(stock.name || 'I').slice(0,1)}</span>`}
+      <div class="product-mobile-head">
+        <div>
+          <h3>${stock.name || ''}</h3>
+          <p class="muted">${stock.id || ''}</p>
         </div>
-
-        <div class="product-mobile-head">
-          <div>
-            <h3>${stock.name || ''}</h3>
-            <p class="muted">${stock.id || ''}</p>
-          </div>
-          <span class="ingredient-status-pill"><span></span>${stock.status || 'In Stock'}</span>
-        </div>
+        ${badge(stock.status || 'In Stock')}
       </div>
 
       <div class="product-mobile-meta">
@@ -180,22 +149,22 @@ function renderIngredientStocksCards(stocks){
       </div>
 
       <div class="stock-grid">
-        <div><span>◎ Current</span><strong>${stock.currentStock ?? 0}</strong></div>
-        <div><span>▣ Reserved</span><strong>${stock.reservedStock ?? 0}</strong></div>
-        <div><span>✓ Available</span><strong>${stock.availableStock ?? 0}</strong></div>
-        <div><span>↻ Reorder</span><strong>${stock.reorderLevel ?? 0}</strong></div>
+        <div><span>Current</span><strong>${stock.currentStock ?? 0}</strong></div>
+        <div><span>Reserved</span><strong>${stock.reservedStock ?? 0}</strong></div>
+        <div><span>Available</span><strong>${stock.availableStock ?? 0}</strong></div>
+        <div><span>Reorder</span><strong>${stock.reorderLevel ?? 0}</strong></div>
       </div>
 
       <div class="product-mobile-actions">
         <div class="product-mobile-actions ingredient-mobile-actions">
           <div class="ingredient-action-row primary-actions">
-            <button class="btn small primary" onclick="openIngredientMovement('${stock.id}', 'Stock In')">↓ Stock In</button>
-            <button class="btn small warning" onclick="openIngredientMovement('${stock.id}', 'Stock Out')">↑ Stock Out</button>
-            <button class="btn small" onclick="openIngredientMovement('${stock.id}', 'Adjustment')">☷ Adjust</button>
+            <button class="btn small primary" onclick="openIngredientMovement('${stock.id}', 'Stock In')">Stock In</button>
+            <button class="btn small warning" onclick="openIngredientMovement('${stock.id}', 'Stock Out')">Stock Out</button>
+            <button class="btn small" onclick="openIngredientMovement('${stock.id}', 'Adjustment')">Adjust</button>
           </div>
           <div class="ingredient-action-row secondary-actions">
-            <button class="btn small" onclick="showIngredientStock('${stock.id}')">◉ View</button>
-            <button class="btn small" onclick="openIngredientForm('${stock.id}')">✎ Edit</button>
+            <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
+            <button class="btn small" onclick="openIngredientForm('${stock.id}')">Edit</button>
           </div>
         </div>
       </div>
