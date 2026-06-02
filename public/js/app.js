@@ -27,7 +27,14 @@ function shell(content){
   let page=document.body.dataset.page,title=document.body.dataset.title;
   const appEl=document.getElementById('app');
 
+  document.body.classList.remove('login-page');
+  document.body.classList.add('app-page');
+
   if(publicPages.includes(page)){
+    document.body.classList.remove('app-page');
+    if(page === 'login'){
+      document.body.classList.add('login-page');
+    }
     appEl.innerHTML=`<main class="content">${content}</main>`;
     return;
   }

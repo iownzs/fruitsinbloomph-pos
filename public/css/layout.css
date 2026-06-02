@@ -710,3 +710,82 @@ body.login-page main,
 body.login-page .login-layout {
   overflow: hidden !important;
 }
+
+/* FINAL app-page scroll control */
+html,
+body {
+  width: 100%;
+}
+
+body.app-page {
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  position: static !important;
+}
+
+body.app-page #app {
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain;
+}
+
+body.app-page .app {
+  min-height: auto !important;
+}
+
+body.app-page main,
+body.app-page .content {
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+body.app-page .content {
+  padding-bottom: 160px !important;
+}
+
+/* Touch/mobile including Chrome Desktop site mode */
+@media (hover: none) and (pointer: coarse) {
+  body.app-page #app {
+    overflow-y: scroll !important;
+  }
+
+  body.app-page .mobile-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 250 !important;
+  }
+
+  body.app-page .topbar {
+    display: none !important;
+  }
+}
+
+/* Real desktop */
+@media (hover: hover) and (pointer: fine) and (min-width: 901px) {
+  body.app-page {
+    overflow: hidden !important;
+  }
+
+  body.app-page #app {
+    overflow-y: auto !important;
+  }
+}
+
+/* Login remains no-scroll */
+body.login-page {
+  height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+body.login-page #app {
+  height: 100dvh !important;
+  overflow: hidden !important;
+}
