@@ -577,3 +577,67 @@ body:not(.login-page) .content {
     padding: 22px !important;
   }
 }
+
+/* Final fix: show profile/logout on touch devices even in Desktop site mode */
+@media (hover: none) and (pointer: coarse) {
+  body:not(.login-page) .mobile-header {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  body:not(.login-page) .mobile-header .brand.mini {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body:not(.login-page) .mobile-header .brand.mini h1,
+  body:not(.login-page) .mobile-header .brand.mini p {
+    max-width: 150px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  body:not(.login-page) .mobile-actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+    margin-left: auto !important;
+    flex: 0 0 auto !important;
+  }
+
+  body:not(.login-page) .mobile-actions .user-profile {
+    display: flex !important;
+    padding: 4px !important;
+    min-width: auto !important;
+  }
+
+  body:not(.login-page) .mobile-actions .user-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 13px !important;
+  }
+
+  body:not(.login-page) .mobile-actions .user-meta {
+    display: none !important;
+  }
+
+  body:not(.login-page) .mobile-actions [data-logout] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px 10px !important;
+    min-height: 34px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+    white-space: nowrap !important;
+  }
+}
