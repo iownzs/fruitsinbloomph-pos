@@ -570,3 +570,19 @@ window.FIB.adjustIngredientStock = async function(payload){
     };
   });
 };
+
+/* Stock Movements Read Helper */
+if(!window.FIB.getStockMovements){
+  window.FIB.getStockMovements = async function(){
+    if(!window.db) throw new Error("Firestore not ready.");
+
+    const snapshot = await window.db.collection("stockMovements")
+      .orderBy("createdAt", "desc")
+      .get();
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  };
+}
