@@ -158,3 +158,53 @@ th{
     width: 230px;
   }
 }
+
+/* Fix Ingredient desktop actions clipping */
+@media (min-width: 701px) {
+  .ingredient-stocks-desktop-table {
+    overflow-x: auto;
+  }
+
+  .ingredient-stocks-desktop-table table {
+    min-width: 980px;
+  }
+
+  .ingredient-stocks-desktop-table table th:last-child,
+  .ingredient-stocks-desktop-table table td:last-child {
+    min-width: 180px !important;
+    width: 180px !important;
+    max-width: 180px !important;
+  }
+
+  .ingredient-action-group {
+    min-width: 170px !important;
+    max-width: 170px !important;
+  }
+
+  .ingredient-action-group .stock-actions {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .ingredient-action-group .manage-actions {
+    grid-template-columns: 1fr 1fr 1fr !important;
+  }
+
+  .ingredient-action-group .btn.small {
+    min-height: 30px !important;
+    padding: 6px 6px !important;
+    font-size: 11px !important;
+    border-radius: 9px !important;
+  }
+}
+
+/* Touch desktop-mode safety */
+@media (hover: none) and (pointer: coarse) {
+  .ingredient-stocks-desktop-table {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .ingredient-stocks-desktop-table table {
+    min-width: 980px !important;
+  }
+}
