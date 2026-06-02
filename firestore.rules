@@ -1,0 +1,137 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function activeUser() {
+      return signedIn()
+        && userDoc().data.status in ["Active", "active"];
+    }
+
+    function role() {
+      return userDoc().data.role;
+    }
+
+    function isOwnerAdmin() {
+      return activeUser()
+        && role() in ["Owner", "Admin", "Owner / Admin"];
+    }
+
+    function isInventoryStaff() {
+      return activeUser()
+        && role() in ["Inventory Staff"];
+    }
+
+    function canManageInventory() {
+      return isOwnerAdmin() || isInventoryStaff();
+    }
+
+    function canReadPOS() {
+      return activeUser();
+    }
+
+    // Staff users can read their own profile.
+    // Owner/Admin can manage staff later.
+    match /users/{userId} {
+      allow read: if signedIn() && request.auth.uid == userId;
+      allow create, update, delete: if isOwnerAdmin();
+    }
+
+    match /roles/{roleId} {
+      allow read: if activeUser();
+      allow write: if isOwnerAdmin();
+    }
+
+    match /settings/{settingId} {
+      allow read: if activeUser();
+      allow write: if isOwnerAdmin();
+    }
+
+    // Products can be viewed by logged-in staff.
+    // Inventory/Admin can create/edit.
+    match /products/{productId} {
+      allow read: if canReadPOS();
+      allow create, update: if canManageInventory();
+      allow delete: if isOwnerAdmin();
+    }
+
+    match /productStocks/{stockId} {
+      allow read: if canReadPOS();
+      allow create, update: if canManageInventory();
+      allow delete: if isOwnerAdmin();
+    }
+
+    match /ingredients/{ingredientId} {
+      allow read: if canReadPOS();
+      allow create, update: if canManageInventory();
+      allow delete: if isOwnerAdmin();
+    }
+
+    match /ingredientStocks/{stockId} {
+      allow read: if canReadPOS();
+      allow create, update: if canManageInventory();
+      allow delete: if isOwnerAdmin();
+    }
+
+    match /recipes/{recipeId} {
+      allow read: if canReadPOS();
+      allow create, update: if canManageInventory();
+      allow delete: if isOwnerAdmin();
+    }
+
+    // Stock movements are audit records.
+    // Create allowed for inventory/admin.
+    // Update/delete blocked to protect history.
+    match /stockMovements/{movementId} {
+      allow read: if canReadPOS();
+      allow create: if canManageInventory();
+      allow update, delete: if false;
+    }
+
+    match /orders/{orderId} {
+      allow read: if canReadPOS();
+      allow create, update: if activeUser();
+      allow delete: if isOwnerAdmin();
+    }
+
+    match /counters/{counterId} {
+      allow read: if activeUser();
+      allow update: if activeUser();
+      allow create, delete: if isOwnerAdmin();
+    }
+
+    match /systemStatus/{statusId} {
+      allow read: if activeUser();
+      allow write: if isOwnerAdmin();
+    }
+
+    match /posBilling/{billingId} {
+      allow read: if isOwnerAdmin();
+      allow write: if isOwnerAdmin();
+    }
+
+    match /billingPayments/{paymentId} {
+      allow read: if isOwnerAdmin();
+      allow write: if isOwnerAdmin();
+    }
+
+    match /superAdminLogs/{logId} {
+      allow read: if isOwnerAdmin();
+      allow create: if isOwnerAdmin();
+      allow update, delete: if false;
+    }
+
+    // Default deny everything else.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
