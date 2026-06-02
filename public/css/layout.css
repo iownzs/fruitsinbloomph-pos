@@ -789,3 +789,50 @@ body.login-page #app {
   height: 100dvh !important;
   overflow: hidden !important;
 }
+
+/* FINAL: Login page no-scroll on desktop and mobile */
+body.login-page,
+html:has(body.login-page) {
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+body.login-page #app,
+body.login-page main,
+body.login-page .content,
+body.login-page .login-layout {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+body.login-page .login-layout {
+  box-sizing: border-box !important;
+}
+
+/* Desktop login: force centered no-scroll layout */
+@media (min-width: 901px) {
+  body.login-page .login-layout {
+    min-height: 100dvh !important;
+    height: 100dvh !important;
+    padding: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  body.login-page .login-brand-card,
+  body.login-page .login-card {
+    max-height: calc(100dvh - 48px) !important;
+  }
+}
+
+/* Mobile login: still no-scroll compact */
+@media (max-width: 520px) {
+  body.login-page .login-layout {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+}
