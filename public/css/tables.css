@@ -1465,3 +1465,52 @@ th{
   }
 }
 
+
+/* Temporary final override: restore desktop ingredient filter */
+@media (min-width: 701px) {
+  .ingredient-filter-card-2x2 {
+    display: grid !important;
+    grid-template-columns: minmax(280px, 1fr) 180px 180px 170px !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 14px !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-filter-row {
+    display: contents !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-search-field {
+    grid-column: 1 !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-filter-bottom-row .ingredient-filter-field:first-child {
+    grid-column: 2 !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-filter-bottom-row .ingredient-filter-field:last-child {
+    grid-column: 3 !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    grid-column: 4 !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-filter-field,
+  .ingredient-filter-card-2x2 .ingredient-search-field,
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .ingredient-stocks-desktop-table {
+    display: block !important;
+  }
+
+  .ingredient-stocks-mobile-cards {
+    display: none !important;
+  }
+}
