@@ -33,7 +33,7 @@ function shell(content){
           <p>${title}</p>
         </div>
       </div>
-      <span class="badge green">Active</span>
+      <div class="mobile-actions"><span class="badge green">Active</span><button class="btn small" type="button" data-logout>Logout</button></div>
     </div>
 
     <div class="app">
@@ -56,7 +56,7 @@ function shell(content){
           </div>
           <div class="actions">
             <span class="badge green">Active</span>
-            <a class="btn small" href="login.html">Logout</a>
+            <button class="btn small" type="button" data-logout>Logout</button>
           </div>
         </header>
 

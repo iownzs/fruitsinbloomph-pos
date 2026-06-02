@@ -69,3 +69,20 @@
 .cart-bottom-sheet{
   display:none;
 }
+
+.mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-actions .btn.small {
+  padding: 7px 10px;
+  font-size: 12px;
+}
+
+@media (min-width: 901px) {
+  .mobile-actions {
+    display: none;
+  }
+}
