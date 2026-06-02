@@ -32,12 +32,12 @@ shell(`
     </select>
 
     <label class="date-filter-field">
-      <span class="date-filter-label">From</span>
+      <span>From</span>
       <input id="dateFromFilter" type="date" aria-label="Date from">
     </label>
 
     <label class="date-filter-field">
-      <span class="date-filter-label">To</span>
+      <span>To</span>
       <input id="dateToFilter" type="date" aria-label="Date to">
     </label>
 
