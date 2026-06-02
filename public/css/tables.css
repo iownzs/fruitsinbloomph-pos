@@ -1491,3 +1491,24 @@ th{
   }
 }
 
+
+/* Final: Search and Add same size on mobile */
+@media (max-width: 700px) {
+  .ingredient-filter-top-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn,
+  .ingredient-filter-card-2x2 .ingredient-search-field {
+    width: 100% !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    border-radius: 15px !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    padding: 0 12px !important;
+    font-size: 13px !important;
+  }
+}
