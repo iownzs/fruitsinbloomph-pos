@@ -1512,3 +1512,32 @@ th{
     font-size: 12px !important;
   }
 }
+
+/* FINAL: clean Add button text, no white text pill */
+@media (max-width: 700px) {
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    text-align: center !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .add-circle {
+    background: rgba(255,255,255,0.82) !important;
+    color: #0891b2 !important;
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    flex: 0 0 26px !important;
+    border-radius: 999px !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn > span:not(.add-circle) {
+    display: none !important;
+  }
+}

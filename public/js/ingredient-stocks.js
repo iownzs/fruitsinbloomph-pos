@@ -8,7 +8,7 @@ shell(`
 
       <button class="btn primary ingredient-add-btn" onclick="openIngredientForm()">
         <span class="add-circle">＋</span>
-        <span>Add</span>
+        Add
       </button>
     </div>
 
