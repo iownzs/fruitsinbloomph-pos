@@ -1584,3 +1584,82 @@ th{
     gap: 7px !important;
   }
 }
+
+/* FINAL: Match Add button with Search field size + clean plus icon */
+@media (max-width: 700px) {
+  .ingredient-filter-top-row {
+    grid-template-columns: minmax(0, 1fr) 130px !important;
+    align-items: stretch !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    border-radius: 15px !important;
+    padding: 0 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .add-icon {
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    display: inline-block !important;
+    font-size: 19px !important;
+    font-weight: 950 !important;
+    line-height: 1 !important;
+    box-shadow: none !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .add-text {
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    display: inline-block !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    box-shadow: none !important;
+    white-space: nowrap !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn span:not(.add-icon):not(.add-text) {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .ingredient-filter-top-row {
+    grid-template-columns: minmax(0, 1fr) 118px !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    padding: 0 10px !important;
+    gap: 6px !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn .add-text {
+    font-size: 12px !important;
+  }
+}

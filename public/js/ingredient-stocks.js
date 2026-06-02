@@ -7,8 +7,8 @@ shell(`
       </div>
 
       <button class="btn primary ingredient-add-btn" onclick="openIngredientForm()">
-        <span class="add-circle">＋</span>
-        Add
+        <span class="add-icon">＋</span>
+        <span class="add-text">Add</span>
       </button>
     </div>
 
