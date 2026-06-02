@@ -305,3 +305,94 @@
     margin-left: auto;
   }
 }
+
+/* ===============================
+   App Scroll + Header Fix
+   Login stays no-scroll, POS pages can scroll
+================================= */
+
+/* Normal POS pages must scroll */
+body:not(.login-page) {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  position: static !important;
+  height: auto !important;
+  min-height: 100vh !important;
+}
+
+/* App layout should not block page scroll */
+body:not(.login-page) .app {
+  min-height: 100vh;
+}
+
+body:not(.login-page) main {
+  min-height: 100vh;
+  overflow: visible !important;
+}
+
+body:not(.login-page) .content {
+  overflow: visible !important;
+  padding-bottom: 90px;
+}
+
+/* Mobile/tablet POS pages */
+@media (max-width: 900px) {
+  body:not(.login-page) .mobile-header {
+    display: flex !important;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #0f172a;
+    border-bottom: 1px solid #1f2937;
+  }
+
+  body:not(.login-page) .topbar {
+    display: none !important;
+  }
+
+  body:not(.login-page) .app {
+    display: block !important;
+  }
+
+  body:not(.login-page) .sidebar {
+    position: fixed;
+    z-index: 200;
+  }
+
+  body:not(.login-page) .content {
+    padding-top: 14px;
+    padding-bottom: 100px;
+  }
+}
+
+/* Desktop POS pages */
+@media (min-width: 901px) {
+  body:not(.login-page) .mobile-header {
+    display: none !important;
+  }
+
+  body:not(.login-page) .topbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: #0f172a;
+    border-bottom: 1px solid #1f2937;
+  }
+
+  body:not(.login-page) .app {
+    display: grid !important;
+    grid-template-columns: 280px 1fr;
+  }
+
+  body:not(.login-page) .sidebar {
+    display: block !important;
+  }
+
+  body:not(.login-page) .content {
+    padding-bottom: 60px;
+  }
+}
