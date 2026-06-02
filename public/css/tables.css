@@ -1194,11 +1194,23 @@ th{
 }
 
 /* ==================================================
-   Ingredient Filter Layout FIX
-   Desktop restored / Mobile 2x2 only
+   INGREDIENT FILTER RULES - SOURCE OF TRUTH
+
+   Rules:
+   1. Desktop/tablet >= 701px:
+      Search | Category | Stock Status | Add
+      Desktop table visible, mobile cards hidden.
+
+   2. Mobile <= 700px:
+      Row 1: Search | Add
+      Row 2: Category | Stock Status
+      Mobile cards visible, desktop table hidden.
+
+   3. Do not add more ingredient filter/add button rules outside this section.
+      Edit this section only.
 ================================================== */
 
-/* Desktop and tablet desktop-mode */
+/* Desktop / tablet */
 @media (min-width: 701px) {
   .ingredient-filter-card-2x2 {
     display: grid !important;
@@ -1206,6 +1218,7 @@ th{
     gap: 12px !important;
     align-items: center !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-filter-row {
@@ -1241,12 +1254,33 @@ th{
 
   .ingredient-filter-card-2x2 input,
   .ingredient-filter-card-2x2 select {
+    width: 100% !important;
     height: 44px !important;
     min-height: 44px !important;
     line-height: normal !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+    padding: 0 12px 0 38px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-sizing: border-box !important;
     font-size: 13px !important;
+    font-weight: 800 !important;
+    color: #f8fafc !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-filter-field {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-filter-icon {
+    position: absolute !important;
+    left: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 2 !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-add-btn {
@@ -1284,7 +1318,7 @@ th{
   }
 }
 
-/* Real mobile only */
+/* Mobile */
 @media (max-width: 700px) {
   .ingredient-filter-card-2x2 {
     display: flex !important;
@@ -1343,8 +1377,6 @@ th{
     font-size: 12px !important;
     font-weight: 850 !important;
     color: #f8fafc !important;
-    display: flex !important;
-    align-items: center !important;
   }
 
   .ingredient-filter-card-2x2 input::placeholder {
@@ -1432,3 +1464,4 @@ th{
     font-size: 12px !important;
   }
 }
+
