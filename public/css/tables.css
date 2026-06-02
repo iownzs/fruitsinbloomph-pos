@@ -1125,178 +1125,22 @@ th{
   }
 }
 
-/* ==================================================
-   Ingredient Filter 2x2 Layout
-   Row 1: Search + Add Ingredient
-   Row 2: Category + Stock Status
-================================================== */
-
-.ingredient-filter-card-2x2 {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 12px !important;
-}
-
-.ingredient-filter-row {
-  display: grid !important;
-  gap: 12px !important;
-  width: 100% !important;
-}
-
-.ingredient-filter-top-row {
-  grid-template-columns: minmax(0, 1fr) 190px !important;
-}
-
-.ingredient-filter-bottom-row {
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-}
-
 /* Mobile: Search/Add, Category/Status */
 @media (max-width: 700px) {
-  .ingredient-filter-card-2x2 {
-    padding: 12px !important;
-    gap: 10px !important;
-  }
-
-  .ingredient-filter-top-row {
-    grid-template-columns: minmax(0, 1fr) 132px !important;
-    gap: 8px !important;
-  }
-
-  .ingredient-filter-bottom-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 8px !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-filter-field {
-    height: 48px !important;
-    min-height: 48px !important;
-    border-radius: 14px !important;
-    padding: 0 10px !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-filter-field input,
-  .ingredient-filter-card-2x2 .ingredient-filter-field select {
-    height: 48px !important;
-    min-height: 48px !important;
-    padding-left: 32px !important;
-    font-size: 12px !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-filter-icon {
-    left: 10px !important;
-    font-size: 15px !important;
-  }
 }
 
 /* Extra small phones: keep layout readable */
 @media (max-width: 390px) {
-  .ingredient-filter-top-row {
-    grid-template-columns: 1fr !important;
-  }
-
-  .ingredient-filter-bottom-row {
-    grid-template-columns: 1fr !important;
-  }
 }
 
 /* ==================================================
    Fix Ingredient 2x2 Mobile Filter Alignment
 ================================================== */
 @media (max-width: 700px) {
-  .ingredient-filter-card-2x2 {
-    padding: 12px !important;
-    gap: 10px !important;
-  }
-
-  .ingredient-filter-top-row {
-    grid-template-columns: minmax(0, 1fr) 130px !important;
-    gap: 10px !important;
-    align-items: stretch !important;
-  }
-
-  .ingredient-filter-bottom-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-    align-items: stretch !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-filter-field {
-    position: relative !important;
-    height: 52px !important;
-    min-height: 52px !important;
-    display: flex !important;
-    align-items: center !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-filter-icon {
-    position: absolute !important;
-    left: 14px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 18px !important;
-    height: 18px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 15px !important;
-    line-height: 1 !important;
-    z-index: 2 !important;
-  }
-
-  .ingredient-filter-card-2x2 input,
-  .ingredient-filter-card-2x2 select {
-    width: 100% !important;
-    height: 52px !important;
-    min-height: 52px !important;
-    line-height: 52px !important;
-    padding: 0 12px 0 42px !important;
-    margin: 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-    font-size: 12px !important;
-    font-weight: 850 !important;
-    color: #f8fafc !important;
-    display: block !important;
-    appearance: none !important;
-  }
-
-  .ingredient-filter-card-2x2 input::placeholder {
-    color: #94a3b8 !important;
-    opacity: 1 !important;
-    font-size: 12px !important;
-    font-weight: 800 !important;
-  }
-
-  .ingredient-filter-card-2x2 select {
-    padding-right: 26px !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-filter-field::after {
-    content: "⌄" !important;
-    position: absolute !important;
-    right: 12px !important;
-    top: 50% !important;
-    transform: translateY(-52%) !important;
-    color: #cbd5e1 !important;
-    font-size: 14px !important;
-    pointer-events: none !important;
-    display: block !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-search-field::after {
-    display: none !important;
-    content: none !important;
-  }
 }
 
 /* Small phones: use Add instead of wide text feel */
 @media (max-width: 390px) {
-  .ingredient-filter-top-row {
-    grid-template-columns: minmax(0, 1fr) 112px !important;
-  }
 }
 
 /* FINAL FIX: Ingredient mobile Add button overlap */
@@ -1320,97 +1164,82 @@ th{
 
 /* FINAL: Match Add button with Search field size + clean plus icon */
 @media (max-width: 700px) {
-  .ingredient-filter-top-row {
-    grid-template-columns: minmax(0, 1fr) 130px !important;
-    align-items: stretch !important;
-  }
 }
 
 @media (max-width: 390px) {
-  .ingredient-filter-top-row {
-    grid-template-columns: minmax(0, 1fr) 118px !important;
-  }
 }
 
 /* ==================================================
    FINAL: Stable Ingredient 2x2 Filter Layout
 ================================================== */
 @media (max-width: 700px) {
-  .ingredient-filter-card-2x2 {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-  }
-
-  .ingredient-filter-top-row {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 120px !important;
-    gap: 10px !important;
-  }
-
-  .ingredient-filter-bottom-row {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-filter-field {
-    height: 52px !important;
-    min-height: 52px !important;
-    border-radius: 15px !important;
-    overflow: hidden !important;
-  }
 }
 
 /* Extra small */
 @media (max-width: 390px) {
-  .ingredient-filter-top-row {
-    grid-template-columns: minmax(0, 1fr) 105px !important;
-  }
 }
 
 @media (max-width: 390px) {
 }
 
+@media (max-width: 700px) {
+}
+
+@media (max-width: 390px) {
+}
+
+
+/* Final: Search and Add same size on mobile */
+@media (max-width: 700px) {
+}
+
 /* ==================================================
-   CLEAN Ingredient Filter 2x2 + Add Button
+   CLEAN Ingredient Filter Layout
    Source of truth
+   Row 1: Search | Add
+   Row 2: Category | Stock Status
 ================================================== */
 
 .ingredient-filter-card-2x2 {
   display: flex !important;
   flex-direction: column !important;
+  width: 100% !important;
   gap: 12px !important;
+  box-sizing: border-box !important;
 }
 
-.ingredient-filter-row {
+.ingredient-filter-card-2x2 .ingredient-filter-row {
   display: grid !important;
   width: 100% !important;
   gap: 12px !important;
+  box-sizing: border-box !important;
 }
 
-.ingredient-filter-top-row {
-  grid-template-columns: minmax(0, 1fr) 130px !important;
-}
-
-.ingredient-filter-bottom-row {
+.ingredient-filter-card-2x2 .ingredient-filter-top-row,
+.ingredient-filter-card-2x2 .ingredient-filter-bottom-row {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
 }
 
+.ingredient-filter-card-2x2 .ingredient-filter-field,
+.ingredient-filter-card-2x2 .ingredient-search-field,
 .ingredient-filter-card-2x2 .ingredient-add-btn {
   width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
   height: 52px !important;
   min-height: 52px !important;
   max-height: 52px !important;
-  margin: 0 !important;
-  padding: 0 12px !important;
   border-radius: 15px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+}
 
+.ingredient-filter-card-2x2 .ingredient-add-btn {
+  padding: 0 12px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 7px !important;
-
   color: #ffffff !important;
   font-size: 13px !important;
   font-weight: 900 !important;
@@ -1455,31 +1284,15 @@ th{
     gap: 10px !important;
   }
 
-  .ingredient-filter-top-row {
-    grid-template-columns: minmax(0, 1fr) 120px !important;
+  .ingredient-filter-card-2x2 .ingredient-filter-row {
     gap: 10px !important;
-  }
-
-  .ingredient-filter-bottom-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-add-btn {
-    height: 52px !important;
-    min-height: 52px !important;
-    max-height: 52px !important;
   }
 }
 
 @media (max-width: 390px) {
-  .ingredient-filter-top-row {
-    grid-template-columns: minmax(0, 1fr) 105px !important;
-  }
-
   .ingredient-filter-card-2x2 .ingredient-add-btn {
-    gap: 5px !important;
     padding: 0 8px !important;
+    gap: 5px !important;
   }
 
   .ingredient-filter-card-2x2 .ingredient-add-plus {
@@ -1491,24 +1304,3 @@ th{
   }
 }
 
-
-/* Final: Search and Add same size on mobile */
-@media (max-width: 700px) {
-  .ingredient-filter-top-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-add-btn,
-  .ingredient-filter-card-2x2 .ingredient-search-field {
-    width: 100% !important;
-    height: 52px !important;
-    min-height: 52px !important;
-    max-height: 52px !important;
-    border-radius: 15px !important;
-  }
-
-  .ingredient-filter-card-2x2 .ingredient-add-btn {
-    padding: 0 12px !important;
-    font-size: 13px !important;
-  }
-}
