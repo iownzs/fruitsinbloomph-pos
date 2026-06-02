@@ -370,3 +370,113 @@ body.login-page {
     min-height: 42px;
   }
 }
+
+/* Force login to fit mobile viewport */
+@media (max-width: 520px) {
+  html,
+  body.login-page {
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden !important;
+  }
+
+  body.login-page {
+    position: fixed;
+    width: 100%;
+  }
+
+  .login-layout {
+    width: calc(100% - 20px);
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    padding: 8px 0 10px !important;
+    gap: 8px !important;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  .login-brand-card {
+    padding: 12px 14px !important;
+    border-radius: 16px;
+  }
+
+  .login-brand-row {
+    gap: 10px;
+  }
+
+  .login-logo {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 12px;
+    font-size: 14px;
+  }
+
+  .login-brand-title {
+    font-size: 20px !important;
+    line-height: 1.1;
+  }
+
+  .login-brand-subtitle {
+    font-size: 13px;
+    margin: 4px 0 0;
+  }
+
+  .login-card {
+    padding: 14px !important;
+    margin-bottom: 0 !important;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .login-card h3 {
+    font-size: 18px;
+    margin: 0 0 4px;
+  }
+
+  .login-card .muted {
+    font-size: 13px;
+    margin: 0 0 6px;
+  }
+
+  .login-form label {
+    margin-top: 8px !important;
+    font-size: 13px;
+  }
+
+  .login-form input {
+    min-height: 38px !important;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 14px;
+    padding: 0 12px;
+    margin-top: 5px;
+  }
+
+  .login-btn {
+    min-height: 40px !important;
+    height: 40px;
+    margin-top: 10px !important;
+    margin-bottom: 0 !important;
+    border-radius: 12px;
+  }
+
+  .login-card .quick-login-title {
+    font-size: 17px;
+    margin-top: 12px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .login-quick-grid {
+    gap: 6px !important;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .login-quick-grid .chip {
+    min-height: 34px !important;
+    height: 34px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+}
