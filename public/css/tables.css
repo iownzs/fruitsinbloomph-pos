@@ -158,3 +158,33 @@ th{
     width: 230px;
   }
 }
+
+/* ==================================================
+   Stock Movements responsive display
+   Desktop = table only
+   Mobile = cards only
+================================================== */
+
+.stock-movements-desktop-table {
+  display: block !important;
+}
+
+.stock-movements-mobile-cards {
+  display: none !important;
+}
+
+@media (max-width: 700px) {
+  .stock-movements-desktop-table {
+    display: none !important;
+  }
+
+  .stock-movements-mobile-cards {
+    display: grid !important;
+    gap: 14px !important;
+  }
+
+  .stock-movement-mobile-card {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
