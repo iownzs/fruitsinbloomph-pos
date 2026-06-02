@@ -1568,3 +1568,19 @@ th{
     gap: 8px !important;
   }
 }
+
+/* Final polish: compact Add button plus icon */
+@media (max-width: 700px) {
+  .ingredient-filter-card-2x2 .ingredient-add-btn .add-circle {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    max-width: 22px !important;
+    flex: 0 0 22px !important;
+    font-size: 14px !important;
+  }
+
+  .ingredient-filter-card-2x2 .ingredient-add-btn {
+    gap: 7px !important;
+  }
+}
