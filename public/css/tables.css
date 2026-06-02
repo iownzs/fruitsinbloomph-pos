@@ -208,3 +208,285 @@ th{
     min-width: 980px !important;
   }
 }
+
+/* ==================================================
+   Ingredient Stocks Premium Mobile/Desktop UI
+================================================== */
+
+.ingredient-filter-card {
+  background:
+    radial-gradient(circle at top left, rgba(6, 182, 212, 0.10), transparent 20rem),
+    #111827;
+  border: 1px solid #1f2937;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+  margin-bottom: 18px;
+}
+
+.ingredient-search-wrap,
+.ingredient-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ingredient-search-wrap input,
+.ingredient-select-wrap select {
+  min-height: 56px;
+  border-radius: 16px;
+  background: #070f1d;
+  border: 1px solid #233044;
+  color: #f8fafc;
+  padding-left: 56px;
+  font-weight: 800;
+}
+
+.ingredient-control-icon {
+  position: absolute;
+  left: 18px;
+  z-index: 2;
+  color: #67e8f9;
+  opacity: 0.9;
+  font-size: 22px;
+  pointer-events: none;
+}
+
+.ingredient-filter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ingredient-add-btn {
+  width: 100%;
+  min-height: 58px;
+  margin-top: 14px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.ingredient-add-btn span {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,0.88);
+  color: #0891b2;
+  font-weight: 950;
+}
+
+/* Firestore info card */
+.ingredient-firestore-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.ingredient-cloud-icon {
+  width: 74px;
+  height: 74px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle, rgba(34, 211, 238, 0.25), rgba(6, 182, 212, 0.08));
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  color: #67e8f9;
+  font-size: 34px;
+  flex: 0 0 auto;
+}
+
+/* Mobile premium ingredient card */
+.ingredient-mobile-main-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.ingredient-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.22), rgba(15, 23, 42, 0.85));
+  border: 1px solid rgba(20, 184, 166, 0.65);
+  box-shadow: 0 0 28px rgba(20, 184, 166, 0.12);
+  overflow: hidden;
+}
+
+.ingredient-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ingredient-avatar span {
+  font-size: 32px;
+  font-weight: 950;
+  color: #67e8f9;
+}
+
+.ingredient-status-pill {
+  border: 1px solid #243244;
+  background: #111827;
+  color: #d1d5db;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.ingredient-status-pill span {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #34d399;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.75);
+}
+
+.stock-mobile-card {
+  border-color: rgba(20, 184, 166, 0.35) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.stock-mobile-card .stock-grid div {
+  background: #07101d;
+  border: 1px solid #243244;
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.stock-mobile-card .stock-grid span {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.stock-mobile-card .stock-grid strong {
+  display: block;
+  margin-top: 8px;
+  color: #f8fafc;
+  font-size: 28px;
+}
+
+/* Better mobile actions like mockup */
+@media (max-width: 700px) {
+  .ingredient-filter-card {
+    margin: 16px 0 18px;
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .ingredient-filter-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .ingredient-search-wrap input,
+  .ingredient-select-wrap select {
+    min-height: 58px;
+    font-size: 16px;
+  }
+
+  .ingredient-firestore-head {
+    align-items: flex-start;
+  }
+
+  .ingredient-cloud-icon {
+    width: 62px;
+    height: 62px;
+    font-size: 28px;
+  }
+
+  .ingredient-mobile-main-head {
+    gap: 14px;
+  }
+
+  .ingredient-avatar {
+    width: 74px;
+    height: 74px;
+  }
+
+  .product-mobile-head {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .product-mobile-head h3 {
+    font-size: 28px;
+    line-height: 1.1;
+  }
+
+  .product-mobile-head .muted {
+    font-size: 17px;
+  }
+
+  .ingredient-status-pill {
+    padding: 9px 13px;
+    font-size: 14px;
+  }
+
+  .ingredient-mobile-actions {
+    margin-top: 22px;
+  }
+
+  .ingredient-mobile-actions .primary-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .ingredient-mobile-actions .secondary-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .ingredient-mobile-actions .btn.small {
+    min-height: 58px !important;
+    border-radius: 16px !important;
+    font-size: 16px !important;
+    font-weight: 950 !important;
+  }
+}
+
+/* Desktop toolbar */
+@media (min-width: 901px) {
+  .ingredient-filter-card {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) 380px 190px;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .ingredient-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0;
+  }
+
+  .ingredient-add-btn {
+    margin-top: 0;
+    min-height: 52px;
+  }
+
+  .ingredient-search-wrap input,
+  .ingredient-select-wrap select {
+    min-height: 52px;
+  }
+
+  .ingredient-cloud-icon {
+    width: 54px;
+    height: 54px;
+    font-size: 24px;
+  }
+}
