@@ -31,6 +31,9 @@ shell(`
       <option>Others</option>
     </select>
 
+    <input id="dateFromFilter" type="date" aria-label="Date from">
+    <input id="dateToFilter" type="date" aria-label="Date to">
+
     <button class="btn" onclick="resetMovementFilters()">Reset</button>
   </div>
 
@@ -259,7 +262,15 @@ function applyMovementFilters(){
   const stockType = document.getElementById("stockTypeFilter").value;
   const movementType = document.getElementById("movementTypeFilter").value;
   const category = document.getElementById("categoryFilter").value;
+  const dateFrom = document.getElementById("dateFromFilter").value;
+  const dateTo = document.getElementById("dateToFilter").value;
+
+  const fromDate = dateFrom ? new Date(dateFrom + "T00:00:00") : null;
+  const toDate = dateTo ? new Date(dateTo + "T23:59:59") : null;
+
   const filtered = allStockMovements.filter(movement => {
+    const movementDateObj = movementDateValue(movement.createdAt);
+
     const searchText = [
       movement.id,
       movement.movementId,
@@ -279,10 +290,15 @@ function applyMovementFilters(){
     const matchStockType = !stockType || movement.stockType === stockType;
     const matchMovementType = !movementType || movement.movementType === movementType;
     const matchCategory = !category || movementCategory(movement) === category;
+    const matchDateFrom = !fromDate || (movementDateObj && movementDateObj >= fromDate);
+    const matchDateTo = !toDate || (movementDateObj && movementDateObj <= toDate);
+
     return matchSearch
       && matchStockType
       && matchMovementType
-      && matchCategory;
+      && matchCategory
+      && matchDateFrom
+      && matchDateTo;
   });
 
   renderStockMovements(filtered);
@@ -293,6 +309,9 @@ function resetMovementFilters(){
   document.getElementById("stockTypeFilter").value = "";
   document.getElementById("movementTypeFilter").value = "";
   document.getElementById("categoryFilter").value = "";
+  document.getElementById("dateFromFilter").value = "";
+  document.getElementById("dateToFilter").value = "";
+
   renderStockMovements(allStockMovements);
 }
 
@@ -300,6 +319,8 @@ document.getElementById("movementSearch").addEventListener("input", applyMovemen
 document.getElementById("stockTypeFilter").addEventListener("change", applyMovementFilters);
 document.getElementById("movementTypeFilter").addEventListener("change", applyMovementFilters);
 document.getElementById("categoryFilter").addEventListener("change", applyMovementFilters);
+document.getElementById("dateFromFilter").addEventListener("change", applyMovementFilters);
+document.getElementById("dateToFilter").addEventListener("change", applyMovementFilters);
 
 window.showStockMovement = showStockMovement;
 window.resetMovementFilters = resetMovementFilters;
