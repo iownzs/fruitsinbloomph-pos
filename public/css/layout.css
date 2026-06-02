@@ -247,3 +247,61 @@
     display: flex !important;
   }
 }
+
+/* Correct header visibility: mobile vs desktop */
+
+/* Default/mobile: show mobile header, hide desktop topbar */
+.mobile-header {
+  display: flex !important;
+}
+
+.topbar {
+  display: none !important;
+}
+
+/* Desktop: hide mobile header, show desktop topbar */
+@media (min-width: 901px) {
+  .mobile-header {
+    display: none !important;
+  }
+
+  .topbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+  }
+
+  .topbar .actions,
+  .topbar-actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    margin-left: auto !important;
+  }
+
+  .topbar .user-profile {
+    display: flex !important;
+  }
+
+  .topbar [data-logout] {
+    display: inline-flex !important;
+  }
+}
+
+/* Mobile header cleanup */
+@media (max-width: 900px) {
+  .topbar {
+    display: none !important;
+  }
+
+  .mobile-header {
+    display: flex !important;
+  }
+
+  .mobile-actions {
+    display: flex !important;
+    margin-left: auto;
+  }
+}
