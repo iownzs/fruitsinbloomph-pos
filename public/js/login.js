@@ -48,50 +48,48 @@
   }
 
   function renderLogin() {
+    document.body.classList.add("login-page");
+
     shell(`
-      <div class="grid cols-2" style="min-height:80vh;align-items:center">
-        <div class="card">
-          <div class="brand">
-            <div class="logo">FIB</div>
+      <main class="login-layout">
+        <section class="login-brand-card">
+          <div class="login-brand-row">
+            <div class="login-logo">FIB</div>
             <div>
-              <h1>fruitsinbloomph POS</h1>
-              <p>Dark web-based POS system</p>
+              <h1 class="login-brand-title">fruitsinbloomph POS</h1>
+              <p class="login-brand-subtitle">Dark web-based POS system</p>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="card">
+        <section class="login-card">
           <h3>Welcome</h3>
           <p class="muted">Please login to admin dashboard.</p>
 
-          <form id="loginForm">
+          <form id="loginForm" class="login-form">
             <label>
               Username
               <input id="username" name="username" placeholder="admin" autocomplete="username" required>
             </label>
-
-            <br>
 
             <label>
               Password
               <input id="password" name="password" type="password" placeholder="password" autocomplete="current-password" required>
             </label>
 
-            <p id="loginError" class="muted" style="display:none;color:#f87171;margin-top:10px"></p>
+            <p id="loginError" class="login-error" style="display:none"></p>
 
-            <br>
-
-            <button id="loginBtn" class="btn primary" type="submit">Login</button>
+            <button id="loginBtn" class="btn primary login-btn" type="submit">Login</button>
           </form>
 
-          <h3>Quick Login</h3>
-          <div class="chips">
+          <h3 class="quick-login-title">Quick Login</h3>
+          <div class="login-quick-grid">
             ${["Admin", "Sales", "Cashier", "Kitchen", "Delivery", "Rider", "Inventory"].map(role => `
               <button class="chip" type="button" data-quick-role="${role}">${role}</button>
             `).join("")}
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
     `);
 
     attachEvents();
