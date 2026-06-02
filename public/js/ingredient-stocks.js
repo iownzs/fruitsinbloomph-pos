@@ -108,12 +108,16 @@ function renderIngredientStocksTable(stocks){
       <td>${money(stock.cost || 0)}</td>
       <td>${badge(stock.status || 'In Stock')}</td>
       <td>
-        <div class="table-actions">
-          <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
-          <button class="btn small primary" onclick="openIngredientForm('${stock.id}')">Edit</button>
-          <button class="btn small primary" onclick="openIngredientMovement('${stock.id}', 'Stock In')">Stock In</button>
-          <button class="btn small warning" onclick="openIngredientMovement('${stock.id}', 'Stock Out')">Stock Out</button>
-          <button class="btn small" onclick="openIngredientMovement('${stock.id}', 'Adjustment')">Adjust</button>
+        <div class="ingredient-action-group">
+          <div class="ingredient-action-row primary-actions">
+            <button class="btn small primary" onclick="openIngredientMovement('${stock.id}', 'Stock In')">Stock In</button>
+            <button class="btn small warning" onclick="openIngredientMovement('${stock.id}', 'Stock Out')">Stock Out</button>
+            <button class="btn small" onclick="openIngredientMovement('${stock.id}', 'Adjustment')">Adjust</button>
+          </div>
+          <div class="ingredient-action-row secondary-actions">
+            <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
+            <button class="btn small" onclick="openIngredientForm('${stock.id}')">Edit</button>
+          </div>
         </div>
       </td>
     </tr>
@@ -152,12 +156,16 @@ function renderIngredientStocksCards(stocks){
       </div>
 
       <div class="product-mobile-actions">
-        <div class="table-actions">
-          <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
-          <button class="btn small primary" onclick="openIngredientForm('${stock.id}')">Edit</button>
-          <button class="btn small primary" onclick="openIngredientMovement('${stock.id}', 'Stock In')">Stock In</button>
-          <button class="btn small warning" onclick="openIngredientMovement('${stock.id}', 'Stock Out')">Stock Out</button>
-          <button class="btn small" onclick="openIngredientMovement('${stock.id}', 'Adjustment')">Adjust</button>
+        <div class="product-mobile-actions ingredient-mobile-actions">
+          <div class="ingredient-action-row primary-actions">
+            <button class="btn small primary" onclick="openIngredientMovement('${stock.id}', 'Stock In')">Stock In</button>
+            <button class="btn small warning" onclick="openIngredientMovement('${stock.id}', 'Stock Out')">Stock Out</button>
+            <button class="btn small" onclick="openIngredientMovement('${stock.id}', 'Adjustment')">Adjust</button>
+          </div>
+          <div class="ingredient-action-row secondary-actions">
+            <button class="btn small" onclick="showIngredientStock('${stock.id}')">View</button>
+            <button class="btn small" onclick="openIngredientForm('${stock.id}')">Edit</button>
+          </div>
         </div>
       </div>
     </div>

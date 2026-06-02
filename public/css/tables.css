@@ -20,3 +20,55 @@ th{
 .table-actions .btn.small {
   white-space: nowrap;
 }
+
+/* Ingredient Stocks action grouping */
+.ingredient-action-group,
+.ingredient-mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ingredient-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ingredient-action-row .btn.small {
+  white-space: nowrap;
+}
+
+.ingredient-action-row.primary-actions .btn {
+  font-weight: 900;
+}
+
+.ingredient-action-row.secondary-actions .btn {
+  opacity: 0.92;
+}
+
+/* Mobile ingredient actions */
+@media (max-width: 700px) {
+  .ingredient-mobile-actions {
+    margin-top: 14px;
+  }
+
+  .ingredient-mobile-actions .ingredient-action-row {
+    display: grid;
+    gap: 8px;
+  }
+
+  .ingredient-mobile-actions .primary-actions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .ingredient-mobile-actions .secondary-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ingredient-mobile-actions .btn.small {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+}
