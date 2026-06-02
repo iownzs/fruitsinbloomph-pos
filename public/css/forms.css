@@ -480,3 +480,149 @@ body.login-page {
     font-size: 13px;
   }
 }
+
+/* Login icons + role chips polish */
+.login-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.login-input-wrap input {
+  margin-top: 0 !important;
+  padding-left: 48px !important;
+  padding-right: 48px !important;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 16px;
+  z-index: 2;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.login-eye-btn {
+  position: absolute;
+  right: 12px;
+  z-index: 2;
+  border: 0;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+}
+
+.login-eye-btn:hover {
+  color: #f9fafb;
+}
+
+.login-role-chip {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.login-role-chip span {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.login-role-chip strong {
+  font-weight: 800;
+}
+
+.login-brand-extra {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  .login-brand-card {
+    flex-direction: column;
+    justify-content: center;
+    gap: 42px;
+  }
+
+  .login-brand-row {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .login-logo {
+    width: 88px;
+    height: 88px;
+    border-radius: 24px;
+    font-size: 28px;
+    box-shadow: 0 0 40px rgba(22, 163, 74, 0.18);
+  }
+
+  .login-brand-extra {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    width: 100%;
+    max-width: 520px;
+    text-align: center;
+  }
+
+  .login-brand-extra div {
+    background: rgba(15, 23, 42, 0.55);
+    border: 1px solid #1f2937;
+    border-radius: 16px;
+    padding: 14px 10px;
+  }
+
+  .login-brand-extra strong {
+    display: block;
+    color: #f9fafb;
+    margin-bottom: 4px;
+  }
+
+  .login-brand-extra span {
+    display: block;
+    color: #9ca3af;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 520px) {
+  .login-input-wrap {
+    margin-top: 5px;
+  }
+
+  .login-input-wrap input {
+    padding-left: 42px !important;
+    padding-right: 42px !important;
+  }
+
+  .login-input-icon {
+    left: 13px;
+    font-size: 13px;
+  }
+
+  .login-eye-btn {
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .login-role-chip {
+    gap: 6px;
+  }
+
+  .login-role-chip span {
+    font-size: 13px;
+  }
+
+  .login-role-chip strong {
+    font-size: 13px;
+  }
+}

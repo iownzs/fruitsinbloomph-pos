@@ -50,6 +50,16 @@
   function renderLogin() {
     document.body.classList.add("login-page");
 
+    const roleIcons = {
+      Admin: "🛡️",
+      Sales: "📊",
+      Cashier: "💵",
+      Kitchen: "👨‍🍳",
+      Delivery: "🛵",
+      Rider: "🏍️",
+      Inventory: "📦"
+    };
+
     shell(`
       <main class="login-layout">
         <section class="login-brand-card">
@@ -58,6 +68,21 @@
             <div>
               <h1 class="login-brand-title">fruitsinbloomph POS</h1>
               <p class="login-brand-subtitle">Dark web-based POS system</p>
+            </div>
+          </div>
+
+          <div class="login-brand-extra">
+            <div>
+              <strong>Secure</strong>
+              <span>Role-based access</span>
+            </div>
+            <div>
+              <strong>Fast</strong>
+              <span>Web-based POS</span>
+            </div>
+            <div>
+              <strong>Ready</strong>
+              <span>Inventory + orders</span>
             </div>
           </div>
         </section>
@@ -69,12 +94,19 @@
           <form id="loginForm" class="login-form">
             <label>
               Username
-              <input id="username" name="username" placeholder="admin" autocomplete="username" required>
+              <div class="login-input-wrap">
+                <span class="login-input-icon">👤</span>
+                <input id="username" name="username" placeholder="admin" autocomplete="username" required>
+              </div>
             </label>
 
             <label>
               Password
-              <input id="password" name="password" type="password" placeholder="password" autocomplete="current-password" required>
+              <div class="login-input-wrap">
+                <span class="login-input-icon">🔒</span>
+                <input id="password" name="password" type="password" placeholder="password" autocomplete="current-password" required>
+                <button id="togglePassword" class="login-eye-btn" type="button" aria-label="Show password">👁️</button>
+              </div>
             </label>
 
             <p id="loginError" class="login-error" style="display:none"></p>
@@ -85,7 +117,10 @@
           <h3 class="quick-login-title">Quick Login</h3>
           <div class="login-quick-grid">
             ${["Admin", "Sales", "Cashier", "Kitchen", "Delivery", "Rider", "Inventory"].map(role => `
-              <button class="chip" type="button" data-quick-role="${role}">${role}</button>
+              <button class="chip login-role-chip" type="button" data-quick-role="${role}">
+                <span>${roleIcons[role]}</span>
+                <strong>${role}</strong>
+              </button>
             `).join("")}
           </div>
         </section>
@@ -100,6 +135,18 @@
 
     if (form) {
       form.addEventListener("submit", handleLogin);
+    }
+
+    const togglePassword = document.querySelector("#togglePassword");
+    const passwordInput = document.querySelector("#password");
+
+    if (togglePassword && passwordInput) {
+      togglePassword.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        togglePassword.textContent = isPassword ? "🙈" : "👁️";
+        togglePassword.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
+      });
     }
 
     document.querySelectorAll("[data-quick-role]").forEach((btn) => {
