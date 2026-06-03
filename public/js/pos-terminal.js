@@ -543,6 +543,10 @@ async function checkoutOrder(){
 
     const orderId = await window.FIB.createOrder(orderData);
 
+    if(window.FIB.deductIngredientsForOrder){
+      await window.FIB.deductIngredientsForOrder(orderId, cart);
+    }
+
     cart = [];
     renderCart();
     closeCartSheet();

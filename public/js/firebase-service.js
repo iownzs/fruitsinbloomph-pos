@@ -605,6 +605,170 @@ window.FIB.adjustIngredientStock = async function(payload){
 
 
 
+
+
+/* Ingredient Deduction from POS Order */
+window.FIB.deductIngredientsForOrder = async function(orderId, cartItems){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  if(!orderId) throw new Error("Order ID is required for ingredient deduction.");
+  if(!Array.isArray(cartItems) || !cartItems.length){
+    return { deducted: 0, skipped: true };
+  }
+
+  const now = firebase.firestore.FieldValue.serverTimestamp();
+  const deductionMap = new Map();
+
+  for(const cartItem of cartItems){
+    const productId = cartItem.productId || cartItem.id;
+    const cartQty = Number(cartItem.qty || cartItem.quantity || 1);
+
+    if(!productId || cartQty <= 0) continue;
+
+    const productDoc = await window.db.collection("products").doc(productId).get();
+
+    if(!productDoc.exists) continue;
+
+    const product = productDoc.data() || {};
+    const recipe = Array.isArray(product.recipe) ? product.recipe : [];
+
+    for(const recipeItem of recipe){
+      const ingredientId = recipeItem.ingredientId || recipeItem.id || recipeItem.itemId;
+      const recipeQty = Number(
+        recipeItem.qty ??
+        recipeItem.quantity ??
+        recipeItem.recipeQty ??
+        recipeItem.amount ??
+        recipeItem.ingredientQty ??
+        0
+      );
+
+      if(!ingredientId || recipeQty <= 0) continue;
+
+      const deductionQty = recipeQty * cartQty;
+      const key = ingredientId;
+
+      if(!deductionMap.has(key)){
+        deductionMap.set(key, {
+          ingredientId,
+          quantity: 0,
+          unit: recipeItem.unit || recipeItem.ingredientUnit || recipeItem.recipeUnit || "",
+          products: []
+        });
+      }
+
+      const entry = deductionMap.get(key);
+      entry.quantity += deductionQty;
+      entry.products.push({
+        productId,
+        productName: product.name || cartItem.name || productId,
+        cartQty,
+        recipeQty,
+        deductedQty: deductionQty
+      });
+    }
+  }
+
+  const deductions = [...deductionMap.values()];
+
+  if(!deductions.length){
+    return { deducted: 0, skipped: true };
+  }
+
+  return await window.db.runTransaction(async transaction => {
+    const ingredientSnapshots = [];
+
+    for(const deduction of deductions){
+      const ingredientRef = window.db.collection("ingredientStocks").doc(deduction.ingredientId);
+      const ingredientDoc = await transaction.get(ingredientRef);
+
+      if(!ingredientDoc.exists){
+        throw new Error("Ingredient stock not found: " + deduction.ingredientId);
+      }
+
+      ingredientSnapshots.push({
+        deduction,
+        ingredientRef,
+        ingredient: ingredientDoc.data() || {}
+      });
+    }
+
+    let movementCount = 0;
+
+    for(const item of ingredientSnapshots){
+      const deduction = item.deduction;
+      const ingredient = item.ingredient;
+
+      const previousStock = Number(ingredient.currentStock || 0);
+      const reservedStock = Number(ingredient.reservedStock ?? ingredient.reserved ?? 0);
+      const reorderLevel = Number(ingredient.reorderLevel || 0);
+      const newStock = previousStock - deduction.quantity;
+
+      if(newStock < 0){
+        throw new Error(
+          "Not enough ingredient stock for " +
+          (ingredient.name || ingredient.ingredientName || deduction.ingredientId)
+        );
+      }
+
+      const availableStock = Math.max(0, newStock - reservedStock);
+
+      let stockStatus = "In Stock";
+      if(availableStock <= 0){
+        stockStatus = "Out of Stock";
+      }else if(availableStock <= reorderLevel){
+        stockStatus = "Low Stock";
+      }
+
+      transaction.set(item.ingredientRef, {
+        currentStock: newStock,
+        reserved: reservedStock,
+        reservedStock,
+        available: availableStock,
+        availableStock,
+        status: stockStatus,
+        stockStatus,
+        updatedAt: now
+      }, { merge: true });
+
+      const movementRef = window.db.collection("stockMovements").doc();
+
+      transaction.set(movementRef, {
+        movementId: movementRef.id,
+        referenceId: orderId,
+        linkedOrderId: orderId,
+        stockType: "Ingredient Stock",
+        itemId: deduction.ingredientId,
+        itemName: ingredient.name || ingredient.ingredientName || deduction.ingredientId,
+        itemDetails: ingredient.details || ingredient.ingredientDetails || "",
+        sku: ingredient.sku || deduction.ingredientId,
+        barcode: ingredient.barcode || "",
+        category: ingredient.category || "Others",
+        movementType: "Ingredient Deduction",
+        quantity: deduction.quantity,
+        unit: ingredient.unit || deduction.unit || "pcs",
+        previousStock,
+        newStock,
+        reason: "POS order ingredient deduction",
+        performedBy: "POS Terminal",
+        performedByRole: "System",
+        notes: deduction.products.map(product =>
+          `${product.productName} x${product.cartQty} uses ${product.deductedQty}`
+        ).join("; "),
+        createdAt: now,
+        updatedAt: now
+      });
+
+      movementCount++;
+    }
+
+    return {
+      orderId,
+      deducted: movementCount
+    };
+  });
+};
+
 /* Product Stock Movement Helper */
 window.FIB.adjustProductStock = async function(payload){
   if(!window.db) throw new Error("Firestore not ready.");
