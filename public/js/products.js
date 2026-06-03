@@ -55,6 +55,10 @@ shell(`
 
 let allProducts = [];
 
+/* Cloudinary unsigned upload config */
+const CLOUDINARY_CLOUD_NAME = "dzgvkxi71";
+const CLOUDINARY_UPLOAD_PRESET = "fib_products_unsigned";
+
 async function loadProducts(){
   const status = document.getElementById("productsStatus");
   const body = document.getElementById("productsTableBody");
@@ -263,9 +267,19 @@ async function openProductForm(productId = ""){
         </label>
 
         <label>
-          Image Thumbnail URL
-          <input id="productImageUrl" value="${product?.imageUrl || ""}" placeholder="https://.../image.png">
+          Product Image
+          <input id="productImageFile" type="file" accept="image/*">
         </label>
+
+        <div class="image-upload-preview">
+          <div class="product-thumb product-image-preview">
+            ${product?.imageUrl ? `<img id="productImagePreview" src="${product.imageUrl}" alt="${product.name || 'Product'}">` : `<span id="productImagePreviewText">${(product?.name || '?').slice(0,1)}</span>`}
+          </div>
+          <div>
+            <input id="productImageUrl" value="${product?.imageUrl || ""}" placeholder="Cloudinary image URL" readonly>
+            <small class="muted">Image will be compressed before upload.</small>
+          </div>
+        </div>
 
         <label>
           Category
@@ -361,6 +375,11 @@ async function openProductForm(productId = ""){
     );
 
     renderRecipeBuilderList();
+
+    const imageInput = document.getElementById("productImageFile");
+    if(imageInput){
+      imageInput.addEventListener("change", handleProductImageUpload);
+    }
   }catch(error){
     openModal("Product Form Failed", `<p>${error.message}</p>`);
   }
@@ -445,6 +464,116 @@ function renderRecipeBuilderList(){
   `;
 }
 
+
+function loadImageFromFile(file){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+async function compressProductImage(file){
+  const img = await loadImageFromFile(file);
+
+  const maxSize = 900;
+  let width = img.width;
+  let height = img.height;
+
+  if(width > height && width > maxSize){
+    height = Math.round((height * maxSize) / width);
+    width = maxSize;
+  }else if(height > maxSize){
+    width = Math.round((width * maxSize) / height);
+    height = maxSize;
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, width, height);
+
+  return await new Promise(resolve => {
+    canvas.toBlob(blob => {
+      if(blob){
+        resolve(new File([blob], "product-image.webp", { type: "image/webp" }));
+      }else{
+        resolve(file);
+      }
+    }, "image/webp", 0.72);
+  });
+}
+
+async function uploadProductImageToCloudinary(file){
+  const compressedFile = await compressProductImage(file);
+
+  const formData = new FormData();
+  formData.append("file", compressedFile);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  formData.append("folder", "fruitsinbloomph/products");
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+    {
+      method: "POST",
+      body: formData
+    }
+  );
+
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error(data.error?.message || "Cloudinary upload failed.");
+  }
+
+  return {
+    imageUrl: data.secure_url,
+    cloudinaryPublicId: data.public_id
+  };
+}
+
+async function handleProductImageUpload(){
+  const input = document.getElementById("productImageFile");
+  const urlInput = document.getElementById("productImageUrl");
+
+  if(!input || !input.files || !input.files[0]){
+    return;
+  }
+
+  try{
+    const file = input.files[0];
+
+    if(file.size > 8 * 1024 * 1024){
+      alert("Image is too large. Please choose an image under 8MB.");
+      input.value = "";
+      return;
+    }
+
+    urlInput.value = "Uploading compressed image...";
+
+    const result = await uploadProductImageToCloudinary(file);
+
+    urlInput.value = result.imageUrl;
+    urlInput.dataset.cloudinaryPublicId = result.cloudinaryPublicId || "";
+
+    const preview = document.getElementById("productImagePreview");
+    if(preview){
+      preview.src = result.imageUrl;
+    }
+
+    const fallbackText = document.getElementById("productImagePreviewText");
+    if(fallbackText){
+      fallbackText.outerHTML = `<img id="productImagePreview" src="${result.imageUrl}" alt="Product image">`;
+    }
+  }catch(error){
+    alert(error.message);
+    urlInput.value = "";
+  }
+}
+
 async function saveProductForm(existingId = ""){
   try{
     if(!window.FIB.saveProduct){
@@ -456,6 +585,7 @@ async function saveProductForm(existingId = ""){
       name: document.getElementById("productName").value.trim(),
       details: document.getElementById("productDetails").value.trim(),
       imageUrl: document.getElementById("productImageUrl").value.trim(),
+      cloudinaryPublicId: document.getElementById("productImageUrl").dataset.cloudinaryPublicId || "",
       category: document.getElementById("productCategory").value,
       price: Number(document.getElementById("productPrice").value || 0),
       cost: Number(document.getElementById("productCost").value || 0),

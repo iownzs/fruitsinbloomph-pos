@@ -434,6 +434,7 @@ window.FIB.saveProduct = async function(product){
     stock,
     unit: product.unit || "pcs",
     imageUrl: product.imageUrl || "",
+    cloudinaryPublicId: product.cloudinaryPublicId || "",
     status: product.status || "Active",
     recipe: Array.isArray(product.recipe) ? product.recipe : [],
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -452,6 +453,7 @@ window.FIB.saveProduct = async function(product){
     productId,
     productName: name,
     imageUrl: productData.imageUrl,
+    cloudinaryPublicId: productData.cloudinaryPublicId,
     category: productData.category,
     currentStock: stock,
     reservedStock,
