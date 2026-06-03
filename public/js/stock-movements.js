@@ -1,14 +1,16 @@
 shell(`
   <div class="toolbar stock-movements-toolbar">
-    <input id="movementSearch" placeholder="Search movement, item, reason, performed by">
+    <input id="movementSearch" class="movement-search-filter" placeholder="Search movement">
 
-    <select id="stockTypeFilter">
+    <button class="btn movement-reset-filter" onclick="resetMovementFilters()">Reset Filters</button>
+
+    <select id="stockTypeFilter" class="movement-stock-type-filter">
       <option value="">All Stock Types</option>
       <option>Ingredient Stock</option>
       <option>Product Stock</option>
     </select>
 
-    <select id="movementTypeFilter">
+    <select id="movementTypeFilter" class="movement-type-filter">
       <option value="">All Movement Types</option>
       <option>Stock In</option>
       <option>Stock Out</option>
@@ -20,7 +22,7 @@ shell(`
       <option>Transfer</option>
     </select>
 
-    <select id="categoryFilter">
+    <select id="categoryFilter" class="movement-category-filter">
       <option value="">All Categories</option>
       <option>Fruits</option>
       <option>Dairy</option>
@@ -31,10 +33,9 @@ shell(`
       <option>Others</option>
     </select>
 
-    <input id="dateFromFilter" type="date" aria-label="Date from">
-    <input id="dateToFilter" type="date" aria-label="Date to">
+    <input id="dateFromFilter" class="movement-date-from-filter" type="text" placeholder="Date From" aria-label="Date from" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
 
-    <button class="btn" onclick="resetMovementFilters()">Reset</button>
+    <input id="dateToFilter" class="movement-date-to-filter" type="text" placeholder="Date To" aria-label="Date to" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
   </div>
 
   <div class="card">

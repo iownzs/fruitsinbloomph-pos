@@ -299,3 +299,75 @@ th{
     justify-content: center !important;
   }
 }
+
+/* ==================================================
+   Stock Movements mobile filter layout
+   Mobile only:
+   Search | Reset
+   Stock Type | Movement Type
+   Date From | Date To
+================================================== */
+
+@media (max-width: 700px) {
+  .stock-movements-toolbar {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    align-items: center !important;
+  }
+
+  .stock-movements-toolbar .movement-search-filter {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  .stock-movements-toolbar .movement-reset-filter {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+  }
+
+  .stock-movements-toolbar .movement-stock-type-filter {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+
+  .stock-movements-toolbar .movement-type-filter {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+  }
+
+  .stock-movements-toolbar .movement-date-from-filter {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+  }
+
+  .stock-movements-toolbar .movement-date-to-filter {
+    grid-column: 2 !important;
+    grid-row: 3 !important;
+  }
+
+  .stock-movements-toolbar .movement-category-filter {
+    display: none !important;
+  }
+
+  .stock-movements-toolbar input,
+  .stock-movements-toolbar select,
+  .stock-movements-toolbar button {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    border-radius: 15px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    font-size: 13px !important;
+    font-weight: 850 !important;
+  }
+
+  .stock-movements-toolbar .movement-reset-filter {
+    font-weight: 900 !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+}
