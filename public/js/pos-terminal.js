@@ -543,8 +543,26 @@ async function checkoutOrder(){
 
     const orderId = await window.FIB.createOrder(orderData);
 
-    if(window.FIB.deductIngredientsForOrder){
-      await window.FIB.deductIngredientsForOrder(orderId, cart);
+    try{
+      if(window.FIB.deductIngredientsForOrder){
+        await window.FIB.deductIngredientsForOrder(orderId, cart);
+      }
+    }catch(deductionError){
+      openModal(
+        "Ingredient Deduction Failed",
+        `
+          <p><strong>Order was created:</strong> ${orderId}</p>
+          <p>${deductionError.message || "Ingredient stock could not be deducted."}</p>
+          <p class="muted">
+            Please check Ingredient Stocks, update missing or low ingredients, then review this order.
+            The cart was not cleared so staff can still verify the items.
+          </p>
+        `,
+        `<button class="btn primary" onclick="location.href='./ingredient-stocks.html'">Open Ingredient Stocks</button>
+         <button class="btn" onclick="location.href='./orders.html'">Open Orders</button>
+         <button class="btn" onclick="closeModal()">Stay Here</button>`
+      );
+      return;
     }
 
     cart = [];
