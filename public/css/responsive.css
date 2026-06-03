@@ -1975,3 +1975,73 @@ body[data-page="pos-terminal"] .pos-product-actions .pos-product-add {
     min-height: 44px !important;
   }
 }
+
+/* ==================================================
+   FINAL POS product buttons centered in card
+================================================== */
+body[data-page="pos-terminal"] .pos-product-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  margin: 14px auto 0 !important;
+}
+
+body[data-page="pos-terminal"] .pos-product-actions .pos-product-view,
+body[data-page="pos-terminal"] .pos-product-actions .pos-product-add {
+  flex: 0 0 104px !important;
+  width: 104px !important;
+  min-width: 104px !important;
+  max-width: 104px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 0 12px !important;
+  border-radius: 13px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 700px) {
+  body[data-page="pos-terminal"] .pos-product-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    justify-content: center !important;
+    gap: 14px !important;
+    margin-top: 12px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-view,
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-add {
+    flex: 0 0 118px !important;
+    width: 118px !important;
+    min-width: 118px !important;
+    max-width: 118px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    border-radius: 14px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  body[data-page="pos-terminal"] .pos-product-actions {
+    gap: 12px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-view,
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-add {
+    flex: 0 0 108px !important;
+    width: 108px !important;
+    min-width: 108px !important;
+    max-width: 108px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+  }
+}
