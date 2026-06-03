@@ -741,3 +741,24 @@ body.login-page {
   height: 100%;
   object-fit: cover;
 }
+
+/* Cleaner product image upload UI */
+.image-upload-preview input#productImageUrl {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+.image-upload-preview small.muted {
+  display: block;
+  line-height: 1.35;
+}
+
+.image-upload-preview small.muted::before {
+  content: "Compressed Cloudinary image saved.";
+}
