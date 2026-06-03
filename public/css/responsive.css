@@ -2045,3 +2045,26 @@ body[data-page="pos-terminal"] .pos-product-actions .pos-product-add {
     min-height: 42px !important;
   }
 }
+
+/* ==================================================
+   POS Terminal cyan outline polish
+================================================== */
+body[data-page="pos-terminal"] .pos-product-compact-card {
+  border: 1px solid rgba(34, 211, 238, 0.20) !important;
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.04),
+    0 12px 30px rgba(15, 23, 42, 0.45) !important;
+}
+
+body[data-page="pos-terminal"] .pos-product-compact-card:hover {
+  border-color: rgba(34, 211, 238, 0.38) !important;
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.12),
+    0 0 22px rgba(34, 211, 238, 0.10),
+    0 12px 30px rgba(15, 23, 42, 0.48) !important;
+}
+
+body[data-page="pos-terminal"] .pos-product-thumb {
+  border: 1px solid rgba(34, 211, 238, 0.28) !important;
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.10) !important;
+}
