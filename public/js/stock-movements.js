@@ -1,26 +1,32 @@
 shell(`
-  <div class="toolbar stock-movements-toolbar">
-    <input id="movementSearch" class="movement-search-filter" placeholder="Search movement">
+  <div class="toolbar stock-movements-toolbar stock-movement-filter-panel">
+    <input id="movementSearch" class="movement-search-filter" placeholder="Search">
 
     <button class="btn movement-reset-filter" onclick="resetMovementFilters()">Reset Filters</button>
 
-    <select id="stockTypeFilter" class="movement-stock-type-filter">
-      <option value="">All Stock Types</option>
-      <option>Ingredient Stock</option>
-      <option>Product Stock</option>
-    </select>
+    <label class="movement-filter-box movement-stock-type-box">
+      <span class="movement-filter-label">Stock Type</span>
+      <select id="stockTypeFilter" class="movement-stock-type-filter">
+        <option value="">All Stock Types</option>
+        <option>Ingredient Stock</option>
+        <option>Product Stock</option>
+      </select>
+    </label>
 
-    <select id="movementTypeFilter" class="movement-type-filter">
-      <option value="">All Movement Types</option>
-      <option>Stock In</option>
-      <option>Stock Out</option>
-      <option>Adjustment</option>
-      <option>Ingredient Deduction</option>
-      <option>Damaged</option>
-      <option>Expired</option>
-      <option>Returned</option>
-      <option>Transfer</option>
-    </select>
+    <label class="movement-filter-box movement-type-box">
+      <span class="movement-filter-label">Movement Type</span>
+      <select id="movementTypeFilter" class="movement-type-filter">
+        <option value="">All Movement Types</option>
+        <option>Stock In</option>
+        <option>Stock Out</option>
+        <option>Adjustment</option>
+        <option>Ingredient Deduction</option>
+        <option>Damaged</option>
+        <option>Expired</option>
+        <option>Returned</option>
+        <option>Transfer</option>
+      </select>
+    </label>
 
     <select id="categoryFilter" class="movement-category-filter">
       <option value="">All Categories</option>
@@ -33,9 +39,15 @@ shell(`
       <option>Others</option>
     </select>
 
-    <input id="dateFromFilter" class="movement-date-from-filter" type="text" placeholder="Date From" aria-label="Date from" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
+    <label class="movement-filter-box movement-date-from-box">
+      <span class="movement-filter-label">Date From</span>
+      <input id="dateFromFilter" class="movement-date-from-filter" type="text" placeholder="Pick a Date" aria-label="Date from" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
+    </label>
 
-    <input id="dateToFilter" class="movement-date-to-filter" type="text" placeholder="Date To" aria-label="Date to" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
+    <label class="movement-filter-box movement-date-to-box">
+      <span class="movement-filter-label">Date To</span>
+      <input id="dateToFilter" class="movement-date-to-filter" type="text" placeholder="Pick a Date" aria-label="Date to" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
+    </label>
   </div>
 
   <div class="card">
