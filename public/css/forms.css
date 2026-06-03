@@ -1623,3 +1623,59 @@ body.login-page {
     margin-top: 12px !important;
   }
 }
+
+/* ==================================================
+   POS Receipt mobile footer buttons visible fix
+================================================== */
+@media (max-width: 700px) {
+  .modal-root.open:has(.pos-receipt) {
+    align-items: flex-start !important;
+    padding: 76px 12px 14px !important;
+    overflow: hidden !important;
+  }
+
+  .modal-root.open .modal:has(.pos-receipt) {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    height: calc(100vh - 100px) !important;
+    max-height: calc(100vh - 100px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  .modal-root.open .modal:has(.pos-receipt) .modal-head {
+    flex: 0 0 auto !important;
+  }
+
+  .modal-root.open .modal:has(.pos-receipt) .modal-body {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    padding-bottom: 16px !important;
+  }
+
+  .modal-root.open .modal:has(.pos-receipt) .modal-foot {
+    flex: 0 0 auto !important;
+    position: relative !important;
+    bottom: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    background: var(--card) !important;
+    border-top: 1px solid var(--border) !important;
+    z-index: 5 !important;
+  }
+
+  .modal-root.open .modal:has(.pos-receipt) .modal-foot .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    padding: 0 8px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+    white-space: nowrap !important;
+  }
+}
