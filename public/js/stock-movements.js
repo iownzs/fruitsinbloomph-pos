@@ -183,6 +183,7 @@ function renderStockMovementsTable(movements){
         <strong>${safeText(movement.itemName, "No item")}</strong>
         <br>
         <small>${safeText(movement.itemId || movement.referenceId, "")}</small>
+        ${movement.linkedOrderId || movement.orderId ? `<br><small>Order: ${safeText(movement.linkedOrderId || movement.orderId, "")}</small>` : ""}
       </td>
       <td>${badge(safeText(movementCategory(movement), "No Category"))}</td>
       <td>${movementBadge(movement.movementType)}</td>
@@ -225,6 +226,7 @@ function renderStockMovementsCards(movements){
         ${badge(safeText(movementCategory(movement), "No Category"))}
         ${badge(safeText(movement.unit, ""))}
         ${badge(safeText(movement.performedBy, "System"))}
+        ${movement.linkedOrderId || movement.orderId ? badge("Order " + safeText(movement.linkedOrderId || movement.orderId, "")) : ""}
       </div>
 
       <div class="stock-grid">
@@ -259,6 +261,8 @@ function showStockMovement(movementId){
       <p><strong>Item ID:</strong> ${safeText(movement.itemId || movement.referenceId, "")}</p>
       <p><strong>Category:</strong> ${safeText(movementCategory(movement), "")}</p>
       <p><strong>Movement Type:</strong> ${safeText(movement.movementType, "")}</p>
+      <p><strong>Linked Order ID:</strong> ${safeText(movement.linkedOrderId || movement.orderId, "—")}</p>
+      <p><strong>Reference ID:</strong> ${safeText(movement.referenceId, "—")}</p>
       <p><strong>Quantity:</strong> ${safeText(movement.quantity, 0)} ${safeText(movement.unit, "")}</p>
       <p><strong>Previous Stock:</strong> ${safeText(movement.previousStock, 0)}</p>
       <p><strong>New Stock:</strong> ${safeText(movement.newStock, 0)}</p>
