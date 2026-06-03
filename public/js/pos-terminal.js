@@ -835,7 +835,9 @@ function posProductRecipeHtml(product){
   function cleanRecipeUnit(unit){
     const value = String(unit || "").trim();
 
-    if(!value || value === "0" || value === "1" || value === "2" || value === "3" || value === "4" || value === "5"){
+    // Old recipe data sometimes saved quantity number into the unit field.
+    // If unit is empty or only numeric, treat it as pcs.
+    if(!value || !Number.isNaN(Number(value))){
       return "pcs";
     }
 

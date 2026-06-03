@@ -279,7 +279,7 @@ function cleanRecipeUnit(unit){
 
   // Old recipe data sometimes saved quantity number into the unit field.
   // If unit is empty or only numeric, treat it as pcs.
-  if(!value || /^\\d+(\\.\\d+)?$/.test(value)){
+  if(!value || !Number.isNaN(Number(value))){
     return "pcs";
   }
 
