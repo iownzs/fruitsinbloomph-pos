@@ -832,17 +832,34 @@ function posProductRecipeHtml(product){
     return `<p class="muted">No recipe ingredients saved.</p>`;
   }
 
+  function cleanRecipeUnit(unit){
+    const value = String(unit || "").trim();
+
+    if(!value || value === "0" || value === "1" || value === "2"){
+      return "pcs";
+    }
+
+    return value;
+  }
+
   return `
     <div class="pos-product-recipe-list">
-      ${recipe.map(item => `
-        <div class="pos-product-recipe-item">
-          <div>
-            <strong>${item.ingredientName || item.name || item.itemName || "Ingredient"}</strong>
-            <span>${item.ingredientId || item.id || ""}</span>
+      ${recipe.map(item => {
+        const name = item.ingredientName || item.name || item.itemName || "Ingredient";
+        const id = item.ingredientId || item.id || item.itemId || "";
+        const qty = item.qty ?? item.quantity ?? item.recipeQty ?? item.amount ?? item.ingredientQty ?? "";
+        const unit = cleanRecipeUnit(item.unit || item.ingredientUnit || item.recipeUnit || item.uom);
+
+        return `
+          <div class="pos-product-recipe-item">
+            <div>
+              <strong>${name}</strong>
+              <span>${id}</span>
+            </div>
+            <p>${qty}${unit ? " " + unit : ""}</p>
           </div>
-          <p>${item.qty ?? item.quantity ?? 0} ${item.unit || ""}</p>
-        </div>
-      `).join("")}
+        `;
+      }).join("")}
     </div>
   `;
 }
