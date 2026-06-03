@@ -541,6 +541,34 @@ async function checkoutOrder(){
       }
     };
 
+    if(window.FIB.validateIngredientsForCart){
+      const validation = await window.FIB.validateIngredientsForCart(cart);
+
+      if(!validation.ok){
+        const issueList = validation.issues.map(issue => `
+          <div class="checkout-stock-issue">
+            <strong>${issue.ingredientName}</strong>
+            <p>Required: ${issue.requiredQty} ${issue.unit}</p>
+            <p>Available: ${issue.availableStock} ${issue.unit}</p>
+            <small>${issue.reason}</small>
+          </div>
+        `).join("");
+
+        openModal(
+          "Checkout Blocked: Low Ingredient Stock",
+          `
+            <p>The order was not created because some recipe ingredients are missing or too low.</p>
+            <div class="checkout-stock-issues">${issueList}</div>
+            <p class="muted">Please update Ingredient Stocks, then try checkout again. The cart was not cleared.</p>
+          `,
+          `<button class="btn primary" onclick="location.href='./ingredient-stocks.html'">Open Ingredient Stocks</button>
+           <button class="btn" onclick="closeModal()">Stay Here</button>`
+        );
+
+        return;
+      }
+    }
+
     const orderId = await window.FIB.createOrder(orderData);
 
     try{

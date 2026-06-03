@@ -1338,3 +1338,31 @@ body.login-page {
     line-height: 1 !important;
   }
 }
+
+/* POS checkout low ingredient stock warning */
+.checkout-stock-issues {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.checkout-stock-issue {
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background: rgba(127, 29, 29, 0.18);
+}
+
+.checkout-stock-issue strong {
+  display: block;
+  color: #fecaca;
+  margin-bottom: 6px;
+}
+
+.checkout-stock-issue p {
+  margin: 2px 0;
+}
+
+.checkout-stock-issue small {
+  color: #fca5a5;
+}

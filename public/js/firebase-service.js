@@ -607,6 +607,107 @@ window.FIB.adjustIngredientStock = async function(payload){
 
 
 
+
+
+/* Validate Ingredient Stock before POS Order */
+window.FIB.validateIngredientsForCart = async function(cartItems){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  if(!Array.isArray(cartItems) || !cartItems.length){
+    return { ok: true, issues: [] };
+  }
+
+  const requiredMap = new Map();
+
+  for(const cartItem of cartItems){
+    const productId = cartItem.productId || cartItem.id;
+    const cartQty = Number(cartItem.qty || cartItem.quantity || 1);
+
+    if(!productId || cartQty <= 0) continue;
+
+    const productDoc = await window.db.collection("products").doc(productId).get();
+    if(!productDoc.exists) continue;
+
+    const product = productDoc.data() || {};
+    const recipe = Array.isArray(product.recipe) ? product.recipe : [];
+
+    for(const recipeItem of recipe){
+      const ingredientId = recipeItem.ingredientId || recipeItem.id || recipeItem.itemId;
+      const recipeQty = Number(
+        recipeItem.qty ??
+        recipeItem.quantity ??
+        recipeItem.recipeQty ??
+        recipeItem.amount ??
+        recipeItem.ingredientQty ??
+        0
+      );
+
+      if(!ingredientId || recipeQty <= 0) continue;
+
+      const requiredQty = recipeQty * cartQty;
+
+      if(!requiredMap.has(ingredientId)){
+        requiredMap.set(ingredientId, {
+          ingredientId,
+          requiredQty: 0,
+          products: []
+        });
+      }
+
+      const entry = requiredMap.get(ingredientId);
+      entry.requiredQty += requiredQty;
+      entry.products.push({
+        productName: product.name || cartItem.name || productId,
+        cartQty,
+        recipeQty,
+        requiredQty
+      });
+    }
+  }
+
+  const issues = [];
+
+  for(const entry of requiredMap.values()){
+    const ingredientDoc = await window.db.collection("ingredientStocks").doc(entry.ingredientId).get();
+
+    if(!ingredientDoc.exists){
+      issues.push({
+        ingredientId: entry.ingredientId,
+        ingredientName: entry.ingredientId,
+        requiredQty: entry.requiredQty,
+        availableStock: 0,
+        unit: "pcs",
+        reason: "Ingredient stock not found",
+        products: entry.products
+      });
+      continue;
+    }
+
+    const ingredient = ingredientDoc.data() || {};
+    const currentStock = Number(ingredient.currentStock || 0);
+    const reservedStock = Number(ingredient.reservedStock ?? ingredient.reserved ?? 0);
+    const availableStock = Math.max(0, currentStock - reservedStock);
+    const unit = ingredient.unit || "pcs";
+
+    if(availableStock < entry.requiredQty){
+      issues.push({
+        ingredientId: entry.ingredientId,
+        ingredientName: ingredient.name || ingredient.ingredientName || entry.ingredientId,
+        requiredQty: entry.requiredQty,
+        availableStock,
+        unit,
+        reason: "Not enough ingredient stock",
+        products: entry.products
+      });
+    }
+  }
+
+  return {
+    ok: issues.length === 0,
+    issues
+  };
+};
+
 /* Ingredient Deduction from POS Order */
 window.FIB.deductIngredientsForOrder = async function(orderId, cartItems){
   if(!window.db) throw new Error("Firestore not ready.");
