@@ -682,3 +682,89 @@ th{
     font-weight: 600 !important;
   }
 }
+
+/* ==================================================
+   Stock Movements compact desktop filter override
+================================================== */
+
+@media (min-width: 701px) {
+  .stock-movement-filter-panel {
+    display: grid !important;
+    grid-template-columns: 1fr 160px 160px 160px !important;
+    grid-template-rows: 42px 42px !important;
+    gap: 10px !important;
+    align-items: center !important;
+    padding: 12px !important;
+    overflow: hidden !important;
+  }
+
+  .stock-movements-toolbar .movement-search-filter {
+    grid-column: 1 / 4 !important;
+    grid-row: 1 !important;
+  }
+
+  .stock-movements-toolbar .movement-reset-filter {
+    grid-column: 4 !important;
+    grid-row: 1 !important;
+  }
+
+  .stock-movements-toolbar .movement-stock-type-box {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+
+  .stock-movements-toolbar .movement-type-box {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+  }
+
+  .stock-movements-toolbar .movement-date-from-box {
+    grid-column: 3 !important;
+    grid-row: 2 !important;
+  }
+
+  .stock-movements-toolbar .movement-date-to-box {
+    grid-column: 4 !important;
+    grid-row: 2 !important;
+  }
+
+  .stock-movements-toolbar .movement-category-filter {
+    display: none !important;
+  }
+
+  .stock-movements-toolbar input,
+  .stock-movements-toolbar select,
+  .stock-movements-toolbar button,
+  .stock-movements-toolbar .movement-filter-box {
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+  }
+
+  .stock-movements-toolbar .movement-filter-box {
+    padding: 11px 10px 5px !important;
+  }
+
+  .stock-movements-toolbar .movement-filter-label {
+    top: -6px !important;
+    left: 9px !important;
+    padding: 0 6px !important;
+    font-size: 9px !important;
+    font-weight: 700 !important;
+  }
+
+  .stock-movements-toolbar .movement-filter-box select,
+  .stock-movements-toolbar .movement-filter-box input {
+    height: 30px !important;
+    min-height: 30px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+  }
+}
