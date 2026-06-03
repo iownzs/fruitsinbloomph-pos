@@ -609,6 +609,210 @@ window.FIB.adjustIngredientStock = async function(payload){
 
 
 
+
+
+/* Validate Product Stock before POS Order */
+window.FIB.validateProductStocksForCart = async function(cartItems){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  if(!Array.isArray(cartItems) || !cartItems.length){
+    return { ok: true, issues: [] };
+  }
+
+  const requiredMap = new Map();
+
+  for(const cartItem of cartItems){
+    const productId = cartItem.productId || cartItem.id;
+    const cartQty = Number(cartItem.qty || cartItem.quantity || 1);
+
+    if(!productId || cartQty <= 0) continue;
+
+    if(!requiredMap.has(productId)){
+      requiredMap.set(productId, {
+        productId,
+        productName: cartItem.name || productId,
+        requiredQty: 0
+      });
+    }
+
+    const entry = requiredMap.get(productId);
+    entry.requiredQty += cartQty;
+  }
+
+  const issues = [];
+
+  for(const entry of requiredMap.values()){
+    const stockDoc = await window.db.collection("productStocks").doc(entry.productId).get();
+
+    if(!stockDoc.exists){
+      issues.push({
+        productId: entry.productId,
+        productName: entry.productName,
+        requiredQty: entry.requiredQty,
+        availableStock: 0,
+        unit: "pcs",
+        reason: "Product stock not found"
+      });
+      continue;
+    }
+
+    const stock = stockDoc.data() || {};
+    const currentStock = Number(stock.currentStock || 0);
+    const reservedStock = Number(stock.reservedStock ?? stock.reserved ?? 0);
+    const availableStock = Math.max(0, currentStock - reservedStock);
+    const unit = stock.unit || "pcs";
+
+    if(availableStock < entry.requiredQty){
+      issues.push({
+        productId: entry.productId,
+        productName: stock.productName || entry.productName,
+        requiredQty: entry.requiredQty,
+        availableStock,
+        unit,
+        reason: "Not enough product stock"
+      });
+    }
+  }
+
+  return {
+    ok: issues.length === 0,
+    issues
+  };
+};
+
+/* Deduct Product Stocks from POS Order */
+window.FIB.deductProductStocksForOrder = async function(orderId, cartItems){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  if(!orderId) throw new Error("Order ID is required for product stock deduction.");
+  if(!Array.isArray(cartItems) || !cartItems.length){
+    return { deducted: 0, skipped: true };
+  }
+
+  const requiredMap = new Map();
+
+  for(const cartItem of cartItems){
+    const productId = cartItem.productId || cartItem.id;
+    const cartQty = Number(cartItem.qty || cartItem.quantity || 1);
+
+    if(!productId || cartQty <= 0) continue;
+
+    if(!requiredMap.has(productId)){
+      requiredMap.set(productId, {
+        productId,
+        productName: cartItem.name || productId,
+        quantity: 0
+      });
+    }
+
+    const entry = requiredMap.get(productId);
+    entry.quantity += cartQty;
+  }
+
+  const deductions = [...requiredMap.values()];
+
+  if(!deductions.length){
+    return { deducted: 0, skipped: true };
+  }
+
+  const now = firebase.firestore.FieldValue.serverTimestamp();
+
+  return await window.db.runTransaction(async transaction => {
+    const productSnapshots = [];
+
+    for(const deduction of deductions){
+      const stockRef = window.db.collection("productStocks").doc(deduction.productId);
+      const stockDoc = await transaction.get(stockRef);
+
+      if(!stockDoc.exists){
+        throw new Error("Product stock not found: " + deduction.productName);
+      }
+
+      productSnapshots.push({
+        deduction,
+        stockRef,
+        stock: stockDoc.data() || {}
+      });
+    }
+
+    let movementCount = 0;
+
+    for(const item of productSnapshots){
+      const deduction = item.deduction;
+      const stock = item.stock;
+
+      const previousStock = Number(stock.currentStock || 0);
+      const reservedStock = Number(stock.reservedStock ?? stock.reserved ?? 0);
+      const reorderLevel = Number(stock.reorderLevel || 0);
+      const newStock = previousStock - deduction.quantity;
+
+      if(newStock < 0){
+        throw new Error("Not enough product stock for " + (stock.productName || deduction.productName));
+      }
+
+      const availableStock = Math.max(0, newStock - reservedStock);
+
+      let stockStatus = "In Stock";
+      if(availableStock <= 0){
+        stockStatus = "Out of Stock";
+      }else if(availableStock <= reorderLevel){
+        stockStatus = "Low Stock";
+      }
+
+      transaction.set(item.stockRef, {
+        currentStock: newStock,
+        reserved: reservedStock,
+        reservedStock,
+        available: availableStock,
+        availableStock,
+        stockStatus,
+        status: stockStatus,
+        updatedAt: now
+      }, { merge: true });
+
+      const productRef = window.db.collection("products").doc(deduction.productId);
+      transaction.set(productRef, {
+        stock: newStock,
+        updatedAt: now
+      }, { merge: true });
+
+      const movementRef = window.db.collection("stockMovements").doc();
+
+      transaction.set(movementRef, {
+        movementId: movementRef.id,
+        referenceId: orderId,
+        linkedOrderId: orderId,
+        stockType: "Product Stock",
+        itemId: deduction.productId,
+        itemName: stock.productName || deduction.productName,
+        itemDetails: stock.details || stock.productDetails || "",
+        sku: stock.sku || deduction.productId,
+        barcode: stock.barcode || "",
+        category: stock.category || "Others",
+        imageUrl: stock.imageUrl || "",
+        movementType: "Stock Out",
+        quantity: deduction.quantity,
+        unit: stock.unit || "pcs",
+        previousStock,
+        newStock,
+        reason: "POS order product stock deduction",
+        performedBy: "POS Terminal",
+        performedByRole: "System",
+        notes: `Order ${orderId} sold ${deduction.quantity} ${stock.unit || "pcs"}`,
+        createdAt: now,
+        updatedAt: now
+      });
+
+      movementCount++;
+    }
+
+    return {
+      orderId,
+      deducted: movementCount
+    };
+  });
+};
+
 /* Validate Ingredient Stock before POS Order */
 window.FIB.validateIngredientsForCart = async function(cartItems){
   if(!window.db) throw new Error("Firestore not ready.");

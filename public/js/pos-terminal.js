@@ -541,6 +541,34 @@ async function checkoutOrder(){
       }
     };
 
+    if(window.FIB.validateProductStocksForCart){
+      const productValidation = await window.FIB.validateProductStocksForCart(cart);
+
+      if(!productValidation.ok){
+        const issueList = productValidation.issues.map(issue => `
+          <div class="checkout-stock-issue">
+            <strong>${issue.productName}</strong>
+            <p>Required: ${issue.requiredQty} ${issue.unit}</p>
+            <p>Available: ${issue.availableStock} ${issue.unit}</p>
+            <small>${issue.reason}</small>
+          </div>
+        `).join("");
+
+        openModal(
+          "Checkout Blocked: Low Product Stock",
+          `
+            <p>The order was not created because some product stocks are missing or too low.</p>
+            <div class="checkout-stock-issues">${issueList}</div>
+            <p class="muted">Please update Product Stocks, then try checkout again. The cart was not cleared.</p>
+          `,
+          `<button class="btn primary" onclick="location.href='./product-stocks.html'">Open Product Stocks</button>
+           <button class="btn" onclick="closeModal()">Stay Here</button>`
+        );
+
+        return;
+      }
+    }
+
     if(window.FIB.validateIngredientsForCart){
       const validation = await window.FIB.validateIngredientsForCart(cart);
 
@@ -572,15 +600,19 @@ async function checkoutOrder(){
     const orderId = await window.FIB.createOrder(orderData);
 
     try{
+      if(window.FIB.deductProductStocksForOrder){
+        await window.FIB.deductProductStocksForOrder(orderId, cart);
+      }
+
       if(window.FIB.deductIngredientsForOrder){
         await window.FIB.deductIngredientsForOrder(orderId, cart);
       }
     }catch(deductionError){
       openModal(
-        "Ingredient Deduction Failed",
+        "Stock Deduction Failed",
         `
           <p><strong>Order was created:</strong> ${orderId}</p>
-          <p>${deductionError.message || "Ingredient stock could not be deducted."}</p>
+          <p>${deductionError.message || "Product or ingredient stock could not be deducted."}</p>
           <p class="muted">
             Please check Ingredient Stocks, update missing or low ingredients, then review this order.
             The cart was not cleared so staff can still verify the items.
