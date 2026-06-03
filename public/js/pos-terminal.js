@@ -474,6 +474,42 @@ function getCartFormData(){
   };
 }
 
+
+function clearPOSCheckoutForm(){
+  cart = [];
+
+  document.querySelectorAll(
+    ".pos-cart-panel input, .pos-cart-panel textarea, .pos-cart-panel select, #cartSheetContent input, #cartSheetContent textarea, #cartSheetContent select"
+  ).forEach(field => {
+    if(field.tagName === "SELECT"){
+      field.selectedIndex = 0;
+    }else{
+      field.value = "";
+    }
+  });
+
+  document.querySelectorAll(".pos-cart-panel .chip, #cartSheetContent .chip").forEach(chip => {
+    chip.classList.remove("active");
+  });
+
+  document.querySelectorAll('[data-source="Facebook"]').forEach(chip => chip.classList.add("active"));
+  document.querySelectorAll('[data-source-type="Organic"]').forEach(chip => chip.classList.add("active"));
+  document.querySelectorAll('[data-priority="Normal"]').forEach(chip => chip.classList.add("active"));
+
+  setType("pickup");
+  setupCartChipSelection();
+  renderCart();
+  closeCartSheet();
+}
+
+function refreshPOSProductsInBackground(){
+  if(typeof loadPOSProducts === "function"){
+    loadPOSProducts().catch(error => {
+      console.warn("POS product refresh failed:", error);
+    });
+  }
+}
+
 async function checkoutOrder(){
   try{
     if(!window.FIB_FIREBASE_READY || !window.FIB.createOrder){
@@ -625,13 +661,8 @@ async function checkoutOrder(){
       return;
     }
 
-    cart = [];
-    renderCart();
-    closeCartSheet();
-
-    if(typeof loadPOSProducts === "function"){
-      await loadPOSProducts();
-    }
+    clearPOSCheckoutForm();
+    refreshPOSProductsInBackground();
 
     openModal(
       "Order Created",
