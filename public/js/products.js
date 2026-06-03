@@ -181,15 +181,47 @@ function showProduct(productId){
   const product = allProducts.find(p => p.id === productId);
   if(!product) return;
 
+  const recipeCount = Array.isArray(product.recipe) ? product.recipe.length : 0;
+
   openModal(
     product.name,
     `
-      <p><strong>Category:</strong> ${product.category || ''}</p>
-      <p><strong>Price:</strong> ${money(product.price || 0)}</p>
-      <p><strong>Stock:</strong> ${product.stock ?? 0} ${product.unit || ''}</p>
-      <p><strong>Status:</strong> ${product.status || ''}</p>
+      <div class="product-view-full-preview">
+        ${product.imageUrl
+          ? `<img src="${product.imageUrl}" alt="${product.name || 'Product'}">`
+          : `<div class="product-view-full-fallback">${(product.name || '?').slice(0,1)}</div>`
+        }
+      </div>
+
+      <div class="product-view-summary">
+        <h3>${product.name || ''}</h3>
+        <p class="muted">${product.id || product.productId || ''}</p>
+      </div>
+
+      <div class="product-view-info-grid">
+        <div>
+          <span>Category</span>
+          <strong>${product.category || 'No Category'}</strong>
+        </div>
+        <div>
+          <span>Price</span>
+          <strong>${money(product.price || 0)}</strong>
+        </div>
+        <div>
+          <span>Stock</span>
+          <strong>${product.stock ?? 0} ${product.unit || ''}</strong>
+        </div>
+        <div>
+          <span>Status</span>
+          <strong>${product.status || 'Active'}</strong>
+        </div>
+      </div>
+
       <h3>Details</h3>
-      <p>${product.details || ''}</p>
+      <p>${product.details || 'No product details saved.'}</p>
+
+      <h3>Recipe Summary</h3>
+      <p class="muted">${recipeCount} ingredient${recipeCount === 1 ? '' : 's'} saved.</p>
     `,
     `<button class="btn" onclick="closeModal()">Close</button>`
   );
