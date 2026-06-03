@@ -1240,3 +1240,15 @@ body.login-page {
     min-width: 0;
   }
 }
+
+/* POS View button click safety */
+.pos-product-actions {
+  position: relative;
+  z-index: 5;
+}
+
+.pos-product-view {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+}

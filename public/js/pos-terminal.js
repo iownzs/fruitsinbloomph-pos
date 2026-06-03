@@ -88,7 +88,7 @@ function renderPOSProducts(products){
     return;
   }
 
-  grid.innerHTML = products.map(product => `
+  grid.innerHTML = products.map((product, index) => `
     <div class="card product-card pos-product-compact-card">
       <div class="pos-product-main">
         <div class="pos-product-thumb">
@@ -110,7 +110,7 @@ function renderPOSProducts(products){
         </div>
 
         <div class="pos-product-actions">
-          <button type="button" class="btn primary pos-product-view" data-pos-product-view="${escapeText(product.id || product.productId || product.name)}">
+          <button type="button" class="btn primary pos-product-view" data-pos-product-index="${index}">
             View
           </button>
 
@@ -121,6 +121,8 @@ function renderPOSProducts(products){
       </div>
     </div>
   `).join('');
+
+  attachPOSProductViewButtons(products);
 }
 
 function filterPOSCategory(category){
@@ -953,3 +955,81 @@ if(!window.POS_PRODUCT_VIEW_CLICK_READY){
     window.showPOSProduct(productId);
   });
 }
+
+/* POS product View direct button binding */
+function attachPOSProductViewButtons(renderedProducts){
+  document.querySelectorAll("[data-pos-product-index]").forEach(button => {
+    button.onclick = function(event){
+      event.preventDefault();
+      event.stopPropagation();
+
+      const index = Number(button.getAttribute("data-pos-product-index"));
+      const product = renderedProducts[index];
+
+      if(!product){
+        alert("Product view failed. Product index not found.");
+        return;
+      }
+
+      showPOSProductDirect(product);
+    };
+  });
+}
+
+function showPOSProductDirect(product){
+  if(!product){
+    alert("Product not found.");
+    return;
+  }
+
+  const recipe = Array.isArray(product.recipe) ? product.recipe : [];
+  const recipeCount = recipe.length;
+
+  openModal(
+    product.name || "Product Details",
+    `
+      <div class="product-view-full-preview">
+        ${product.imageUrl
+          ? `<img src="${product.imageUrl}" alt="${product.name || 'Product'}">`
+          : `<div class="product-view-full-fallback">${(product.name || '?').slice(0,1)}</div>`
+        }
+      </div>
+
+      <div class="product-view-summary">
+        <h3>${product.name || ''}</h3>
+        <p class="muted">${product.id || product.productId || ''}</p>
+      </div>
+
+      <div class="product-view-info-grid">
+        <div>
+          <span>Category</span>
+          <strong>${product.category || 'No Category'}</strong>
+        </div>
+        <div>
+          <span>Price</span>
+          <strong>${money(product.price || 0)}</strong>
+        </div>
+        <div>
+          <span>Stock</span>
+          <strong>${product.stock ?? 0} ${product.unit || ''}</strong>
+        </div>
+        <div>
+          <span>Status</span>
+          <strong>${product.status || 'Active'}</strong>
+        </div>
+      </div>
+
+      <h3>Details</h3>
+      <p>${product.details || product.description || 'No product details saved.'}</p>
+
+      <h3>Recipe Summary</h3>
+      <p class="muted">${recipeCount} ingredient${recipeCount === 1 ? '' : 's'} saved.</p>
+      ${posProductRecipeHtml(product)}
+    `,
+    `<button class="btn primary" onclick="addToCartFromPOSView('${product.id || product.productId || product.name}')">Add to Cart</button>
+     <button class="btn" onclick="closeModal()">Close</button>`
+  );
+}
+
+window.attachPOSProductViewButtons = attachPOSProductViewButtons;
+window.showPOSProductDirect = showPOSProductDirect;
