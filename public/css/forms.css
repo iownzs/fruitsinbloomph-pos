@@ -1143,3 +1143,67 @@ body.login-page {
   object-fit: contain !important;
   background: #ffffff !important;
 }
+
+/* POS Product View full recipe preview */
+.pos-product-recipe-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pos-product-recipe-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #0b1220;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.pos-product-recipe-item strong {
+  display: block;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.pos-product-recipe-item span {
+  display: block;
+  color: #94a3b8;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+.pos-product-recipe-item p {
+  margin: 0;
+  color: #e5e7eb;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* POS product card View/Add actions */
+.pos-product-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.pos-product-actions .btn {
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .pos-product-actions {
+    flex-direction: row;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .pos-product-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}

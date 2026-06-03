@@ -109,9 +109,15 @@ function renderPOSProducts(products){
           <p class="muted pos-product-desc">${product.details || ''}</p>
         </div>
 
-        <button class="btn primary pos-product-add" onclick="addCart('${escapeText(product.id || product.name)}')">
-          Add
-        </button>
+        <div class="pos-product-actions">
+          <button class="btn small pos-product-view" onclick="showPOSProduct('${escapeText(product.id || product.name)}')">
+            View
+          </button>
+
+          <button class="btn primary pos-product-add" onclick="addCart('${escapeText(product.id || product.name)}')">
+            Add
+          </button>
+        </div>
       </div>
     </div>
   `).join('');
@@ -815,3 +821,110 @@ function resetCart(){
   renderCart();
   closeCartSheet();
 }
+
+
+function posProductRecipeHtml(product){
+  const recipe = Array.isArray(product.recipe) ? product.recipe : [];
+
+  if(!recipe.length){
+    return `<p class="muted">No recipe ingredients saved.</p>`;
+  }
+
+  return `
+    <div class="pos-product-recipe-list">
+      ${recipe.map(item => `
+        <div class="pos-product-recipe-item">
+          <div>
+            <strong>${item.ingredientName || item.name || item.itemName || "Ingredient"}</strong>
+            <span>${item.ingredientId || item.id || ""}</span>
+          </div>
+          <p>${item.qty ?? item.quantity ?? 0} ${item.unit || ""}</p>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function showPOSProduct(productId){
+  const product = allProducts.find(item =>
+    item.id === productId || item.productId === productId
+  );
+
+  if(!product){
+    openModal("Product Not Found", "<p>Product was not found.</p>");
+    return;
+  }
+
+  const recipe = Array.isArray(product.recipe) ? product.recipe : [];
+  const recipeCount = recipe.length;
+
+  openModal(
+    product.name || "Product Details",
+    `
+      <div class="product-view-full-preview">
+        ${product.imageUrl
+          ? `<img src="${product.imageUrl}" alt="${product.name || 'Product'}">`
+          : `<div class="product-view-full-fallback">${(product.name || '?').slice(0,1)}</div>`
+        }
+      </div>
+
+      <div class="product-view-summary">
+        <h3>${product.name || ''}</h3>
+        <p class="muted">${product.id || product.productId || ''}</p>
+      </div>
+
+      <div class="product-view-info-grid">
+        <div>
+          <span>Category</span>
+          <strong>${product.category || 'No Category'}</strong>
+        </div>
+        <div>
+          <span>Price</span>
+          <strong>${money(product.price || 0)}</strong>
+        </div>
+        <div>
+          <span>Stock</span>
+          <strong>${product.stock ?? 0} ${product.unit || ''}</strong>
+        </div>
+        <div>
+          <span>Status</span>
+          <strong>${product.status || 'Active'}</strong>
+        </div>
+      </div>
+
+      <h3>Details</h3>
+      <p>${product.details || product.description || 'No product details saved.'}</p>
+
+      <h3>Recipe Summary</h3>
+      <p class="muted">${recipeCount} ingredient${recipeCount === 1 ? '' : 's'} saved.</p>
+      ${posProductRecipeHtml(product)}
+    `,
+    `<button class="btn primary" onclick="addToCartFromPOSView('${product.id || product.productId}')">Add to Cart</button>
+     <button class="btn" onclick="closeModal()">Close</button>`
+  );
+}
+
+function addToCartFromPOSView(productId){
+  closeModal();
+
+  if(typeof addCart === "function"){
+    addCart(productId);
+    return;
+  }
+
+  if(typeof addToCart === "function"){
+    addToCart(productId);
+    return;
+  }
+
+  if(typeof addProductToCart === "function"){
+    addProductToCart(productId);
+    return;
+  }
+
+  alert("Cart function is not ready.");
+}
+
+window.showPOSProduct = showPOSProduct;
+window.addToCartFromPOSView = addToCartFromPOSView;
+
