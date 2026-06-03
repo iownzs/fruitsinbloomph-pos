@@ -110,7 +110,7 @@ function renderPOSProducts(products){
         </div>
 
         <div class="pos-product-actions">
-          <button type="button" class="btn primary pos-product-view" onclick="window.showPOSProduct('${escapeText(product.id || product.productId || product.name)}')">
+          <button type="button" class="btn primary pos-product-view" data-pos-product-view="${escapeText(product.id || product.productId || product.name)}">
             View
           </button>
 
@@ -937,3 +937,19 @@ window.addToCartFromPOSView = addToCartFromPOSView;
 /* Final POS product view global export */
 window.showPOSProduct = showPOSProduct;
 window.addToCartFromPOSView = addToCartFromPOSView;
+
+/* Final POS product View delegated click handler */
+if(!window.POS_PRODUCT_VIEW_CLICK_READY){
+  window.POS_PRODUCT_VIEW_CLICK_READY = true;
+
+  document.addEventListener("click", function(event){
+    const button = event.target.closest("[data-pos-product-view]");
+    if(!button) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const productId = button.getAttribute("data-pos-product-view");
+    window.showPOSProduct(productId);
+  });
+}
