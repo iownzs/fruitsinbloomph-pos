@@ -845,3 +845,87 @@ body.login-page {
     background: #020617;
   }
 }
+
+/* ==================================================
+   Product View modal compact mobile layout
+================================================== */
+@media (max-width: 700px) {
+  .modal-card {
+    max-height: calc(100vh - 92px) !important;
+    overflow-y: auto !important;
+  }
+
+  .product-view-full-preview {
+    height: 185px !important;
+    border-radius: 18px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .product-view-full-preview img {
+    object-fit: cover !important;
+  }
+
+  .product-view-summary {
+    margin-bottom: 12px !important;
+  }
+
+  .product-view-summary h3 {
+    font-size: 28px !important;
+    line-height: 1.1 !important;
+    margin-bottom: 6px !important;
+  }
+
+  .product-view-summary .muted {
+    font-size: 15px !important;
+  }
+
+  .product-view-info-grid {
+    gap: 10px !important;
+    margin: 12px 0 16px !important;
+  }
+
+  .product-view-info-grid div {
+    padding: 12px !important;
+    border-radius: 15px !important;
+    min-height: 76px !important;
+  }
+
+  .product-view-info-grid span {
+    font-size: 13px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .product-view-info-grid strong {
+    font-size: 17px !important;
+    line-height: 1.2 !important;
+  }
+
+  .modal-card h3 {
+    margin-top: 14px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .modal-card p {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .product-view-full-preview {
+    height: 165px !important;
+  }
+
+  .product-view-summary h3 {
+    font-size: 24px !important;
+  }
+
+  .product-view-info-grid div {
+    min-height: 68px !important;
+    padding: 10px !important;
+  }
+
+  .product-view-info-grid strong {
+    font-size: 15px !important;
+  }
+}
