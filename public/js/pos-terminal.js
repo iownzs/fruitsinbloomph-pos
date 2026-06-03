@@ -110,7 +110,7 @@ function renderPOSProducts(products){
         </div>
 
         <div class="pos-product-actions">
-          <button class="btn primary pos-product-view" onclick="showPOSProduct('${escapeText(product.id || product.name)}')">
+          <button type="button" class="btn primary pos-product-view" onclick="window.showPOSProduct('${escapeText(product.id || product.productId || product.name)}')">
             View
           </button>
 
@@ -855,6 +855,7 @@ function showPOSProduct(productId){
   );
 
   if(!product){
+    alert("Product not found: " + key);
     openModal("Product Not Found", `<p>Product was not found: ${key}</p>`);
     return;
   }
@@ -932,3 +933,7 @@ function addToCartFromPOSView(productId){
 window.showPOSProduct = showPOSProduct;
 window.addToCartFromPOSView = addToCartFromPOSView;
 
+
+/* Final POS product view global export */
+window.showPOSProduct = showPOSProduct;
+window.addToCartFromPOSView = addToCartFromPOSView;
