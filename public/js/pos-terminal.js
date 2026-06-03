@@ -629,6 +629,10 @@ async function checkoutOrder(){
     renderCart();
     closeCartSheet();
 
+    if(typeof loadPOSProducts === "function"){
+      await loadPOSProducts();
+    }
+
     openModal(
       "Order Created",
       `
