@@ -15,7 +15,7 @@ shell(`
       <option>bottle</option>
       <option>arrangement</option>
     </select>
-    <button class="btn primary">Stock In</button>
+    <button class="btn primary" onclick="openProductStockMovement(null, 'Stock In')">Stock In</button>
   </div>
 
   <div class="card">
@@ -93,9 +93,16 @@ function renderProductStocksTable(stocks){
   body.innerHTML = stocks.map(stock => `
     <tr>
       <td>
-        <strong>${stock.productName || ''}</strong>
-        <br>
-        <small>${stock.productId || stock.id || ''}</small>
+        <div class="product-name-cell">
+          <div class="product-thumb">
+            ${stock.imageUrl ? `<img src="${stock.imageUrl}" alt="${stock.productName || 'Product'}">` : `<span>${(stock.productName || '?').slice(0,1)}</span>`}
+          </div>
+          <div>
+            <strong>${stock.productName || ''}</strong>
+            <br>
+            <small>${stock.productId || stock.id || ''}</small>
+          </div>
+        </div>
       </td>
       <td>${badge(stock.category || 'No Category')}</td>
       <td><strong>${stock.currentStock ?? 0}</strong></td>
@@ -105,8 +112,12 @@ function renderProductStocksTable(stocks){
       <td>${stock.reorderLevel ?? 0}</td>
       <td>${badge(stock.stockStatus || 'In Stock')}</td>
       <td>
-        <button class="btn small" onclick="showProductStock('${stock.id}')">View</button>
-        <button class="btn small primary">Adjust</button>
+        <div class="table-actions">
+          <button class="btn small primary" onclick="openProductStockMovement('${stock.id}', 'Stock In')">Stock In</button>
+          <button class="btn small warning" onclick="openProductStockMovement('${stock.id}', 'Stock Out')">Stock Out</button>
+          <button class="btn small" onclick="openProductStockMovement('${stock.id}', 'Adjustment')">Adjust</button>
+          <button class="btn small" onclick="showProductStock('${stock.id}')">View</button>
+        </div>
       </td>
     </tr>
   `).join('');
@@ -123,9 +134,14 @@ function renderProductStocksCards(stocks){
   cards.innerHTML = stocks.map(stock => `
     <div class="mini-card stock-mobile-card">
       <div class="product-mobile-head">
-        <div>
-          <h3>${stock.productName || ''}</h3>
-          <p class="muted">${stock.productId || stock.id || ''}</p>
+        <div class="product-name-cell">
+          <div class="product-thumb">
+            ${stock.imageUrl ? `<img src="${stock.imageUrl}" alt="${stock.productName || 'Product'}">` : `<span>${(stock.productName || '?').slice(0,1)}</span>`}
+          </div>
+          <div>
+            <h3>${stock.productName || ''}</h3>
+            <p class="muted">${stock.productId || stock.id || ''}</p>
+          </div>
         </div>
         ${badge(stock.stockStatus || 'In Stock')}
       </div>
@@ -143,8 +159,10 @@ function renderProductStocksCards(stocks){
       </div>
 
       <div class="product-mobile-actions">
+        <button class="btn small primary" onclick="openProductStockMovement('${stock.id}', 'Stock In')">Stock In</button>
+        <button class="btn small warning" onclick="openProductStockMovement('${stock.id}', 'Stock Out')">Stock Out</button>
+        <button class="btn small" onclick="openProductStockMovement('${stock.id}', 'Adjustment')">Adjust</button>
         <button class="btn small" onclick="showProductStock('${stock.id}')">View</button>
-        <button class="btn small primary">Adjust</button>
       </div>
     </div>
   `).join('');
@@ -192,6 +210,104 @@ function applyStockFilters(){
 
   renderProductStocks(filtered);
 }
+
+
+function productStockOptions(){
+  return allProductStocks.map(stock => `
+    <option value="${stock.id || stock.productId}">
+      ${stock.productName || stock.id || stock.productId}
+    </option>
+  `).join("");
+}
+
+function openProductStockMovement(stockId, movementType){
+  const stock = stockId
+    ? allProductStocks.find(item => item.id === stockId || item.productId === stockId)
+    : null;
+
+  const title = movementType === "Adjustment"
+    ? "Adjust Product Stock"
+    : movementType;
+
+  const quantityLabel = movementType === "Adjustment"
+    ? "New Stock Quantity"
+    : "Quantity";
+
+  openModal(
+    title,
+    `
+      <label>
+        Product
+        <select id="productMovementProduct" ${stock ? "disabled" : ""}>
+          ${stock ? `<option value="${stock.id || stock.productId}">${stock.productName || stock.id}</option>` : productStockOptions()}
+        </select>
+      </label>
+
+      <label>
+        Movement Type
+        <input id="productMovementType" value="${movementType}" disabled>
+      </label>
+
+      <label>
+        ${quantityLabel}
+        <input id="productMovementQuantity" type="number" min="0" step="1" placeholder="Enter quantity">
+      </label>
+
+      <label>
+        Reason
+        <select id="productMovementReason">
+          <option value="">Select Reason</option>
+          <option>New stock received</option>
+          <option>Manual correction</option>
+          <option>Damaged</option>
+          <option>Expired</option>
+          <option>Returned</option>
+          <option>Transfer</option>
+          <option>Other</option>
+        </select>
+      </label>
+
+      <label>
+        Notes
+        <textarea id="productMovementNotes" placeholder="Optional notes"></textarea>
+      </label>
+    `,
+    `<button class="btn primary" onclick="saveProductStockMovement()">Save Movement</button>
+     <button class="btn" onclick="closeModal()">Cancel</button>`
+  );
+}
+
+async function saveProductStockMovement(){
+  try{
+    if(!window.FIB.adjustProductStock){
+      throw new Error("Product stock movement service is not ready.");
+    }
+
+    const productId = document.getElementById("productMovementProduct").value;
+    const movementType = document.getElementById("productMovementType").value;
+    const quantity = Number(document.getElementById("productMovementQuantity").value || 0);
+    const reason = document.getElementById("productMovementReason").value;
+    const notes = document.getElementById("productMovementNotes").value.trim();
+
+    await window.FIB.adjustProductStock({
+      productId,
+      movementType,
+      quantity,
+      reason,
+      notes,
+      performedBy: "Admin",
+      performedByRole: "Admin"
+    });
+
+    closeModal();
+    await loadProductStocks();
+  }catch(error){
+    openModal("Product Stock Movement Failed", `<p>${error.message}</p>`);
+  }
+}
+
+window.openProductStockMovement = openProductStockMovement;
+window.saveProductStockMovement = saveProductStockMovement;
 
 document.getElementById("stockSearch").addEventListener("input", applyStockFilters);
 document.getElementById("stockStatusFilter").addEventListener("change", applyStockFilters);

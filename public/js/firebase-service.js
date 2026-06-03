@@ -451,6 +451,7 @@ window.FIB.saveProduct = async function(product){
   await window.db.collection("productStocks").doc(productId).set({
     productId,
     productName: name,
+    imageUrl: productData.imageUrl,
     category: productData.category,
     currentStock: stock,
     reservedStock,
@@ -464,6 +465,35 @@ window.FIB.saveProduct = async function(product){
         : "In Stock",
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   }, { merge: true });
+
+  if(!productDoc.exists && stock > 0){
+    const movementRef = window.db.collection("stockMovements").doc();
+    const now = firebase.firestore.FieldValue.serverTimestamp();
+
+    await movementRef.set({
+      movementId: movementRef.id,
+      referenceId: productId,
+      stockType: "Product Stock",
+      itemId: productId,
+      itemName: name,
+      itemDetails: productData.details || productData.description || "",
+      sku: productId,
+      barcode: "",
+      category: productData.category,
+      imageUrl: productData.imageUrl,
+      movementType: "Stock In",
+      quantity: stock,
+      unit: productData.unit,
+      previousStock: 0,
+      newStock: stock,
+      reason: "Initial product stock",
+      performedBy: "Admin",
+      performedByRole: "Admin",
+      notes: "Created from Add Product.",
+      createdAt: now,
+      updatedAt: now
+    });
+  }
 
   return productId;
 };
@@ -562,6 +592,132 @@ window.FIB.adjustIngredientStock = async function(payload){
 
     return {
       ingredientId,
+      previousStock,
+      newStock,
+      availableStock,
+      stockStatus,
+      movementId: movementRef.id
+    };
+  });
+};
+
+
+
+/* Product Stock Movement Helper */
+window.FIB.adjustProductStock = async function(payload){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  const productId = payload.productId;
+  const movementType = payload.movementType;
+  const quantity = Number(payload.quantity || 0);
+  const reason = String(payload.reason || "").trim();
+  const notes = String(payload.notes || "").trim();
+
+  if(!productId) throw new Error("Product ID is required.");
+  if(!movementType) throw new Error("Movement type is required.");
+  if(quantity <= 0) throw new Error("Quantity must be greater than 0.");
+  if(!reason) throw new Error("Reason is required.");
+
+  const stockRef = window.db.collection("productStocks").doc(productId);
+  const productRef = window.db.collection("products").doc(productId);
+
+  return await window.db.runTransaction(async transaction => {
+    const stockDoc = await transaction.get(stockRef);
+    const productDoc = await transaction.get(productRef);
+
+    if(!stockDoc.exists){
+      throw new Error("Product stock not found.");
+    }
+
+    const stock = stockDoc.data() || {};
+    const product = productDoc.exists ? (productDoc.data() || {}) : {};
+
+    const previousStock = Number(stock.currentStock ?? product.stock ?? 0);
+    const reservedStock = Number(stock.reservedStock || 0);
+    const reorderLevel = Number(stock.reorderLevel || 0);
+
+    let newStock = previousStock;
+
+    if(movementType === "Stock In"){
+      newStock = previousStock + quantity;
+    }else if(movementType === "Stock Out"){
+      newStock = previousStock - quantity;
+    }else if(movementType === "Adjustment"){
+      newStock = quantity;
+    }else{
+      throw new Error("Invalid movement type.");
+    }
+
+    if(newStock < 0){
+      throw new Error("Stock cannot go below zero.");
+    }
+
+    const availableStock = Math.max(0, newStock - reservedStock);
+
+    let stockStatus = "In Stock";
+    if(availableStock <= 0){
+      stockStatus = "Out of Stock";
+    }else if(availableStock <= reorderLevel){
+      stockStatus = "Low Stock";
+    }
+
+    const now = firebase.firestore.FieldValue.serverTimestamp();
+
+    const productName = stock.productName || product.name || productId;
+    const category = stock.category || product.category || "Others";
+    const unit = stock.unit || product.unit || "pcs";
+    const imageUrl = stock.imageUrl || product.imageUrl || "";
+
+    transaction.set(stockRef, {
+      productId,
+      productName,
+      imageUrl,
+      category,
+      currentStock: newStock,
+      reservedStock,
+      availableStock,
+      unit,
+      reorderLevel,
+      stockStatus,
+      updatedAt: now
+    }, { merge: true });
+
+    if(productDoc.exists){
+      transaction.set(productRef, {
+        stock: newStock,
+        imageUrl,
+        updatedAt: now
+      }, { merge: true });
+    }
+
+    const movementRef = window.db.collection("stockMovements").doc();
+
+    transaction.set(movementRef, {
+      movementId: movementRef.id,
+      referenceId: productId,
+      stockType: "Product Stock",
+      itemId: productId,
+      itemName: productName,
+      itemDetails: product.details || product.description || "",
+      sku: stock.sku || product.sku || productId,
+      barcode: stock.barcode || product.barcode || "",
+      category,
+      imageUrl,
+      movementType,
+      quantity,
+      unit,
+      previousStock,
+      newStock,
+      reason,
+      performedBy: payload.performedBy || "Admin",
+      performedByRole: payload.performedByRole || "Admin",
+      notes,
+      createdAt: now,
+      updatedAt: now
+    });
+
+    return {
+      productId,
       previousStock,
       newStock,
       availableStock,
