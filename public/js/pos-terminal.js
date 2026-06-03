@@ -239,7 +239,7 @@ function cartPanelHtml(){
 
     <br>
 
-    <button class="btn primary" onclick="checkoutOrder()">
+    <button class="btn primary pos-checkout-btn" onclick="checkoutOrder()">
       Checkout
     </button>
   `;
@@ -510,6 +510,14 @@ function refreshPOSProductsInBackground(){
   }
 }
 
+
+function setPOSCheckoutLoading(isLoading){
+  document.querySelectorAll(".pos-checkout-btn").forEach(button => {
+    button.disabled = isLoading;
+    button.textContent = isLoading ? "Processing..." : "Checkout";
+  });
+}
+
 async function checkoutOrder(){
   try{
     if(!window.FIB_FIREBASE_READY || !window.FIB.createOrder){
@@ -520,6 +528,8 @@ async function checkoutOrder(){
       openModal("Cart Empty", "<p>Please add at least one product before checkout.</p>");
       return;
     }
+
+    setPOSCheckoutLoading(true);
 
     const form = getCartFormData();
     const total = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.qty || 1)), 0);
@@ -590,6 +600,8 @@ async function checkoutOrder(){
           </div>
         `).join("");
 
+        setPOSCheckoutLoading(false);
+
         openModal(
           "Checkout Blocked: Low Product Stock",
           `
@@ -618,6 +630,8 @@ async function checkoutOrder(){
           </div>
         `).join("");
 
+        setPOSCheckoutLoading(false);
+
         openModal(
           "Checkout Blocked: Low Ingredient Stock",
           `
@@ -644,6 +658,8 @@ async function checkoutOrder(){
         await window.FIB.deductIngredientsForOrder(orderId, cart);
       }
     }catch(deductionError){
+      setPOSCheckoutLoading(false);
+
       openModal(
         "Stock Deduction Failed",
         `
@@ -663,6 +679,7 @@ async function checkoutOrder(){
 
     clearPOSCheckoutForm();
     refreshPOSProductsInBackground();
+    setPOSCheckoutLoading(false);
 
     openModal(
       "Order Created",
@@ -674,6 +691,7 @@ async function checkoutOrder(){
        <button class="btn" onclick="closeModal()">Close</button>`
     );
   }catch(error){
+    setPOSCheckoutLoading(false);
     openModal("Checkout Failed", `<p>${error.message}</p>`);
   }
 }
