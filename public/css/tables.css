@@ -573,3 +573,112 @@ th{
     padding: 6px 10px !important;
   }
 }
+
+/* ==================================================
+   Stock Movements desktop filter layout
+   Desktop:
+   Row 1: Search | Reset Filters
+   Row 2: Stock Type | Movement Type | Date From | Date To
+================================================== */
+
+@media (min-width: 701px) {
+  .stock-movement-filter-panel {
+    display: grid !important;
+    grid-template-columns: minmax(320px, 1fr) 170px 190px 150px 150px 140px !important;
+    grid-template-rows: auto auto !important;
+    gap: 12px !important;
+    align-items: center !important;
+    padding: 14px !important;
+  }
+
+  .stock-movements-toolbar .movement-search-filter {
+    grid-column: 1 / 5 !important;
+    grid-row: 1 !important;
+  }
+
+  .stock-movements-toolbar .movement-reset-filter {
+    grid-column: 5 / 7 !important;
+    grid-row: 1 !important;
+  }
+
+  .stock-movements-toolbar .movement-stock-type-box {
+    grid-column: 1 / 3 !important;
+    grid-row: 2 !important;
+  }
+
+  .stock-movements-toolbar .movement-type-box {
+    grid-column: 3 / 5 !important;
+    grid-row: 2 !important;
+  }
+
+  .stock-movements-toolbar .movement-date-from-box {
+    grid-column: 5 !important;
+    grid-row: 2 !important;
+  }
+
+  .stock-movements-toolbar .movement-date-to-box {
+    grid-column: 6 !important;
+    grid-row: 2 !important;
+  }
+
+  .stock-movements-toolbar .movement-category-filter {
+    display: none !important;
+  }
+
+  .stock-movements-toolbar input,
+  .stock-movements-toolbar select,
+  .stock-movements-toolbar button,
+  .stock-movements-toolbar .movement-filter-box {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+
+  .stock-movements-toolbar .movement-filter-box {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 12px 12px 6px !important;
+    border: 1px solid rgba(34, 211, 238, 0.18) !important;
+    background: #0b1220 !important;
+    overflow: visible !important;
+  }
+
+  .stock-movements-toolbar .movement-filter-label {
+    position: absolute !important;
+    left: 11px !important;
+    top: -7px !important;
+    padding: 0 7px !important;
+    background: #0f172a !important;
+    color: #22d3ee !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+  }
+
+  .stock-movements-toolbar .movement-filter-box select,
+  .stock-movements-toolbar .movement-filter-box input {
+    width: 100% !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #f8fafc !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+  }
+
+  .stock-movements-toolbar .movement-search-filter,
+  .stock-movements-toolbar .movement-reset-filter {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+  }
+}
