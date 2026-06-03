@@ -274,6 +274,27 @@ loadProducts();
 let productRecipeDraft = [];
 let productIngredientOptions = [];
 
+function cleanRecipeUnit(unit){
+  const value = String(unit || "").trim();
+
+  if(!value || value === "0" || value === "1" || value === "2" || value === "3" || value === "4" || value === "5"){
+    return "pcs";
+  }
+
+  return value;
+}
+
+function normalizeProductRecipe(recipe){
+  return Array.isArray(recipe)
+    ? recipe.map(item => ({
+        ...item,
+        qty: Number(item.qty ?? item.quantity ?? item.recipeQty ?? item.amount ?? item.ingredientQty ?? 0),
+        unit: cleanRecipeUnit(item.unit || item.ingredientUnit || item.recipeUnit || item.uom)
+      }))
+    : [];
+}
+
+
 async function openProductForm(productId = ""){
   try{
     const product = productId
@@ -281,9 +302,7 @@ async function openProductForm(productId = ""){
       : null;
 
     productIngredientOptions = await window.FIB.getIngredientStocks();
-    productRecipeDraft = Array.isArray(product?.recipe)
-      ? JSON.parse(JSON.stringify(product.recipe))
-      : [];
+    productRecipeDraft = normalizeProductRecipe(product?.recipe);
 
     openModal(
       product ? "Edit Product" : "Add Product",
@@ -411,6 +430,21 @@ async function openProductForm(productId = ""){
     const imageInput = document.getElementById("productImageFile");
     if(imageInput){
       imageInput.addEventListener("change", handleProductImageUpload);
+    }
+
+    const recipeIngredientSelect = document.getElementById("recipeIngredientSelect");
+    if(recipeIngredientSelect){
+      recipeIngredientSelect.addEventListener("change", function(){
+        const selectedId = this.value;
+        const ingredient = productIngredientOptions.find(ing =>
+          ing.id === selectedId || ing.ingredientId === selectedId
+        );
+
+        const unitInput = document.getElementById("recipeUnit");
+        if(unitInput && ingredient){
+          unitInput.value = cleanRecipeUnit(ingredient.unit || "pcs");
+        }
+      });
     }
   }catch(error){
     openModal("Product Form Failed", `<p>${error.message}</p>`);
@@ -625,7 +659,7 @@ async function saveProductForm(existingId = ""){
       unit: document.getElementById("productUnit").value,
       reorderLevel: Number(document.getElementById("productReorderLevel").value || 0),
       status: document.getElementById("productStatus").value,
-      recipe: productRecipeDraft
+      recipe: normalizeProductRecipe(productRecipeDraft)
     };
 
     if(!product.name){
