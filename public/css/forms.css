@@ -1302,3 +1302,39 @@ body.login-page {
     height: 52px !important;
   }
 }
+
+/* ==================================================
+   POS Terminal mobile View/Add button equal sizing only
+================================================== */
+@media (max-width: 700px) {
+  .pos-product-compact-card .pos-product-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    width: 100% !important;
+    margin-top: 14px !important;
+  }
+
+  .pos-product-compact-card .pos-product-actions .pos-product-view,
+  .pos-product-compact-card .pos-product-actions .pos-product-add {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    padding: 0 16px !important;
+    border-radius: 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+  }
+}
