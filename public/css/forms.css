@@ -929,3 +929,59 @@ body.login-page {
     font-size: 15px !important;
   }
 }
+
+/* ==================================================
+   Product View modal mobile scroll fix
+   Keep image size, fix modal top/bottom scroll area
+================================================== */
+@media (max-width: 700px) {
+  .modal-root {
+    align-items: flex-start !important;
+    padding-top: 96px !important;
+    padding-bottom: 92px !important;
+    overflow-y: auto !important;
+  }
+
+  .modal-card {
+    width: calc(100vw - 32px) !important;
+    max-height: calc(100vh - 188px) !important;
+    overflow-y: auto !important;
+    margin: 0 auto !important;
+    border-radius: 20px !important;
+  }
+
+  .modal-card .modal-body,
+  .modal-body {
+    overflow-y: visible !important;
+  }
+
+  .product-view-full-preview {
+    height: 240px !important;
+    margin-top: 0 !important;
+    margin-bottom: 18px !important;
+  }
+
+  .product-view-full-preview img {
+    object-fit: cover !important;
+  }
+
+  .product-view-summary h3 {
+    font-size: 34px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .modal-root {
+    padding-top: 88px !important;
+    padding-bottom: 86px !important;
+  }
+
+  .modal-card {
+    width: calc(100vw - 28px) !important;
+    max-height: calc(100vh - 174px) !important;
+  }
+
+  .product-view-full-preview {
+    height: 220px !important;
+  }
+}
