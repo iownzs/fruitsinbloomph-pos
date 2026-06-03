@@ -41,12 +41,12 @@ shell(`
 
     <label class="movement-filter-box movement-date-from-box">
       <span class="movement-filter-label">Date From</span>
-      <input id="dateFromFilter" class="movement-date-from-filter" type="text" placeholder="Pick a Date" aria-label="Date from" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
+      <input id="dateFromFilter" class="movement-date-from-filter" type="text" placeholder="Pick a Date" aria-label="Date from" onclick="openMovementDatePicker(this)" onfocus="openMovementDatePicker(this)" onblur="closeMovementDatePicker(this)">
     </label>
 
     <label class="movement-filter-box movement-date-to-box">
       <span class="movement-filter-label">Date To</span>
-      <input id="dateToFilter" class="movement-date-to-filter" type="text" placeholder="Pick a Date" aria-label="Date to" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
+      <input id="dateToFilter" class="movement-date-to-filter" type="text" placeholder="Pick a Date" aria-label="Date to" onclick="openMovementDatePicker(this)" onfocus="openMovementDatePicker(this)" onblur="closeMovementDatePicker(this)">
     </label>
   </div>
 
@@ -270,6 +270,31 @@ function showStockMovement(movementId){
   );
 }
 
+
+function openMovementDatePicker(input){
+  if(!input) return;
+
+  input.type = "date";
+
+  setTimeout(() => {
+    try{
+      if(input.showPicker){
+        input.showPicker();
+      }
+    }catch(error){
+      // Some mobile browsers block showPicker unless triggered by direct tap.
+    }
+  }, 0);
+}
+
+function closeMovementDatePicker(input){
+  if(!input) return;
+
+  if(!input.value){
+    input.type = "text";
+  }
+}
+
 function applyMovementFilters(){
   const search = document.getElementById("movementSearch").value.toLowerCase();
   const stockType = document.getElementById("stockTypeFilter").value;
@@ -334,6 +359,10 @@ document.getElementById("movementTypeFilter").addEventListener("change", applyMo
 document.getElementById("categoryFilter").addEventListener("change", applyMovementFilters);
 document.getElementById("dateFromFilter").addEventListener("change", applyMovementFilters);
 document.getElementById("dateToFilter").addEventListener("change", applyMovementFilters);
+
+
+window.openMovementDatePicker = openMovementDatePicker;
+window.closeMovementDatePicker = closeMovementDatePicker;
 
 window.showStockMovement = showStockMovement;
 window.resetMovementFilters = resetMovementFilters;
