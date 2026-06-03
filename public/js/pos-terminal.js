@@ -475,6 +475,169 @@ function getCartFormData(){
 }
 
 
+
+function receiptSafe(value, fallback = ""){
+  return value === undefined || value === null || value === "" ? fallback : String(value);
+}
+
+function receiptMoney(value){
+  if(typeof money === "function"){
+    return money(Number(value || 0));
+  }
+  return "₱" + Number(value || 0).toLocaleString("en-PH", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function receiptDateTime(){
+  try{
+    return new Date().toLocaleString("en-PH", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    });
+  }catch(error){
+    return new Date().toLocaleString();
+  }
+}
+
+function receiptQrUrl(orderId){
+  const trackUrl = `${location.origin}/live-track.html?order=${encodeURIComponent(orderId)}`;
+  return `https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=${encodeURIComponent(trackUrl)}`;
+}
+
+function buildPOSReceiptHtml(orderId, orderData){
+  const items = Array.isArray(orderData.items) ? orderData.items : [];
+  const isDelivery = orderData.orderType === "Delivery";
+  const customer = orderData.customer || {};
+  const pickup = orderData.pickup || {};
+  const delivery = orderData.delivery || {};
+  const payment = orderData.payment || {};
+  const createdBy = orderData.createdBy || {};
+
+  const itemRows = items.map(item => `
+    <tr>
+      <td>${receiptSafe(item.name)}</td>
+      <td class="receipt-center">${receiptSafe(item.qty, 1)}</td>
+      <td class="receipt-right">${receiptMoney(item.price || 0)}</td>
+      <td class="receipt-right">${receiptMoney(item.subtotal || ((item.price || 0) * (item.qty || 1)))}</td>
+    </tr>
+  `).join("");
+
+  const detailsHtml = isDelivery
+    ? `
+      <div class="receipt-line"><strong>Recipient:</strong><span>${receiptSafe(delivery.recipientName, "—")}</span></div>
+      <div class="receipt-line"><strong>Contact:</strong><span>${receiptSafe(delivery.recipientContact, "—")}</span></div>
+      <div class="receipt-line"><strong>Address:</strong><span>${receiptSafe(delivery.deliveryAddress, "—")}</span></div>
+      <div class="receipt-line"><strong>City / Area:</strong><span>${receiptSafe(delivery.cityArea, "—")}</span></div>
+      <div class="receipt-line"><strong>Landmark:</strong><span>${receiptSafe(delivery.landmark, "—")}</span></div>
+      <div class="receipt-line"><strong>Delivery Date:</strong><span>${receiptSafe(delivery.deliveryDate, "—")}</span></div>
+      <div class="receipt-line"><strong>Delivery Time:</strong><span>${receiptSafe(delivery.deliveryTime, "—")}</span></div>
+    `
+    : `
+      <div class="receipt-line"><strong>Pickup Date:</strong><span>${receiptSafe(pickup.pickupDate, "—")}</span></div>
+      <div class="receipt-line"><strong>Pickup Time:</strong><span>${receiptSafe(pickup.pickupTime, "—")}</span></div>
+    `;
+
+  return `
+    <div class="pos-receipt" id="posReceiptPrintArea">
+      <div class="receipt-head">
+        <div>
+          <h2>FRUITS IN BLOOM</h2>
+          <div class="receipt-line"><strong>Order ID:</strong><span>${receiptSafe(orderId)}</span></div>
+          <div class="receipt-line"><strong>Date / Time:</strong><span>${receiptDateTime()}</span></div>
+          <div class="receipt-line"><strong>Cashier:</strong><span>${receiptSafe(createdBy.name, "Admin")}</span></div>
+          <div class="receipt-line"><strong>Order Type:</strong><span>${receiptSafe(orderData.orderType)}</span></div>
+          <div class="receipt-line"><strong>Source:</strong><span>${receiptSafe(orderData.orderSource)}</span></div>
+        </div>
+        <img class="receipt-qr" src="${receiptQrUrl(orderId)}" alt="Order QR">
+      </div>
+
+      <div class="receipt-divider"></div>
+
+      <h3>Customer</h3>
+      <div class="receipt-line"><strong>Name:</strong><span>${receiptSafe(customer.name, "—")}</span></div>
+      <div class="receipt-line"><strong>Contact:</strong><span>${receiptSafe(customer.contact, "—")}</span></div>
+
+      <div class="receipt-divider"></div>
+
+      <h3>Pickup / Delivery Details</h3>
+      ${detailsHtml}
+
+      <div class="receipt-divider"></div>
+
+      <h3>Items</h3>
+      <table class="receipt-items">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${itemRows}
+        </tbody>
+      </table>
+
+      <div class="receipt-divider"></div>
+
+      <div class="receipt-total-line"><span>Subtotal:</span><strong>${receiptMoney(orderData.subtotal || 0)}</strong></div>
+      <div class="receipt-total-line"><span>Discount:</span><strong>${receiptMoney(orderData.discount || 0)}</strong></div>
+      <div class="receipt-total-line receipt-grand"><span>Total:</span><strong>${receiptMoney(orderData.total || 0)}</strong></div>
+      <div class="receipt-total-line"><span>Payment Method:</span><strong>${receiptSafe(payment.method, "Cash")}</strong></div>
+
+      <div class="receipt-divider"></div>
+
+      <h3 class="receipt-thanks">Thank you!</h3>
+    </div>
+  `;
+}
+
+function printPOSReceipt(){
+  const receipt = document.getElementById("posReceiptPrintArea");
+  if(!receipt){
+    alert("Receipt is not ready.");
+    return;
+  }
+
+  const win = window.open("", "_blank", "width=420,height=720");
+  win.document.write(`
+    <!doctype html>
+    <html>
+      <head>
+        <title>Receipt</title>
+        <style>
+          body{font-family:Arial,sans-serif;margin:0;padding:18px;background:#fff;color:#111;}
+          .pos-receipt{max-width:360px;margin:0 auto;}
+          .receipt-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+          .receipt-head h2{font-size:26px;margin:0 0 12px;font-weight:900;letter-spacing:.5px;}
+          .receipt-qr{width:82px;height:82px;object-fit:contain;}
+          .receipt-line{display:grid;grid-template-columns:115px 1fr;gap:8px;margin:5px 0;font-size:13px;}
+          .receipt-divider{border-top:1px dashed #333;margin:14px 0;}
+          h3{margin:0 0 8px;font-size:16px;}
+          .receipt-items{width:100%;border-collapse:collapse;font-size:13px;}
+          .receipt-items th,.receipt-items td{padding:6px 2px;border-bottom:1px solid #ddd;text-align:left;}
+          .receipt-center{text-align:center!important;}
+          .receipt-right{text-align:right!important;}
+          .receipt-total-line{display:flex;justify-content:space-between;margin:7px 0;font-size:14px;}
+          .receipt-grand{font-size:17px;border-top:1px solid #111;padding-top:8px;font-weight:900;}
+          .receipt-thanks{text-align:center;font-size:18px;margin-top:18px;}
+        </style>
+      </head>
+      <body>${receipt.outerHTML}</body>
+    </html>
+  `);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 300);
+}
+
+
 function clearPOSCheckoutForm(){
   cart = [];
 
@@ -685,9 +848,10 @@ async function checkoutOrder(){
       "Order Created",
       `
         <p><strong>${orderId}</strong> saved to Firestore.</p>
-        <p class="muted">Next: Orders page will read this order from Firestore.</p>
+        ${buildPOSReceiptHtml(orderId, orderData)}
       `,
-      `<button class="btn primary" onclick="location.href='./orders.html'">Open Orders</button>
+      `<button class="btn primary" onclick="printPOSReceipt()">Print Receipt</button>
+       <button class="btn" onclick="location.href='./orders.html'">Open Orders</button>
        <button class="btn" onclick="closeModal()">Close</button>`
     );
   }catch(error){
