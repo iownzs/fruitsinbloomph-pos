@@ -1824,3 +1824,66 @@
     grid-template-columns:1fr;
   }
 }
+
+/* ==================================================
+   FINAL POS mobile product View/Add button fix
+   Overrides old 54px/64px mobile Add button rules
+================================================== */
+@media (max-width: 700px) {
+  body[data-page="pos-terminal"] .pos-product-main {
+    display: grid !important;
+    grid-template-columns: 82px minmax(0, 1fr) !important;
+    column-gap: 16px !important;
+    row-gap: 14px !important;
+    align-items: start !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-thumb {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-text {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    width: 100% !important;
+    margin-top: 8px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-view,
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-add,
+  body[data-page="pos-terminal"] .pos-product-add {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    padding: 0 14px !important;
+    border-radius: 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    justify-self: stretch !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    background: linear-gradient(180deg, #38d9f2 0%, #0891b2 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(125, 249, 255, 0.55) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.25),
+      0 10px 24px rgba(34, 211, 238, 0.22) !important;
+    transform: none !important;
+  }
+}
