@@ -1131,3 +1131,15 @@ body.login-page {
     min-height: 220px !important;
   }
 }
+
+/* ==================================================
+   Product View image full view, no crop
+================================================== */
+.product-view-full-preview {
+  background: #ffffff !important;
+}
+
+.product-view-full-preview img {
+  object-fit: contain !important;
+  background: #ffffff !important;
+}
