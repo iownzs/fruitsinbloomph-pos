@@ -1474,3 +1474,152 @@ body.login-page {
     grid-template-columns: 95px 1fr;
   }
 }
+
+/* ==================================================
+   POS Receipt mobile fix
+================================================== */
+@media (max-width: 700px) {
+  .modal:has(.pos-receipt) {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100vh - 90px) !important;
+    border-radius: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  .modal:has(.pos-receipt) .modal-head {
+    flex: 0 0 auto !important;
+    padding: 14px 16px !important;
+  }
+
+  .modal:has(.pos-receipt) .modal-body {
+    flex: 1 1 auto !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 14px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .modal:has(.pos-receipt) .modal-foot {
+    flex: 0 0 auto !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    background: var(--card) !important;
+    border-top: 1px solid var(--border) !important;
+  }
+
+  .modal:has(.pos-receipt) .modal-foot .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    padding: 0 8px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  .pos-receipt {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 10px 0 0 !important;
+    padding: 14px !important;
+    border-radius: 16px !important;
+    font-size: 11px !important;
+    overflow: hidden !important;
+  }
+
+  .receipt-head {
+    display: grid !important;
+    grid-template-columns: 1fr 68px !important;
+    gap: 10px !important;
+    align-items: start !important;
+  }
+
+  .receipt-head h2 {
+    font-size: 18px !important;
+    line-height: 1.1 !important;
+    margin-bottom: 10px !important;
+    letter-spacing: 0 !important;
+  }
+
+  .receipt-qr {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 6px !important;
+  }
+
+  .receipt-line {
+    grid-template-columns: 86px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    margin: 4px 0 !important;
+    font-size: 11px !important;
+  }
+
+  .receipt-line span {
+    min-width: 0 !important;
+    word-break: break-word !important;
+  }
+
+  .receipt-divider {
+    margin: 10px 0 !important;
+  }
+
+  .pos-receipt h3 {
+    font-size: 14px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .receipt-items {
+    table-layout: fixed !important;
+    width: 100% !important;
+    font-size: 10px !important;
+  }
+
+  .receipt-items th,
+  .receipt-items td {
+    padding: 6px 3px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  .receipt-items th:nth-child(1),
+  .receipt-items td:nth-child(1) {
+    width: 48% !important;
+  }
+
+  .receipt-items th:nth-child(2),
+  .receipt-items td:nth-child(2) {
+    width: 12% !important;
+    text-align: center !important;
+  }
+
+  .receipt-items th:nth-child(3),
+  .receipt-items td:nth-child(3),
+  .receipt-items th:nth-child(4),
+  .receipt-items td:nth-child(4) {
+    width: 20% !important;
+    text-align: right !important;
+  }
+
+  .receipt-total-line {
+    font-size: 11px !important;
+    margin: 5px 0 !important;
+  }
+
+  .receipt-grand {
+    font-size: 14px !important;
+    padding-top: 6px !important;
+  }
+
+  .receipt-thanks {
+    font-size: 15px !important;
+    margin-top: 12px !important;
+  }
+}
