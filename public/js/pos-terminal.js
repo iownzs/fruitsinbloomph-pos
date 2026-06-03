@@ -110,7 +110,7 @@ function renderPOSProducts(products){
         </div>
 
         <div class="pos-product-actions">
-          <button class="btn small pos-product-view" onclick="showPOSProduct('${escapeText(product.id || product.name)}')">
+          <button class="btn primary pos-product-view" onclick="showPOSProduct('${escapeText(product.id || product.name)}')">
             View
           </button>
 
@@ -846,12 +846,16 @@ function posProductRecipeHtml(product){
 }
 
 function showPOSProduct(productId){
+  const key = String(productId || "");
+
   const product = allProducts.find(item =>
-    item.id === productId || item.productId === productId
+    String(item.id || "") === key ||
+    String(item.productId || "") === key ||
+    String(item.name || "") === key
   );
 
   if(!product){
-    openModal("Product Not Found", "<p>Product was not found.</p>");
+    openModal("Product Not Found", `<p>Product was not found: ${key}</p>`);
     return;
   }
 
@@ -899,7 +903,7 @@ function showPOSProduct(productId){
       <p class="muted">${recipeCount} ingredient${recipeCount === 1 ? '' : 's'} saved.</p>
       ${posProductRecipeHtml(product)}
     `,
-    `<button class="btn primary" onclick="addToCartFromPOSView('${product.id || product.productId}')">Add to Cart</button>
+    `<button class="btn primary" onclick="addToCartFromPOSView('${product.id || product.productId || product.name}')">Add to Cart</button>
      <button class="btn" onclick="closeModal()">Close</button>`
   );
 }

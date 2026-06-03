@@ -1207,3 +1207,36 @@ body.login-page {
     justify-content: center;
   }
 }
+
+/* POS product View button - match Add button design */
+.pos-product-view {
+  background: linear-gradient(180deg, #38d9f2, #0891b2) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(125, 249, 255, 0.55) !important;
+  box-shadow: 0 10px 24px rgba(34, 211, 238, 0.22) !important;
+  font-weight: 800 !important;
+}
+
+.pos-product-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.pos-product-actions .pos-product-view,
+.pos-product-actions .pos-product-add {
+  min-width: 104px;
+  justify-content: center;
+}
+
+@media (max-width: 700px) {
+  .pos-product-actions {
+    width: 100%;
+  }
+
+  .pos-product-actions .pos-product-view,
+  .pos-product-actions .pos-product-add {
+    flex: 1;
+    min-width: 0;
+  }
+}
