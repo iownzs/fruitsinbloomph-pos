@@ -1887,3 +1887,91 @@
     transform: none !important;
   }
 }
+
+/* ==================================================
+   FINAL POS product View/Add compact aligned buttons
+   Smaller buttons for desktop and mobile
+================================================== */
+body[data-page="pos-terminal"] .pos-product-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  margin-top: 12px !important;
+}
+
+body[data-page="pos-terminal"] .pos-product-actions .pos-product-view,
+body[data-page="pos-terminal"] .pos-product-actions .pos-product-add {
+  flex: 0 0 108px !important;
+  width: 108px !important;
+  min-width: 108px !important;
+  max-width: 108px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-self: auto !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  background: linear-gradient(180deg, #38d9f2 0%, #0891b2 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(125, 249, 255, 0.55) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    0 8px 18px rgba(34, 211, 238, 0.18) !important;
+  transform: none !important;
+}
+
+@media (max-width: 700px) {
+  body[data-page="pos-terminal"] .pos-product-main {
+    display: grid !important;
+    grid-template-columns: 82px minmax(0, 1fr) !important;
+    column-gap: 16px !important;
+    row-gap: 12px !important;
+    align-items: start !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-top: 8px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-view,
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-add {
+    flex: 0 0 124px !important;
+    width: 124px !important;
+    min-width: 124px !important;
+    max-width: 124px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    border-radius: 14px !important;
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-view,
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-add {
+    flex: 0 0 112px !important;
+    width: 112px !important;
+    min-width: 112px !important;
+    max-width: 112px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+  }
+}
