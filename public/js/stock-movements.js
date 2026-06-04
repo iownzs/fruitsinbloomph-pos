@@ -159,8 +159,18 @@ async function loadStockMovements(){
 }
 
 function renderStockMovements(movements){
+  const isMobileView = window.matchMedia("(max-width: 700px)").matches;
+  const tableBody = document.getElementById("stockMovementsTableBody");
+  const mobileCards = document.getElementById("stockMovementsMobileCards");
+
+  if(isMobileView){
+    if(tableBody) tableBody.innerHTML = "";
+    renderStockMovementsCards(movements);
+    return;
+  }
+
+  if(mobileCards) mobileCards.innerHTML = "";
   renderStockMovementsTable(movements);
-  renderStockMovementsCards(movements);
 }
 
 function renderStockMovementsTable(movements){
@@ -363,6 +373,10 @@ document.getElementById("movementTypeFilter").addEventListener("change", applyMo
 document.getElementById("categoryFilter").addEventListener("change", applyMovementFilters);
 document.getElementById("dateFromFilter").addEventListener("change", applyMovementFilters);
 document.getElementById("dateToFilter").addEventListener("change", applyMovementFilters);
+
+window.addEventListener("resize", () => {
+  applyMovementFilters();
+});
 
 
 window.openMovementDatePicker = openMovementDatePicker;
