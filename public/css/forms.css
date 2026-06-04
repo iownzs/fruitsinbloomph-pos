@@ -2026,3 +2026,58 @@ body.login-page {
     white-space: nowrap !important;
   }
 }
+
+/* ==================================================
+   POS Receipt desktop item grid alignment polish
+================================================== */
+@media (min-width: 701px) {
+  .receipt-items-grid {
+    width: 100% !important;
+  }
+
+  .receipt-grid-head,
+  .receipt-grid-row {
+    grid-template-columns: minmax(0, 1fr) 54px 92px 104px !important;
+    gap: 10px !important;
+  }
+
+  .receipt-grid-head > div,
+  .receipt-grid-row > div {
+    padding: 8px 6px !important;
+  }
+
+  .receipt-grid-head {
+    font-size: 11px !important;
+  }
+
+  .receipt-grid-row {
+    font-size: 13px !important;
+  }
+
+  .receipt-grid-name {
+    text-align: left !important;
+    font-weight: 800 !important;
+  }
+
+  .receipt-grid-qty {
+    text-align: center !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  .receipt-grid-price,
+  .receipt-grid-subtotal {
+    text-align: right !important;
+    font-weight: 800 !important;
+    font-variant-numeric: tabular-nums !important;
+    white-space: nowrap !important;
+  }
+
+  .receipt-grid-head > div:nth-child(2) {
+    text-align: center !important;
+  }
+
+  .receipt-grid-head > div:nth-child(3),
+  .receipt-grid-head > div:nth-child(4) {
+    text-align: right !important;
+  }
+}
