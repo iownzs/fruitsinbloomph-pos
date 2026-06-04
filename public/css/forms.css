@@ -2334,3 +2334,13 @@ body.login-page {
     padding: 7px 10px !important;
   }
 }
+
+/* ==================================================
+   Hide mobile cart button on desktop POS
+================================================== */
+@media (min-width: 701px) {
+  body[data-page="pos-terminal"] #mobileCartButton,
+  body[data-page="pos-terminal"] .mobile-cart-button {
+    display: none !important;
+  }
+}

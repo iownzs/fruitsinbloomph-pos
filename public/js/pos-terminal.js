@@ -277,8 +277,10 @@ function renderCart(){
   const mobileBtn = document.getElementById('mobileCartButton');
   if(mobileBtn){
     const totalQty = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+    const isMobileCartView = window.matchMedia("(max-width: 700px)").matches;
+
     mobileBtn.textContent = `🛒 Cart • ${totalQty} item${totalQty === 1 ? '' : 's'} • ${money(total)}`;
-    mobileBtn.style.display = totalQty > 0 ? "flex" : "none";
+    mobileBtn.style.display = totalQty > 0 && isMobileCartView ? "flex" : "none";
   }
 }
 
