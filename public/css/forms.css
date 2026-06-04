@@ -2178,22 +2178,3 @@ body.login-page {
     white-space: nowrap !important;
   }
 }
-
-/* Checkout timing debug */
-.checkout-timing-debug {
-  margin-top: 12px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: rgba(15, 23, 42, 0.08);
-  color: inherit;
-  font-size: 12px;
-}
-
-.checkout-timing-debug summary {
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.checkout-timing-debug p {
-  margin: 4px 0;
-}

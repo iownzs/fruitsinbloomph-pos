@@ -728,15 +728,6 @@ async function checkoutOrder(){
     POS_CHECKOUT_BUSY = true;
     setPOSCheckoutLoading(true);
 
-    const checkoutStartedAt = performance.now();
-    const checkoutTimings = [];
-    const markCheckoutTiming = label => {
-      checkoutTimings.push({
-        label,
-        seconds: ((performance.now() - checkoutStartedAt) / 1000).toFixed(2)
-      });
-    };
-
     const form = getCartFormData();
     const total = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.qty || 1)), 0);
 
@@ -806,7 +797,6 @@ async function checkoutOrder(){
 
     const productValidation = validationTasks[0];
     const ingredientValidation = validationTasks[1];
-    markCheckoutTiming("Stock validation finished");
 
     if(!productValidation.ok){
       const issueList = productValidation.issues.map(issue => `
@@ -863,7 +853,6 @@ async function checkoutOrder(){
     }
 
     const orderId = await window.FIB.createOrder(orderData);
-    markCheckoutTiming("Order created");
 
     try{
       await Promise.all([
@@ -875,7 +864,6 @@ async function checkoutOrder(){
           ? window.FIB.deductIngredientsForOrder(orderId, cart)
           : Promise.resolve()
       ]);
-      markCheckoutTiming("Stocks deducted");
     }catch(deductionError){
       POS_CHECKOUT_BUSY = false;
     setPOSCheckoutLoading(false);
@@ -899,13 +887,6 @@ async function checkoutOrder(){
 
     clearPOSCheckoutForm();
     refreshPOSProductsInBackground();
-    markCheckoutTiming("Receipt prepared");
-    const checkoutTimingHtml = `
-      <details class="checkout-timing-debug">
-        <summary>Checkout timing</summary>
-        ${checkoutTimings.map(item => `<p>${item.label}: ${item.seconds}s</p>`).join("")}
-      </details>
-    `;
     POS_CHECKOUT_BUSY = false;
     setPOSCheckoutLoading(false);
 
@@ -913,7 +894,6 @@ async function checkoutOrder(){
       "Order Created",
       `
         ${buildPOSReceiptHtml(orderId, orderData)}
-        ${checkoutTimingHtml}
       `,
       `<button class="btn primary" onclick="printPOSReceipt()">Print Receipt</button>
        <button class="btn" onclick="location.href='./orders.html'">Open Orders</button>
