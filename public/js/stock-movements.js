@@ -88,6 +88,7 @@ shell(`
 `);
 
 let allStockMovements = [];
+let MOVEMENT_RESET_BUSY = false;
 
 function movementDate(value){
   const date = movementDateValue(value);
@@ -347,6 +348,16 @@ function applyMovementFilters(){
 }
 
 function resetMovementFilters(){
+  if(MOVEMENT_RESET_BUSY) return;
+
+  MOVEMENT_RESET_BUSY = true;
+
+  const resetButton = document.querySelector(".movement-reset-filter");
+  if(resetButton){
+    resetButton.disabled = true;
+    resetButton.classList.add("is-resetting");
+  }
+
   document.getElementById("movementSearch").value = "";
   document.getElementById("stockTypeFilter").value = "";
   document.getElementById("movementTypeFilter").value = "";
@@ -355,6 +366,15 @@ function resetMovementFilters(){
   document.getElementById("dateToFilter").value = "";
 
   renderStockMovements(allStockMovements);
+
+  setTimeout(() => {
+    MOVEMENT_RESET_BUSY = false;
+
+    if(resetButton){
+      resetButton.disabled = false;
+      resetButton.classList.remove("is-resetting");
+    }
+  }, 450);
 }
 
 document.getElementById("movementSearch").addEventListener("input", applyMovementFilters);
