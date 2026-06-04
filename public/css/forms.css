@@ -1830,3 +1830,64 @@ body.login-page {
     border-radius: 16px !important;
   }
 }
+
+/* ==================================================
+   POS Receipt mobile item cards
+================================================== */
+@media (max-width: 700px) {
+  .pos-receipt .receipt-items,
+  .pos-receipt .receipt-items thead,
+  .pos-receipt .receipt-items tbody,
+  .pos-receipt .receipt-items tr,
+  .pos-receipt .receipt-items th,
+  .pos-receipt .receipt-items td {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .pos-receipt .receipt-items thead {
+    display: none !important;
+  }
+
+  .pos-receipt .receipt-items tr {
+    padding: 10px 0 !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+
+  .pos-receipt .receipt-items td {
+    border-bottom: 0 !important;
+    padding: 2px 0 !important;
+    text-align: left !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  .pos-receipt .receipt-items td:nth-child(1) {
+    font-weight: 900 !important;
+    font-size: 13px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .pos-receipt .receipt-items td:nth-child(2)::before {
+    content: "Qty: ";
+    font-weight: 900 !important;
+  }
+
+  .pos-receipt .receipt-items td:nth-child(3)::before {
+    content: "Price: ";
+    font-weight: 900 !important;
+  }
+
+  .pos-receipt .receipt-items td:nth-child(4)::before {
+    content: "Subtotal: ";
+    font-weight: 900 !important;
+  }
+
+  .pos-receipt .receipt-items td:nth-child(2),
+  .pos-receipt .receipt-items td:nth-child(3),
+  .pos-receipt .receipt-items td:nth-child(4) {
+    color: #111827 !important;
+  }
+}

@@ -847,7 +847,6 @@ async function checkoutOrder(){
     openModal(
       "Order Created",
       `
-        <p><strong>${orderId}</strong> saved to Firestore.</p>
         ${buildPOSReceiptHtml(orderId, orderData)}
       `,
       `<button class="btn primary" onclick="printPOSReceipt()">Print Receipt</button>
