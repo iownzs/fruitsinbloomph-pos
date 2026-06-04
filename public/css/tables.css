@@ -1094,3 +1094,58 @@ body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-b
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box .movement-filter-label {
   top: -6px !important;
 }
+
+/* ==================================================
+   Stock Movements filter box size match Orders
+================================================== */
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 6px 12px 0 !important;
+  border-radius: 14px !important;
+  box-sizing: border-box !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
+  height: 39px !important;
+  min-height: 39px !important;
+  padding: 7px 0 5px !important;
+  line-height: 1.2 !important;
+  box-sizing: border-box !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box .movement-filter-label,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box .movement-filter-label,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box .movement-filter-label,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box .movement-filter-label {
+  top: -6px !important;
+  left: 14px !important;
+  padding: 0 7px !important;
+  line-height: 12px !important;
+}
+
+@media (max-width: 520px) {
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
+    min-height: 46px !important;
+    height: 46px !important;
+    padding: 6px 10px 0 !important;
+  }
+
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
+    height: 37px !important;
+    min-height: 37px !important;
+    padding: 7px 0 5px !important;
+  }
+}
