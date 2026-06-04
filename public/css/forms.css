@@ -1992,3 +1992,37 @@ body.login-page {
     white-space: nowrap !important;
   }
 }
+
+/* ==================================================
+   POS Receipt mobile price/subtotal alignment polish
+================================================== */
+@media (max-width: 700px) {
+  .receipt-grid-head,
+  .receipt-grid-row {
+    grid-template-columns: minmax(0, 1fr) 28px 64px 74px !important;
+    gap: 4px !important;
+  }
+
+  .receipt-grid-head > div:nth-child(2),
+  .receipt-grid-row > div:nth-child(2) {
+    text-align: center !important;
+  }
+
+  .receipt-grid-head > div:nth-child(3),
+  .receipt-grid-row > div:nth-child(3) {
+    text-align: right !important;
+    padding-right: 4px !important;
+  }
+
+  .receipt-grid-head > div:nth-child(4),
+  .receipt-grid-row > div:nth-child(4) {
+    text-align: right !important;
+    padding-right: 2px !important;
+  }
+
+  .receipt-grid-price,
+  .receipt-grid-subtotal {
+    font-variant-numeric: tabular-nums !important;
+    white-space: nowrap !important;
+  }
+}
