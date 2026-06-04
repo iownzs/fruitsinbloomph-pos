@@ -2240,3 +2240,53 @@ body.login-page {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
+
+/* ==================================================
+   POS Terminal desktop delivery cart scroll fix
+================================================== */
+@media (min-width: 900px) {
+  body[data-page="pos-terminal"] .pos-cart-panel {
+    position: sticky !important;
+    top: 86px !important;
+    max-height: calc(100vh - 100px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: thin !important;
+    padding-bottom: 24px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-cart-panel h3 {
+    margin: 12px 0 8px !important;
+    font-size: 15px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-cart-panel label {
+    display: block !important;
+    margin-bottom: 9px !important;
+    font-size: 12px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-cart-panel input,
+  body[data-page="pos-terminal"] .pos-cart-panel select,
+  body[data-page="pos-terminal"] .pos-cart-panel textarea {
+    min-height: 38px !important;
+    padding: 9px 11px !important;
+    font-size: 13px !important;
+    border-radius: 12px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-cart-panel textarea {
+    min-height: 72px !important;
+    resize: vertical !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-cart-panel br {
+    display: none !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-checkout-btn {
+    width: 100% !important;
+    height: 44px !important;
+    margin-top: 10px !important;
+  }
+}
