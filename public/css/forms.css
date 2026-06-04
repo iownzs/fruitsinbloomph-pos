@@ -3158,3 +3158,21 @@ body[data-page="orders"] .orders-reset-filter {
     font-size: 13px;
   }
 }
+
+/* ==================================================
+   Orders priority filter layout
+================================================== */
+body[data-page="orders"] .orders-filter-bottom {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+body[data-page="orders"] .orders-priority-filter {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  body[data-page="orders"] .orders-filter-bottom {
+    grid-template-columns: 1fr !important;
+  }
+}

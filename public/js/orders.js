@@ -20,6 +20,12 @@ shell(`
         <option>Delivery</option>
         <option>Pickup</option>
       </select>
+
+      <select id="priorityFilter" class="orders-priority-filter">
+        <option value="">All Priority</option>
+        <option>Rush</option>
+        <option>Normal</option>
+      </select>
     </div>
   </div>
 
@@ -390,10 +396,12 @@ function resetOrderFilters(){
   const search = document.getElementById("orderSearch");
   const status = document.getElementById("statusFilter");
   const type = document.getElementById("typeFilter");
+  const priority = document.getElementById("priorityFilter");
 
   if(search) search.value = "";
   if(status) status.value = "";
   if(type) type.value = "";
+  if(priority) priority.value = "";
 
   applyOrderFilters();
 }
@@ -402,24 +410,35 @@ function applyOrderFilters(){
   const search = document.getElementById("orderSearch").value.toLowerCase();
   const status = document.getElementById("statusFilter").value;
   const type = document.getElementById("typeFilter").value;
+  const priority = document.getElementById("priorityFilter")?.value || "";
 
   const filtered = allOrders.filter(order => {
+    const itemText = Array.isArray(order.items)
+      ? order.items.map(item => item.name).join(" ")
+      : "";
+
     const searchText = [
       order.orderId,
       order.id,
       order.customer?.name,
       order.customer?.contact,
       order.delivery?.recipientName,
+      order.delivery?.recipientContact,
       order.pickup?.pickupPersonName,
+      order.pickup?.pickupPersonContact,
       order.status,
-      order.orderType
+      order.orderType,
+      order.priority,
+      itemText
     ].join(" ").toLowerCase();
 
+    const orderPriority = order.priority || "Normal";
     const matchSearch = !search || searchText.includes(search);
     const matchStatus = !status || order.status === status;
     const matchType = !type || order.orderType === type;
+    const matchPriority = !priority || orderPriority === priority;
 
-    return matchSearch && matchStatus && matchType;
+    return matchSearch && matchStatus && matchType && matchPriority;
   });
 
   renderOrders(filtered);
@@ -428,5 +447,6 @@ function applyOrderFilters(){
 document.getElementById("orderSearch").addEventListener("input", applyOrderFilters);
 document.getElementById("statusFilter").addEventListener("change", applyOrderFilters);
 document.getElementById("typeFilter").addEventListener("change", applyOrderFilters);
+document.getElementById("priorityFilter")?.addEventListener("change", applyOrderFilters);
 
 loadOrders();
