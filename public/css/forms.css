@@ -2805,3 +2805,32 @@ body[data-page="kitchen"] .kitchen-column {
     0 10px 24px rgba(15, 23, 42, 0.28) !important;
   border-radius: 22px !important;
 }
+
+/* ==================================================
+   Kitchen desktop board spacing polish
+================================================== */
+@media (min-width: 900px) {
+  body[data-page="kitchen"] .kitchen-board {
+    gap: 18px !important;
+    align-items: start !important;
+  }
+
+  body[data-page="kitchen"] .kitchen-column {
+    padding: 16px !important;
+    min-width: 0 !important;
+  }
+
+  body[data-page="kitchen"] .kitchen-order-card {
+    padding: 14px !important;
+    margin-bottom: 14px !important;
+  }
+
+  body[data-page="kitchen"] .kitchen-order-card .btn {
+    width: auto !important;
+    min-width: 120px !important;
+  }
+
+  body[data-page="kitchen"] .kitchen-info-grid {
+    gap: 8px !important;
+  }
+}
