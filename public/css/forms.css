@@ -3207,3 +3207,21 @@ body[data-page="orders"] .orders-schedule-date-filter {
     font-size: 11px;
   }
 }
+
+/* ==================================================
+   Orders city filter layout
+================================================== */
+body[data-page="orders"] .orders-filter-dates {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+body[data-page="orders"] .orders-city-filter {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  body[data-page="orders"] .orders-filter-dates {
+    grid-template-columns: 1fr !important;
+  }
+}

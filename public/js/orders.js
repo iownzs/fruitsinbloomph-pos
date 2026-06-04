@@ -38,6 +38,36 @@ shell(`
         Delivery / Pickup Date
         <input id="scheduleDateFilter" class="orders-schedule-date-filter" type="date">
       </label>
+
+      <label>
+        City / Area
+        <select id="cityFilter" class="orders-city-filter">
+          <option value="">All City / Area</option>
+          <option>Quezon City</option>
+          <option>Makati</option>
+          <option>Manila</option>
+          <option>Pasig</option>
+          <option>Taguig</option>
+          <option>Pasay</option>
+          <option>Parañaque</option>
+          <option>Las Piñas</option>
+          <option>Muntinlupa</option>
+          <option>Mandaluyong</option>
+          <option>San Juan</option>
+          <option>Marikina</option>
+          <option>Caloocan</option>
+          <option>Malabon</option>
+          <option>Navotas</option>
+          <option>Valenzuela</option>
+          <option>Rizal</option>
+          <option>Cavite</option>
+          <option>Laguna</option>
+          <option>Batangas</option>
+          <option>Bulacan</option>
+          <option>Pampanga</option>
+          <option>Bataan</option>
+        </select>
+      </label>
     </div>
   </div>
 
@@ -428,6 +458,7 @@ function resetOrderFilters(){
   const priority = document.getElementById("priorityFilter");
   const orderDate = document.getElementById("orderDateFilter");
   const scheduleDate = document.getElementById("scheduleDateFilter");
+  const city = document.getElementById("cityFilter");
 
   if(search) search.value = "";
   if(status) status.value = "";
@@ -435,6 +466,7 @@ function resetOrderFilters(){
   if(priority) priority.value = "";
   if(orderDate) orderDate.value = "";
   if(scheduleDate) scheduleDate.value = "";
+  if(city) city.value = "";
 
   applyOrderFilters();
 }
@@ -446,6 +478,7 @@ function applyOrderFilters(){
   const priority = document.getElementById("priorityFilter")?.value || "";
   const orderDate = document.getElementById("orderDateFilter")?.value || "";
   const scheduleDate = document.getElementById("scheduleDateFilter")?.value || "";
+  const city = document.getElementById("cityFilter")?.value || "";
 
   const filtered = allOrders.filter(order => {
     const itemText = Array.isArray(order.items)
@@ -468,6 +501,7 @@ function applyOrderFilters(){
     ].join(" ").toLowerCase();
 
     const orderPriority = order.priority || "Normal";
+    const orderCity = order.delivery?.cityArea || "";
     const createdDate = orderDateValue(order.createdAt || order.createdDate || order.orderCreatedAt);
     const orderScheduleDate = order.orderType === "Delivery"
       ? (order.delivery?.deliveryDate || "")
@@ -479,8 +513,9 @@ function applyOrderFilters(){
     const matchPriority = !priority || orderPriority === priority;
     const matchOrderDate = !orderDate || createdDate === orderDate;
     const matchScheduleDate = !scheduleDate || orderScheduleDate === scheduleDate;
+    const matchCity = !city || orderCity === city;
 
-    return matchSearch && matchStatus && matchType && matchPriority && matchOrderDate && matchScheduleDate;
+    return matchSearch && matchStatus && matchType && matchPriority && matchOrderDate && matchScheduleDate && matchCity;
   });
 
   renderOrders(filtered);
@@ -492,5 +527,6 @@ document.getElementById("typeFilter").addEventListener("change", applyOrderFilte
 document.getElementById("priorityFilter")?.addEventListener("change", applyOrderFilters);
 document.getElementById("orderDateFilter")?.addEventListener("change", applyOrderFilters);
 document.getElementById("scheduleDateFilter")?.addEventListener("change", applyOrderFilters);
+document.getElementById("cityFilter")?.addEventListener("change", applyOrderFilters);
 
 loadOrders();
