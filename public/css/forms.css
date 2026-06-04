@@ -2777,3 +2777,31 @@ body[data-page="kitchen"] .kitchen-filter-tabs .chip {
     font-size: 12px;
   }
 }
+
+/* ==================================================
+   Kitchen cards cyan outline like POS Terminal
+================================================== */
+body[data-page="kitchen"] .kitchen-order-card {
+  border: 1.5px solid rgba(34, 211, 238, 0.62) !important;
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.22),
+    0 10px 28px rgba(15, 23, 42, 0.45) !important;
+  border-radius: 22px !important;
+  background: rgba(15, 23, 42, 0.82) !important;
+}
+
+body[data-page="kitchen"] .kitchen-order-card:hover {
+  border-color: rgba(34, 211, 238, 0.88) !important;
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.34),
+    0 0 18px rgba(34, 211, 238, 0.16),
+    0 10px 28px rgba(15, 23, 42, 0.48) !important;
+}
+
+body[data-page="kitchen"] .kitchen-column {
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.05),
+    0 10px 24px rgba(15, 23, 42, 0.28) !important;
+  border-radius: 22px !important;
+}
