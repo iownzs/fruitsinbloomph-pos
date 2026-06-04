@@ -1,4 +1,5 @@
 let cart = [];
+let POS_CHECKOUT_BUSY = false;
 let posProducts = [];
 
 shell(`
@@ -710,6 +711,10 @@ function setPOSCheckoutLoading(isLoading){
 }
 
 async function checkoutOrder(){
+  if(POS_CHECKOUT_BUSY){
+    return;
+  }
+
   try{
     if(!window.FIB_FIREBASE_READY || !window.FIB.createOrder){
       throw new Error("Firebase order service is not ready.");
@@ -720,6 +725,7 @@ async function checkoutOrder(){
       return;
     }
 
+    POS_CHECKOUT_BUSY = true;
     setPOSCheckoutLoading(true);
 
     const form = getCartFormData();
@@ -792,7 +798,8 @@ async function checkoutOrder(){
           </div>
         `).join("");
 
-        setPOSCheckoutLoading(false);
+        POS_CHECKOUT_BUSY = false;
+    setPOSCheckoutLoading(false);
 
         openModal(
           "Checkout Blocked: Low Product Stock",
@@ -822,7 +829,8 @@ async function checkoutOrder(){
           </div>
         `).join("");
 
-        setPOSCheckoutLoading(false);
+        POS_CHECKOUT_BUSY = false;
+    setPOSCheckoutLoading(false);
 
         openModal(
           "Checkout Blocked: Low Ingredient Stock",
@@ -850,7 +858,8 @@ async function checkoutOrder(){
         await window.FIB.deductIngredientsForOrder(orderId, cart);
       }
     }catch(deductionError){
-      setPOSCheckoutLoading(false);
+      POS_CHECKOUT_BUSY = false;
+    setPOSCheckoutLoading(false);
 
       openModal(
         "Stock Deduction Failed",
@@ -871,6 +880,7 @@ async function checkoutOrder(){
 
     clearPOSCheckoutForm();
     refreshPOSProductsInBackground();
+    POS_CHECKOUT_BUSY = false;
     setPOSCheckoutLoading(false);
 
     openModal(
@@ -883,6 +893,7 @@ async function checkoutOrder(){
        <button class="btn" onclick="closeModal()">Close</button>`
     );
   }catch(error){
+    POS_CHECKOUT_BUSY = false;
     setPOSCheckoutLoading(false);
     openModal("Checkout Failed", `<p>${error.message}</p>`);
   }
