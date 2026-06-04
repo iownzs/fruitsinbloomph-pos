@@ -2117,3 +2117,64 @@ body.login-page {
 .receipt-grid-head > div:nth-child(4) {
   text-align: right !important;
 }
+
+/* ==================================================
+   Smart Scan mobile modal footer fix
+================================================== */
+@media (max-width: 700px) {
+  .modal-root.open .modal:has(#smartScanText),
+  .modal-root.open .modal:has(.smart-scan-draft),
+  .modal-root.open .modal:has(.scan-draft-preview) {
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    height: calc(100dvh - 96px) !important;
+    max-height: calc(100dvh - 96px) !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  .modal-root.open .modal:has(#smartScanText) .modal-head,
+  .modal-root.open .modal:has(.smart-scan-draft) .modal-head,
+  .modal-root.open .modal:has(.scan-draft-preview) .modal-head {
+    flex: 0 0 auto !important;
+  }
+
+  .modal-root.open .modal:has(#smartScanText) .modal-body,
+  .modal-root.open .modal:has(.smart-scan-draft) .modal-body,
+  .modal-root.open .modal:has(.scan-draft-preview) .modal-body {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    padding-bottom: 18px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .modal-root.open .modal:has(#smartScanText) .modal-foot,
+  .modal-root.open .modal:has(.smart-scan-draft) .modal-foot,
+  .modal-root.open .modal:has(.scan-draft-preview) .modal-foot {
+    flex: 0 0 auto !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom)) !important;
+    background: var(--card) !important;
+    border-top: 1px solid var(--border) !important;
+    z-index: 20 !important;
+  }
+
+  .modal-root.open .modal:has(#smartScanText) .modal-foot .btn,
+  .modal-root.open .modal:has(.smart-scan-draft) .modal-foot .btn,
+  .modal-root.open .modal:has(.scan-draft-preview) .modal-foot .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    border-radius: 12px !important;
+    font-size: 13px !important;
+    white-space: nowrap !important;
+  }
+}
