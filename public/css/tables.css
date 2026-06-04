@@ -885,14 +885,3 @@ body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box 
   border-radius: 14px !important;
   overflow: hidden !important;
 }
-
-/* ==================================================
-   Stock Movements reset button anti-spam state
-================================================== */
-.stock-movements-toolbar .movement-reset-filter:disabled,
-.stock-movements-toolbar .movement-reset-filter.is-resetting {
-  opacity: .68 !important;
-  cursor: not-allowed !important;
-  pointer-events: none !important;
-  transform: none !important;
-}
