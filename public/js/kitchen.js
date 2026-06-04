@@ -79,6 +79,8 @@ function renderKitchenOrders(orders){
   const filter = document.getElementById("kitchenStatusFilter").value;
   const search = document.getElementById("kitchenSearch").value.toLowerCase();
 
+  document.querySelector(".kitchen-board")?.classList.toggle("kitchen-board-filtered", !!filter);
+
   document.querySelectorAll(".kitchen-column").forEach(column => {
     const title = column.querySelector("h3")?.textContent.trim().toLowerCase() || "";
 
