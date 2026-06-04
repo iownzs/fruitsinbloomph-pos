@@ -356,6 +356,8 @@ function applyMovementFilters(){
   renderStockMovements(filtered);
 }
 
+let movementResetFrame = null;
+
 function resetMovementFilters(){
   document.getElementById("movementSearch").value = "";
   document.getElementById("stockTypeFilter").value = "";
@@ -364,7 +366,14 @@ function resetMovementFilters(){
   document.getElementById("dateFromFilter").value = "";
   document.getElementById("dateToFilter").value = "";
 
-  renderStockMovements(allStockMovements);
+  if(movementResetFrame){
+    cancelAnimationFrame(movementResetFrame);
+  }
+
+  movementResetFrame = requestAnimationFrame(() => {
+    renderStockMovements(allStockMovements);
+    movementResetFrame = null;
+  });
 }
 
 document.getElementById("movementSearch").addEventListener("input", applyMovementFilters);
@@ -374,8 +383,13 @@ document.getElementById("categoryFilter").addEventListener("change", applyMoveme
 document.getElementById("dateFromFilter").addEventListener("change", applyMovementFilters);
 document.getElementById("dateToFilter").addEventListener("change", applyMovementFilters);
 
+let movementResizeTimer = null;
+
 window.addEventListener("resize", () => {
-  applyMovementFilters();
+  clearTimeout(movementResizeTimer);
+  movementResizeTimer = setTimeout(() => {
+    applyMovementFilters();
+  }, 120);
 });
 
 
