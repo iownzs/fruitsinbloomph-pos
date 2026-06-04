@@ -1,20 +1,26 @@
 shell(`
-  <div class="toolbar">
-    <input id="orderSearch" placeholder="Search order, customer, recipient">
-    <select id="statusFilter">
-      <option value="">All Status</option>
-      <option>Created</option>
-      <option>Sent to Kitchen</option>
-      <option>Preparing</option>
-      <option>Ready</option>
-      <option>Completed</option>
-    </select>
-    <select id="typeFilter">
-      <option value="">All Type</option>
-      <option>Delivery</option>
-      <option>Pickup</option>
-    </select>
-    <button class="btn primary">New Order</button>
+  <div class="toolbar orders-filter-panel">
+    <div class="orders-filter-top">
+      <input id="orderSearch" class="orders-search-filter" placeholder="Search order, customer, recipient">
+      <button class="btn orders-reset-filter" onclick="resetOrderFilters()">Reset Filter</button>
+    </div>
+
+    <div class="orders-filter-bottom">
+      <select id="statusFilter" class="orders-status-filter">
+        <option value="">All Status</option>
+        <option>Created</option>
+        <option>Sent to Kitchen</option>
+        <option>Preparing</option>
+        <option>Ready</option>
+        <option>Completed</option>
+      </select>
+
+      <select id="typeFilter" class="orders-type-filter">
+        <option value="">All Type</option>
+        <option>Delivery</option>
+        <option>Pickup</option>
+      </select>
+    </div>
   </div>
 
   <div class="card">
@@ -378,6 +384,18 @@ function escapeModalText(text){
 function copyText(text){
   navigator.clipboard?.writeText(text);
   closeModal();
+}
+
+function resetOrderFilters(){
+  const search = document.getElementById("orderSearch");
+  const status = document.getElementById("statusFilter");
+  const type = document.getElementById("typeFilter");
+
+  if(search) search.value = "";
+  if(status) status.value = "";
+  if(type) type.value = "";
+
+  applyOrderFilters();
 }
 
 function applyOrderFilters(){

@@ -3095,3 +3095,66 @@ body[data-page="kitchen"] .kitchen-filter-count {
 body[data-page="kitchen"] .kitchen-filter-label {
   color: inherit !important;
 }
+
+/* ==================================================
+   Orders page toolbar layout
+================================================== */
+body[data-page="orders"] .orders-filter-panel {
+  display: grid !important;
+  gap: 12px !important;
+  align-items: stretch !important;
+}
+
+body[data-page="orders"] .orders-filter-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
+
+body[data-page="orders"] .orders-filter-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+body[data-page="orders"] .orders-search-filter,
+body[data-page="orders"] .orders-status-filter,
+body[data-page="orders"] .orders-type-filter {
+  width: 100%;
+  min-width: 0;
+}
+
+body[data-page="orders"] .orders-reset-filter {
+  min-width: 140px;
+  height: 42px;
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  body[data-page="orders"] .orders-filter-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  body[data-page="orders"] .orders-filter-bottom {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  body[data-page="orders"] .orders-search-filter,
+  body[data-page="orders"] .orders-reset-filter,
+  body[data-page="orders"] .orders-status-filter,
+  body[data-page="orders"] .orders-type-filter {
+    width: 100%;
+    min-width: 0;
+  }
+
+  body[data-page="orders"] .orders-reset-filter {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 13px;
+  }
+}
