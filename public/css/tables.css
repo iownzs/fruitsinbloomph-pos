@@ -969,3 +969,47 @@ body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-label {
   top: -1px !important;
 }
+
+/* ==================================================
+   Stock Movements filter label centered on border
+================================================== */
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
+  position: relative !important;
+  padding: 10px 12px 0 !important;
+  border: 1px solid rgba(34, 211, 238, 0.34) !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  border-radius: 14px !important;
+  overflow: visible !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box .movement-filter-label,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box .movement-filter-label,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box .movement-filter-label,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box .movement-filter-label {
+  position: absolute !important;
+  top: -6px !important;
+  left: 14px !important;
+  z-index: 3 !important;
+  padding: 0 8px !important;
+  background: #0f172a !important;
+  color: #67e8f9 !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  line-height: 12px !important;
+  border-radius: 999px !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 10px 0 6px !important;
+}
