@@ -1908,3 +1908,87 @@ body.login-page {
     content: none !important;
   }
 }
+
+/* ==================================================
+   FINAL POS Receipt item grid table
+================================================== */
+.receipt-items-grid {
+  width: 100%;
+  display: grid;
+  gap: 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.receipt-grid-head,
+.receipt-grid-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px 78px 88px;
+  gap: 6px;
+  align-items: center;
+}
+
+.receipt-grid-head {
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.receipt-grid-head > div,
+.receipt-grid-row > div {
+  padding: 7px 4px;
+  min-width: 0;
+}
+
+.receipt-grid-row {
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 12px;
+  color: #111827;
+}
+
+.receipt-grid-name {
+  font-weight: 800;
+  word-break: break-word;
+}
+
+.receipt-grid-qty {
+  text-align: center;
+}
+
+.receipt-grid-price,
+.receipt-grid-subtotal {
+  text-align: right;
+  font-weight: 800;
+}
+
+@media (max-width: 700px) {
+  .receipt-grid-head,
+  .receipt-grid-row {
+    grid-template-columns: minmax(0, 1fr) 28px 58px 68px !important;
+    gap: 4px !important;
+  }
+
+  .receipt-grid-head {
+    font-size: 8px !important;
+  }
+
+  .receipt-grid-row {
+    font-size: 10px !important;
+  }
+
+  .receipt-grid-head > div,
+  .receipt-grid-row > div {
+    padding: 6px 2px !important;
+  }
+
+  .receipt-grid-name {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+  }
+
+  .receipt-grid-price,
+  .receipt-grid-subtotal {
+    white-space: nowrap !important;
+  }
+}

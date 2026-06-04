@@ -519,12 +519,12 @@ function buildPOSReceiptHtml(orderId, orderData){
   const createdBy = orderData.createdBy || {};
 
   const itemRows = items.map(item => `
-    <tr>
-      <td>${receiptSafe(item.name)}</td>
-      <td class="receipt-center">${receiptSafe(item.qty, 1)}</td>
-      <td class="receipt-right">${receiptMoney(item.price || 0)}</td>
-      <td class="receipt-right">${receiptMoney(item.subtotal || ((item.price || 0) * (item.qty || 1)))}</td>
-    </tr>
+    <div class="receipt-grid-row">
+      <div class="receipt-grid-name">${receiptSafe(item.name)}</div>
+      <div class="receipt-grid-qty">${receiptSafe(item.qty, 1)}</div>
+      <div class="receipt-grid-price">${receiptMoney(item.price || 0)}</div>
+      <div class="receipt-grid-subtotal">${receiptMoney(item.subtotal || ((item.price || 0) * (item.qty || 1)))}</div>
+    </div>
   `).join("");
 
   const detailsHtml = isDelivery
@@ -570,19 +570,15 @@ function buildPOSReceiptHtml(orderId, orderData){
       <div class="receipt-divider"></div>
 
       <h3>Items</h3>
-      <table class="receipt-items">
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${itemRows}
-        </tbody>
-      </table>
+      <div class="receipt-items-grid">
+        <div class="receipt-grid-head">
+          <div>Product Name</div>
+          <div>Qty</div>
+          <div>Price</div>
+          <div>Subtotal</div>
+        </div>
+        ${itemRows}
+      </div>
 
       <div class="receipt-divider"></div>
 
@@ -620,10 +616,14 @@ function printPOSReceipt(){
           .receipt-line{display:grid;grid-template-columns:115px 1fr;gap:8px;margin:5px 0;font-size:13px;}
           .receipt-divider{border-top:1px dashed #333;margin:14px 0;}
           h3{margin:0 0 8px;font-size:16px;}
-          .receipt-items{width:100%;border-collapse:collapse;font-size:13px;}
-          .receipt-items th,.receipt-items td{padding:6px 2px;border-bottom:1px solid #ddd;text-align:left;}
-          .receipt-center{text-align:center!important;}
-          .receipt-right{text-align:right!important;}
+          .receipt-items-grid{width:100%;display:grid;border-bottom:1px solid #ddd;}
+          .receipt-grid-head,.receipt-grid-row{display:grid;grid-template-columns:minmax(0,1fr) 38px 72px 82px;gap:6px;align-items:center;}
+          .receipt-grid-head{background:#0f172a;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;}
+          .receipt-grid-head>div,.receipt-grid-row>div{padding:6px 2px;min-width:0;}
+          .receipt-grid-row{border-bottom:1px solid #ddd;font-size:12px;}
+          .receipt-grid-name{font-weight:800;word-break:break-word;}
+          .receipt-grid-qty{text-align:center;}
+          .receipt-grid-price,.receipt-grid-subtotal{text-align:right;font-weight:800;}
           .receipt-total-line{display:flex;justify-content:space-between;margin:7px 0;font-size:14px;}
           .receipt-grand{font-size:17px;border-top:1px solid #111;padding-top:8px;font-weight:900;}
           .receipt-thanks{text-align:center;font-size:18px;margin-top:18px;}
