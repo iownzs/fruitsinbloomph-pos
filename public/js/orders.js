@@ -27,6 +27,18 @@ shell(`
         <option>Normal</option>
       </select>
     </div>
+
+    <div class="orders-filter-dates">
+      <label>
+        Order Date
+        <input id="orderDateFilter" class="orders-order-date-filter" type="date">
+      </label>
+
+      <label>
+        Delivery / Pickup Date
+        <input id="scheduleDateFilter" class="orders-schedule-date-filter" type="date">
+      </label>
+    </div>
   </div>
 
   <div class="card">
@@ -392,16 +404,37 @@ function copyText(text){
   closeModal();
 }
 
+function orderDateValue(value){
+  if(!value) return "";
+
+  try{
+    if(value.toDate){
+      return value.toDate().toISOString().slice(0, 10);
+    }
+
+    const date = new Date(value);
+    if(!Number.isNaN(date.getTime())){
+      return date.toISOString().slice(0, 10);
+    }
+  }catch(error){}
+
+  return "";
+}
+
 function resetOrderFilters(){
   const search = document.getElementById("orderSearch");
   const status = document.getElementById("statusFilter");
   const type = document.getElementById("typeFilter");
   const priority = document.getElementById("priorityFilter");
+  const orderDate = document.getElementById("orderDateFilter");
+  const scheduleDate = document.getElementById("scheduleDateFilter");
 
   if(search) search.value = "";
   if(status) status.value = "";
   if(type) type.value = "";
   if(priority) priority.value = "";
+  if(orderDate) orderDate.value = "";
+  if(scheduleDate) scheduleDate.value = "";
 
   applyOrderFilters();
 }
@@ -411,6 +444,8 @@ function applyOrderFilters(){
   const status = document.getElementById("statusFilter").value;
   const type = document.getElementById("typeFilter").value;
   const priority = document.getElementById("priorityFilter")?.value || "";
+  const orderDate = document.getElementById("orderDateFilter")?.value || "";
+  const scheduleDate = document.getElementById("scheduleDateFilter")?.value || "";
 
   const filtered = allOrders.filter(order => {
     const itemText = Array.isArray(order.items)
@@ -433,12 +468,19 @@ function applyOrderFilters(){
     ].join(" ").toLowerCase();
 
     const orderPriority = order.priority || "Normal";
+    const createdDate = orderDateValue(order.createdAt || order.createdDate || order.orderCreatedAt);
+    const orderScheduleDate = order.orderType === "Delivery"
+      ? (order.delivery?.deliveryDate || "")
+      : (order.pickup?.pickupDate || "");
+
     const matchSearch = !search || searchText.includes(search);
     const matchStatus = !status || order.status === status;
     const matchType = !type || order.orderType === type;
     const matchPriority = !priority || orderPriority === priority;
+    const matchOrderDate = !orderDate || createdDate === orderDate;
+    const matchScheduleDate = !scheduleDate || orderScheduleDate === scheduleDate;
 
-    return matchSearch && matchStatus && matchType && matchPriority;
+    return matchSearch && matchStatus && matchType && matchPriority && matchOrderDate && matchScheduleDate;
   });
 
   renderOrders(filtered);
@@ -448,5 +490,7 @@ document.getElementById("orderSearch").addEventListener("input", applyOrderFilte
 document.getElementById("statusFilter").addEventListener("change", applyOrderFilters);
 document.getElementById("typeFilter").addEventListener("change", applyOrderFilters);
 document.getElementById("priorityFilter")?.addEventListener("change", applyOrderFilters);
+document.getElementById("orderDateFilter")?.addEventListener("change", applyOrderFilters);
+document.getElementById("scheduleDateFilter")?.addEventListener("change", applyOrderFilters);
 
 loadOrders();

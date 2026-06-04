@@ -3176,3 +3176,34 @@ body[data-page="orders"] .orders-priority-filter {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ==================================================
+   Orders date filter layout
+================================================== */
+body[data-page="orders"] .orders-filter-dates {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+body[data-page="orders"] .orders-filter-dates label {
+  margin: 0;
+}
+
+body[data-page="orders"] .orders-order-date-filter,
+body[data-page="orders"] .orders-schedule-date-filter {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  body[data-page="orders"] .orders-filter-dates {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  body[data-page="orders"] .orders-filter-dates label {
+    font-size: 11px;
+  }
+}
