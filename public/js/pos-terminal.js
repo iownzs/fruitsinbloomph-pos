@@ -785,66 +785,71 @@ async function checkoutOrder(){
       }
     };
 
-    if(window.FIB.validateProductStocksForCart){
-      const productValidation = await window.FIB.validateProductStocksForCart(cart);
+    const validationTasks = await Promise.all([
+      window.FIB.validateProductStocksForCart
+        ? window.FIB.validateProductStocksForCart(cart)
+        : Promise.resolve({ ok: true, issues: [] }),
 
-      if(!productValidation.ok){
-        const issueList = productValidation.issues.map(issue => `
-          <div class="checkout-stock-issue">
-            <strong>${issue.productName}</strong>
-            <p>Required: ${issue.requiredQty} ${issue.unit}</p>
-            <p>Available: ${issue.availableStock} ${issue.unit}</p>
-            <small>${issue.reason}</small>
-          </div>
-        `).join("");
+      window.FIB.validateIngredientsForCart
+        ? window.FIB.validateIngredientsForCart(cart)
+        : Promise.resolve({ ok: true, issues: [] })
+    ]);
 
-        POS_CHECKOUT_BUSY = false;
-    setPOSCheckoutLoading(false);
+    const productValidation = validationTasks[0];
+    const ingredientValidation = validationTasks[1];
 
-        openModal(
-          "Checkout Blocked: Low Product Stock",
-          `
-            <p>The order was not created because some product stocks are missing or too low.</p>
-            <div class="checkout-stock-issues">${issueList}</div>
-            <p class="muted">Please update Product Stocks, then try checkout again. The cart was not cleared.</p>
-          `,
-          `<button class="btn primary" onclick="location.href='./product-stocks.html'">Open Product Stocks</button>
-           <button class="btn" onclick="closeModal()">Stay Here</button>`
-        );
+    if(!productValidation.ok){
+      const issueList = productValidation.issues.map(issue => `
+        <div class="checkout-stock-issue">
+          <strong>${issue.productName}</strong>
+          <p>Required: ${issue.requiredQty} ${issue.unit}</p>
+          <p>Available: ${issue.availableStock} ${issue.unit}</p>
+          <small>${issue.reason}</small>
+        </div>
+      `).join("");
 
-        return;
-      }
+      POS_CHECKOUT_BUSY = false;
+      setPOSCheckoutLoading(false);
+
+      openModal(
+        "Checkout Blocked: Low Product Stock",
+        `
+          <p>The order was not created because some product stocks are missing or too low.</p>
+          <div class="checkout-stock-issues">${issueList}</div>
+          <p class="muted">Please update Product Stocks, then try checkout again. The cart was not cleared.</p>
+        `,
+        `<button class="btn primary" onclick="location.href='./product-stocks.html'">Open Product Stocks</button>
+         <button class="btn" onclick="closeModal()">Stay Here</button>`
+      );
+
+      return;
     }
 
-    if(window.FIB.validateIngredientsForCart){
-      const validation = await window.FIB.validateIngredientsForCart(cart);
+    if(!ingredientValidation.ok){
+      const issueList = ingredientValidation.issues.map(issue => `
+        <div class="checkout-stock-issue">
+          <strong>${issue.ingredientName}</strong>
+          <p>Required: ${issue.requiredQty} ${issue.unit}</p>
+          <p>Available: ${issue.availableStock} ${issue.unit}</p>
+          <small>${issue.reason}</small>
+        </div>
+      `).join("");
 
-      if(!validation.ok){
-        const issueList = validation.issues.map(issue => `
-          <div class="checkout-stock-issue">
-            <strong>${issue.ingredientName}</strong>
-            <p>Required: ${issue.requiredQty} ${issue.unit}</p>
-            <p>Available: ${issue.availableStock} ${issue.unit}</p>
-            <small>${issue.reason}</small>
-          </div>
-        `).join("");
+      POS_CHECKOUT_BUSY = false;
+      setPOSCheckoutLoading(false);
 
-        POS_CHECKOUT_BUSY = false;
-    setPOSCheckoutLoading(false);
+      openModal(
+        "Checkout Blocked: Low Ingredient Stock",
+        `
+          <p>The order was not created because some recipe ingredients are missing or too low.</p>
+          <div class="checkout-stock-issues">${issueList}</div>
+          <p class="muted">Please update Ingredient Stocks, then try checkout again. The cart was not cleared.</p>
+        `,
+        `<button class="btn primary" onclick="location.href='./ingredient-stocks.html'">Open Ingredient Stocks</button>
+         <button class="btn" onclick="closeModal()">Stay Here</button>`
+      );
 
-        openModal(
-          "Checkout Blocked: Low Ingredient Stock",
-          `
-            <p>The order was not created because some recipe ingredients are missing or too low.</p>
-            <div class="checkout-stock-issues">${issueList}</div>
-            <p class="muted">Please update Ingredient Stocks, then try checkout again. The cart was not cleared.</p>
-          `,
-          `<button class="btn primary" onclick="location.href='./ingredient-stocks.html'">Open Ingredient Stocks</button>
-           <button class="btn" onclick="closeModal()">Stay Here</button>`
-        );
-
-        return;
-      }
+      return;
     }
 
     const orderId = await window.FIB.createOrder(orderData);
