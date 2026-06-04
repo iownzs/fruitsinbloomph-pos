@@ -949,3 +949,23 @@ body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box
     font-size: 12px !important;
   }
 }
+
+/* ==================================================
+   Stock Movements toolbar no-card + lower filter boxes
+================================================== */
+body[data-page="stock-movements"] .stock-movement-filter-panel {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
+  margin-top: 6px !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-label {
+  top: -1px !important;
+}
