@@ -3005,3 +3005,35 @@ body[data-page="kitchen"] .kitchen-filter-chip.active .kitchen-filter-count {
     font-size: 14px;
   }
 }
+
+/* ==================================================
+   Kitchen priority filter layout
+================================================== */
+body[data-page="kitchen"] .kitchen-filter-top {
+  grid-template-columns: minmax(0, 1fr) 160px auto !important;
+}
+
+body[data-page="kitchen"] .kitchen-priority-filter {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+}
+
+@media (max-width: 700px) {
+  body[data-page="kitchen"] .kitchen-filter-top {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  body[data-page="kitchen"] .kitchen-filter-top input {
+    grid-column: 1 / -1;
+  }
+
+  body[data-page="kitchen"] .kitchen-priority-filter,
+  body[data-page="kitchen"] .kitchen-refresh-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 50px !important;
+    border-radius: 16px !important;
+  }
+}

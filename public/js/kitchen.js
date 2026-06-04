@@ -2,6 +2,13 @@ shell(`
   <div class="toolbar kitchen-filter-panel">
     <div class="kitchen-filter-top">
       <input id="kitchenSearch" placeholder="Search order, customer, item">
+
+      <select id="kitchenPriorityFilter" class="kitchen-priority-filter">
+        <option value="">All Priority</option>
+        <option value="Rush">Rush</option>
+        <option value="Normal">Normal</option>
+      </select>
+
       <button class="btn kitchen-refresh-btn" onclick="loadKitchenOrders()">Refresh</button>
     </div>
 
@@ -99,6 +106,7 @@ function renderKitchenOrders(orders){
 
   const filter = document.getElementById("kitchenStatusFilter").value;
   const search = document.getElementById("kitchenSearch").value.toLowerCase();
+  const priorityFilter = document.getElementById("kitchenPriorityFilter")?.value || "";
 
   const searchMatchedOrders = orders.filter(order => {
     const itemText = Array.isArray(order.items)
@@ -113,7 +121,10 @@ function renderKitchenOrders(orders){
       itemText
     ].join(" ").toLowerCase();
 
-    return !search || searchText.includes(search);
+    const orderPriority = order.priority || "Normal";
+    const matchPriority = !priorityFilter || orderPriority === priorityFilter;
+
+    return (!search || searchText.includes(search)) && matchPriority;
   });
 
   updateKitchenFilterCounts({
@@ -150,10 +161,12 @@ function renderKitchenOrders(orders){
       itemText
     ].join(" ").toLowerCase();
 
+    const orderPriority = order.priority || "Normal";
     const matchStatus = !filter || order.kitchenStatus === filter;
     const matchSearch = !search || searchText.includes(search);
+    const matchPriority = !priorityFilter || orderPriority === priorityFilter;
 
-    return matchStatus && matchSearch;
+    return matchStatus && matchSearch && matchPriority;
   });
 
   filtered.forEach(order => {
@@ -302,6 +315,7 @@ function applyKitchenFilters(){
 
 document.getElementById("kitchenSearch").addEventListener("input", applyKitchenFilters);
 document.getElementById("kitchenStatusFilter").addEventListener("change", applyKitchenFilters);
+document.getElementById("kitchenPriorityFilter").addEventListener("change", applyKitchenFilters);
 
 document.querySelectorAll(".kitchen-filter-tabs .chip").forEach(button => {
   button.addEventListener("click", () => {
