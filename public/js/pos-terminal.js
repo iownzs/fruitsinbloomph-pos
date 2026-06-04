@@ -254,6 +254,10 @@ function renderCart(){
   const itemHtml = cart.length
     ? cart.map((item, index) => `
       <div class="cart-item-row">
+        <div class="cart-item-thumb">
+          ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.name || 'Product'}">` : `<span>${(item.name || '?').slice(0,1)}</span>`}
+        </div>
+
         <div class="cart-item-info">
           <strong>${item.name}</strong>
           <span>${money(item.price)} x ${item.qty} = ${money((item.price || 0) * (item.qty || 1))}</span>
@@ -299,6 +303,7 @@ function addCart(productId){
       price: product.price || 0,
       qty: 1,
       recipe: Array.isArray(product.recipe) ? JSON.parse(JSON.stringify(product.recipe)) : [],
+      imageUrl: product.imageUrl || "",
       unit: product.unit || "pcs",
       stock: product.stock ?? product.currentStock ?? 0
     });
