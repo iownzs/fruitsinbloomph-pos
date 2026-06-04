@@ -540,24 +540,30 @@ function setType(t){
     <label>Recipient Name<input class="recipient-name"></label><br>
     <label>Recipient Contact<input class="recipient-contact"></label><br>
     <label>Delivery Address<textarea class="delivery-address"></textarea></label><br>
-    <label>
-      City / Area
-      <select class="city-area">
-        <option>Quezon City</option>
-        <option>Makati</option>
-        <option>Manila</option>
-      </select>
-    </label><br>
-    <label>Landmark<input class="landmark"></label><br>
-    <label>Delivery Date<input class="delivery-date" type="date"></label><br>
-    <label>Delivery Time<input class="delivery-time" type="time"></label><br>
-    <label>
-      Delivery Type
-      <select class="delivery-type">
-        <option>BFC</option>
-        <option>INH</option>
-      </select>
-    </label>
+
+    <div class="delivery-compact-grid">
+      <label>
+        City / Area
+        <select class="city-area">
+          <option>Quezon City</option>
+          <option>Makati</option>
+          <option>Manila</option>
+        </select>
+      </label>
+
+      <label>
+        Delivery Type
+        <select class="delivery-type">
+          <option>BFC</option>
+          <option>INH</option>
+        </select>
+      </label>
+
+      <label>Delivery Date<input class="delivery-date" type="date"></label>
+      <label>Delivery Time<input class="delivery-time" type="time"></label>
+    </div>
+
+    <label>Landmark<input class="landmark"></label>
   `;
 
   document.querySelectorAll('#typeFields').forEach(el => {

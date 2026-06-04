@@ -2531,3 +2531,35 @@ body.login-page {
     gap: 12px !important;
   }
 }
+
+/* ==================================================
+   POS Delivery Details compact layout
+================================================== */
+.delivery-compact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+  margin: 8px 0 10px;
+}
+
+.delivery-compact-grid label {
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 420px) {
+  .delivery-compact-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+@media (min-width: 900px) {
+  body[data-page="pos-terminal"] .delivery-compact-grid {
+    gap: 9px 10px;
+    margin: 8px 0 10px;
+  }
+
+  body[data-page="pos-terminal"] .delivery-compact-grid label {
+    font-size: 12px !important;
+  }
+}
