@@ -1149,3 +1149,33 @@ body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box
     padding: 7px 0 5px !important;
   }
 }
+
+/* ==================================================
+   Stock Movements filter text match Orders page
+================================================== */
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box .movement-filter-label,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box .movement-filter-label,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box .movement-filter-label,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box .movement-filter-label {
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: .02em !important;
+  color: #67e8f9 !important;
+  line-height: 12px !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+  letter-spacing: 0 !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select option,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select option {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
