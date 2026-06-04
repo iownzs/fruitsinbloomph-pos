@@ -2178,3 +2178,65 @@ body.login-page {
     white-space: nowrap !important;
   }
 }
+
+/* ==================================================
+   POS Terminal desktop layout polish
+================================================== */
+@media (min-width: 900px) {
+  body[data-page="pos-terminal"] .pos-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 360px !important;
+    gap: 18px !important;
+    align-items: start !important;
+  }
+
+  body[data-page="pos-terminal"] #posProductGrid.product-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-cart-panel {
+    position: sticky !important;
+    top: 92px !important;
+    max-height: calc(100vh - 110px) !important;
+    overflow-y: auto !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-compact-card {
+    min-height: 230px !important;
+    display: flex !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-main {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions {
+    margin-top: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    justify-content: center !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-view,
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-add {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    border-radius: 12px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  body[data-page="pos-terminal"] .pos-layout {
+    grid-template-columns: minmax(0, 1fr) 380px !important;
+  }
+
+  body[data-page="pos-terminal"] #posProductGrid.product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
