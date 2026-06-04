@@ -949,31 +949,3 @@ body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box
     font-size: 12px !important;
   }
 }
-
-/* ==================================================
-   Stock Movements filter panel clean layout
-   Remove filter card look + move boxes slightly lower
-================================================== */
-body[data-page="stock-movements"] .stock-movements-toolbar,
-body[data-page="stock-movements"] .stock-movement-filter-panel {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  margin-bottom: 16px !important;
-}
-
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box {
-  margin-top: 8px !important;
-  transform: translateY(3px) !important;
-}
-
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-label {
-  top: -2px !important;
-}
-
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-search-filter,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-reset-filter,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-category-filter {
-  margin-top: 0 !important;
-}
