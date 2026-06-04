@@ -290,7 +290,10 @@ function addCart(productId){
       productId: product.id,
       name: product.name,
       price: product.price || 0,
-      qty: 1
+      qty: 1,
+      recipe: Array.isArray(product.recipe) ? JSON.parse(JSON.stringify(product.recipe)) : [],
+      unit: product.unit || "pcs",
+      stock: product.stock ?? product.currentStock ?? 0
     });
   }
 
@@ -757,7 +760,8 @@ async function checkoutOrder(){
         name: item.name || "",
         price: item.price || 0,
         qty: item.qty || 1,
-        subtotal: (item.price || 0) * (item.qty || 1)
+        subtotal: (item.price || 0) * (item.qty || 1),
+        recipe: Array.isArray(item.recipe) ? item.recipe : []
       })),
 
       subtotal: total,

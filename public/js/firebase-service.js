@@ -829,11 +829,23 @@ window.FIB.validateIngredientsForCart = async function(cartItems){
 
     if(!productId || cartQty <= 0) continue;
 
-    const productDoc = await window.db.collection("products").doc(productId).get();
-    if(!productDoc.exists) continue;
+    let product = {
+      name: cartItem.name || productId,
+      recipe: Array.isArray(cartItem.recipe) ? cartItem.recipe : []
+    };
 
-    const product = productDoc.data() || {};
-    const recipe = Array.isArray(product.recipe) ? product.recipe : [];
+    let recipe = Array.isArray(cartItem.recipe) && cartItem.recipe.length
+      ? cartItem.recipe
+      : [];
+
+    // Fallback for old cart items that do not have recipe snapshot.
+    if(!recipe.length){
+      const productDoc = await window.db.collection("products").doc(productId).get();
+      if(!productDoc.exists) continue;
+
+      product = productDoc.data() || {};
+      recipe = Array.isArray(product.recipe) ? product.recipe : [];
+    }
 
     for(const recipeItem of recipe){
       const ingredientId = recipeItem.ingredientId || recipeItem.id || recipeItem.itemId;
@@ -930,12 +942,24 @@ window.FIB.deductIngredientsForOrder = async function(orderId, cartItems){
 
     if(!productId || cartQty <= 0) continue;
 
-    const productDoc = await window.db.collection("products").doc(productId).get();
+    let product = {
+      name: cartItem.name || productId,
+      recipe: Array.isArray(cartItem.recipe) ? cartItem.recipe : []
+    };
 
-    if(!productDoc.exists) continue;
+    let recipe = Array.isArray(cartItem.recipe) && cartItem.recipe.length
+      ? cartItem.recipe
+      : [];
 
-    const product = productDoc.data() || {};
-    const recipe = Array.isArray(product.recipe) ? product.recipe : [];
+    // Fallback for old cart items that do not have recipe snapshot.
+    if(!recipe.length){
+      const productDoc = await window.db.collection("products").doc(productId).get();
+
+      if(!productDoc.exists) continue;
+
+      product = productDoc.data() || {};
+      recipe = Array.isArray(product.recipe) ? product.recipe : [];
+    }
 
     for(const recipeItem of recipe){
       const ingredientId = recipeItem.ingredientId || recipeItem.id || recipeItem.itemId;
