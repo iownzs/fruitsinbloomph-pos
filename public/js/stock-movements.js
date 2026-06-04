@@ -356,24 +356,35 @@ function applyMovementFilters(){
   renderStockMovements(filtered);
 }
 
-let movementResetFrame = null;
-
 function resetMovementFilters(){
-  document.getElementById("movementSearch").value = "";
-  document.getElementById("stockTypeFilter").value = "";
-  document.getElementById("movementTypeFilter").value = "";
-  document.getElementById("categoryFilter").value = "";
-  document.getElementById("dateFromFilter").value = "";
-  document.getElementById("dateToFilter").value = "";
+  const search = document.getElementById("movementSearch");
+  const stockType = document.getElementById("stockTypeFilter");
+  const movementType = document.getElementById("movementTypeFilter");
+  const category = document.getElementById("categoryFilter");
+  const dateFrom = document.getElementById("dateFromFilter");
+  const dateTo = document.getElementById("dateToFilter");
 
-  if(movementResetFrame){
-    cancelAnimationFrame(movementResetFrame);
+  const hasActiveFilters = [
+    search?.value,
+    stockType?.value,
+    movementType?.value,
+    category?.value,
+    dateFrom?.value,
+    dateTo?.value
+  ].some(Boolean);
+
+  if(!hasActiveFilters){
+    return;
   }
 
-  movementResetFrame = requestAnimationFrame(() => {
-    renderStockMovements(allStockMovements);
-    movementResetFrame = null;
-  });
+  if(search) search.value = "";
+  if(stockType) stockType.value = "";
+  if(movementType) movementType.value = "";
+  if(category) category.value = "";
+  if(dateFrom) dateFrom.value = "";
+  if(dateTo) dateTo.value = "";
+
+  renderStockMovements(allStockMovements);
 }
 
 document.getElementById("movementSearch").addEventListener("input", applyMovementFilters);
