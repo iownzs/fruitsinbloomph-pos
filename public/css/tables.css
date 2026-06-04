@@ -839,3 +839,23 @@ body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-fil
     font-size: 12px !important;
   }
 }
+
+/* ==================================================
+   Stock Movements remove double filter boxes
+================================================== */
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 8px 0 0 !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-label {
+  background: var(--bg) !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box select,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box input {
+  border: 1px solid rgba(34, 211, 238, 0.34) !important;
+  box-shadow: none !important;
+}
