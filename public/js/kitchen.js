@@ -1,13 +1,23 @@
 shell(`
-  <div class="toolbar">
-    <input id="kitchenSearch" placeholder="Search order, customer, item">
-    <select id="kitchenStatusFilter">
+  <div class="toolbar kitchen-filter-panel">
+    <div class="kitchen-filter-top">
+      <input id="kitchenSearch" placeholder="Search order, customer, item">
+      <button class="btn kitchen-refresh-btn" onclick="loadKitchenOrders()">Refresh</button>
+    </div>
+
+    <select id="kitchenStatusFilter" class="kitchen-status-hidden" aria-label="Kitchen status filter">
       <option value="">All Kitchen Status</option>
       <option value="new">Kitchen</option>
       <option value="preparing">Preparing</option>
       <option value="ready">Ready</option>
     </select>
-    <button class="btn" onclick="loadKitchenOrders()">Refresh</button>
+
+    <div class="kitchen-filter-tabs" role="group" aria-label="Kitchen filter tabs">
+      <button type="button" class="chip active" data-kitchen-filter="">All</button>
+      <button type="button" class="chip" data-kitchen-filter="new">Kitchen</button>
+      <button type="button" class="chip" data-kitchen-filter="preparing">Preparing</button>
+      <button type="button" class="chip" data-kitchen-filter="ready">Ready</button>
+    </div>
   </div>
 
   <div class="card">
@@ -234,6 +244,22 @@ function applyKitchenFilters(){
 
 document.getElementById("kitchenSearch").addEventListener("input", applyKitchenFilters);
 document.getElementById("kitchenStatusFilter").addEventListener("change", applyKitchenFilters);
+
+document.querySelectorAll(".kitchen-filter-tabs .chip").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".kitchen-filter-tabs .chip").forEach(chip => {
+      chip.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    const filter = button.dataset.kitchenFilter || "";
+    const select = document.getElementById("kitchenStatusFilter");
+    select.value = filter;
+
+    applyKitchenFilters();
+  });
+});
 
 loadKitchenOrders();
 

@@ -2708,3 +2708,72 @@ body[data-page="products"] .product-mobile-card .product-thumb {
     0 0 0 1px rgba(34, 211, 238, 0.08),
     0 0 14px rgba(34, 211, 238, 0.12) !important;
 }
+
+/* ==================================================
+   Kitchen filter layout polish
+================================================== */
+body[data-page="kitchen"] .kitchen-filter-panel {
+  display: grid !important;
+  gap: 12px !important;
+  align-items: stretch !important;
+}
+
+body[data-page="kitchen"] .kitchen-filter-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
+
+body[data-page="kitchen"] .kitchen-filter-top input {
+  width: 100%;
+  min-width: 0;
+}
+
+body[data-page="kitchen"] .kitchen-refresh-btn {
+  min-width: 130px;
+  height: 42px;
+  white-space: nowrap;
+}
+
+body[data-page="kitchen"] .kitchen-status-hidden {
+  display: none !important;
+}
+
+body[data-page="kitchen"] .kitchen-filter-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+
+body[data-page="kitchen"] .kitchen-filter-tabs .chip {
+  width: 100%;
+  min-width: 0;
+  justify-content: center;
+  min-height: 38px;
+}
+
+@media (max-width: 520px) {
+  body[data-page="kitchen"] .kitchen-filter-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  body[data-page="kitchen"] .kitchen-refresh-btn {
+    min-width: 105px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  body[data-page="kitchen"] .kitchen-filter-tabs {
+    gap: 8px;
+  }
+
+  body[data-page="kitchen"] .kitchen-filter-tabs .chip {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 12px;
+  }
+}
