@@ -1831,216 +1831,74 @@ body.login-page {
   }
 }
 
+
 /* ==================================================
-   POS Receipt mobile item cards
+   FINAL POS Receipt mobile clean item table
+   Product Name | Qty | Price | Subtotal
 ================================================== */
 @media (max-width: 700px) {
-  .pos-receipt .receipt-items,
+  .pos-receipt .receipt-items {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-collapse: collapse !important;
+    overflow: hidden !important;
+    font-size: 10px !important;
+  }
+
   .pos-receipt .receipt-items thead,
-  .pos-receipt .receipt-items tbody,
-  .pos-receipt .receipt-items tr,
-  .pos-receipt .receipt-items th,
-  .pos-receipt .receipt-items td {
+  .pos-receipt .receipt-items tbody {
     display: block !important;
     width: 100% !important;
   }
 
-  .pos-receipt .receipt-items thead {
-    display: none !important;
-  }
-
   .pos-receipt .receipt-items tr {
-    padding: 10px 0 !important;
-    border-bottom: 1px solid #e5e7eb !important;
-  }
-
-  .pos-receipt .receipt-items td {
-    border-bottom: 0 !important;
-    padding: 2px 0 !important;
-    text-align: left !important;
-    font-size: 12px !important;
-    line-height: 1.35 !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-  }
-
-  .pos-receipt .receipt-items td:nth-child(1) {
-    font-weight: 900 !important;
-    font-size: 13px !important;
-    margin-bottom: 5px !important;
-  }
-
-  .pos-receipt .receipt-items td:nth-child(2)::before {
-    content: "Qty: ";
-    font-weight: 900 !important;
-  }
-
-  .pos-receipt .receipt-items td:nth-child(3)::before {
-    content: "Price: ";
-    font-weight: 900 !important;
-  }
-
-  .pos-receipt .receipt-items td:nth-child(4)::before {
-    content: "Subtotal: ";
-    font-weight: 900 !important;
-  }
-
-  .pos-receipt .receipt-items td:nth-child(2),
-  .pos-receipt .receipt-items td:nth-child(3),
-  .pos-receipt .receipt-items td:nth-child(4) {
-    color: #111827 !important;
-  }
-}
-
-/* ==================================================
-   FINAL POS Receipt mobile real compact table
-================================================== */
-@media (max-width: 700px) {
-  .pos-receipt .receipt-items {
-    display: table !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 32px 62px 72px !important;
+    gap: 0 6px !important;
     width: 100% !important;
-    table-layout: fixed !important;
-    border-collapse: collapse !important;
-    font-size: 10px !important;
-  }
-
-  .pos-receipt .receipt-items thead {
-    display: table-header-group !important;
-  }
-
-  .pos-receipt .receipt-items tbody {
-    display: table-row-group !important;
-  }
-
-  .pos-receipt .receipt-items tr {
-    display: table-row !important;
+    align-items: center !important;
     border-bottom: 1px solid #e5e7eb !important;
   }
 
   .pos-receipt .receipt-items th,
   .pos-receipt .receipt-items td {
-    display: table-cell !important;
+    display: block !important;
     width: auto !important;
-    padding: 6px 2px !important;
-    border-bottom: 1px solid #e5e7eb !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    padding: 7px 2px !important;
+    border-bottom: 0 !important;
     font-size: 10px !important;
     line-height: 1.2 !important;
-    vertical-align: top !important;
     white-space: normal !important;
     word-break: break-word !important;
+    overflow-wrap: anywhere !important;
   }
 
   .pos-receipt .receipt-items th {
-    font-size: 9px !important;
-    font-weight: 900 !important;
-    color: #374151 !important;
-  }
-
-  .pos-receipt .receipt-items th:nth-child(1),
-  .pos-receipt .receipt-items td:nth-child(1) {
-    width: 44% !important;
-    text-align: left !important;
-    font-weight: 800 !important;
-  }
-
-  .pos-receipt .receipt-items th:nth-child(2),
-  .pos-receipt .receipt-items td:nth-child(2) {
-    width: 12% !important;
-    text-align: center !important;
-  }
-
-  .pos-receipt .receipt-items th:nth-child(3),
-  .pos-receipt .receipt-items td:nth-child(3) {
-    width: 22% !important;
-    text-align: right !important;
-  }
-
-  .pos-receipt .receipt-items th:nth-child(4),
-  .pos-receipt .receipt-items td:nth-child(4) {
-    width: 22% !important;
-    text-align: right !important;
-  }
-
-  .pos-receipt .receipt-items td:nth-child(2)::before,
-  .pos-receipt .receipt-items td:nth-child(3)::before,
-  .pos-receipt .receipt-items td:nth-child(4)::before {
-    content: none !important;
-  }
-}
-
-/* ==================================================
-   FINAL POS Receipt mobile table column widths
-================================================== */
-@media (max-width: 700px) {
-  .pos-receipt .receipt-items {
-    display: table !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    table-layout: fixed !important;
-    border-collapse: collapse !important;
-    font-size: 9px !important;
-    overflow: hidden !important;
-  }
-
-  .pos-receipt .receipt-items thead {
-    display: table-header-group !important;
-  }
-
-  .pos-receipt .receipt-items tbody {
-    display: table-row-group !important;
-  }
-
-  .pos-receipt .receipt-items tr {
-    display: table-row !important;
-    width: 100% !important;
-  }
-
-  .pos-receipt .receipt-items th,
-  .pos-receipt .receipt-items td {
-    display: table-cell !important;
-    padding: 6px 2px !important;
-    border-bottom: 1px solid #e5e7eb !important;
-    font-size: 9px !important;
-    line-height: 1.2 !important;
-    vertical-align: top !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-  }
-
-  .pos-receipt .receipt-items th {
+    background: #0f172a !important;
+    color: #ffffff !important;
     font-size: 8px !important;
     font-weight: 900 !important;
-    color: #ffffff !important;
-    background: #0f172a !important;
     text-transform: uppercase !important;
   }
 
   .pos-receipt .receipt-items th:nth-child(1),
   .pos-receipt .receipt-items td:nth-child(1) {
-    width: 38% !important;
-    max-width: 38% !important;
     text-align: left !important;
     font-weight: 800 !important;
   }
 
   .pos-receipt .receipt-items th:nth-child(2),
   .pos-receipt .receipt-items td:nth-child(2) {
-    width: 10% !important;
-    max-width: 10% !important;
     text-align: center !important;
   }
 
   .pos-receipt .receipt-items th:nth-child(3),
-  .pos-receipt .receipt-items td:nth-child(3) {
-    width: 24% !important;
-    max-width: 24% !important;
-    text-align: right !important;
-  }
-
+  .pos-receipt .receipt-items td:nth-child(3),
   .pos-receipt .receipt-items th:nth-child(4),
   .pos-receipt .receipt-items td:nth-child(4) {
-    width: 28% !important;
-    max-width: 28% !important;
     text-align: right !important;
   }
 
