@@ -2260,3 +2260,46 @@ body[data-page="pos-terminal"] .pos-product-thumb {
     width: 100% !important;
   }
 }
+
+/* ==================================================
+   FINAL POS thumbnail card spacing polish
+================================================== */
+@media (min-width: 701px) {
+  body[data-page="pos-terminal"] .pos-product-main {
+    grid-template-columns: 72px minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-thumb,
+  body[data-page="pos-terminal"] .pos-product-thumb img,
+  body[data-page="pos-terminal"] .pos-product-thumb span {
+    width: 72px !important;
+    height: 72px !important;
+    min-width: 72px !important;
+    max-width: 72px !important;
+    min-height: 72px !important;
+    max-height: 72px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-title-row h3 {
+    white-space: normal !important;
+    overflow: hidden !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    line-height: 1.15 !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-desc {
+    white-space: normal !important;
+    overflow: hidden !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    line-height: 1.25 !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-price {
+    white-space: nowrap !important;
+  }
+}
