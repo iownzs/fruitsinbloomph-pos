@@ -2396,3 +2396,67 @@ body.login-page {
     text-overflow: ellipsis !important;
   }
 }
+
+/* ==================================================
+   POS desktop product card thumbnails
+================================================== */
+@media (min-width: 900px) {
+  body[data-page="pos-terminal"] .pos-product-compact-card {
+    display: flex !important;
+    min-height: 230px !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-main {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 82px minmax(0, 1fr) !important;
+    grid-template-rows: auto 1fr auto !important;
+    column-gap: 16px !important;
+    row-gap: 10px !important;
+    align-items: start !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-thumb {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+    display: flex !important;
+    width: 82px !important;
+    height: 82px !important;
+    min-width: 82px !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(180deg, rgba(34, 211, 238, .22), rgba(14, 165, 183, .75)) !important;
+    border: 1px solid rgba(34, 211, 238, .35) !important;
+    box-shadow: 0 10px 24px rgba(34, 211, 238, .12) !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-thumb span {
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-text {
+    grid-column: 2 !important;
+    grid-row: 1 / span 2 !important;
+    min-width: 0 !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: 3 !important;
+    margin-top: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+}
