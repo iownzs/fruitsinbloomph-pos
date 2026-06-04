@@ -617,13 +617,38 @@ function printPOSReceipt(){
           .receipt-divider{border-top:1px dashed #333;margin:14px 0;}
           h3{margin:0 0 8px;font-size:16px;}
           .receipt-items-grid{width:100%;display:grid;border-bottom:1px solid #ddd;}
-          .receipt-grid-head,.receipt-grid-row{display:grid;grid-template-columns:minmax(0,1fr) 38px 72px 82px;gap:6px;align-items:center;}
-          .receipt-grid-head{background:#0f172a;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;}
-          .receipt-grid-head>div,.receipt-grid-row>div{padding:6px 2px;min-width:0;}
+          .receipt-grid-head,.receipt-grid-row{
+            display:grid;
+            grid-template-columns:minmax(0,1fr) 42px 86px 96px;
+            gap:8px;
+            align-items:center;
+            width:100%;
+            box-sizing:border-box;
+          }
+          .receipt-grid-head{
+            background:#0f172a;
+            color:#fff;
+            font-size:10px;
+            font-weight:900;
+            text-transform:uppercase;
+          }
+          .receipt-grid-head>div,.receipt-grid-row>div{
+            padding:6px 2px;
+            min-width:0;
+            box-sizing:border-box;
+          }
           .receipt-grid-row{border-bottom:1px solid #ddd;font-size:12px;}
-          .receipt-grid-name{font-weight:800;word-break:break-word;}
-          .receipt-grid-qty{text-align:center;}
-          .receipt-grid-price,.receipt-grid-subtotal{text-align:right;font-weight:800;}
+          .receipt-grid-name{font-weight:800;word-break:break-word;text-align:left;}
+          .receipt-grid-qty{text-align:center;font-variant-numeric:tabular-nums;}
+          .receipt-grid-price,.receipt-grid-subtotal{
+            text-align:right;
+            font-weight:800;
+            font-variant-numeric:tabular-nums;
+            white-space:nowrap;
+          }
+          .receipt-grid-head>div:nth-child(2){text-align:center;}
+          .receipt-grid-head>div:nth-child(3),
+          .receipt-grid-head>div:nth-child(4){text-align:right;}
           .receipt-total-line{display:flex;justify-content:space-between;margin:7px 0;font-size:14px;}
           .receipt-grand{font-size:17px;border-top:1px solid #111;padding-top:8px;font-weight:900;}
           .receipt-thanks{text-align:center;font-size:18px;margin-top:18px;}
