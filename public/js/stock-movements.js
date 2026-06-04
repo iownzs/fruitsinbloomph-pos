@@ -41,12 +41,12 @@ shell(`
 
     <label class="movement-filter-box movement-date-from-box">
       <span class="movement-filter-label">Date From</span>
-      <input id="dateFromFilter" class="movement-date-from-filter" type="text" placeholder="Pick a Date" aria-label="Date from" onclick="openMovementDatePicker(this)" onfocus="openMovementDatePicker(this)" onblur="closeMovementDatePicker(this)">
+      <input id="dateFromFilter" class="movement-date-from-filter" type="text" aria-label="Date from" onclick="openMovementDatePicker(this)" onfocus="openMovementDatePicker(this)" onblur="closeMovementDatePicker(this)">
     </label>
 
     <label class="movement-filter-box movement-date-to-box">
       <span class="movement-filter-label">Date To</span>
-      <input id="dateToFilter" class="movement-date-to-filter" type="text" placeholder="Pick a Date" aria-label="Date to" onclick="openMovementDatePicker(this)" onfocus="openMovementDatePicker(this)" onblur="closeMovementDatePicker(this)">
+      <input id="dateToFilter" class="movement-date-to-filter" type="text" aria-label="Date to" onclick="openMovementDatePicker(this)" onfocus="openMovementDatePicker(this)" onblur="closeMovementDatePicker(this)">
     </label>
   </div>
 
