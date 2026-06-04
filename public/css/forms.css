@@ -1891,3 +1891,79 @@ body.login-page {
     color: #111827 !important;
   }
 }
+
+/* ==================================================
+   FINAL POS Receipt mobile real compact table
+================================================== */
+@media (max-width: 700px) {
+  .pos-receipt .receipt-items {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    font-size: 10px !important;
+  }
+
+  .pos-receipt .receipt-items thead {
+    display: table-header-group !important;
+  }
+
+  .pos-receipt .receipt-items tbody {
+    display: table-row-group !important;
+  }
+
+  .pos-receipt .receipt-items tr {
+    display: table-row !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+
+  .pos-receipt .receipt-items th,
+  .pos-receipt .receipt-items td {
+    display: table-cell !important;
+    width: auto !important;
+    padding: 6px 2px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    vertical-align: top !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  .pos-receipt .receipt-items th {
+    font-size: 9px !important;
+    font-weight: 900 !important;
+    color: #374151 !important;
+  }
+
+  .pos-receipt .receipt-items th:nth-child(1),
+  .pos-receipt .receipt-items td:nth-child(1) {
+    width: 44% !important;
+    text-align: left !important;
+    font-weight: 800 !important;
+  }
+
+  .pos-receipt .receipt-items th:nth-child(2),
+  .pos-receipt .receipt-items td:nth-child(2) {
+    width: 12% !important;
+    text-align: center !important;
+  }
+
+  .pos-receipt .receipt-items th:nth-child(3),
+  .pos-receipt .receipt-items td:nth-child(3) {
+    width: 22% !important;
+    text-align: right !important;
+  }
+
+  .pos-receipt .receipt-items th:nth-child(4),
+  .pos-receipt .receipt-items td:nth-child(4) {
+    width: 22% !important;
+    text-align: right !important;
+  }
+
+  .pos-receipt .receipt-items td:nth-child(2)::before,
+  .pos-receipt .receipt-items td:nth-child(3)::before,
+  .pos-receipt .receipt-items td:nth-child(4)::before {
+    content: none !important;
+  }
+}
