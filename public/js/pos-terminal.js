@@ -6,30 +6,23 @@ function forcePOSProductThumbnails(){
 
   document.querySelectorAll(".pos-product-main").forEach(main => {
     if(!isWideView){
-      main.style.removeProperty("display");
-      main.style.removeProperty("grid-template-columns");
-      main.style.removeProperty("grid-template-areas");
-      main.style.removeProperty("gap");
-      main.style.removeProperty("align-items");
+      main.removeAttribute("style");
       return;
     }
 
     main.style.setProperty("display", "grid", "important");
     main.style.setProperty("grid-template-columns", "86px minmax(0, 1fr)", "important");
-    main.style.setProperty("grid-template-areas", '"thumb text" "actions actions"', "important");
-    main.style.setProperty("gap", "14px", "important");
+    main.style.setProperty("grid-template-areas", '"thumb top" "thumb badges" "desc desc" "actions actions"', "important");
+    main.style.setProperty("column-gap", "14px", "important");
+    main.style.setProperty("row-gap", "8px", "important");
     main.style.setProperty("align-items", "start", "important");
+    main.style.setProperty("width", "100%", "important");
+    main.style.setProperty("text-align", "left", "important");
   });
 
   document.querySelectorAll(".pos-product-thumb").forEach(thumb => {
     if(!isWideView){
-      thumb.style.removeProperty("display");
-      thumb.style.removeProperty("grid-area");
-      thumb.style.removeProperty("width");
-      thumb.style.removeProperty("height");
-      thumb.style.removeProperty("min-width");
-      thumb.style.removeProperty("opacity");
-      thumb.style.removeProperty("visibility");
+      thumb.removeAttribute("style");
       return;
     }
 
@@ -38,20 +31,20 @@ function forcePOSProductThumbnails(){
     thumb.style.setProperty("width", "86px", "important");
     thumb.style.setProperty("height", "86px", "important");
     thumb.style.setProperty("min-width", "86px", "important");
-    thumb.style.setProperty("opacity", "1", "important");
-    thumb.style.setProperty("visibility", "visible", "important");
+    thumb.style.setProperty("max-width", "86px", "important");
+    thumb.style.setProperty("min-height", "86px", "important");
+    thumb.style.setProperty("max-height", "86px", "important");
     thumb.style.setProperty("overflow", "hidden", "important");
     thumb.style.setProperty("border-radius", "18px", "important");
     thumb.style.setProperty("align-items", "center", "important");
     thumb.style.setProperty("justify-content", "center", "important");
+    thumb.style.setProperty("opacity", "1", "important");
+    thumb.style.setProperty("visibility", "visible", "important");
   });
 
   document.querySelectorAll(".pos-product-thumb img").forEach(img => {
     if(!isWideView){
-      img.style.removeProperty("display");
-      img.style.removeProperty("width");
-      img.style.removeProperty("height");
-      img.style.removeProperty("object-fit");
+      img.removeAttribute("style");
       return;
     }
 
@@ -63,21 +56,110 @@ function forcePOSProductThumbnails(){
     img.style.setProperty("visibility", "visible", "important");
   });
 
-  document.querySelectorAll(".pos-product-text").forEach(textBox => {
+  document.querySelectorAll(".pos-product-thumb span").forEach(span => {
     if(!isWideView){
-      textBox.style.removeProperty("grid-area");
-      textBox.style.removeProperty("text-align");
+      span.removeAttribute("style");
       return;
     }
 
-    textBox.style.setProperty("grid-area", "text", "important");
-    textBox.style.setProperty("text-align", "left", "important");
+    span.style.setProperty("display", "flex", "important");
+    span.style.setProperty("width", "86px", "important");
+    span.style.setProperty("height", "86px", "important");
+    span.style.setProperty("align-items", "center", "important");
+    span.style.setProperty("justify-content", "center", "important");
+    span.style.setProperty("font-size", "24px", "important");
+    span.style.setProperty("font-weight", "900", "important");
+    span.style.setProperty("color", "#ffffff", "important");
+  });
+
+  document.querySelectorAll(".pos-product-text").forEach(textBox => {
+    if(!isWideView){
+      textBox.removeAttribute("style");
+      return;
+    }
+
+    textBox.style.setProperty("display", "contents", "important");
     textBox.style.setProperty("min-width", "0", "important");
+    textBox.style.setProperty("text-align", "left", "important");
+  });
+
+  document.querySelectorAll(".pos-product-title-row").forEach(row => {
+    if(!isWideView){
+      row.removeAttribute("style");
+      return;
+    }
+
+    row.style.setProperty("grid-area", "top", "important");
+    row.style.setProperty("display", "grid", "important");
+    row.style.setProperty("grid-template-columns", "minmax(0, 1fr) auto", "important");
+    row.style.setProperty("gap", "10px", "important");
+    row.style.setProperty("align-items", "start", "important");
+    row.style.setProperty("width", "100%", "important");
+  });
+
+  document.querySelectorAll(".pos-product-title-row h3").forEach(title => {
+    if(!isWideView){
+      title.removeAttribute("style");
+      return;
+    }
+
+    title.style.setProperty("margin", "0", "important");
+    title.style.setProperty("font-size", "15px", "important");
+    title.style.setProperty("line-height", "1.15", "important");
+    title.style.setProperty("font-weight", "900", "important");
+    title.style.setProperty("text-align", "left", "important");
+    title.style.setProperty("white-space", "normal", "important");
+    title.style.setProperty("overflow", "visible", "important");
+    title.style.setProperty("text-overflow", "clip", "important");
+  });
+
+  document.querySelectorAll(".pos-product-price").forEach(price => {
+    if(!isWideView){
+      price.removeAttribute("style");
+      return;
+    }
+
+    price.style.setProperty("font-size", "14px", "important");
+    price.style.setProperty("font-weight", "900", "important");
+    price.style.setProperty("white-space", "nowrap", "important");
+    price.style.setProperty("text-align", "right", "important");
+  });
+
+  document.querySelectorAll(".pos-product-badges").forEach(badges => {
+    if(!isWideView){
+      badges.removeAttribute("style");
+      return;
+    }
+
+    badges.style.setProperty("grid-area", "badges", "important");
+    badges.style.setProperty("display", "flex", "important");
+    badges.style.setProperty("flex-wrap", "wrap", "important");
+    badges.style.setProperty("gap", "8px", "important");
+    badges.style.setProperty("margin", "0", "important");
+    badges.style.setProperty("align-items", "center", "important");
+  });
+
+  document.querySelectorAll(".pos-product-desc").forEach(desc => {
+    if(!isWideView){
+      desc.removeAttribute("style");
+      return;
+    }
+
+    desc.style.setProperty("grid-area", "desc", "important");
+    desc.style.setProperty("margin", "8px 0 0", "important");
+    desc.style.setProperty("font-size", "12px", "important");
+    desc.style.setProperty("line-height", "1.35", "important");
+    desc.style.setProperty("white-space", "normal", "important");
+    desc.style.setProperty("overflow", "visible", "important");
+    desc.style.setProperty("text-overflow", "clip", "important");
+    desc.style.setProperty("max-height", "none", "important");
+    desc.style.setProperty("display", "block", "important");
+    desc.style.setProperty("text-align", "left", "important");
   });
 
   document.querySelectorAll(".pos-product-actions").forEach(actions => {
     if(!isWideView){
-      actions.style.removeProperty("grid-area");
+      actions.removeAttribute("style");
       return;
     }
 
@@ -85,6 +167,21 @@ function forcePOSProductThumbnails(){
     actions.style.setProperty("display", "grid", "important");
     actions.style.setProperty("grid-template-columns", "1fr 1fr", "important");
     actions.style.setProperty("gap", "12px", "important");
+    actions.style.setProperty("width", "100%", "important");
+    actions.style.setProperty("margin", "14px auto 0", "important");
+  });
+
+  document.querySelectorAll(".pos-product-actions .pos-product-view, .pos-product-actions .pos-product-add").forEach(button => {
+    if(!isWideView){
+      button.removeAttribute("style");
+      return;
+    }
+
+    button.style.setProperty("width", "100%", "important");
+    button.style.setProperty("min-width", "0", "important");
+    button.style.setProperty("max-width", "none", "important");
+    button.style.setProperty("height", "42px", "important");
+    button.style.setProperty("border-radius", "13px", "important");
   });
 }
 
