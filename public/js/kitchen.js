@@ -79,6 +79,18 @@ function renderKitchenOrders(orders){
   const filter = document.getElementById("kitchenStatusFilter").value;
   const search = document.getElementById("kitchenSearch").value.toLowerCase();
 
+  document.querySelectorAll(".kitchen-column").forEach(column => {
+    const title = column.querySelector("h3")?.textContent.trim().toLowerCase() || "";
+
+    const columnStatus =
+      title === "kitchen" ? "new" :
+      title === "preparing" ? "preparing" :
+      title === "ready" ? "ready" :
+      "";
+
+    column.style.display = !filter || columnStatus === filter ? "" : "none";
+  });
+
   const filtered = orders.filter(order => {
     const itemText = Array.isArray(order.items)
       ? order.items.map(item => item.name).join(" ")
