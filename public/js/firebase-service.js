@@ -725,22 +725,22 @@ window.FIB.deductProductStocksForOrder = async function(orderId, cartItems){
   const now = firebase.firestore.FieldValue.serverTimestamp();
 
   return await window.db.runTransaction(async transaction => {
-    const productSnapshots = [];
+    const productSnapshots = await Promise.all(
+      deductions.map(async deduction => {
+        const stockRef = window.db.collection("productStocks").doc(deduction.productId);
+        const stockDoc = await transaction.get(stockRef);
 
-    for(const deduction of deductions){
-      const stockRef = window.db.collection("productStocks").doc(deduction.productId);
-      const stockDoc = await transaction.get(stockRef);
+        if(!stockDoc.exists){
+          throw new Error("Product stock not found: " + deduction.productName);
+        }
 
-      if(!stockDoc.exists){
-        throw new Error("Product stock not found: " + deduction.productName);
-      }
-
-      productSnapshots.push({
-        deduction,
-        stockRef,
-        stock: stockDoc.data() || {}
-      });
-    }
+        return {
+          deduction,
+          stockRef,
+          stock: stockDoc.data() || {}
+        };
+      })
+    );
 
     let movementCount = 0;
 
@@ -1019,22 +1019,22 @@ window.FIB.deductIngredientsForOrder = async function(orderId, cartItems){
   }
 
   return await window.db.runTransaction(async transaction => {
-    const ingredientSnapshots = [];
+    const ingredientSnapshots = await Promise.all(
+      deductions.map(async deduction => {
+        const ingredientRef = window.db.collection("ingredientStocks").doc(deduction.ingredientId);
+        const ingredientDoc = await transaction.get(ingredientRef);
 
-    for(const deduction of deductions){
-      const ingredientRef = window.db.collection("ingredientStocks").doc(deduction.ingredientId);
-      const ingredientDoc = await transaction.get(ingredientRef);
+        if(!ingredientDoc.exists){
+          throw new Error("Ingredient stock not found: " + deduction.ingredientId);
+        }
 
-      if(!ingredientDoc.exists){
-        throw new Error("Ingredient stock not found: " + deduction.ingredientId);
-      }
-
-      ingredientSnapshots.push({
-        deduction,
-        ingredientRef,
-        ingredient: ingredientDoc.data() || {}
-      });
-    }
+        return {
+          deduction,
+          ingredientRef,
+          ingredient: ingredientDoc.data() || {}
+        };
+      })
+    );
 
     let movementCount = 0;
 
