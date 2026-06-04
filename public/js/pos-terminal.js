@@ -1,5 +1,95 @@
 let cart = [];
 let POS_CHECKOUT_BUSY = false;
+
+function forcePOSProductThumbnails(){
+  const isWideView = window.matchMedia("(min-width: 701px)").matches;
+
+  document.querySelectorAll(".pos-product-main").forEach(main => {
+    if(!isWideView){
+      main.style.removeProperty("display");
+      main.style.removeProperty("grid-template-columns");
+      main.style.removeProperty("grid-template-areas");
+      main.style.removeProperty("gap");
+      main.style.removeProperty("align-items");
+      return;
+    }
+
+    main.style.setProperty("display", "grid", "important");
+    main.style.setProperty("grid-template-columns", "86px minmax(0, 1fr)", "important");
+    main.style.setProperty("grid-template-areas", '"thumb text" "actions actions"', "important");
+    main.style.setProperty("gap", "14px", "important");
+    main.style.setProperty("align-items", "start", "important");
+  });
+
+  document.querySelectorAll(".pos-product-thumb").forEach(thumb => {
+    if(!isWideView){
+      thumb.style.removeProperty("display");
+      thumb.style.removeProperty("grid-area");
+      thumb.style.removeProperty("width");
+      thumb.style.removeProperty("height");
+      thumb.style.removeProperty("min-width");
+      thumb.style.removeProperty("opacity");
+      thumb.style.removeProperty("visibility");
+      return;
+    }
+
+    thumb.style.setProperty("grid-area", "thumb", "important");
+    thumb.style.setProperty("display", "flex", "important");
+    thumb.style.setProperty("width", "86px", "important");
+    thumb.style.setProperty("height", "86px", "important");
+    thumb.style.setProperty("min-width", "86px", "important");
+    thumb.style.setProperty("opacity", "1", "important");
+    thumb.style.setProperty("visibility", "visible", "important");
+    thumb.style.setProperty("overflow", "hidden", "important");
+    thumb.style.setProperty("border-radius", "18px", "important");
+    thumb.style.setProperty("align-items", "center", "important");
+    thumb.style.setProperty("justify-content", "center", "important");
+  });
+
+  document.querySelectorAll(".pos-product-thumb img").forEach(img => {
+    if(!isWideView){
+      img.style.removeProperty("display");
+      img.style.removeProperty("width");
+      img.style.removeProperty("height");
+      img.style.removeProperty("object-fit");
+      return;
+    }
+
+    img.style.setProperty("display", "block", "important");
+    img.style.setProperty("width", "86px", "important");
+    img.style.setProperty("height", "86px", "important");
+    img.style.setProperty("object-fit", "cover", "important");
+    img.style.setProperty("opacity", "1", "important");
+    img.style.setProperty("visibility", "visible", "important");
+  });
+
+  document.querySelectorAll(".pos-product-text").forEach(textBox => {
+    if(!isWideView){
+      textBox.style.removeProperty("grid-area");
+      textBox.style.removeProperty("text-align");
+      return;
+    }
+
+    textBox.style.setProperty("grid-area", "text", "important");
+    textBox.style.setProperty("text-align", "left", "important");
+    textBox.style.setProperty("min-width", "0", "important");
+  });
+
+  document.querySelectorAll(".pos-product-actions").forEach(actions => {
+    if(!isWideView){
+      actions.style.removeProperty("grid-area");
+      return;
+    }
+
+    actions.style.setProperty("grid-area", "actions", "important");
+    actions.style.setProperty("display", "grid", "important");
+    actions.style.setProperty("grid-template-columns", "1fr 1fr", "important");
+    actions.style.setProperty("gap", "12px", "important");
+  });
+}
+
+window.addEventListener("resize", forcePOSProductThumbnails);
+
 let posProducts = [];
 
 shell(`
@@ -124,6 +214,7 @@ function renderPOSProducts(products){
   `).join('');
 
   attachPOSProductViewButtons(products);
+  forcePOSProductThumbnails();
 }
 
 function filterPOSCategory(category){
