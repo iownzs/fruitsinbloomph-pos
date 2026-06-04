@@ -2941,3 +2941,23 @@ body[data-page="kitchen"] .kitchen-column {
     gap: 16px !important;
   }
 }
+
+/* ==================================================
+   Kitchen filtered board force 3 columns desktop
+================================================== */
+@media (min-width: 701px) {
+  body[data-page="kitchen"] .kitchen-board.kitchen-board-filtered .kitchen-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+
+  body[data-page="kitchen"] .kitchen-board.kitchen-board-filtered .kitchen-order-card {
+    padding: 14px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  body[data-page="kitchen"] .kitchen-board.kitchen-board-filtered .kitchen-list {
+    grid-template-columns: 1fr !important;
+  }
+}
