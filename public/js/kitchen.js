@@ -13,10 +13,22 @@ shell(`
     </select>
 
     <div class="kitchen-filter-tabs" role="group" aria-label="Kitchen filter tabs">
-      <button type="button" class="chip active" data-kitchen-filter="">All</button>
-      <button type="button" class="chip" data-kitchen-filter="new">Kitchen</button>
-      <button type="button" class="chip" data-kitchen-filter="preparing">Preparing</button>
-      <button type="button" class="chip" data-kitchen-filter="ready">Ready</button>
+      <button type="button" class="chip active kitchen-filter-chip" data-kitchen-filter="">
+        <span class="kitchen-filter-count" data-kitchen-count="all">0</span>
+        <span class="kitchen-filter-label">All</span>
+      </button>
+      <button type="button" class="chip kitchen-filter-chip" data-kitchen-filter="new">
+        <span class="kitchen-filter-count" data-kitchen-count="new">0</span>
+        <span class="kitchen-filter-label">Kitchen</span>
+      </button>
+      <button type="button" class="chip kitchen-filter-chip" data-kitchen-filter="preparing">
+        <span class="kitchen-filter-count" data-kitchen-count="preparing">0</span>
+        <span class="kitchen-filter-label">Preparing</span>
+      </button>
+      <button type="button" class="chip kitchen-filter-chip" data-kitchen-filter="ready">
+        <span class="kitchen-filter-count" data-kitchen-count="ready">0</span>
+        <span class="kitchen-filter-label">Ready</span>
+      </button>
     </div>
   </div>
 
@@ -67,6 +79,15 @@ async function loadKitchenOrders(){
   }
 }
 
+function updateKitchenFilterCounts(counts){
+  const safeCounts = counts || {};
+
+  document.querySelectorAll("[data-kitchen-count]").forEach(el => {
+    const key = el.dataset.kitchenCount || "all";
+    el.textContent = safeCounts[key] ?? 0;
+  });
+}
+
 function renderKitchenOrders(orders){
   const groups = {
     new: document.getElementById("newOrders"),
@@ -78,6 +99,29 @@ function renderKitchenOrders(orders){
 
   const filter = document.getElementById("kitchenStatusFilter").value;
   const search = document.getElementById("kitchenSearch").value.toLowerCase();
+
+  const searchMatchedOrders = orders.filter(order => {
+    const itemText = Array.isArray(order.items)
+      ? order.items.map(item => item.name).join(" ")
+      : "";
+
+    const searchText = [
+      order.orderId,
+      order.customer?.name,
+      order.delivery?.recipientName,
+      order.pickup?.pickupPersonName,
+      itemText
+    ].join(" ").toLowerCase();
+
+    return !search || searchText.includes(search);
+  });
+
+  updateKitchenFilterCounts({
+    all: searchMatchedOrders.length,
+    new: searchMatchedOrders.filter(order => (order.kitchenStatus || "new") === "new").length,
+    preparing: searchMatchedOrders.filter(order => order.kitchenStatus === "preparing").length,
+    ready: searchMatchedOrders.filter(order => order.kitchenStatus === "ready").length
+  });
 
   document.querySelector(".kitchen-board")?.classList.toggle("kitchen-board-filtered", !!filter);
 

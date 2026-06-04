@@ -2961,3 +2961,47 @@ body[data-page="kitchen"] .kitchen-column {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ==================================================
+   Kitchen filter count badges
+================================================== */
+body[data-page="kitchen"] .kitchen-filter-chip {
+  display: grid !important;
+  grid-template-rows: auto auto;
+  gap: 3px;
+  align-items: center;
+  justify-items: center;
+  min-height: 48px !important;
+  line-height: 1.05;
+}
+
+body[data-page="kitchen"] .kitchen-filter-count {
+  font-size: 13px;
+  font-weight: 900;
+  color: #67e8f9;
+  line-height: 1;
+}
+
+body[data-page="kitchen"] .kitchen-filter-label {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+body[data-page="kitchen"] .kitchen-filter-chip.active .kitchen-filter-count {
+  color: #ffffff;
+}
+
+@media (max-width: 700px) {
+  body[data-page="kitchen"] .kitchen-filter-chip {
+    min-height: 56px !important;
+  }
+
+  body[data-page="kitchen"] .kitchen-filter-count {
+    font-size: 14px;
+  }
+
+  body[data-page="kitchen"] .kitchen-filter-label {
+    font-size: 14px;
+  }
+}
