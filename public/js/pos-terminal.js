@@ -190,18 +190,22 @@ function cartPanelHtml(){
 
     <br>
 
-    <p class="muted">Source Type</p>
-    <div class="chips">
-      <button class="chip active" data-source-type="Organic">Organic</button>
-      <button class="chip" data-source-type="Ads">Ads</button>
-    </div>
+    <div class="cart-two-column-options">
+      <div class="cart-option-group">
+        <p class="muted">Source Type</p>
+        <div class="chips">
+          <button class="chip active" data-source-type="Organic">Organic</button>
+          <button class="chip" data-source-type="Ads">Ads</button>
+        </div>
+      </div>
 
-    <br>
-
-    <p class="muted">Priority</p>
-    <div class="chips">
-      <button class="chip active" data-priority="Normal">Normal</button>
-      <button class="chip" data-priority="Rush">Rush</button>
+      <div class="cart-option-group">
+        <p class="muted">Priority</p>
+        <div class="chips">
+          <button class="chip active" data-priority="Normal">Normal</button>
+          <button class="chip" data-priority="Rush">Rush</button>
+        </div>
+      </div>
     </div>
 
     <h3>Customer</h3>

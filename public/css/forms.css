@@ -2290,3 +2290,47 @@ body.login-page {
     margin-top: 10px !important;
   }
 }
+
+/* ==================================================
+   POS Cart Source Type + Priority compact layout
+================================================== */
+.cart-two-column-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+  margin: 12px 0;
+}
+
+.cart-option-group .muted {
+  margin: 0 0 8px;
+}
+
+.cart-option-group .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 420px) {
+  .cart-two-column-options {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+@media (min-width: 900px) {
+  body[data-page="pos-terminal"] .cart-two-column-options {
+    gap: 14px;
+    margin: 10px 0 12px;
+  }
+
+  body[data-page="pos-terminal"] .cart-option-group .chips {
+    gap: 8px;
+  }
+
+  body[data-page="pos-terminal"] .cart-option-group .chip {
+    min-height: 32px !important;
+    padding: 7px 10px !important;
+  }
+}
