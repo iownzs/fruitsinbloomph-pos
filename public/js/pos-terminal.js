@@ -855,13 +855,15 @@ async function checkoutOrder(){
     const orderId = await window.FIB.createOrder(orderData);
 
     try{
-      if(window.FIB.deductProductStocksForOrder){
-        await window.FIB.deductProductStocksForOrder(orderId, cart);
-      }
+      await Promise.all([
+        window.FIB.deductProductStocksForOrder
+          ? window.FIB.deductProductStocksForOrder(orderId, cart)
+          : Promise.resolve(),
 
-      if(window.FIB.deductIngredientsForOrder){
-        await window.FIB.deductIngredientsForOrder(orderId, cart);
-      }
+        window.FIB.deductIngredientsForOrder
+          ? window.FIB.deductIngredientsForOrder(orderId, cart)
+          : Promise.resolve()
+      ]);
     }catch(deductionError){
       POS_CHECKOUT_BUSY = false;
     setPOSCheckoutLoading(false);
