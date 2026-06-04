@@ -3225,3 +3225,93 @@ body[data-page="orders"] .orders-city-filter {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ==================================================
+   Orders filter boxed layout like Stock Movements
+================================================== */
+body[data-page="orders"] .orders-filter-box-layout {
+  display: grid !important;
+  gap: 14px !important;
+}
+
+body[data-page="orders"] .orders-filter-top {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 150px !important;
+  gap: 12px !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+body[data-page="orders"] .orders-search-filter,
+body[data-page="orders"] .orders-reset-filter {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 44px !important;
+}
+
+body[data-page="orders"] .orders-filter-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  width: 100% !important;
+}
+
+body[data-page="orders"] .orders-filter-box {
+  display: grid !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+}
+
+body[data-page="orders"] .orders-filter-label {
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  color: #67e8f9 !important;
+  letter-spacing: .02em !important;
+  padding-left: 2px !important;
+}
+
+body[data-page="orders"] .orders-filter-box select,
+body[data-page="orders"] .orders-filter-box input {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(34, 211, 238, 0.28) !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+}
+
+@media (min-width: 1000px) {
+  body[data-page="orders"] .orders-filter-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  body[data-page="orders"] .orders-filter-top {
+    grid-template-columns: minmax(0, 1fr) 120px !important;
+    gap: 10px !important;
+  }
+
+  body[data-page="orders"] .orders-reset-filter {
+    font-size: 12px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  body[data-page="orders"] .orders-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  body[data-page="orders"] .orders-filter-label {
+    font-size: 11px !important;
+  }
+
+  body[data-page="orders"] .orders-filter-box select,
+  body[data-page="orders"] .orders-filter-box input {
+    min-height: 42px !important;
+    font-size: 12px !important;
+    padding-left: 9px !important;
+    padding-right: 9px !important;
+  }
+}

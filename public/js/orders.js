@@ -1,49 +1,46 @@
 shell(`
-  <div class="toolbar orders-filter-panel">
+  <div class="toolbar orders-filter-panel orders-filter-box-layout">
     <div class="orders-filter-top">
       <input id="orderSearch" class="orders-search-filter" placeholder="Search order, customer, recipient">
       <button class="btn orders-reset-filter" onclick="resetOrderFilters()">Reset Filter</button>
     </div>
 
-    <div class="orders-filter-bottom">
-      <select id="statusFilter" class="orders-status-filter">
-        <option value="">All Status</option>
-        <option value="Kitchen">Kitchen</option>
-        <option value="Preparing">Preparing</option>
-        <option value="Ready">Ready</option>
-        <option value="Waiting For Pickup">Waiting For Pickup</option>
-        <option value="Picked Up">Picked Up</option>
-        <option value="Waiting For Rider">Waiting For Rider</option>
-        <option value="Out For Delivery">Out For Delivery</option>
-        <option value="Delivered">Delivered</option>
-      </select>
+    <div class="orders-filter-grid">
+      <div class="orders-filter-box orders-status-box">
+        <span class="orders-filter-label">Status</span>
+        <select id="statusFilter" class="orders-status-filter">
+          <option value="">All Status</option>
+          <option value="Kitchen">Kitchen</option>
+          <option value="Preparing">Preparing</option>
+          <option value="Ready">Ready</option>
+          <option value="Waiting For Pickup">Waiting For Pickup</option>
+          <option value="Picked Up">Picked Up</option>
+          <option value="Waiting For Rider">Waiting For Rider</option>
+          <option value="Out For Delivery">Out For Delivery</option>
+          <option value="Delivered">Delivered</option>
+        </select>
+      </div>
 
-      <select id="typeFilter" class="orders-type-filter">
-        <option value="">All Type</option>
-        <option>Delivery</option>
-        <option>Pickup</option>
-      </select>
+      <div class="orders-filter-box orders-type-box">
+        <span class="orders-filter-label">Type</span>
+        <select id="typeFilter" class="orders-type-filter">
+          <option value="">All Type</option>
+          <option>Delivery</option>
+          <option>Pickup</option>
+        </select>
+      </div>
 
-      <select id="priorityFilter" class="orders-priority-filter">
-        <option value="">All Priority</option>
-        <option>Rush</option>
-        <option>Normal</option>
-      </select>
-    </div>
+      <div class="orders-filter-box orders-priority-box">
+        <span class="orders-filter-label">Priority</span>
+        <select id="priorityFilter" class="orders-priority-filter">
+          <option value="">All Priority</option>
+          <option>Rush</option>
+          <option>Normal</option>
+        </select>
+      </div>
 
-    <div class="orders-filter-dates">
-      <label>
-        Order Date
-        <input id="orderDateFilter" class="orders-order-date-filter" type="date">
-      </label>
-
-      <label>
-        Delivery / Pickup Date
-        <input id="scheduleDateFilter" class="orders-schedule-date-filter" type="date">
-      </label>
-
-      <label>
-        City / Area
+      <div class="orders-filter-box orders-city-box">
+        <span class="orders-filter-label">City</span>
         <select id="cityFilter" class="orders-city-filter">
           <option value="">All City / Area</option>
           <option>Quezon City</option>
@@ -70,7 +67,17 @@ shell(`
           <option>Pampanga</option>
           <option>Bataan</option>
         </select>
-      </label>
+      </div>
+
+      <div class="orders-filter-box orders-order-date-box">
+        <span class="orders-filter-label">Order Created</span>
+        <input id="orderDateFilter" class="orders-order-date-filter" type="date" aria-label="Order Date">
+      </div>
+
+      <div class="orders-filter-box orders-schedule-date-box">
+        <span class="orders-filter-label">Delivery / Pickup</span>
+        <input id="scheduleDateFilter" class="orders-schedule-date-filter" type="date" aria-label="Delivery / Pickup Date">
+      </div>
     </div>
   </div>
 
