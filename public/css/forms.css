@@ -2584,3 +2584,44 @@ body[data-page="products"] .product-image-preview {
     border-radius: 14px !important;
   }
 }
+
+/* ==================================================
+   Products page table action polish
+================================================== */
+body[data-page="products"] .products-recipe-cell {
+  display: grid;
+  gap: 5px;
+  align-items: center;
+  justify-items: start;
+}
+
+body[data-page="products"] .products-recipe-cell .btn {
+  min-width: 78px;
+}
+
+body[data-page="products"] .products-recipe-cell small {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+body[data-page="products"] .products-action-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+body[data-page="products"] .products-action-cell .btn {
+  min-width: 64px;
+}
+
+body[data-page="products"] table td {
+  vertical-align: middle;
+}
+
+body[data-page="products"] .truncate {
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -118,13 +118,17 @@ function renderProductsTable(products){
         <td>${product.stock ?? 0}</td>
         <td>${product.unit || ''}</td>
         <td>
-          <button class="icon-btn" onclick="showRecipe('${product.id}')">🧾</button>
-          <small>${recipeCount} ingredients</small>
+          <div class="products-recipe-cell">
+            <button class="btn small" onclick="showRecipe('${product.id}')">Recipe</button>
+            <small>${recipeCount} ingredient${recipeCount === 1 ? '' : 's'}</small>
+          </div>
         </td>
         <td>${badge(product.status || 'Active')}</td>
         <td>
-          <button class="btn small" onclick="showProduct('${product.id}')">View</button>
-          <button class="btn small primary" onclick="openProductForm('${product.id}')">Edit</button>
+          <div class="products-action-cell">
+            <button class="btn small" onclick="showProduct('${product.id}')">View</button>
+            <button class="btn small primary" onclick="openProductForm('${product.id}')">Edit</button>
+          </div>
         </td>
       </tr>
     `;
