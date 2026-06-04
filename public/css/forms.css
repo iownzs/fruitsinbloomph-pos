@@ -3037,3 +3037,17 @@ body[data-page="kitchen"] .kitchen-priority-filter {
     border-radius: 16px !important;
   }
 }
+
+/* ==================================================
+   Kitchen reset filter button polish
+================================================== */
+body[data-page="kitchen"] .kitchen-refresh-btn {
+  min-width: 140px;
+}
+
+@media (max-width: 700px) {
+  body[data-page="kitchen"] .kitchen-refresh-btn {
+    min-width: 0 !important;
+    font-size: 13px !important;
+  }
+}

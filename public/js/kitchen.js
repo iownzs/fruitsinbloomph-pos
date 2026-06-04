@@ -9,7 +9,7 @@ shell(`
         <option value="Normal">Normal</option>
       </select>
 
-      <button class="btn kitchen-refresh-btn" onclick="loadKitchenOrders()">Refresh</button>
+      <button class="btn kitchen-refresh-btn" onclick="resetKitchenFilters()">Reset Filter</button>
     </div>
 
     <select id="kitchenStatusFilter" class="kitchen-status-hidden" aria-label="Kitchen status filter">
@@ -312,6 +312,23 @@ async function updateKitchen(orderId, kitchenStatus){
 function applyKitchenFilters(){
   renderKitchenOrders(allKitchenOrders);
 }
+
+function resetKitchenFilters(){
+  const search = document.getElementById("kitchenSearch");
+  const status = document.getElementById("kitchenStatusFilter");
+  const priority = document.getElementById("kitchenPriorityFilter");
+
+  if(search) search.value = "";
+  if(status) status.value = "";
+  if(priority) priority.value = "";
+
+  document.querySelectorAll(".kitchen-filter-tabs .chip").forEach(chip => {
+    chip.classList.toggle("active", (chip.dataset.kitchenFilter || "") === "");
+  });
+
+  renderKitchenOrders(allKitchenOrders);
+}
+
 
 document.getElementById("kitchenSearch").addEventListener("input", applyKitchenFilters);
 document.getElementById("kitchenStatusFilter").addEventListener("change", applyKitchenFilters);
