@@ -971,17 +971,23 @@ body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-labe
 }
 
 /* ==================================================
-   Stock Movements filter label centered on border
+   CLEAN FINAL Stock Movements filter boxes
 ================================================== */
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
   position: relative !important;
-  padding: 10px 12px 0 !important;
+  display: grid !important;
+  gap: 0 !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 8px 12px 0 !important;
+  margin-top: 6px !important;
   border: 1px solid rgba(34, 211, 238, 0.34) !important;
   background: rgba(15, 23, 42, 0.72) !important;
   border-radius: 14px !important;
+  box-sizing: border-box !important;
   overflow: visible !important;
 }
 
@@ -990,192 +996,79 @@ body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box .m
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box .movement-filter-label,
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box .movement-filter-label {
   position: absolute !important;
-  top: -6px !important;
+  top: 0 !important;
   left: 14px !important;
   z-index: 3 !important;
-  padding: 0 8px !important;
-  background: #0f172a !important;
+  padding: 0 7px !important;
+  background: var(--card) !important;
   color: #67e8f9 !important;
   font-size: 11px !important;
   font-weight: 900 !important;
-  line-height: 12px !important;
+  font-style: normal !important;
+  line-height: 1 !important;
+  letter-spacing: .02em !important;
   border-radius: 999px !important;
+  text-transform: none !important;
 }
 
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 13px 0 4px !important;
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  height: 42px !important;
-  min-height: 42px !important;
-  padding: 10px 0 6px !important;
-}
-
-/* ==================================================
-   Stock Movements filter inner spacing match Orders
-================================================== */
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
-  min-height: 48px !important;
-  padding: 7px 12px 0 !important;
-  align-items: center !important;
-}
-
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box .movement-filter-label {
-  top: -6px !important;
-  left: 14px !important;
-  padding: 0 7px !important;
-  line-height: 12px !important;
-}
-
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
-  height: 39px !important;
-  min-height: 39px !important;
-  padding: 8px 0 5px !important;
-  line-height: 1.15 !important;
-}
-
-@media (max-width: 520px) {
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
-    min-height: 46px !important;
-    padding: 7px 10px 0 !important;
-  }
-
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
-    height: 37px !important;
-    min-height: 37px !important;
-    padding: 8px 0 5px !important;
-  }
-}
-
-/* ==================================================
-   Stock Movements remove extra top space in filter boxes
-================================================== */
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
-  min-height: 48px !important;
-  padding: 3px 12px 0 !important;
-  align-items: center !important;
-}
-
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
-  height: 42px !important;
-  min-height: 42px !important;
-  padding: 4px 0 4px !important;
-  line-height: 1.2 !important;
-  display: block !important;
-}
-
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box .movement-filter-label {
-  top: -6px !important;
-}
-
-/* ==================================================
-   Stock Movements filter box size match Orders
-================================================== */
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
-  min-height: 48px !important;
-  height: 48px !important;
-  padding: 6px 12px 0 !important;
-  border-radius: 14px !important;
-  box-sizing: border-box !important;
-}
-
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
-  height: 39px !important;
-  min-height: 39px !important;
-  padding: 7px 0 5px !important;
-  line-height: 1.2 !important;
-  box-sizing: border-box !important;
-}
-
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box .movement-filter-label {
-  top: -6px !important;
-  left: 14px !important;
-  padding: 0 7px !important;
-  line-height: 12px !important;
-}
-
-@media (max-width: 520px) {
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
-    min-height: 46px !important;
-    height: 46px !important;
-    padding: 6px 10px 0 !important;
-  }
-
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
-  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
-    height: 37px !important;
-    min-height: 37px !important;
-    padding: 7px 0 5px !important;
-  }
-}
-
-/* ==================================================
-   Stock Movements filter text match Orders page
-================================================== */
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box .movement-filter-label,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box .movement-filter-label {
-  font-size: 11px !important;
-  font-weight: 900 !important;
-  letter-spacing: .02em !important;
-  color: #67e8f9 !important;
-  line-height: 12px !important;
-}
-
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
-body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
+  border-radius: 0 !important;
+  color: var(--text) !important;
   font-size: 13px !important;
   font-weight: 700 !important;
-  color: var(--text) !important;
+  font-style: normal !important;
+  line-height: 1.2 !important;
   letter-spacing: 0 !important;
+  text-transform: none !important;
+  box-sizing: border-box !important;
 }
 
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select option,
 body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select option {
   font-size: 13px !important;
   font-weight: 700 !important;
+  font-style: normal !important;
 }
+
+@media (max-width: 520px) {
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
+    height: 46px !important;
+    min-height: 46px !important;
+    padding: 7px 10px 0 !important;
+    margin-top: 5px !important;
+  }
+
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box .movement-filter-label,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box .movement-filter-label,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box .movement-filter-label,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box .movement-filter-label {
+    left: 12px !important;
+    font-size: 10px !important;
+    padding: 0 6px !important;
+  }
+
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box select,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box select,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box input,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box input {
+    height: 39px !important;
+    min-height: 39px !important;
+    padding: 13px 0 4px !important;
+    font-size: 12px !important;
+  }
+}
+
