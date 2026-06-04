@@ -1,19 +1,25 @@
 shell(`
-  <div class="toolbar">
-    <input id="productSearch" placeholder="Search product, SKU, category">
-    <select id="categoryFilter">
-      <option value="">All Categories</option>
-      <option>Mother's Day</option>
-      <option>Father's Day</option>
-      <option>VDAY Collection</option>
-      <option>FIB Pantry</option>
-    </select>
-    <select id="statusFilter">
-      <option value="">All Status</option>
-      <option>Active</option>
-      <option>Inactive</option>
-    </select>
-    <button class="btn primary" onclick="openProductForm()">Add Product</button>
+  <div class="toolbar products-toolbar products-filter-panel">
+    <div class="products-toolbar-row products-toolbar-top">
+      <input id="productSearch" class="products-search-filter" placeholder="Search product, SKU, category">
+      <button class="btn primary products-add-btn" onclick="openProductForm()">Add Product</button>
+    </div>
+
+    <div class="products-toolbar-row products-toolbar-bottom">
+      <select id="categoryFilter" class="products-category-filter">
+        <option value="">All Categories</option>
+        <option>Mother's Day</option>
+        <option>Father's Day</option>
+        <option>VDAY Collection</option>
+        <option>FIB Pantry</option>
+      </select>
+
+      <select id="statusFilter" class="products-status-filter">
+        <option value="">All Status</option>
+        <option>Active</option>
+        <option>Inactive</option>
+      </select>
+    </div>
   </div>
 
   <div class="card">
