@@ -8,11 +8,14 @@ shell(`
     <div class="orders-filter-bottom">
       <select id="statusFilter" class="orders-status-filter">
         <option value="">All Status</option>
-        <option>Created</option>
-        <option>Sent to Kitchen</option>
-        <option>Preparing</option>
-        <option>Ready</option>
-        <option>Completed</option>
+        <option value="Kitchen">Kitchen</option>
+        <option value="Preparing">Preparing</option>
+        <option value="Ready">Ready</option>
+        <option value="Waiting For Pickup">Waiting For Pickup</option>
+        <option value="Picked Up">Picked Up</option>
+        <option value="Waiting For Rider">Waiting For Rider</option>
+        <option value="Out For Delivery">Out For Delivery</option>
+        <option value="Delivered">Delivered</option>
       </select>
 
       <select id="typeFilter" class="orders-type-filter">
@@ -434,6 +437,52 @@ function copyText(text){
   closeModal();
 }
 
+function normalizeOrderStatusText(value){
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/_/g, " ")
+    .replace(/\s+/g, " ");
+}
+
+function orderMatchesStatus(order, selectedStatus){
+  if(!selectedStatus) return true;
+
+  const selected = normalizeOrderStatusText(selectedStatus);
+
+  const candidates = [
+    order.status,
+    order.orderStatus,
+    order.kitchenStatus,
+    order.pickupStatus,
+    order.deliveryStatus,
+    order.delivery?.deliveryStatus,
+    order.pickup?.pickupStatus
+  ].map(normalizeOrderStatusText);
+
+  if(selected === "kitchen"){
+    return candidates.includes("kitchen") || candidates.includes("new");
+  }
+
+  if(selected === "waiting for pickup"){
+    return candidates.includes("waiting for pickup") || candidates.includes("waiting pickup");
+  }
+
+  if(selected === "picked up"){
+    return candidates.includes("picked up") || candidates.includes("pickedup");
+  }
+
+  if(selected === "waiting for rider"){
+    return candidates.includes("waiting for rider") || candidates.includes("waiting rider");
+  }
+
+  if(selected === "out for delivery"){
+    return candidates.includes("out for delivery") || candidates.includes("out_for_delivery");
+  }
+
+  return candidates.includes(selected);
+}
+
 function orderDateValue(value){
   if(!value) return "";
 
@@ -508,7 +557,7 @@ function applyOrderFilters(){
       : (order.pickup?.pickupDate || "");
 
     const matchSearch = !search || searchText.includes(search);
-    const matchStatus = !status || order.status === status;
+    const matchStatus = orderMatchesStatus(order, status);
     const matchType = !type || order.orderType === type;
     const matchPriority = !priority || orderPriority === priority;
     const matchOrderDate = !orderDate || createdDate === orderDate;
