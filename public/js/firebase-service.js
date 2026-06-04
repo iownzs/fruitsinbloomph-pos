@@ -640,9 +640,16 @@ window.FIB.validateProductStocksForCart = async function(cartItems){
   }
 
   const issues = [];
+  const entries = [...requiredMap.values()];
 
-  for(const entry of requiredMap.values()){
-    const stockDoc = await window.db.collection("productStocks").doc(entry.productId).get();
+  const stockDocs = await Promise.all(
+    entries.map(entry =>
+      window.db.collection("productStocks").doc(entry.productId).get()
+    )
+  );
+
+  entries.forEach((entry, index) => {
+    const stockDoc = stockDocs[index];
 
     if(!stockDoc.exists){
       issues.push({
@@ -653,7 +660,7 @@ window.FIB.validateProductStocksForCart = async function(cartItems){
         unit: "pcs",
         reason: "Product stock not found"
       });
-      continue;
+      return;
     }
 
     const stock = stockDoc.data() || {};
@@ -672,7 +679,7 @@ window.FIB.validateProductStocksForCart = async function(cartItems){
         reason: "Not enough product stock"
       });
     }
-  }
+  });
 
   return {
     ok: issues.length === 0,
@@ -882,9 +889,16 @@ window.FIB.validateIngredientsForCart = async function(cartItems){
   }
 
   const issues = [];
+  const entries = [...requiredMap.values()];
 
-  for(const entry of requiredMap.values()){
-    const ingredientDoc = await window.db.collection("ingredientStocks").doc(entry.ingredientId).get();
+  const ingredientDocs = await Promise.all(
+    entries.map(entry =>
+      window.db.collection("ingredientStocks").doc(entry.ingredientId).get()
+    )
+  );
+
+  entries.forEach((entry, index) => {
+    const ingredientDoc = ingredientDocs[index];
 
     if(!ingredientDoc.exists){
       issues.push({
@@ -896,7 +910,7 @@ window.FIB.validateIngredientsForCart = async function(cartItems){
         reason: "Ingredient stock not found",
         products: entry.products
       });
-      continue;
+      return;
     }
 
     const ingredient = ingredientDoc.data() || {};
@@ -916,7 +930,7 @@ window.FIB.validateIngredientsForCart = async function(cartItems){
         products: entry.products
       });
     }
-  }
+  });
 
   return {
     ok: issues.length === 0,
