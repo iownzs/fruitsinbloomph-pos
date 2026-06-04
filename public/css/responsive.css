@@ -2094,3 +2094,99 @@ body[data-page="pos-terminal"] .pos-product-thumb {
     0 0 0 1px rgba(34, 211, 238, 0.06),
     0 0 12px rgba(34, 211, 238, 0.08) !important;
 }
+
+/* ==================================================
+   FINAL POS thumbnails on horizontal/tablet/desktop
+   Must be in responsive.css because it loads after forms.css
+================================================== */
+@media (min-width: 701px) {
+  body[data-page="pos-terminal"] .pos-product-compact-card {
+    display: flex !important;
+    min-height: 230px !important;
+    text-align: left !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-main {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 76px minmax(0, 1fr) !important;
+    grid-template-rows: auto 1fr auto !important;
+    column-gap: 14px !important;
+    row-gap: 10px !important;
+    align-items: start !important;
+    text-align: left !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-thumb {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+    display: flex !important;
+    width: 76px !important;
+    height: 76px !important;
+    min-width: 76px !important;
+    max-width: 76px !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(180deg, rgba(34, 211, 238, .22), rgba(14, 165, 183, .75)) !important;
+    border: 1px solid rgba(34, 211, 238, .35) !important;
+    box-shadow: 0 10px 24px rgba(34, 211, 238, .12) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-thumb span {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-text {
+    grid-column: 2 !important;
+    grid-row: 1 / span 2 !important;
+    min-width: 0 !important;
+    text-align: left !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-title-row {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    text-align: left !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-title-row h3 {
+    text-align: left !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: 3 !important;
+    margin-top: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-view,
+  body[data-page="pos-terminal"] .pos-product-actions .pos-product-add {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+}
