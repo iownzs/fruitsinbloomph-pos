@@ -885,3 +885,67 @@ body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box 
   border-radius: 14px !important;
   overflow: hidden !important;
 }
+
+/* ==================================================
+   Stock Movements filter boxes match Orders page
+================================================== */
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box {
+  min-height: 56px !important;
+  padding: 8px 12px 0 !important;
+  border: 1px solid rgba(34, 211, 238, 0.34) !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  border-radius: 14px !important;
+  overflow: visible !important;
+  align-items: center !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-label {
+  top: -1px !important;
+  left: 14px !important;
+  background: var(--card) !important;
+  padding: 0 7px !important;
+  color: #67e8f9 !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  border-radius: 999px !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box select,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box input {
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 13px 0 8px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-stock-type-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-type-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-from-box,
+body[data-page="stock-movements"] .stock-movements-toolbar .movement-date-to-box {
+  margin-top: 2px !important;
+}
+
+@media (max-width: 520px) {
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box {
+    min-height: 54px !important;
+    padding: 7px 10px 0 !important;
+  }
+
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-label {
+    left: 12px !important;
+    font-size: 10px !important;
+    padding: 0 6px !important;
+  }
+
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box select,
+  body[data-page="stock-movements"] .stock-movements-toolbar .movement-filter-box input {
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 13px 0 7px !important;
+    font-size: 12px !important;
+  }
+}
