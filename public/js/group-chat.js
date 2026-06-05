@@ -1,252 +1,124 @@
 const GROUP_CHAT_CHANNELS = [
-  {
-    id: "system",
-    name: "System Message",
-    description: "Read-only automated POS logs.",
-    readonly: true,
-    badge: "Read Only"
-  },
-  {
-    id: "general",
-    name: "General",
-    description: "General team updates.",
-    readonly: false
-  },
-  {
-    id: "sales",
-    name: "Sales",
-    description: "Sales and cashier coordination.",
-    readonly: false
-  },
-  {
-    id: "kitchen",
-    name: "Kitchen",
-    description: "Kitchen preparation updates.",
-    readonly: false
-  },
-  {
-    id: "delivery",
-    name: "Delivery",
-    description: "Delivery team coordination.",
-    readonly: false
-  },
-  {
-    id: "riders",
-    name: "Riders",
-    description: "Rider dispatch and route updates.",
-    readonly: false
-  },
-  {
-    id: "schedule",
-    name: "Schedule",
-    description: "Weekly staff schedule.",
-    readonly: true,
-    badge: "View Only"
-  },
-  {
-    id: "issues",
-    name: "Issues",
-    description: "Report problems, delays, and concerns.",
-    readonly: false
-  },
-  {
-    id: "chitchat",
-    name: "Chitchat",
-    description: "Casual staff chat.",
-    readonly: false
-  }
+  { id: "system", name: "System Message", icon: "🔔", count: 1, desc: "Read-only", readonly: true },
+  { id: "general", name: "General", icon: "💬", count: 4, desc: "23 members, 4 online" },
+  { id: "sales", name: "Sales", icon: "📊", count: 2, desc: "Sales and cashier updates" },
+  { id: "kitchen", name: "Kitchen", icon: "👨‍🍳", count: 1, desc: "Kitchen preparation updates" },
+  { id: "delivery", name: "Delivery", icon: "🚚", count: 3, desc: "Delivery coordination" },
+  { id: "riders", name: "Riders", icon: "🛵", count: 2, desc: "Rider dispatch updates" },
+  { id: "schedule", name: "Schedule", icon: "📅", count: 1, desc: "Weekly staff schedule", readonly: true },
+  { id: "issues", name: "Issues", icon: "⚠️", count: 2, desc: "Problems and incidents" },
+  { id: "chitchat", name: "Chitchat", icon: "😊", count: 3, desc: "Casual staff chat" }
 ];
 
 const GROUP_CHAT_MESSAGES = {
   system: [
-    {
-      author: "System",
-      role: "POS",
-      time: "Just now",
-      text: "Order ORD-1024 was sent to Delivery.",
-      type: "system"
-    },
-    {
-      author: "System",
-      role: "Inventory",
-      time: "5 min ago",
-      text: "Ingredient deduction recorded for ORD-1023.",
-      type: "system"
-    },
-    {
-      author: "System",
-      role: "Kitchen",
-      time: "12 min ago",
-      text: "Order ORD-1022 marked Ready.",
-      type: "system"
-    }
+    { author: "System", role: "POS", avatar: "S", time: "9:00 AM", text: "Order ORD-1024 was sent to Delivery.", reactions: "✅ 12" },
+    { author: "System", role: "Inventory", avatar: "S", time: "9:05 AM", text: "Ingredient deduction recorded for ORD-1023.", reactions: "👍 8" },
+    { author: "System", role: "Kitchen", avatar: "S", time: "9:12 AM", text: "Order ORD-1022 marked Ready.", reactions: "✅ 10" }
   ],
   general: [
-    {
-      author: "Admin",
-      role: "Owner",
-      time: "9:00 AM",
-      text: "Good morning team. Please check pending orders and inventory alerts.",
-      type: "staff"
-    }
+    { author: "Maria Santos", role: "Sales", avatar: "MS", time: "9:15 AM", text: "Good morning team! Let’s crush it today and make it a great day for our customers.", reactions: "👍 6  ❤️ 2" },
+    { author: "Jake Thompson", role: "Kitchen", avatar: "JT", time: "9:17 AM", text: "Morning! The lunch rush looks busy—kitchen, let’s stay ahead!", reactions: "👍 4" },
+    { author: "Leah Nguyen", role: "Kitchen", avatar: "LN", time: "9:24 AM", text: "On it! Prep list is done and team is all set. ✅", reactions: "💪 3" },
+    { author: "Rohit Patel", role: "Delivery", avatar: "RP", time: "9:28 AM", text: "Delivery update: 2 new riders starting today. Welcome aboard!", reactions: "👏 5  🎉 2" },
+    { author: "Alex Rivera", role: "Inventory", avatar: "AR", time: "9:32 AM", text: "Heads up: We’re low on cups. Ordering more now.", reactions: "" }
   ],
   sales: [
-    {
-      author: "Marlon",
-      role: "Sales",
-      time: "9:15 AM",
-      text: "Customer asked for delivery update on ORD-1024.",
-      type: "staff"
-    }
+    { author: "Marlon", role: "Sales", avatar: "M", time: "9:15 AM", text: "Customer asked for delivery update on ORD-1024.", reactions: "👍 2" }
   ],
   kitchen: [
-    {
-      author: "Kitchen Staff",
-      role: "Kitchen",
-      time: "9:20 AM",
-      text: "Preparing pantry orders first.",
-      type: "staff"
-    }
+    { author: "Kitchen Staff", role: "Kitchen", avatar: "KS", time: "9:20 AM", text: "Preparing pantry orders first.", reactions: "✅ 3" }
   ],
   delivery: [
-    {
-      author: "Delivery Staff",
-      role: "Delivery",
-      time: "9:30 AM",
-      text: "Waiting for rider assignment.",
-      type: "staff"
-    }
+    { author: "Delivery Staff", role: "Delivery", avatar: "DS", time: "9:30 AM", text: "Waiting for rider assignment.", reactions: "👍 2" }
   ],
   riders: [
-    {
-      author: "Rider Team",
-      role: "Rider",
-      time: "9:35 AM",
-      text: "Available riders: Juan, Carlo.",
-      type: "staff"
-    }
+    { author: "Rider Team", role: "Rider", avatar: "RT", time: "9:35 AM", text: "Available riders: Juan, Carlo.", reactions: "🛵 2" }
   ],
   issues: [
-    {
-      author: "Admin",
-      role: "Manager",
-      time: "Yesterday",
-      text: "Log any delayed orders here with order ID.",
-      type: "staff"
-    }
+    { author: "Admin", role: "Manager", avatar: "A", time: "Yesterday", text: "Log any delayed orders here with order ID.", reactions: "" }
   ],
   chitchat: [
-    {
-      author: "Team",
-      role: "Staff",
-      time: "Yesterday",
-      text: "Welcome to Chitchat.",
-      type: "staff"
-    }
+    { author: "Team", role: "Staff", avatar: "T", time: "Yesterday", text: "Welcome to Chitchat.", reactions: "😊 3" }
   ]
 };
 
-const GROUP_CHAT_MEMBERS = [
-  { name: "Admin", role: "Owner", status: "Online" },
-  { name: "Marlon", role: "Sales", status: "Online" },
-  { name: "Kitchen Staff", role: "Kitchen", status: "Busy" },
-  { name: "Delivery Staff", role: "Delivery", status: "Online" },
-  { name: "Rider Team", role: "Rider", status: "Away" }
-];
-
 const GROUP_CHAT_SCHEDULE = [
-  { day: "Mon", date: "Jun 1", staff: "Admin, Sales, Kitchen" },
-  { day: "Tue", date: "Jun 2", staff: "Admin, Sales, Delivery" },
-  { day: "Wed", date: "Jun 3", staff: "Admin, Kitchen, Riders" },
-  { day: "Thu", date: "Jun 4", staff: "Sales, Kitchen, Delivery" },
-  { day: "Fri", date: "Jun 5", staff: "Admin, Sales, Riders" },
-  { day: "Sat", date: "Jun 6", staff: "Sales, Kitchen" },
-  { day: "Sun", date: "Jun 7", staff: "Admin, Delivery" }
+  { date: "Jun 1", day: "Mon", staff: "Admin, Sales, Kitchen" },
+  { date: "Jun 2", day: "Tue", staff: "Admin, Sales, Delivery" },
+  { date: "Jun 3", day: "Wed", staff: "Admin, Kitchen, Riders" },
+  { date: "Jun 4", day: "Thu", staff: "Sales, Kitchen, Delivery" },
+  { date: "Jun 5", day: "Fri", staff: "Admin, Sales, Riders" },
+  { date: "Jun 6", day: "Sat", staff: "Sales, Kitchen" },
+  { date: "Jun 7", day: "Sun", staff: "Admin, Delivery" }
 ];
 
-let activeGroupChatChannel = "system";
+let activeGroupChatChannel = "general";
+let groupChatChannelsOpen = true;
 
 shell(`
-  <div class="group-chat-page">
-    <section class="group-chat-announcement card">
-      <div>
-        <span class="badge">Pinned Announcement</span>
-        <h3>Team Updates</h3>
-        <p class="muted">Important announcements, incidents, and POS updates for staff.</p>
+  <div class="group-chat-app">
+    <aside id="groupChatChannelPanel" class="group-chat-channel-panel">
+      <div class="group-chat-channel-head">
+        <div>
+          <h2>Group Chat</h2>
+          <p class="muted">Team channels</p>
+        </div>
+        <button class="icon-btn" onclick="toggleGroupChatChannels()">×</button>
       </div>
-      <button class="btn small">View Logs</button>
-    </section>
 
-    <section class="group-chat-layout">
-      <aside class="group-chat-sidebar card">
-        <div class="group-chat-section-head">
-          <h3>Channels</h3>
-          <button class="icon-btn" onclick="toggleGroupChatChannels()">—</button>
+      <button class="group-chat-minimize-line" onclick="toggleGroupChatChannels()">
+        <span>≪</span>
+        Minimize Channels
+      </button>
+
+      <p class="group-chat-label">Channels</p>
+
+      <div id="groupChatChannels" class="group-chat-channel-list"></div>
+    </aside>
+
+    <main class="group-chat-chat-window">
+      <header class="group-chat-mobile-header">
+        <button class="icon-btn" onclick="toggleGroupChatChannels()">☰</button>
+        <div>
+          <h3 id="groupChatActiveTitle">General</h3>
+          <p id="groupChatActiveSubtitle" class="muted">23 members, 4 online</p>
         </div>
+        <button class="group-chat-open-btn" onclick="toggleGroupChatChannels()">Channels</button>
+      </header>
 
-        <div id="groupChatChannels" class="group-chat-channels">
-          ${GROUP_CHAT_CHANNELS.map(channel => channelButton(channel)).join("")}
+      <section class="group-chat-announcement-compact">
+        <div>
+          <span class="badge">Pinned Announcement</span>
+          <h3>Team Updates</h3>
+          <p class="muted">Important announcements, incidents, and POS updates for staff.</p>
         </div>
-      </aside>
+      </section>
 
-      <main class="group-chat-main card">
-        <div id="groupChatHeader" class="group-chat-header"></div>
-        <div id="groupChatMessages" class="group-chat-messages"></div>
-        <div id="groupChatComposer" class="group-chat-composer"></div>
-      </main>
+      <section id="groupChatBody" class="group-chat-body"></section>
 
-      <aside class="group-chat-right card">
-        <div class="group-chat-panel">
-          <h3>Pinned Messages</h3>
-          <div class="mini-card">
-            <strong>Reminder</strong>
-            <p class="muted">Always include ORD# when reporting order concerns.</p>
-          </div>
-        </div>
-
-        <div class="group-chat-panel">
-          <h3>Members</h3>
-          <div class="group-chat-members">
-            ${GROUP_CHAT_MEMBERS.map(member => `
-              <div class="group-chat-member">
-                <div>
-                  <strong>${member.name}</strong>
-                  <small>${member.role}</small>
-                </div>
-                <span class="badge">${member.status}</span>
-              </div>
-            `).join("")}
-          </div>
-        </div>
-
-        <div class="group-chat-panel">
-          <h3>Chat Settings</h3>
-          <p class="muted">Admin can manage channel visibility by role later.</p>
-        </div>
-      </aside>
-    </section>
+      <footer id="groupChatComposer" class="group-chat-reference-composer"></footer>
+    </main>
   </div>
 `);
 
-function channelButton(channel){
-  return `
-    <button class="group-chat-channel ${channel.id === activeGroupChatChannel ? "active" : ""}" onclick="setGroupChatChannel('${channel.id}')">
-      <span>${channel.name}</span>
-      ${channel.badge ? `<small>${channel.badge}</small>` : ""}
+function renderGroupChatChannels(){
+  const wrap = document.getElementById("groupChatChannels");
+
+  wrap.innerHTML = GROUP_CHAT_CHANNELS.map(channel => `
+    <button class="group-chat-channel-card ${channel.id === activeGroupChatChannel ? "active" : ""}" onclick="setGroupChatChannel('${channel.id}')">
+      <span class="group-chat-channel-icon">${channel.icon}</span>
+      <span class="group-chat-channel-name">
+        <strong>${channel.name}</strong>
+        ${channel.readonly ? `<small>🔒 ${channel.desc}</small>` : ""}
+      </span>
+      <span class="group-chat-channel-count">${channel.count}</span>
     </button>
-  `;
+  `).join("");
 }
 
 function setGroupChatChannel(channelId){
   activeGroupChatChannel = channelId;
-
-  document.querySelectorAll(".group-chat-channel").forEach(button => {
-    button.classList.toggle(
-      "active",
-      button.textContent.trim().toLowerCase().startsWith(getActiveChannel().name.toLowerCase())
-    );
-  });
-
   renderGroupChat();
 }
 
@@ -257,53 +129,48 @@ function getActiveChannel(){
 function renderGroupChat(){
   const channel = getActiveChannel();
 
-  document.getElementById("groupChatHeader").innerHTML = `
-    <div>
-      <h3>${channel.name}</h3>
-      <p class="muted">${channel.description}</p>
-    </div>
-    <div class="group-chat-header-actions">
-      ${channel.readonly ? `<span class="badge">Read Only</span>` : `<span class="badge">Team Chat</span>`}
-      <button class="btn small">Search</button>
-    </div>
-  `;
+  document.getElementById("groupChatActiveTitle").textContent = channel.name;
+  document.getElementById("groupChatActiveSubtitle").textContent = channel.desc;
+
+  renderGroupChatChannels();
 
   if(channel.id === "schedule"){
-    renderGroupSchedule();
+    renderGroupChatSchedule();
   }else{
-    renderGroupMessages(channel);
+    renderGroupChatMessages(channel);
   }
 
-  renderGroupComposer(channel);
+  renderGroupChatComposer(channel);
 }
 
-function renderGroupMessages(channel){
+function renderGroupChatMessages(channel){
   const messages = GROUP_CHAT_MESSAGES[channel.id] || [];
 
-  document.getElementById("groupChatMessages").innerHTML = messages.length
-    ? messages.map(message => `
-      <div class="chat-message ${message.type === "system" ? "system-log" : ""}">
-        <div class="chat-message-top">
-          <div>
-            <strong>${message.author}</strong>
-            <small>${message.role}</small>
+  document.getElementById("groupChatBody").innerHTML = `
+    <div class="group-chat-date-pill">Today, June 1, 2025</div>
+    <div class="group-chat-message-list">
+      ${messages.map(message => `
+        <article class="group-chat-bubble-row">
+          <div class="group-chat-avatar">${message.avatar}</div>
+          <div class="group-chat-bubble-content">
+            <div class="group-chat-message-meta">
+              <strong>${message.author}</strong>
+              <span>${message.time}</span>
+            </div>
+            <div class="group-chat-message-bubble">
+              ${message.text}
+            </div>
+            ${message.reactions ? `<div class="group-chat-reactions">${message.reactions}</div>` : ""}
           </div>
-          <span class="muted">${message.time}</span>
-        </div>
-        <p>${message.text}</p>
-        <div class="chat-message-actions">
-          <button class="btn small">Reply</button>
-          <button class="btn small">React</button>
-          ${message.type === "staff" ? `<button class="btn small">Edit</button>` : ""}
-        </div>
-      </div>
-    `).join("")
-    : `<div class="mini-card">No messages yet.</div>`;
+        </article>
+      `).join("")}
+    </div>
+  `;
 }
 
-function renderGroupSchedule(){
-  document.getElementById("groupChatMessages").innerHTML = `
-    <div class="schedule-grid">
+function renderGroupChatSchedule(){
+  document.getElementById("groupChatBody").innerHTML = `
+    <div class="schedule-grid group-chat-reference-schedule">
       ${GROUP_CHAT_SCHEDULE.map(day => `
         <div class="schedule-day-card">
           <strong>${day.date}</strong>
@@ -315,34 +182,31 @@ function renderGroupSchedule(){
   `;
 }
 
-function renderGroupComposer(channel){
+function renderGroupChatComposer(channel){
   const composer = document.getElementById("groupChatComposer");
 
   if(channel.readonly){
     composer.innerHTML = `
-      <div class="group-chat-readonly">
-        <span class="badge">Read Only</span>
-        <p class="muted">This channel is view-only. Messages are created by system logs or admin schedule updates.</p>
-      </div>
+      <div class="group-chat-readonly-note">You can’t send messages in this channel.</div>
     `;
     return;
   }
 
   composer.innerHTML = `
-    <div class="composer-actions">
-      <button class="btn small">Emoji</button>
-      <button class="btn small">Mention Staff</button>
-      <button class="btn small">Mention Order</button>
-    </div>
-    <div class="composer-row">
-      <input id="groupChatInput" placeholder="Type a message">
-      <button class="btn primary">Send</button>
-    </div>
+    <input placeholder="Type a message...">
+    <button class="icon-btn">😊</button>
+    <button class="icon-btn">@</button>
+    <button class="group-chat-send-btn">➤</button>
   `;
 }
 
 function toggleGroupChatChannels(){
-  document.getElementById("groupChatChannels")?.classList.toggle("collapsed");
+  groupChatChannelsOpen = !groupChatChannelsOpen;
+
+  document.querySelector(".group-chat-app")?.classList.toggle("channels-closed", !groupChatChannelsOpen);
 }
 
 renderGroupChat();
+
+window.setGroupChatChannel = setGroupChatChannel;
+window.toggleGroupChatChannels = toggleGroupChatChannels;
