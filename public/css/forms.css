@@ -4189,3 +4189,24 @@ body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat
     font-size: 12px !important;
   }
 }
+
+/* ==================================================
+   Group Chat show sample announcement Next button
+================================================== */
+body[data-page="group-chat"] .group-chat-announcement-next {
+  display: inline-grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(16,185,129,.14) !important;
+  color: #10b981 !important;
+  padding: 6px 10px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-slim-announcement {
+  grid-template-columns: auto minmax(0, 1fr) auto auto !important;
+}
