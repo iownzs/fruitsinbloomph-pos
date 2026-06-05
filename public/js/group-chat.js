@@ -95,11 +95,6 @@ let groupChatOrderPreviewOpen = false;
 shell(`
   <div class="group-chat-ref-app">
     <aside id="groupChatChannelsPanel" class="group-chat-ref-panel group-chat-ref-channels">
-      <div class="group-chat-ref-titlebar group-chat-ref-titlebar-clean">
-        <h2>Group Chat</h2>
-        <button class="icon-btn">✎</button>
-      </div>
-
       <section class="group-chat-ref-announcement">
         <div class="group-chat-ref-icon">📣</div>
         <div>

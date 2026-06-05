@@ -4610,3 +4610,20 @@ body[data-page="group-chat"] .group-chat-ref-chat-head-clean p {
     line-height: 1.05 !important;
   }
 }
+
+/* ==================================================
+   Group Chat remove channel title header spacing
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-titlebar-clean {
+  display: none !important;
+}
+
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-ref-channels {
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-announcement {
+    margin-top: 0 !important;
+  }
+}
