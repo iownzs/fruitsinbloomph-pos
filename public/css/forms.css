@@ -4772,3 +4772,82 @@ body[data-page="group-chat"] .group-chat-ref-titlebar-clean {
     border-radius: 14px !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat fixed mobile chatbox scroll
+================================================== */
+@media (max-width: 820px) {
+  body[data-page="group-chat"],
+  body[data-page="group-chat"] html {
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] #app {
+    height: calc(100dvh - 98px) !important;
+    max-height: calc(100dvh - 98px) !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .app-main,
+  body[data-page="group-chat"] main,
+  body[data-page="group-chat"] .page,
+  body[data-page="group-chat"] .content {
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) {
+    display: block !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+    padding: 10px !important;
+    border-radius: 18px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-chat-head {
+    min-height: 0 !important;
+    padding-bottom: 4px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-slim-announcement {
+    margin: 5px 0 !important;
+    padding: 7px 8px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-pinned-row {
+    margin: 3px 0 6px !important;
+    padding: 7px 10px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-body {
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    padding-right: 3px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-message-list {
+    padding-bottom: 12px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-composer {
+    margin-top: 6px !important;
+    flex-shrink: 0 !important;
+  }
+}
