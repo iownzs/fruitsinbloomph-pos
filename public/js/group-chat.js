@@ -340,35 +340,43 @@ function renderGroupChatMessages(channel){
   const messages = GROUP_CHAT_MESSAGES[channel.id] || [];
 
   document.getElementById("groupChatBody").innerHTML = `
-    <div class="group-chat-ref-message-list">
-      ${messages.map(message => `
-        <article class="group-chat-ref-message">
-          <div class="group-chat-ref-avatar">${message.avatar}</div>
-          <div>
-            <div class="group-chat-ref-message-meta">
-              <strong>${message.name}</strong>
-              <span>${message.time}</span>
-            </div>
-            <p>${message.text}</p>
-            ${message.reactions ? `<div class="group-chat-ref-reactions">${message.reactions}</div>` : ""}
-          </div>
-        </article>
-      `).join("")}
-    </div>
+    <section class="group-chat-channel-chatbox" data-channel="${channel.id}">
+      <div class="group-chat-channel-scroll">
+        <div class="group-chat-ref-message-list">
+          ${messages.map(message => `
+            <article class="group-chat-ref-message">
+              <div class="group-chat-ref-avatar">${message.avatar}</div>
+              <div>
+                <div class="group-chat-ref-message-meta">
+                  <strong>${message.name}</strong>
+                  <span>${message.time}</span>
+                </div>
+                <p>${message.text}</p>
+                ${message.reactions ? `<div class="group-chat-ref-reactions">${message.reactions}</div>` : ""}
+              </div>
+            </article>
+          `).join("")}
+        </div>
+      </div>
+    </section>
   `;
 }
 
 function renderGroupChatSchedule(){
   document.getElementById("groupChatBody").innerHTML = `
-    <div class="group-chat-ref-schedule">
-      ${GROUP_CHAT_SCHEDULE.map(day => `
-        <div>
-          <strong>${day.date}</strong>
-          <small>${day.day}</small>
-          <p>${day.staff}</p>
+    <section class="group-chat-channel-chatbox" data-channel="schedule">
+      <div class="group-chat-channel-scroll">
+        <div class="group-chat-ref-schedule">
+          ${GROUP_CHAT_SCHEDULE.map(day => `
+            <div>
+              <strong>${day.date}</strong>
+              <small>${day.day}</small>
+              <p>${day.staff}</p>
+            </div>
+          `).join("")}
         </div>
-      `).join("")}
-    </div>
+      </div>
+    </section>
   `;
 }
 
