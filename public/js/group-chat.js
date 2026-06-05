@@ -61,6 +61,26 @@ const GROUP_CHAT_SCHEDULE = [
   { date: "Jun 7", day: "Sun", staff: "Admin, Delivery" }
 ];
 
+const GROUP_CHAT_ANNOUNCEMENTS = [
+  {
+    title: "Delivery meeting at 3:00 PM",
+    message: "Please update rider status before noon. Delivery team should check pending dispatch orders.",
+    tag: "Operations"
+  },
+  {
+    title: "Low stock reminder",
+    message: "Cups and banana leaves are running low. Inventory staff should confirm remaining stock today.",
+    tag: "Inventory"
+  },
+  {
+    title: "Rush order reminder",
+    message: "Mark urgent customer requests as Rush before sending to Kitchen or Delivery.",
+    tag: "Orders"
+  }
+];
+
+let activeGroupChatAnnouncementIndex = 0;
+
 let activeGroupChatChannel = "general";
 let groupChatChannelsOpen = true;
 let groupChatAnnouncementOpen = true;
@@ -79,8 +99,8 @@ shell(`
       <section class="group-chat-ref-announcement">
         <div class="group-chat-ref-icon">📣</div>
         <div>
-          <strong>Header Announcement</strong>
-          <p>Today: Delivery meeting at 3:00 PM. Please update rider status before noon.</p>
+          <strong id="groupChatSidebarAnnouncementTitle">Header Announcement</strong>
+          <p id="groupChatSidebarAnnouncementText">Loading announcement...</p>
         </div>
         <button class="icon-btn group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
       </section>
@@ -115,7 +135,8 @@ shell(`
 
       <section id="groupChatSlimAnnouncement" class="group-chat-ref-slim-announcement">
         <span>📣</span>
-        <strong>Announcement</strong>
+        <strong id="groupChatSlimAnnouncementText">Announcement</strong>
+        <button class="group-chat-announcement-next" onclick="nextGroupChatAnnouncement()" title="Next sample announcement">Next</button>
         <button class="group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
       </section>
 
@@ -174,12 +195,30 @@ shell(`
   </div>
 `);
 
+function renderGroupChatAnnouncement(){
+  const announcement = GROUP_CHAT_ANNOUNCEMENTS[activeGroupChatAnnouncementIndex] || GROUP_CHAT_ANNOUNCEMENTS[0];
+
+  const sidebarTitle = document.getElementById("groupChatSidebarAnnouncementTitle");
+  const sidebarText = document.getElementById("groupChatSidebarAnnouncementText");
+  const slimText = document.getElementById("groupChatSlimAnnouncementText");
+
+  if(sidebarTitle) sidebarTitle.textContent = `${announcement.tag}: ${announcement.title}`;
+  if(sidebarText) sidebarText.textContent = announcement.message;
+  if(slimText) slimText.textContent = `${announcement.tag}: ${announcement.title}`;
+}
+
+function nextGroupChatAnnouncement(){
+  activeGroupChatAnnouncementIndex = (activeGroupChatAnnouncementIndex + 1) % GROUP_CHAT_ANNOUNCEMENTS.length;
+  renderGroupChatAnnouncement();
+}
+
 function renderGroupChat(){
   const channel = getActiveChannel();
 
   document.getElementById("groupChatActiveName").textContent = channel.name;
   document.getElementById("groupChatActiveDesc").textContent = channel.desc;
 
+  renderGroupChatAnnouncement();
   renderGroupChatChannels();
 
   if(channel.id === "schedule"){
@@ -353,3 +392,4 @@ window.toggleGroupChatChannels = toggleGroupChatChannels;
 window.toggleGroupChatMembers = toggleGroupChatMembers;
 window.toggleGroupChatOrderPreview = toggleGroupChatOrderPreview;
 window.toggleGroupChatAnnouncement = toggleGroupChatAnnouncement;
+window.nextGroupChatAnnouncement = nextGroupChatAnnouncement;

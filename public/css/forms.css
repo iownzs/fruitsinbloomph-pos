@@ -4054,3 +4054,17 @@ body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat
   height: 1px !important;
   background: rgba(34, 211, 238, 0.18) !important;
 }
+
+/* ==================================================
+   Group Chat sample announcement next button
+================================================== */
+body[data-page="group-chat"] .group-chat-announcement-next {
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(16,185,129,.12) !important;
+  color: #10b981 !important;
+  padding: 6px 9px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+}
