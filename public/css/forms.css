@@ -4577,3 +4577,25 @@ body[data-page="group-chat"] .group-chat-ref-chat-head-clean p {
     display: grid !important;
   }
 }
+
+/* ==================================================
+   Group Chat limit long announcement height on mobile
+================================================== */
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-ref-announcement {
+    max-height: 128px !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.announcement-hidden) .group-chat-ref-announcement p {
+    max-height: 68px !important;
+    overflow-y: auto !important;
+    padding-right: 4px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-announcement {
+    max-height: 56px !important;
+    overflow: hidden !important;
+  }
+}
