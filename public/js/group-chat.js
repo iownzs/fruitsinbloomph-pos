@@ -116,7 +116,7 @@ shell(`
       <section id="groupChatSlimAnnouncement" class="group-chat-ref-slim-announcement">
         <span>📣</span>
         <strong>Announcement</strong>
-        <button onclick="toggleGroupChatAnnouncement()">⌄</button>
+        <button class="group-chat-announcement-arrow" onclick="toggleGroupChatAnnouncement()" title="Minimize announcement">⌃</button>
       </section>
 
       <button class="group-chat-ref-pinned-row" onclick="toggleGroupChatOrderPreview()">
@@ -191,6 +191,7 @@ function renderGroupChat(){
   renderGroupChatComposer(channel);
   renderGroupChatOrderPreview();
   applyGroupChatViewState();
+  updateGroupChatAnnouncementArrow();
 }
 
 function renderGroupChatChannels(){
@@ -318,6 +319,14 @@ function toggleGroupChatOrderPreview(){
 function toggleGroupChatAnnouncement(){
   groupChatAnnouncementOpen = !groupChatAnnouncementOpen;
   applyGroupChatViewState();
+  updateGroupChatAnnouncementArrow();
+}
+
+function updateGroupChatAnnouncementArrow(){
+  document.querySelectorAll(".group-chat-announcement-arrow").forEach(button => {
+    button.textContent = groupChatAnnouncementOpen ? "⌃" : "⌄";
+    button.title = groupChatAnnouncementOpen ? "Minimize announcement" : "Show announcement";
+  });
 }
 
 function applyGroupChatViewState(){

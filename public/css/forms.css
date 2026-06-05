@@ -4001,3 +4001,15 @@ body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat
     display: grid;
   }
 }
+
+/* ==================================================
+   Group Chat announcement arrow behavior
+================================================== */
+body[data-page="group-chat"] .group-chat-announcement-arrow {
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+}
