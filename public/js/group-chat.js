@@ -203,7 +203,12 @@ function renderGroupChatAnnouncement(){
 
   if(sidebarTitle) sidebarTitle.textContent = `${announcement.tag}: ${announcement.title}`;
   if(sidebarText) sidebarText.textContent = announcement.message;
-  if(slimText) slimText.textContent = `${announcement.tag}: ${announcement.title}`;
+
+  if(slimText){
+    slimText.textContent = groupChatAnnouncementOpen
+      ? `${announcement.tag}: ${announcement.title}`
+      : "Announcement";
+  }
 }
 
 function nextGroupChatAnnouncement(){
@@ -370,9 +375,11 @@ function toggleGroupChatAnnouncement(button){
 }
 
 function updateGroupChatAnnouncementArrow(){
+  renderGroupChatAnnouncement();
+
   document.querySelectorAll(".group-chat-announcement-arrow").forEach(button => {
-    button.textContent = groupChatAnnouncementOpen ? "⌃" : "⌄";
-    button.title = groupChatAnnouncementOpen ? "Minimize announcement" : "Show announcement";
+    button.textContent = groupChatAnnouncementOpen ? "⌄" : "⌃";
+    button.title = groupChatAnnouncementOpen ? "Hide announcement" : "Show announcement";
     button.dataset.announcementAction = groupChatAnnouncementOpen ? "hide" : "show";
   });
 }

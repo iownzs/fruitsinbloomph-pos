@@ -4098,3 +4098,65 @@ body[data-page="group-chat"] .group-chat-announcement-arrow {
 body[data-page="group-chat"] .group-chat-announcement-next {
   display: none !important;
 }
+
+/* ==================================================
+   FINAL Group Chat announcement row behavior
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-slim-announcement {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  background: rgba(255,255,255,.035) !important;
+  border-radius: 16px !important;
+  padding: 9px 11px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-slim-announcement strong {
+  font-size: 13px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Hidden = keep announcement row, only change text to "Announcement" */
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  background: rgba(255,255,255,.035) !important;
+  padding: 9px 11px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement span {
+  display: inline !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement strong {
+  display: block !important;
+}
+
+/* Remove old divider line pseudo-elements */
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement::before,
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement::after {
+  content: none !important;
+  display: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-arrow {
+  width: 32px !important;
+  height: 28px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(34, 211, 238, 0.24) !important;
+  background: rgba(15, 23, 42, 0.6) !important;
+  color: #67e8f9 !important;
+}
+
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-ref-slim-announcement strong {
+    font-size: 12px !important;
+  }
+}
