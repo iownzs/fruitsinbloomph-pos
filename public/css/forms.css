@@ -4160,3 +4160,32 @@ body[data-page="group-chat"] .group-chat-announcement-arrow {
     font-size: 12px !important;
   }
 }
+
+/* ==================================================
+   Group Chat long announcement test support
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-announcement p {
+  line-height: 1.35 !important;
+  white-space: normal !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-slim-announcement strong {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement strong {
+  white-space: nowrap !important;
+}
+
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-ref-announcement p {
+    font-size: 12px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-slim-announcement strong {
+    font-size: 12px !important;
+  }
+}

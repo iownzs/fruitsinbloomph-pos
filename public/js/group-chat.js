@@ -76,6 +76,11 @@ const GROUP_CHAT_ANNOUNCEMENTS = [
     title: "Rush order reminder",
     message: "Mark urgent customer requests as Rush before sending to Kitchen or Delivery.",
     tag: "Orders"
+  },
+  {
+    title: "Long announcement test for delivery, kitchen, sales, riders, pickup, and inventory coordination today",
+    message: "This is a long announcement sample. Please check all pending orders, update delivery rider assignment, confirm kitchen preparation status, verify pickup schedules, review low-stock ingredients, and make sure every team member checks the correct channel before starting their shift.",
+    tag: "Long Test"
   }
 ];
 
