@@ -3934,3 +3934,42 @@ body[data-page="group-chat"] .group-chat-minimize-icon-btn {
 body[data-page="group-chat"] .group-chat-minimize-line {
   display: none !important;
 }
+
+/* ==================================================
+   Group Chat compact channel header
+================================================== */
+body[data-page="group-chat"] .group-chat-channel-head {
+  align-items: flex-start !important;
+}
+
+body[data-page="group-chat"] .group-chat-channel-head h2 {
+  font-size: 28px !important;
+  line-height: 1.1 !important;
+  margin: 0 0 8px !important;
+}
+
+body[data-page="group-chat"] .group-chat-channel-head p {
+  font-size: 15px !important;
+  margin: 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-minimize-icon-btn {
+  width: 48px !important;
+  height: 48px !important;
+  margin-top: 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-label {
+  margin-top: 22px !important;
+}
+
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-channel-head h2 {
+    font-size: 26px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-minimize-icon-btn {
+    width: 46px !important;
+    height: 46px !important;
+  }
+}
