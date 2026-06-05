@@ -64,13 +64,8 @@ shell(`
           <h2>Group Chat</h2>
           <p class="muted">Team channels</p>
         </div>
-        <button class="icon-btn" onclick="toggleGroupChatChannels()">×</button>
+        <button class="group-chat-minimize-icon-btn" onclick="toggleGroupChatChannels()" title="Minimize Channels">≪</button>
       </div>
-
-      <button class="group-chat-minimize-line" onclick="toggleGroupChatChannels()">
-        <span>≪</span>
-        Minimize Channels
-      </button>
 
       <p class="group-chat-label">Channels</p>
 
