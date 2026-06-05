@@ -175,10 +175,16 @@ shell(`
         <h3>Team Updates</h3>
         <p class="muted">Important announcements, incidents, and POS updates for staff.</p>
       </div>
-      <button id="groupChatChannelMinimizeBtn" class="icon-btn group-chat-channel-minimize-btn" onclick="toggleGroupChatChannels()" title="Minimize channels">
+      <button id="groupChatAnnouncementMinimizeBtn" class="icon-btn group-chat-announcement-minimize-btn" onclick="toggleGroupChatAnnouncement()" title="Minimize announcement">
         −
       </button>
     </section>
+
+    <div class="group-chat-channel-control-row">
+      <button id="groupChatChannelMinimizeBtn" class="btn small group-chat-channel-minimize-btn" onclick="toggleGroupChatChannels()" title="Minimize channels">
+        Hide Channels
+      </button>
+    </div>
 
     <section class="group-chat-layout">
       <aside class="group-chat-sidebar card">
@@ -344,6 +350,19 @@ function renderGroupComposer(channel){
   `;
 }
 
+function toggleGroupChatAnnouncement(){
+  const announcement = document.querySelector(".group-chat-announcement");
+  const button = document.getElementById("groupChatAnnouncementMinimizeBtn");
+
+  announcement?.classList.toggle("is-minimized");
+
+  if(button){
+    const minimized = announcement?.classList.contains("is-minimized");
+    button.textContent = minimized ? "+" : "−";
+    button.title = minimized ? "Show announcement" : "Minimize announcement";
+  }
+}
+
 function toggleGroupChatChannels(){
   groupChatChannelsMinimized = !groupChatChannelsMinimized;
 
@@ -353,7 +372,7 @@ function toggleGroupChatChannels(){
   layout?.classList.toggle("channels-minimized", groupChatChannelsMinimized);
 
   if(button){
-    button.textContent = groupChatChannelsMinimized ? "+" : "−";
+    button.textContent = groupChatChannelsMinimized ? "Open Channels" : "Hide Channels";
     button.title = groupChatChannelsMinimized ? "Show channels" : "Minimize channels";
   }
 }
