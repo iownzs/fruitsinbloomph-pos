@@ -82,13 +82,18 @@ shell(`
         <button class="group-chat-open-btn" onclick="toggleGroupChatChannels()">Channels</button>
       </header>
 
+      <div class="group-chat-announcement-divider">
+        <span></span>
+        <button id="groupChatAnnouncementToggle" class="group-chat-announcement-toggle" onclick="toggleGroupChatAnnouncement()" title="Minimize announcement">⌃</button>
+        <span></span>
+      </div>
+
       <section class="group-chat-announcement-compact" id="groupChatAnnouncement">
         <div>
           <span class="badge">Pinned Announcement</span>
           <h3>Team Updates</h3>
           <p class="muted">Important announcements, incidents, and POS updates for staff.</p>
         </div>
-        <button id="groupChatAnnouncementToggle" class="group-chat-announcement-toggle" onclick="toggleGroupChatAnnouncement()" title="Minimize announcement">−</button>
       </section>
 
       <section id="groupChatBody" class="group-chat-body"></section>
@@ -204,7 +209,7 @@ function toggleGroupChatAnnouncement(){
 
   if(button){
     const minimized = announcement?.classList.contains("is-minimized");
-    button.textContent = minimized ? "+" : "−";
+    button.textContent = minimized ? "⌄" : "⌃";
     button.title = minimized ? "Show announcement" : "Minimize announcement";
   }
 }
