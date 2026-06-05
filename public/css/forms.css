@@ -4828,3 +4828,118 @@ body[data-page="group-chat"] .group-chat-channel-scroll {
     min-height: 0 !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat desktop full-height chat workspace
+================================================== */
+@media (min-width: 821px) {
+  body[data-page="group-chat"] {
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] #app {
+    height: calc(100vh - 86px) !important;
+    max-height: calc(100vh - 86px) !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-chat {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-body {
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-channel-chatbox {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-channel-scroll {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-right: 6px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-composer {
+    position: relative !important;
+    z-index: 3 !important;
+    flex-shrink: 0 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-right,
+  body[data-page="group-chat"] .group-chat-ref-members-panel {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.order-preview-open {
+    grid-template-columns: minmax(0, 1fr) 360px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.order-preview-open .group-chat-ref-chat {
+    display: grid !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.order-preview-open .group-chat-ref-right {
+    display: grid !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    align-content: start !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.members-open {
+    grid-template-columns: minmax(0, 1fr) 360px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-chat {
+    display: grid !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-members-panel {
+    display: grid !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    align-content: start !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.order-preview-open .group-chat-ref-channels,
+  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-channels {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-chat-head {
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-channels-btn {
+    display: inline-flex !important;
+  }
+}
