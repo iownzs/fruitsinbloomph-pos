@@ -211,8 +211,15 @@ function renderGroupChatAnnouncement(){
   const slimText = document.getElementById("groupChatSlimAnnouncementText");
   const slimMessage = document.getElementById("groupChatSlimAnnouncementMessage");
 
-  if(sidebarTitle) sidebarTitle.textContent = `${announcement.tag}: ${announcement.title}`;
-  if(sidebarText) sidebarText.textContent = announcement.message;
+  if(sidebarTitle){
+    sidebarTitle.textContent = groupChatAnnouncementOpen
+      ? `${announcement.tag}: ${announcement.title}`
+      : "Announcement";
+  }
+
+  if(sidebarText){
+    sidebarText.textContent = groupChatAnnouncementOpen ? announcement.message : "";
+  }
 
   if(slimText){
     slimText.textContent = groupChatAnnouncementOpen

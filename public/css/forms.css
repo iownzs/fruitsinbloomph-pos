@@ -4347,3 +4347,43 @@ body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat
   align-self: center !important;
   justify-self: end !important;
 }
+
+/* ==================================================
+   FINAL Group Chat channel announcement compact/full
+================================================== */
+
+/* Keep channel announcement visible when compact */
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-announcement {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  min-height: 58px !important;
+  padding: 10px 12px !important;
+}
+
+/* Compact state: hide message only, not whole card */
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-announcement p {
+  display: none !important;
+}
+
+/* Full state: show full message */
+body[data-page="group-chat"] .group-chat-ref-app:not(.announcement-hidden) .group-chat-ref-announcement p {
+  display: block !important;
+  white-space: normal !important;
+  line-height: 1.35 !important;
+}
+
+/* Keep channel announcement title one line */
+body[data-page="group-chat"] .group-chat-ref-announcement strong {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Button aligned in both compact/full states */
+body[data-page="group-chat"] .group-chat-ref-announcement .group-chat-announcement-arrow {
+  align-self: center !important;
+  justify-self: end !important;
+}
