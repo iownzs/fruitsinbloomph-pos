@@ -392,7 +392,7 @@ function updateGroupChatAnnouncementArrow(){
   renderGroupChatAnnouncement();
 
   document.querySelectorAll(".group-chat-announcement-arrow").forEach(button => {
-    button.textContent = groupChatAnnouncementOpen ? "⌄" : "⌃";
+    button.textContent = groupChatAnnouncementOpen ? "⌃" : "⌄";
     button.title = groupChatAnnouncementOpen ? "Compact announcement" : "Show full announcement";
     button.dataset.announcementAction = groupChatAnnouncementOpen ? "compact" : "expand";
   });
