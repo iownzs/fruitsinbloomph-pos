@@ -43,6 +43,77 @@ const GROUP_CHAT_MESSAGES = {
   ]
 };
 
+
+function addGroupChatScrollTestMessages(){
+  const extra = {
+    system: [
+      { name: "System", role: "Orders", avatar: "S", time: "9:18 AM", text: "Order ORD-1025 was created from POS Terminal.", reactions: "✅ 4" },
+      { name: "System", role: "Delivery", avatar: "S", time: "9:22 AM", text: "Order ORD-1024 assigned to Rider Juan.", reactions: "🛵 3" },
+      { name: "System", role: "Pickup", avatar: "S", time: "9:28 AM", text: "Pickup order ORD-1026 is waiting pickup.", reactions: "📦 2" },
+      { name: "System", role: "Stock", avatar: "S", time: "9:34 AM", text: "Low stock warning: Paper Cups below reorder level.", reactions: "⚠️ 5" },
+      { name: "System", role: "Kitchen", avatar: "S", time: "9:40 AM", text: "Kitchen marked ORD-1027 Ready.", reactions: "✅ 6" }
+    ],
+    general: [
+      { name: "Maria Santos", role: "Manager", avatar: "MS", time: "9:36 AM", text: "Please keep customer updates clear and include order IDs when asking for help.", reactions: "👍 4" },
+      { name: "Jake Thompson", role: "Shift Supervisor", avatar: "JT", time: "9:39 AM", text: "Sales team, please double-check payment status before sending orders to kitchen.", reactions: "✅ 3" },
+      { name: "Leah Nguyen", role: "Kitchen Lead", avatar: "LN", time: "9:43 AM", text: "Kitchen prep is on track. Rush orders will be prioritized.", reactions: "🔥 2" },
+      { name: "Rohit Patel", role: "Delivery Coordinator", avatar: "RP", time: "9:46 AM", text: "Delivery riders should confirm pickup before leaving the store.", reactions: "🛵 2" },
+      { name: "Alex Rivera", role: "Ops Manager", avatar: "AR", time: "9:50 AM", text: "Inventory check after lunch. Please report missing packaging items.", reactions: "📦 3" }
+    ],
+    sales: [
+      { name: "Marlon", role: "Sales", avatar: "M", time: "9:22 AM", text: "Customer confirmed payment for ORD-1028.", reactions: "✅ 2" },
+      { name: "Ana", role: "Cashier", avatar: "A", time: "9:27 AM", text: "GCash reference received for pantry order.", reactions: "💸 2" },
+      { name: "Marlon", role: "Sales", avatar: "M", time: "9:33 AM", text: "Need item availability check for Mango Sago 1L.", reactions: "👀 1" },
+      { name: "Ana", role: "Cashier", avatar: "A", time: "9:38 AM", text: "Customer requested rush delivery for today.", reactions: "⚡ 3" },
+      { name: "Marlon", role: "Sales", avatar: "M", time: "9:44 AM", text: "Follow-up sent to customer for missing recipient contact number.", reactions: "📞 2" }
+    ],
+    kitchen: [
+      { name: "Kitchen Staff", role: "Kitchen", avatar: "KS", time: "9:25 AM", text: "Mango Sago batch is ready for packing.", reactions: "✅ 3" },
+      { name: "Leah", role: "Kitchen Lead", avatar: "L", time: "9:30 AM", text: "Start preparing ORD-1029 after current batch.", reactions: "🍽️ 2" },
+      { name: "Kitchen Staff", role: "Kitchen", avatar: "KS", time: "9:36 AM", text: "Need more paper cups from inventory.", reactions: "🥤 2" },
+      { name: "Leah", role: "Kitchen Lead", avatar: "L", time: "9:42 AM", text: "ORD-1030 is ready for delivery handoff.", reactions: "✅ 4" },
+      { name: "Kitchen Staff", role: "Kitchen", avatar: "KS", time: "9:49 AM", text: "Rush order prep started.", reactions: "🔥 3" }
+    ],
+    delivery: [
+      { name: "Rohit", role: "Delivery", avatar: "R", time: "9:31 AM", text: "Rider Juan accepted ORD-1024.", reactions: "🛵 2" },
+      { name: "Delivery Staff", role: "Delivery", avatar: "DS", time: "9:35 AM", text: "Waiting for rider assignment for ORD-1031.", reactions: "⏳ 1" },
+      { name: "Rohit", role: "Delivery", avatar: "R", time: "9:41 AM", text: "Please confirm address landmark before dispatch.", reactions: "📍 2" },
+      { name: "Delivery Staff", role: "Delivery", avatar: "DS", time: "9:47 AM", text: "ORD-1024 is now out for delivery.", reactions: "✅ 3" },
+      { name: "Rohit", role: "Delivery", avatar: "R", time: "9:55 AM", text: "Delivered orders should be marked immediately after confirmation.", reactions: "👍 2" }
+    ],
+    riders: [
+      { name: "Juan", role: "Rider", avatar: "J", time: "9:32 AM", text: "Accepted ORD-1024. Heading to pickup.", reactions: "🛵 2" },
+      { name: "Carlo", role: "Rider", avatar: "C", time: "9:37 AM", text: "Available for next delivery.", reactions: "✅ 1" },
+      { name: "Juan", role: "Rider", avatar: "J", time: "9:45 AM", text: "Package received. Leaving store now.", reactions: "📦 2" },
+      { name: "Carlo", role: "Rider", avatar: "C", time: "9:52 AM", text: "Traffic near Makati, expect slight delay.", reactions: "⚠️ 2" },
+      { name: "Juan", role: "Rider", avatar: "J", time: "10:01 AM", text: "Customer contacted, delivery address confirmed.", reactions: "📞 1" }
+    ],
+    issues: [
+      { name: "Admin", role: "Manager", avatar: "A", time: "9:20 AM", text: "Report any delayed order here with reason and order ID.", reactions: "📌 2" },
+      { name: "Marlon", role: "Sales", avatar: "M", time: "9:26 AM", text: "Customer for ORD-1032 is not responding.", reactions: "📞 1" },
+      { name: "Delivery Staff", role: "Delivery", avatar: "DS", time: "9:33 AM", text: "Address for ORD-1033 needs landmark confirmation.", reactions: "📍 2" },
+      { name: "Inventory", role: "Stock", avatar: "I", time: "9:45 AM", text: "Cup lid stock count mismatch found.", reactions: "⚠️ 3" },
+      { name: "Admin", role: "Manager", avatar: "A", time: "9:58 AM", text: "Issue noted. Please update once resolved.", reactions: "✅ 1" }
+    ],
+    chitchat: [
+      { name: "Team", role: "Staff", avatar: "T", time: "9:10 AM", text: "Good morning everyone!", reactions: "😊 4" },
+      { name: "Maria", role: "Manager", avatar: "MS", time: "9:18 AM", text: "Coffee is ready in the pantry.", reactions: "☕ 3" },
+      { name: "Jake", role: "Shift Supervisor", avatar: "JT", time: "9:24 AM", text: "Let’s have a smooth day.", reactions: "💪 2" },
+      { name: "Leah", role: "Kitchen", avatar: "LN", time: "9:31 AM", text: "Lunch break schedule posted later.", reactions: "🍽️ 2" },
+      { name: "Alex", role: "Ops", avatar: "AR", time: "9:40 AM", text: "Thanks team, keep it up!", reactions: "🎉 3" }
+    ]
+  };
+
+  Object.keys(extra).forEach(channelId => {
+    GROUP_CHAT_MESSAGES[channelId] = [
+      ...(GROUP_CHAT_MESSAGES[channelId] || []),
+      ...extra[channelId]
+    ];
+  });
+}
+
+addGroupChatScrollTestMessages();
+
 const GROUP_CHAT_MEMBERS = [
   { name: "Maria Santos", role: "Manager", status: "Online", tag: "Admin", avatar: "MS" },
   { name: "Jake Thompson", role: "Shift Supervisor", status: "Online", tag: "Admin", avatar: "JT" },
