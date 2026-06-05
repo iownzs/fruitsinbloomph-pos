@@ -4377,3 +4377,72 @@ body[data-page="group-chat"] .group-chat-announcement-compact.is-minimized {
     font-size: 16px !important;
   }
 }
+
+/* ==================================================
+   Group Chat announcement arrow on card border
+================================================== */
+body[data-page="group-chat"] .group-chat-announcement-divider {
+  position: relative !important;
+  z-index: 3 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 10px 0 -14px !important;
+  pointer-events: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-divider span {
+  display: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-toggle {
+  pointer-events: auto !important;
+  width: 42px !important;
+  height: 28px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(34, 211, 238, 0.42) !important;
+  background: #0f172a !important;
+  color: #67e8f9 !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,.28) !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-compact {
+  position: relative !important;
+  margin-top: 0 !important;
+  padding-top: 18px !important;
+  border-top-color: rgba(34, 211, 238, 0.42) !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-compact.is-minimized {
+  display: block !important;
+  min-height: 34px !important;
+  padding: 16px 12px 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-compact.is-minimized > div {
+  display: none !important;
+}
+
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-announcement-divider {
+    margin: 8px 0 -13px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-announcement-toggle {
+    width: 40px !important;
+    height: 26px !important;
+    font-size: 16px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-announcement-compact {
+    padding-top: 17px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-announcement-compact.is-minimized {
+    min-height: 32px !important;
+    padding: 15px 10px 9px !important;
+  }
+}
