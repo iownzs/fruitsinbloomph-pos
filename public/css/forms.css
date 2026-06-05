@@ -4210,3 +4210,40 @@ body[data-page="group-chat"] .group-chat-announcement-next {
 body[data-page="group-chat"] .group-chat-ref-slim-announcement {
   grid-template-columns: auto minmax(0, 1fr) auto auto !important;
 }
+
+/* ==================================================
+   FINAL show Group Chat Next announcement button
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-slim-announcement {
+  grid-template-columns: auto minmax(0, 1fr) auto auto !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-next {
+  display: inline-grid !important;
+  place-items: center !important;
+  min-width: 44px !important;
+  height: 28px !important;
+  border: 1px solid rgba(16,185,129,.24) !important;
+  border-radius: 999px !important;
+  background: rgba(16,185,129,.14) !important;
+  color: #10b981 !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 420px) {
+  body[data-page="group-chat"] .group-chat-announcement-next {
+    min-width: 38px !important;
+    padding: 0 8px !important;
+    font-size: 10px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-slim-announcement {
+    gap: 7px !important;
+  }
+}
