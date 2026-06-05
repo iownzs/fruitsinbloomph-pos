@@ -4387,3 +4387,25 @@ body[data-page="group-chat"] .group-chat-ref-announcement .group-chat-announceme
   align-self: center !important;
   justify-self: end !important;
 }
+
+/* ==================================================
+   Group Chat clean channel list header
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-titlebar-clean {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-titlebar-clean h2 {
+  text-align: center !important;
+  margin-left: 44px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-channel-head-clean {
+  display: block !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-channel-head-clean span {
+  display: block !important;
+}

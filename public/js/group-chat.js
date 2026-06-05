@@ -95,8 +95,7 @@ let groupChatOrderPreviewOpen = false;
 shell(`
   <div class="group-chat-ref-app">
     <aside id="groupChatChannelsPanel" class="group-chat-ref-panel group-chat-ref-channels">
-      <div class="group-chat-ref-titlebar">
-        <button class="icon-btn" onclick="toggleGroupChatChannels()">☰</button>
+      <div class="group-chat-ref-titlebar group-chat-ref-titlebar-clean">
         <h2>Group Chat</h2>
         <button class="icon-btn">✎</button>
       </div>
@@ -110,9 +109,8 @@ shell(`
         <button class="icon-btn group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
       </section>
 
-      <div class="group-chat-ref-channel-head">
+      <div class="group-chat-ref-channel-head group-chat-ref-channel-head-clean">
         <span>Team Channels</span>
-        <button onclick="toggleGroupChatChannels()">Minimize⌄</button>
       </div>
 
       <div id="groupChatChannelList" class="group-chat-ref-channel-list"></div>
