@@ -376,9 +376,9 @@ function toggleGroupChatOrderPreview(){
 function toggleGroupChatAnnouncement(button){
   const action = button?.dataset?.announcementAction || "";
 
-  if(action === "show"){
+  if(action === "expand"){
     groupChatAnnouncementOpen = true;
-  }else if(action === "hide"){
+  }else if(action === "compact"){
     groupChatAnnouncementOpen = false;
   }else{
     groupChatAnnouncementOpen = !groupChatAnnouncementOpen;
@@ -393,8 +393,8 @@ function updateGroupChatAnnouncementArrow(){
 
   document.querySelectorAll(".group-chat-announcement-arrow").forEach(button => {
     button.textContent = groupChatAnnouncementOpen ? "⌄" : "⌃";
-    button.title = groupChatAnnouncementOpen ? "Hide announcement" : "Show announcement";
-    button.dataset.announcementAction = groupChatAnnouncementOpen ? "hide" : "show";
+    button.title = groupChatAnnouncementOpen ? "Compact announcement" : "Show full announcement";
+    button.dataset.announcementAction = groupChatAnnouncementOpen ? "compact" : "expand";
   });
 }
 

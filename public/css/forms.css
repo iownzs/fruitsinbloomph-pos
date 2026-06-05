@@ -4285,3 +4285,37 @@ body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat
 body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-announcement-copy strong {
   white-space: nowrap !important;
 }
+
+/* ==================================================
+   FINAL Group Chat announcement compact/full states
+================================================== */
+
+/* Compact state: one-line title only */
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-announcement-copy p {
+  display: none !important;
+}
+
+/* Full state: show complete announcement message */
+body[data-page="group-chat"] .group-chat-ref-app:not(.announcement-hidden) .group-chat-announcement-copy p {
+  display: block !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  line-height: 1.35 !important;
+  margin-top: 5px !important;
+}
+
+/* Keep title one line in both states */
+body[data-page="group-chat"] .group-chat-announcement-copy strong {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Row stays visible always */
+body[data-page="group-chat"] .group-chat-ref-slim-announcement {
+  display: grid !important;
+}
