@@ -4249,3 +4249,81 @@ body[data-page="group-chat"] .group-chat-reactions {
     font-size: 8.5px !important;
   }
 }
+
+/* ==================================================
+   Group Chat compact announcement minimize
+================================================== */
+body[data-page="group-chat"] .group-chat-announcement-compact {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 38px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 12px !important;
+  margin: 10px 0 !important;
+  border-radius: 16px !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-compact .badge {
+  font-size: 10px !important;
+  padding: 5px 9px !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-compact h3 {
+  font-size: 14px !important;
+  margin: 7px 0 4px !important;
+  line-height: 1.15 !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-compact p {
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-toggle {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(34, 211, 238, 0.28) !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  color: #e5e7eb !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-compact.is-minimized {
+  padding: 8px 10px !important;
+  margin: 8px 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-compact.is-minimized h3,
+body[data-page="group-chat"] .group-chat-announcement-compact.is-minimized p {
+  display: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-compact.is-minimized .badge {
+  width: fit-content !important;
+}
+
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-announcement-compact {
+    grid-template-columns: minmax(0, 1fr) 36px !important;
+    padding: 9px 10px !important;
+    margin: 8px 0 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-announcement-toggle {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 18px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-announcement-compact h3 {
+    font-size: 13px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-announcement-compact p {
+    font-size: 11px !important;
+  }
+}
