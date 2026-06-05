@@ -165,6 +165,7 @@ const GROUP_CHAT_SCHEDULE = [
 ];
 
 let activeGroupChatChannel = "system";
+let groupChatChannelsMinimized = false;
 
 shell(`
   <div class="group-chat-page">
@@ -174,7 +175,9 @@ shell(`
         <h3>Team Updates</h3>
         <p class="muted">Important announcements, incidents, and POS updates for staff.</p>
       </div>
-      <button class="btn small">View Logs</button>
+      <button id="groupChatChannelMinimizeBtn" class="icon-btn group-chat-channel-minimize-btn" onclick="toggleGroupChatChannels()" title="Minimize channels">
+        −
+      </button>
     </section>
 
     <section class="group-chat-layout">
@@ -342,7 +345,17 @@ function renderGroupComposer(channel){
 }
 
 function toggleGroupChatChannels(){
-  document.getElementById("groupChatChannels")?.classList.toggle("collapsed");
+  groupChatChannelsMinimized = !groupChatChannelsMinimized;
+
+  const layout = document.querySelector(".group-chat-layout");
+  const button = document.getElementById("groupChatChannelMinimizeBtn");
+
+  layout?.classList.toggle("channels-minimized", groupChatChannelsMinimized);
+
+  if(button){
+    button.textContent = groupChatChannelsMinimized ? "+" : "−";
+    button.title = groupChatChannelsMinimized ? "Show channels" : "Minimize channels";
+  }
 }
 
 renderGroupChat();

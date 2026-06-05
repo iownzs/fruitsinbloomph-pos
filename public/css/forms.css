@@ -3571,3 +3571,57 @@ body[data-page="group-chat"] .schedule-day-card span {
     min-height: 360px;
   }
 }
+
+/* ==================================================
+   Group Chat announcement row channel minimize
+================================================== */
+body[data-page="group-chat"] .group-chat-announcement {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+body[data-page="group-chat"] .group-chat-channel-minimize-btn {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(34, 211, 238, 0.34) !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  color: #e5e7eb !important;
+  font-size: 22px !important;
+  font-weight: 900 !important;
+}
+
+/* Channels hidden = chat expands */
+body[data-page="group-chat"] .group-chat-layout.channels-minimized {
+  grid-template-columns: minmax(0, 1fr) 280px !important;
+}
+
+body[data-page="group-chat"] .group-chat-layout.channels-minimized .group-chat-sidebar {
+  display: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-layout.channels-minimized .group-chat-main {
+  min-width: 0 !important;
+}
+
+/* Mobile: if channels minimized, chat becomes full width and right panel hides */
+@media (max-width: 760px) {
+  body[data-page="group-chat"] .group-chat-announcement {
+    grid-template-columns: minmax(0, 1fr) 48px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-layout.channels-minimized {
+    grid-template-columns: 1fr !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-layout.channels-minimized .group-chat-sidebar,
+  body[data-page="group-chat"] .group-chat-layout.channels-minimized .group-chat-right {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-layout.channels-minimized .group-chat-main {
+    width: 100% !important;
+  }
+}
