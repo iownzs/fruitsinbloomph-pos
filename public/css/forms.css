@@ -4013,3 +4013,44 @@ body[data-page="group-chat"] .group-chat-announcement-arrow {
   font-weight: 900 !important;
   cursor: pointer !important;
 }
+
+/* ==================================================
+   Group Chat keep announcement arrow visible when hidden
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-announcement {
+  display: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement {
+  display: grid !important;
+}
+
+/* ==================================================
+   FINAL Group Chat announcement toggle fix
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-announcement {
+  display: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border: 0 !important;
+  background: transparent !important;
+  padding: 4px 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement span,
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement strong {
+  display: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement::before,
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement::after {
+  content: "" !important;
+  width: 100% !important;
+  height: 1px !important;
+  background: rgba(34, 211, 238, 0.18) !important;
+}

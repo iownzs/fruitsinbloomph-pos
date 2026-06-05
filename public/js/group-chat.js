@@ -82,7 +82,7 @@ shell(`
           <strong>Header Announcement</strong>
           <p>Today: Delivery meeting at 3:00 PM. Please update rider status before noon.</p>
         </div>
-        <button class="icon-btn group-chat-announcement-arrow" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
+        <button class="icon-btn group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
       </section>
 
       <div class="group-chat-ref-channel-head">
@@ -116,7 +116,7 @@ shell(`
       <section id="groupChatSlimAnnouncement" class="group-chat-ref-slim-announcement">
         <span>📣</span>
         <strong>Announcement</strong>
-        <button class="group-chat-announcement-arrow" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
+        <button class="group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
       </section>
 
       <button class="group-chat-ref-pinned-row" onclick="toggleGroupChatOrderPreview()">
@@ -317,13 +317,14 @@ function toggleGroupChatOrderPreview(){
 }
 
 function toggleGroupChatAnnouncement(button){
-  const arrowText = String(button?.textContent || "").trim();
+  const action = button?.dataset?.announcementAction || "";
 
-  // Up arrow hides. Down arrow shows.
-  if(arrowText === "⌄" || arrowText === "↓" || arrowText === "v"){
+  if(action === "show"){
     groupChatAnnouncementOpen = true;
-  }else{
+  }else if(action === "hide"){
     groupChatAnnouncementOpen = false;
+  }else{
+    groupChatAnnouncementOpen = !groupChatAnnouncementOpen;
   }
 
   applyGroupChatViewState();
@@ -334,6 +335,7 @@ function updateGroupChatAnnouncementArrow(){
   document.querySelectorAll(".group-chat-announcement-arrow").forEach(button => {
     button.textContent = groupChatAnnouncementOpen ? "⌃" : "⌄";
     button.title = groupChatAnnouncementOpen ? "Minimize announcement" : "Show announcement";
+    button.dataset.announcementAction = groupChatAnnouncementOpen ? "hide" : "show";
   });
 }
 
