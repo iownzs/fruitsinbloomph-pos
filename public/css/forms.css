@@ -3727,3 +3727,61 @@ body[data-page="group-chat"] .group-chat-messages {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ==================================================
+   Group Chat schedule/channel layout polish
+================================================== */
+
+/* Desktop: make schedule cards cleaner and less tall */
+body[data-page="group-chat"] .schedule-grid {
+  grid-template-columns: repeat(7, minmax(105px, 1fr)) !important;
+  gap: 8px !important;
+}
+
+body[data-page="group-chat"] .schedule-day-card {
+  min-height: 150px !important;
+  padding: 12px !important;
+}
+
+body[data-page="group-chat"] .schedule-day-card p {
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+}
+
+/* Mobile: compact horizontal channel chips */
+@media (max-width: 760px) {
+  body[data-page="group-chat"] .group-chat-channel {
+    min-width: 116px !important;
+    max-width: 132px !important;
+    padding: 9px 12px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-channel span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-main {
+    margin-top: 0 !important;
+  }
+
+  body[data-page="group-chat"] .schedule-grid {
+    grid-template-columns: repeat(7, minmax(135px, 135px)) !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+    padding-bottom: 6px !important;
+  }
+
+  body[data-page="group-chat"] .schedule-day-card {
+    min-height: 150px !important;
+    padding: 14px !important;
+  }
+
+  body[data-page="group-chat"] .schedule-day-card p {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+  }
+}
