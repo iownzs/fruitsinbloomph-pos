@@ -126,8 +126,7 @@ shell(`
     </aside>
 
     <main class="group-chat-ref-chat">
-      <header class="group-chat-ref-chat-head">
-        <button class="icon-btn" onclick="toggleGroupChatChannels()">☰</button>
+      <header class="group-chat-ref-chat-head group-chat-ref-chat-head-clean">
         <div>
           <h3 id="groupChatActiveName">General</h3>
           <p id="groupChatActiveDesc">23 members, 4 online</p>

@@ -4409,3 +4409,21 @@ body[data-page="group-chat"] .group-chat-ref-channel-head-clean {
 body[data-page="group-chat"] .group-chat-ref-channel-head-clean span {
   display: block !important;
 }
+
+/* ==================================================
+   Group Chat clean chat header
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-chat-head-clean {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-chat-head-clean h3 {
+  margin: 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-chat-head-clean p {
+  margin-top: 4px !important;
+}
