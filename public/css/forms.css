@@ -4068,3 +4068,33 @@ body[data-page="group-chat"] .group-chat-announcement-next {
   font-weight: 900 !important;
   cursor: pointer !important;
 }
+
+/* ==================================================
+   Group Chat clean announcement button UI
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-slim-announcement {
+  grid-template-columns: auto minmax(0, 1fr) 34px !important;
+  gap: 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-slim-announcement strong {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 13px !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-arrow {
+  width: 34px !important;
+  height: 28px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(34, 211, 238, 0.24) !important;
+  background: rgba(15, 23, 42, 0.6) !important;
+  color: #67e8f9 !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-next {
+  display: none !important;
+}
