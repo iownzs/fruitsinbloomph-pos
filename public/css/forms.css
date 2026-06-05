@@ -4247,3 +4247,41 @@ body[data-page="group-chat"] .group-chat-announcement-next {
     gap: 7px !important;
   }
 }
+
+/* ==================================================
+   Group Chat expanded announcement message preview
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-slim-announcement {
+  align-items: start !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-copy {
+  min-width: 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-copy strong {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-copy p {
+  margin: 4px 0 0 !important;
+  color: var(--muted) !important;
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-announcement-copy p {
+  display: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-announcement-copy strong {
+  white-space: nowrap !important;
+}

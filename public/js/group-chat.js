@@ -140,7 +140,10 @@ shell(`
 
       <section id="groupChatSlimAnnouncement" class="group-chat-ref-slim-announcement">
         <span>📣</span>
-        <strong id="groupChatSlimAnnouncementText">Announcement</strong>
+        <div class="group-chat-announcement-copy">
+          <strong id="groupChatSlimAnnouncementText">Announcement</strong>
+          <p id="groupChatSlimAnnouncementMessage"></p>
+        </div>
         <button class="group-chat-announcement-next" onclick="nextGroupChatAnnouncement()" title="Next sample announcement">Next</button>
         <button class="group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
       </section>
@@ -206,6 +209,7 @@ function renderGroupChatAnnouncement(){
   const sidebarTitle = document.getElementById("groupChatSidebarAnnouncementTitle");
   const sidebarText = document.getElementById("groupChatSidebarAnnouncementText");
   const slimText = document.getElementById("groupChatSlimAnnouncementText");
+  const slimMessage = document.getElementById("groupChatSlimAnnouncementMessage");
 
   if(sidebarTitle) sidebarTitle.textContent = `${announcement.tag}: ${announcement.title}`;
   if(sidebarText) sidebarText.textContent = announcement.message;
@@ -214,6 +218,10 @@ function renderGroupChatAnnouncement(){
     slimText.textContent = groupChatAnnouncementOpen
       ? `${announcement.tag}: ${announcement.title}`
       : "Announcement";
+  }
+
+  if(slimMessage){
+    slimMessage.textContent = groupChatAnnouncementOpen ? announcement.message : "";
   }
 }
 
