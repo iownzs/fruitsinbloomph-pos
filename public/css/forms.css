@@ -4319,3 +4319,31 @@ body[data-page="group-chat"] .group-chat-announcement-copy strong {
 body[data-page="group-chat"] .group-chat-ref-slim-announcement {
   display: grid !important;
 }
+
+/* ==================================================
+   FINAL Group Chat compact announcement single row
+================================================== */
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-ref-slim-announcement {
+  grid-template-columns: auto minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  min-height: 48px !important;
+  padding: 8px 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-announcement-copy {
+  display: block !important;
+  min-width: 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-announcement-copy strong {
+  display: block !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-announcement-arrow,
+body[data-page="group-chat"] .group-chat-ref-app.announcement-hidden .group-chat-announcement-next {
+  align-self: center !important;
+  justify-self: end !important;
+}
