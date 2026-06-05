@@ -4600,3 +4600,13 @@ body[data-page="group-chat"] .group-chat-ref-chat-head-clean p {
   }
 }
 
+
+/* ==================================================
+   Group Chat header title text size only
+================================================== */
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-ref-titlebar-clean h2 {
+    font-size: 20px !important;
+    line-height: 1.05 !important;
+  }
+}
