@@ -4446,3 +4446,18 @@ body[data-page="group-chat"] .group-chat-announcement-compact.is-minimized > div
     padding: 15px 10px 9px !important;
   }
 }
+
+/* ==================================================
+   Group Chat hide empty announcement card when minimized
+================================================== */
+body[data-page="group-chat"] .group-chat-announcement-compact.is-minimized {
+  display: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-divider {
+  margin-bottom: 8px !important;
+}
+
+body[data-page="group-chat"] .group-chat-announcement-compact:not(.is-minimized) {
+  margin-top: 0 !important;
+}
