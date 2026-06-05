@@ -82,7 +82,7 @@ shell(`
           <strong>Header Announcement</strong>
           <p>Today: Delivery meeting at 3:00 PM. Please update rider status before noon.</p>
         </div>
-        <button class="icon-btn" onclick="toggleGroupChatAnnouncement()">⌃</button>
+        <button class="icon-btn group-chat-announcement-arrow" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
       </section>
 
       <div class="group-chat-ref-channel-head">
@@ -116,7 +116,7 @@ shell(`
       <section id="groupChatSlimAnnouncement" class="group-chat-ref-slim-announcement">
         <span>📣</span>
         <strong>Announcement</strong>
-        <button class="group-chat-announcement-arrow" onclick="toggleGroupChatAnnouncement()" title="Minimize announcement">⌃</button>
+        <button class="group-chat-announcement-arrow" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
       </section>
 
       <button class="group-chat-ref-pinned-row" onclick="toggleGroupChatOrderPreview()">
@@ -316,8 +316,16 @@ function toggleGroupChatOrderPreview(){
   applyGroupChatViewState();
 }
 
-function toggleGroupChatAnnouncement(){
-  groupChatAnnouncementOpen = !groupChatAnnouncementOpen;
+function toggleGroupChatAnnouncement(button){
+  const arrowText = String(button?.textContent || "").trim();
+
+  // Up arrow hides. Down arrow shows.
+  if(arrowText === "⌄" || arrowText === "↓" || arrowText === "v"){
+    groupChatAnnouncementOpen = true;
+  }else{
+    groupChatAnnouncementOpen = false;
+  }
+
   applyGroupChatViewState();
   updateGroupChatAnnouncementArrow();
 }
