@@ -259,7 +259,7 @@ function renderGroupChatChannels(){
   const wrap = document.getElementById("groupChatChannelList");
 
   wrap.innerHTML = GROUP_CHAT_CHANNELS.map(channel => `
-    <button class="group-chat-ref-channel ${channel.id === activeGroupChatChannel ? "active" : ""}" onclick="setGroupChatChannel('${channel.id}')">
+    <button class="group-chat-ref-channel ${channel.id === activeGroupChatChannel ? "active" : ""}" onclick="openGroupChatChannel('${channel.id}')">
       <span class="group-chat-ref-channel-icon">${channel.icon}</span>
       <span>
         <strong>${channel.name}</strong>
@@ -352,10 +352,22 @@ function renderGroupChatOrderPreview(){
   `;
 }
 
-function setGroupChatChannel(channelId){
+function openGroupChatChannel(channelId){
   activeGroupChatChannel = channelId;
   groupChatChannelsOpen = false;
+  groupChatMembersOpen = false;
+  groupChatOrderPreviewOpen = false;
+
   renderGroupChat();
+
+  requestAnimationFrame(() => {
+    groupChatChannelsOpen = false;
+    applyGroupChatViewState();
+  });
+}
+
+function setGroupChatChannel(channelId){
+  openGroupChatChannel(channelId);
 }
 
 function getActiveChannel(){
@@ -412,6 +424,7 @@ function applyGroupChatViewState(){
 renderGroupChat();
 
 window.setGroupChatChannel = setGroupChatChannel;
+window.openGroupChatChannel = openGroupChatChannel;
 window.toggleGroupChatChannels = toggleGroupChatChannels;
 window.toggleGroupChatMembers = toggleGroupChatMembers;
 window.toggleGroupChatOrderPreview = toggleGroupChatOrderPreview;

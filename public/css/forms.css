@@ -4554,3 +4554,26 @@ body[data-page="group-chat"] .group-chat-ref-chat-head-clean p {
     display: none !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat mobile channel open fix
+================================================== */
+@media (max-width: 1000px) {
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open .group-chat-ref-channels {
+    display: grid !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open .group-chat-ref-chat,
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open .group-chat-ref-right,
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open .group-chat-ref-members-panel {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-channels {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
+    display: grid !important;
+  }
+}
