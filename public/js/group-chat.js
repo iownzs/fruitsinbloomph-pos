@@ -332,13 +332,89 @@ shell(`
         <h3>3. Channel Management</h3>
 
         <div class="group-chat-admin-channel-table">
-          ${GROUP_CHAT_CHANNELS.map(channel => `
-            <div class="group-chat-admin-channel-row">
-              <span>${channel.icon || "💬"} ${channel.name}</span>
-              <button class="group-chat-admin-mini active">Show</button>
-              <button class="group-chat-admin-mini ${channel.readOnly ? "active" : ""}">${channel.readOnly ? "Read-only" : "Can Send"}</button>
-            </div>
-          `).join("")}
+          ${GROUP_CHAT_CHANNELS.map(channel => {
+            const roleMap = {
+              system: {
+                allowed: "Admin, Manager, Sales, Cashier, Kitchen, Delivery, Rider, Inventory",
+                send: "System only",
+                edit: "Admin only",
+                mode: "Read-only"
+              },
+              general: {
+                allowed: "Admin, Manager, Sales, Cashier, Kitchen, Delivery, Inventory",
+                send: "Allowed staff",
+                edit: "Admin, Manager",
+                mode: "Can Send"
+              },
+              sales: {
+                allowed: "Admin, Manager, Sales, Cashier",
+                send: "Admin, Manager, Sales, Cashier",
+                edit: "Admin, Manager",
+                mode: "Can Send"
+              },
+              kitchen: {
+                allowed: "Admin, Manager, Kitchen Staff",
+                send: "Admin, Manager, Kitchen Staff",
+                edit: "Admin, Manager",
+                mode: "Can Send"
+              },
+              delivery: {
+                allowed: "Admin, Manager, Delivery Staff",
+                send: "Admin, Manager, Delivery Staff",
+                edit: "Admin, Manager",
+                mode: "Can Send"
+              },
+              riders: {
+                allowed: "Admin, Manager, Delivery Staff, Rider",
+                send: "Admin, Manager, Delivery Staff, Rider",
+                edit: "Admin, Manager",
+                mode: "Can Send"
+              },
+              schedule: {
+                allowed: "Admin, Manager, Staff",
+                send: "Admin edit only",
+                edit: "Admin only",
+                mode: "Staff View-only"
+              },
+              issues: {
+                allowed: "Admin, Manager, Sales, Kitchen, Delivery, Inventory",
+                send: "Allowed staff",
+                edit: "Admin, Manager",
+                mode: "Can Send"
+              },
+              chitchat: {
+                allowed: "Admin, Manager, Sales, Cashier, Kitchen, Delivery, Inventory",
+                send: "Allowed staff",
+                edit: "Admin, Manager",
+                mode: "Can Send"
+              }
+            };
+
+            const rules = roleMap[channel.id] || {
+              allowed: "Admin, Manager",
+              send: "Allowed staff",
+              edit: "Admin, Manager",
+              mode: channel.readOnly ? "Read-only" : "Can Send"
+            };
+
+            return `
+              <div class="group-chat-admin-channel-role-card">
+                <div class="group-chat-admin-channel-top">
+                  <strong>${channel.icon || "💬"} ${channel.name}</strong>
+                  <div>
+                    <button class="group-chat-admin-mini active">Show</button>
+                    <button class="group-chat-admin-mini ${channel.readOnly ? "active" : ""}">${rules.mode}</button>
+                  </div>
+                </div>
+
+                <div class="group-chat-admin-role-lines">
+                  <p><b>Allowed:</b> ${rules.allowed}</p>
+                  <p><b>Can Send:</b> ${rules.send}</p>
+                  <p><b>Can Edit:</b> ${rules.edit}</p>
+                </div>
+              </div>
+            `;
+          }).join("")}
         </div>
       </section>
 

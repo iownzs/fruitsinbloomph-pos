@@ -5210,3 +5210,64 @@ body[data-page="group-chat"] .group-chat-admin-actions {
     grid-column: auto !important;
   }
 }
+
+/* ==================================================
+   Group Chat channel role permission cards
+================================================== */
+body[data-page="group-chat"] .group-chat-admin-channel-role-card {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(34,211,238,.12);
+  border-radius: 14px;
+  background: rgba(255,255,255,.025);
+}
+
+body[data-page="group-chat"] .group-chat-admin-channel-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+}
+
+body[data-page="group-chat"] .group-chat-admin-channel-top strong {
+  font-size: 13px;
+  color: var(--text);
+}
+
+body[data-page="group-chat"] .group-chat-admin-channel-top > div {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+body[data-page="group-chat"] .group-chat-admin-role-lines {
+  display: grid;
+  gap: 4px;
+}
+
+body[data-page="group-chat"] .group-chat-admin-role-lines p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+body[data-page="group-chat"] .group-chat-admin-role-lines b {
+  color: #e5e7eb;
+}
+
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-admin-channel-top {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-channel-top > div {
+    justify-content: flex-start;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-channel-role-card {
+    padding: 9px;
+  }
+}
