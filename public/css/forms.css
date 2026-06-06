@@ -6333,26 +6333,63 @@ body[data-page="group-chat"] .group-chat-ref-status.offline {
 }
 
 /* ==================================================
-   Group Chat desktop members panel polish
+   FINAL Group Chat true desktop members 3-column layout
+   Applies only to 1101px+
 ================================================== */
 @media (min-width: 1101px) {
-  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-members-panel {
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open):not(.order-preview-open) {
     display: grid !important;
+    grid-template-columns: minmax(260px, 320px) minmax(0, 1fr) minmax(260px, 320px) !important;
+    gap: 14px !important;
+    align-items: stretch !important;
+    height: calc(100dvh - 92px) !important;
+    max-height: calc(100dvh - 92px) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open):not(.order-preview-open) .group-chat-ref-channels {
+    display: grid !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open):not(.order-preview-open) .group-chat-ref-chat {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open):not(.order-preview-open) .group-chat-ref-members-panel {
+    display: grid !important;
+    grid-column: 3 !important;
+    grid-row: 1 !important;
     align-content: start !important;
     gap: 12px !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
+    padding: 14px !important;
+    border-radius: 18px !important;
   }
 
-  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-chat {
-    display: flex !important;
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open):not(.order-preview-open) .group-chat-ref-right,
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open):not(.order-preview-open) .group-chat-admin-settings-panel {
+    display: none !important;
   }
 
-  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-channels {
-    display: grid !important;
-  }
-
-  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-members-panel .group-chat-ref-leave {
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open):not(.order-preview-open) .group-chat-ref-members-panel .group-chat-ref-leave {
     height: 38px !important;
     min-height: 38px !important;
     max-height: 38px !important;
