@@ -1489,3 +1489,34 @@ window.FIB.sendGroupChatMessage = async function(channelId, messageText, extraDa
 
   return ref.id;
 };
+
+/* ==================================================
+   Group Chat Realtime Message Listener
+================================================== */
+window.FIB = window.FIB || {};
+
+window.FIB.listenGroupChatMessages = function(channelId, callback){
+  if(!window.db) throw new Error("Firestore not ready.");
+  if(!channelId) throw new Error("Missing channelId.");
+  if(typeof callback !== "function") throw new Error("Missing callback.");
+
+  return window.db
+    .collection("chatMessages")
+    .where("channelId", "==", channelId)
+    .onSnapshot(snapshot => {
+      const messages = snapshot.docs
+        .map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }))
+        .sort((a, b) => {
+          const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+          const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+          return aTime - bTime;
+        });
+
+      callback(messages);
+    }, error => {
+      console.warn("Group Chat realtime listener failed:", error);
+    });
+};

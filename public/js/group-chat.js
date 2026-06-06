@@ -568,6 +568,7 @@ async function initGroupChat(){
 
 
 let groupChatMessageLoadToken = 0;
+let groupChatMessageUnsubscribe = null;
 
 function getGroupChatFirestoreChannelId(channel){
   if(!channel) return "general";
@@ -599,6 +600,50 @@ function normalizeGroupChatFirebaseMessage(message){
       : ""
   };
 }
+
+
+function stopGroupChatMessageListener(){
+  if(typeof groupChatMessageUnsubscribe === "function"){
+    groupChatMessageUnsubscribe();
+  }
+  groupChatMessageUnsubscribe = null;
+}
+
+function startActiveGroupChatMessageListener(){
+  const channel = getActiveChannel();
+
+  stopGroupChatMessageListener();
+
+  if(!channel || channel.id === "schedule"){
+    return false;
+  }
+
+  if(!window.FIB_FIREBASE_READY || !window.FIB?.listenGroupChatMessages){
+    return false;
+  }
+
+  const firestoreChannelId = getGroupChatFirestoreChannelId(channel);
+
+  try{
+    groupChatMessageUnsubscribe = window.FIB.listenGroupChatMessages(firestoreChannelId, firebaseMessages => {
+      const currentChannel = getActiveChannel();
+
+      if(!currentChannel || currentChannel.id !== channel.id){
+        return;
+      }
+
+      GROUP_CHAT_MESSAGES[channel.id] = firebaseMessages.map(normalizeGroupChatFirebaseMessage);
+      renderGroupChatMessages(channel);
+      scrollGroupChatToBottom();
+    });
+
+    return true;
+  }catch(error){
+    console.warn("Could not start Group Chat realtime listener:", error);
+    return false;
+  }
+}
+
 
 async function loadActiveGroupChatMessagesFromFirebase(){
   const channel = getActiveChannel();
@@ -665,7 +710,7 @@ async function sendGroupChatMessageFromComposer(){
     );
 
     input.value = "";
-    await loadActiveGroupChatMessagesFromFirebase();
+    scrollGroupChatToBottom();
   }catch(error){
     alert("Send failed: " + (error.message || error));
   }finally{
@@ -703,7 +748,11 @@ function renderGroupChat(){
   renderGroupChatComposer(channel);
   renderGroupChatOrderPreview();
   applyGroupChatViewState();
-  loadActiveGroupChatMessagesFromFirebase();
+
+  if(!startActiveGroupChatMessageListener()){
+    loadActiveGroupChatMessagesFromFirebase();
+  }
+
   updateGroupChatAnnouncementArrow();
 }
 
