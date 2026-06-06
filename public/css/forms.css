@@ -5759,3 +5759,46 @@ body[data-page="group-chat"] .group-chat-schedule-day-card {
     font-size: 10px !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat admin settings scroll fix
+================================================== */
+@media (min-width: 821px) and (max-width: 1100px) {
+  html,
+  body[data-page="group-chat"] {
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] #app {
+    height: calc(100dvh - 86px) !important;
+    max-height: calc(100dvh - 86px) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-admin-settings-panel {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    padding-bottom: 140px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-actions {
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: 20 !important;
+  }
+}
