@@ -565,6 +565,125 @@ async function initGroupChat(){
 }
 
 
+
+let groupChatMessageLoadToken = 0;
+
+function getGroupChatFirestoreChannelId(channel){
+  if(!channel) return "general";
+  if(channel.firestoreId) return channel.firestoreId;
+  if(channel.id === "system") return "system_message";
+  return channel.id;
+}
+
+function formatGroupChatMessageTime(value){
+  try{
+    const date = value?.toDate ? value.toDate() : null;
+    if(!date) return "";
+    return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  }catch(error){
+    return "";
+  }
+}
+
+function normalizeGroupChatFirebaseMessage(message){
+  return {
+    id: message.id || message.messageId || "",
+    avatar: message.senderAvatar || String(message.senderName || "S").charAt(0).toUpperCase(),
+    name: message.senderName || "Staff",
+    role: message.senderRole || "",
+    time: formatGroupChatMessageTime(message.createdAt),
+    text: message.messageText || "",
+    reactions: Array.isArray(message.reactions) && message.reactions.length
+      ? message.reactions.join(" ")
+      : ""
+  };
+}
+
+async function loadActiveGroupChatMessagesFromFirebase(){
+  const channel = getActiveChannel();
+
+  if(!channel || channel.id === "schedule"){
+    return false;
+  }
+
+  if(!window.FIB_FIREBASE_READY || !window.FIB?.getGroupChatMessages){
+    return false;
+  }
+
+  const loadToken = ++groupChatMessageLoadToken;
+  const firestoreChannelId = getGroupChatFirestoreChannelId(channel);
+
+  try{
+    const firebaseMessages = await window.FIB.getGroupChatMessages(firestoreChannelId);
+
+    if(loadToken !== groupChatMessageLoadToken){
+      return false;
+    }
+
+    if(getActiveChannel().id !== channel.id){
+      return false;
+    }
+
+    if(Array.isArray(firebaseMessages)){
+      GROUP_CHAT_MESSAGES[channel.id] = firebaseMessages.map(normalizeGroupChatFirebaseMessage);
+      renderGroupChatMessages(channel);
+      return true;
+    }
+  }catch(error){
+    console.warn("Group Chat message load failed:", error);
+  }
+
+  return false;
+}
+
+async function sendGroupChatMessageFromComposer(){
+  const channel = getActiveChannel();
+
+  if(!channel || channel.readonly){
+    alert("You can’t send messages in this channel.");
+    return;
+  }
+
+  const input = document.getElementById("groupChatMessageInput");
+  const messageText = input?.value?.trim();
+
+  if(!messageText){
+    return;
+  }
+
+  try{
+    input.disabled = true;
+
+    if(!window.FIB_FIREBASE_READY || !window.FIB?.sendGroupChatMessage){
+      throw new Error("Firebase chat message service is not ready.");
+    }
+
+    await window.FIB.sendGroupChatMessage(
+      getGroupChatFirestoreChannelId(channel),
+      messageText
+    );
+
+    input.value = "";
+    await loadActiveGroupChatMessagesFromFirebase();
+  }catch(error){
+    alert("Send failed: " + (error.message || error));
+  }finally{
+    input.disabled = false;
+    input.focus();
+  }
+}
+
+function handleGroupChatComposerKeydown(event){
+  if(event.key === "Enter"){
+    event.preventDefault();
+    sendGroupChatMessageFromComposer();
+  }
+}
+
+window.sendGroupChatMessageFromComposer = sendGroupChatMessageFromComposer;
+window.handleGroupChatComposerKeydown = handleGroupChatComposerKeydown;
+
+
 function renderGroupChat(){
   const channel = getActiveChannel();
 
@@ -583,6 +702,7 @@ function renderGroupChat(){
   renderGroupChatComposer(channel);
   renderGroupChatOrderPreview();
   applyGroupChatViewState();
+  loadActiveGroupChatMessagesFromFirebase();
   updateGroupChatAnnouncementArrow();
 }
 
@@ -677,10 +797,10 @@ function renderGroupChatComposer(channel){
   }
 
   composer.innerHTML = `
-    <input placeholder="Type a message...">
+    <input id="groupChatMessageInput" placeholder="Type a message..." onkeydown="handleGroupChatComposerKeydown(event)">
     <button class="icon-btn">😊</button>
     <button class="icon-btn" onclick="toggleGroupChatOrderPreview()">@</button>
-    <button class="group-chat-ref-send">➤</button>
+    <button class="group-chat-ref-send" onclick="sendGroupChatMessageFromComposer()">➤</button>
   `;
 }
 

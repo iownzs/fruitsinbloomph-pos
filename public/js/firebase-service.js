@@ -1416,3 +1416,76 @@ window.FIB.getGroupChatChannels = async function(){
     }))
     .filter(channel => channel.isActive !== false);
 };
+
+/* ==================================================
+   Group Chat Message Firebase Services
+================================================== */
+window.FIB = window.FIB || {};
+
+window.FIB.getGroupChatMessages = async function(channelId){
+  if(!window.db) throw new Error("Firestore not ready.");
+  if(!channelId) throw new Error("Missing channelId.");
+
+  const snapshot = await window.db
+    .collection("chatMessages")
+    .where("channelId", "==", channelId)
+    .get();
+
+  return snapshot.docs
+    .map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }))
+    .sort((a, b) => {
+      const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+      const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+      return aTime - bTime;
+    });
+};
+
+window.FIB.sendGroupChatMessage = async function(channelId, messageText, extraData = {}){
+  if(!window.db) throw new Error("Firestore not ready.");
+  if(!channelId) throw new Error("Missing channelId.");
+  if(!messageText || !String(messageText).trim()) throw new Error("Message is empty.");
+
+  const authUser = firebase.auth().currentUser;
+  if(!authUser) throw new Error("You must be logged in.");
+
+  let staffName = authUser.email || "Staff";
+  let staffRole = "Staff";
+  let staffAvatar = "S";
+
+  try{
+    const userSnap = await window.db.collection("users").doc(authUser.uid).get();
+    if(userSnap.exists){
+      const user = userSnap.data();
+      staffName = user.name || user.displayName || user.fullName || staffName;
+      staffRole = user.role || staffRole;
+      staffAvatar = String(staffName).trim().charAt(0).toUpperCase() || "S";
+    }
+  }catch(error){
+    console.warn("Could not load sender profile:", error);
+  }
+
+  const ref = window.db.collection("chatMessages").doc();
+
+  await ref.set({
+    messageId: ref.id,
+    channelId,
+    senderId: authUser.uid,
+    senderName: staffName,
+    senderRole: staffRole,
+    senderAvatar: staffAvatar,
+    messageText: String(messageText).trim(),
+    mentionedStaff: extraData.mentionedStaff || [],
+    mentionedOrderId: extraData.mentionedOrderId || "",
+    mentionedOrderNumber: extraData.mentionedOrderNumber || "",
+    reactions: [],
+    isEdited: false,
+    editedAt: null,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  return ref.id;
+};
