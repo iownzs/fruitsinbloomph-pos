@@ -5670,3 +5670,92 @@ body[data-page="group-chat"] .group-chat-schedule-day-card {
     overflow-x: hidden !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat mobile-desktop admin settings layout
+================================================== */
+@media (min-width: 821px) and (max-width: 1100px) {
+  body[data-page="group-chat"] {
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] #app {
+    height: calc(100dvh - 86px) !important;
+    max-height: calc(100dvh - 86px) !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    place-items: stretch center !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+    padding: 8px 10px 14px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-channels,
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-chat,
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-right,
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-members-panel {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-admin-settings-panel {
+    display: grid !important;
+    width: min(100%, 720px) !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    align-content: start !important;
+    padding: 14px 14px 110px !important;
+    border-radius: 18px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-settings-head {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 6 !important;
+    background: rgba(15, 23, 42, .98) !important;
+    padding-top: 4px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-actions {
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: 8 !important;
+    background: rgba(15, 23, 42, .98) !important;
+    padding: 10px 0 8px !important;
+    margin-bottom: 0 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-profile-grid {
+    grid-template-columns: 58px 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-avatar {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 15px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-card {
+    padding: 10px !important;
+    gap: 8px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-role-lines p {
+    font-size: 10px !important;
+    line-height: 1.28 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-mini,
+  body[data-page="group-chat"] .group-chat-admin-toggle {
+    padding: 5px 8px !important;
+    font-size: 10px !important;
+  }
+}
