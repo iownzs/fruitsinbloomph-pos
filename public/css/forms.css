@@ -5919,3 +5919,106 @@ body[data-page="group-chat"] .group-chat-schedule-day-card {
     background: rgba(15, 23, 42, .98) !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat phone landscape focused panels
+   821px–1100px = desktop-mobile
+================================================== */
+@media (min-width: 821px) and (max-width: 1100px) {
+  body[data-page="group-chat"] {
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] #app {
+    height: calc(100dvh - 86px) !important;
+    max-height: calc(100dvh - 86px) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Normal state: show either Channels OR Chat */
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open .group-chat-ref-channels {
+    display: grid !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open .group-chat-ref-chat,
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open .group-chat-ref-right,
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open .group-chat-ref-members-panel,
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open .group-chat-admin-settings-panel {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open):not(.admin-settings-open) .group-chat-ref-chat {
+    display: grid !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open):not(.admin-settings-open) .group-chat-ref-channels,
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open):not(.admin-settings-open) .group-chat-ref-right,
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open):not(.admin-settings-open) .group-chat-ref-members-panel,
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open):not(.admin-settings-open) .group-chat-admin-settings-panel {
+    display: none !important;
+  }
+
+  /* Admin Settings open: focused panel only */
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    place-items: stretch center !important;
+    padding: 8px 10px 18px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-channels,
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-chat,
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-right,
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-members-panel {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-admin-settings-panel {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    align-content: start !important;
+    gap: 12px !important;
+
+    width: min(100%, 720px) !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+
+    padding: 14px 14px 120px !important;
+    border-radius: 20px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-settings-head {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+    background: rgba(15, 23, 42, .98) !important;
+    padding-top: 4px !important;
+    margin-top: -4px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-actions {
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: 20 !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    padding: 10px 0 8px !important;
+    margin: 0 !important;
+    background: rgba(15, 23, 42, .98) !important;
+  }
+}
