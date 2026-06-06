@@ -496,6 +496,75 @@ function nextGroupChatAnnouncement(){
   renderGroupChatAnnouncement();
 }
 
+
+const GROUP_CHAT_CHANNEL_ICONS = {
+  system: "🔔",
+  system_message: "🔔",
+  general: "👥",
+  sales: "📈",
+  kitchen: "🍳",
+  delivery: "🚚",
+  riders: "🏃",
+  schedule: "📅",
+  issues: "⚠️",
+  chitchat: "#"
+};
+
+function normalizeGroupChatFirebaseChannel(channel){
+  const rawId = channel.channelId || channel.id || channel.channelKey || "";
+  const frontendId = rawId === "system_message" ? "system" : rawId;
+
+  return {
+    ...channel,
+    id: frontendId,
+    firestoreId: rawId,
+    name: channel.channelName || channel.name || frontendId,
+    icon: channel.icon || GROUP_CHAT_CHANNEL_ICONS[frontendId] || "💬",
+    desc: channel.description || channel.desc || "",
+    count: channel.count || 0,
+    readonly: Boolean(channel.readOnly || channel.readonly)
+  };
+}
+
+async function loadGroupChatChannelsFromFirebase(){
+  if(!window.FIB_FIREBASE_READY || !window.FIB?.getGroupChatChannels){
+    console.warn("Group Chat Firebase channels not ready. Using sample channels.");
+    return false;
+  }
+
+  const channels = await window.FIB.getGroupChatChannels();
+
+  if(!Array.isArray(channels) || !channels.length){
+    console.warn("No Firebase chatChannels found. Using sample channels.");
+    return false;
+  }
+
+  const normalized = channels.map(normalizeGroupChatFirebaseChannel);
+
+  GROUP_CHAT_CHANNELS.splice(0, GROUP_CHAT_CHANNELS.length, ...normalized);
+
+  if(!GROUP_CHAT_CHANNELS.some(channel => channel.id === activeGroupChatChannel)){
+    activeGroupChatChannel = GROUP_CHAT_CHANNELS[0]?.id || "general";
+  }
+
+  return true;
+}
+
+async function initGroupChat(){
+  renderGroupChat();
+
+  try{
+    const loaded = await loadGroupChatChannelsFromFirebase();
+    if(loaded){
+      renderGroupChat();
+      console.log("Group Chat channels loaded from Firebase.");
+    }
+  }catch(error){
+    console.warn("Group Chat Firebase channel load failed:", error);
+  }
+}
+
+
 function renderGroupChat(){
   const channel = getActiveChannel();
 
@@ -779,7 +848,7 @@ function applyGroupChatViewState(){
   document.querySelector(".group-chat-ref-app")?.classList.toggle("announcement-hidden", !groupChatAnnouncementOpen);
 }
 
-renderGroupChat();
+initGroupChat();
 
 window.setGroupChatChannel = setGroupChatChannel;
 window.openGroupChatChannel = openGroupChatChannel;
