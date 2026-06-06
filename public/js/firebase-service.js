@@ -1251,3 +1251,167 @@ if(!window.FIB.getStockMovements){
     }));
   };
 }
+
+/* ==================================================
+   Group Chat Firebase Services
+================================================== */
+window.FIB = window.FIB || {};
+
+window.FIB.GROUP_CHAT_DEFAULT_CHANNELS = [
+  {
+    channelId: "system_message",
+    channelName: "System Message",
+    channelKey: "system",
+    channelOrder: 1,
+    description: "Automated POS system logs only.",
+    readOnly: true,
+    type: "system",
+    isActive: true,
+    allowedRoles: ["Owner", "Admin", "Manager", "Sales", "Cashier", "Kitchen", "Delivery", "Rider", "Inventory"],
+    canSendRoles: [],
+    canEditRoles: ["Owner", "Admin"]
+  },
+  {
+    channelId: "general",
+    channelName: "General",
+    channelKey: "general",
+    channelOrder: 2,
+    description: "General team chat.",
+    readOnly: false,
+    type: "chat",
+    isActive: true,
+    allowedRoles: ["Owner", "Admin", "Manager", "Sales", "Cashier", "Kitchen", "Delivery", "Rider", "Inventory"],
+    canSendRoles: ["Owner", "Admin", "Manager", "Sales", "Cashier", "Kitchen", "Delivery", "Rider", "Inventory"],
+    canEditRoles: ["Owner", "Admin", "Manager"]
+  },
+  {
+    channelId: "sales",
+    channelName: "Sales",
+    channelKey: "sales",
+    channelOrder: 3,
+    description: "Sales and cashier coordination.",
+    readOnly: false,
+    type: "chat",
+    isActive: true,
+    allowedRoles: ["Owner", "Admin", "Manager", "Sales", "Cashier"],
+    canSendRoles: ["Owner", "Admin", "Manager", "Sales", "Cashier"],
+    canEditRoles: ["Owner", "Admin", "Manager"]
+  },
+  {
+    channelId: "kitchen",
+    channelName: "Kitchen",
+    channelKey: "kitchen",
+    channelOrder: 4,
+    description: "Kitchen preparation updates.",
+    readOnly: false,
+    type: "chat",
+    isActive: true,
+    allowedRoles: ["Owner", "Admin", "Manager", "Kitchen", "Sales", "Cashier"],
+    canSendRoles: ["Owner", "Admin", "Manager", "Kitchen"],
+    canEditRoles: ["Owner", "Admin", "Manager"]
+  },
+  {
+    channelId: "delivery",
+    channelName: "Delivery",
+    channelKey: "delivery",
+    channelOrder: 5,
+    description: "Delivery coordination.",
+    readOnly: false,
+    type: "chat",
+    isActive: true,
+    allowedRoles: ["Owner", "Admin", "Manager", "Delivery", "Rider", "Sales", "Cashier"],
+    canSendRoles: ["Owner", "Admin", "Manager", "Delivery", "Rider"],
+    canEditRoles: ["Owner", "Admin", "Manager"]
+  },
+  {
+    channelId: "riders",
+    channelName: "Riders",
+    channelKey: "riders",
+    channelOrder: 6,
+    description: "Rider updates and assignments.",
+    readOnly: false,
+    type: "chat",
+    isActive: true,
+    allowedRoles: ["Owner", "Admin", "Manager", "Delivery", "Rider"],
+    canSendRoles: ["Owner", "Admin", "Manager", "Delivery", "Rider"],
+    canEditRoles: ["Owner", "Admin", "Manager"]
+  },
+  {
+    channelId: "schedule",
+    channelName: "Schedule",
+    channelKey: "schedule",
+    channelOrder: 7,
+    description: "Weekly duty schedule.",
+    readOnly: true,
+    type: "schedule",
+    isActive: true,
+    allowedRoles: ["Owner", "Admin", "Manager", "Sales", "Cashier", "Kitchen", "Delivery", "Rider", "Inventory"],
+    canSendRoles: [],
+    canEditRoles: ["Owner", "Admin"],
+    adminEditOnly: true
+  },
+  {
+    channelId: "issues",
+    channelName: "Issues",
+    channelKey: "issues",
+    channelOrder: 8,
+    description: "Report issues and incidents.",
+    readOnly: false,
+    type: "chat",
+    isActive: true,
+    allowedRoles: ["Owner", "Admin", "Manager", "Sales", "Cashier", "Kitchen", "Delivery", "Rider", "Inventory"],
+    canSendRoles: ["Owner", "Admin", "Manager", "Sales", "Cashier", "Kitchen", "Delivery", "Rider", "Inventory"],
+    canEditRoles: ["Owner", "Admin", "Manager"]
+  },
+  {
+    channelId: "chitchat",
+    channelName: "Chitchat",
+    channelKey: "chitchat",
+    channelOrder: 9,
+    description: "Casual team chat.",
+    readOnly: false,
+    type: "chat",
+    isActive: true,
+    allowedRoles: ["Owner", "Admin", "Manager", "Sales", "Cashier", "Kitchen", "Delivery", "Rider", "Inventory"],
+    canSendRoles: ["Owner", "Admin", "Manager", "Sales", "Cashier", "Kitchen", "Delivery", "Rider", "Inventory"],
+    canEditRoles: ["Owner", "Admin", "Manager"]
+  }
+];
+
+window.FIB.seedGroupChatChannels = async function(){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  const batch = window.db.batch();
+  const now = firebase.firestore.FieldValue.serverTimestamp();
+
+  window.FIB.GROUP_CHAT_DEFAULT_CHANNELS.forEach(channel => {
+    const ref = window.db.collection("chatChannels").doc(channel.channelId);
+    batch.set(ref, {
+      ...channel,
+      createdAt: now,
+      updatedAt: now
+    }, { merge: true });
+  });
+
+  await batch.commit();
+
+  return {
+    collection: "chatChannels",
+    count: window.FIB.GROUP_CHAT_DEFAULT_CHANNELS.length
+  };
+};
+
+window.FIB.getGroupChatChannels = async function(){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  const snapshot = await window.db
+    .collection("chatChannels")
+    .where("isActive", "==", true)
+    .orderBy("channelOrder")
+    .get();
+
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+};
