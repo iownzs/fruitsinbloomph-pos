@@ -5899,3 +5899,47 @@ body[data-page="group-chat"] .group-chat-ref-status.offline {
   background: rgba(148,163,184,.12);
   border: 1px solid rgba(148,163,184,.25);
 }
+
+/* ==================================================
+   FINAL Group Chat mobile members panel overlay
+================================================== */
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-ref-members-panel {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-chat,
+  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-channels,
+  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-right,
+  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-admin-settings-panel {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-members-panel {
+    display: grid !important;
+    position: relative !important;
+    height: calc(100dvh - 98px) !important;
+    max-height: calc(100dvh - 98px) !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 14px !important;
+    border-radius: 20px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-members-head {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+    background: rgba(15, 23, 42, .98) !important;
+    padding-bottom: 10px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-members-list {
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-bottom: 20px !important;
+  }
+}
