@@ -773,3 +773,50 @@ window.nextGroupChatAnnouncement = nextGroupChatAnnouncement;
 window.toggleGroupChatScheduleEdit = toggleGroupChatScheduleEdit;
 window.cancelGroupChatScheduleEdit = cancelGroupChatScheduleEdit;
 window.saveGroupChatSchedule = saveGroupChatSchedule;
+
+/* TEMP DEBUG: Group Chat admin settings size checker */
+function showGroupChatAdminDebug(){
+  const panel = document.querySelector(".group-chat-admin-settings-panel");
+  const actions = document.querySelector(".group-chat-admin-actions");
+  const app = document.querySelector(".group-chat-ref-app");
+
+  const data = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+    appClass: app?.className || "missing",
+    panelDisplay: panel ? getComputedStyle(panel).display : "missing",
+    panelHeight: panel ? getComputedStyle(panel).height : "missing",
+    panelOverflowY: panel ? getComputedStyle(panel).overflowY : "missing",
+    panelScrollHeight: panel?.scrollHeight || 0,
+    panelClientHeight: panel?.clientHeight || 0,
+    canScroll: panel ? panel.scrollHeight > panel.clientHeight : false,
+    actionsPosition: actions ? getComputedStyle(actions).position : "missing"
+  };
+
+  let box = document.getElementById("groupChatDebugBox");
+  if(!box){
+    box = document.createElement("pre");
+    box.id = "groupChatDebugBox";
+    box.style.cssText = `
+      position:fixed;
+      left:10px;
+      right:10px;
+      bottom:10px;
+      z-index:999999;
+      max-height:45vh;
+      overflow:auto;
+      background:#020617;
+      color:#22c55e;
+      border:1px solid #22c55e;
+      border-radius:12px;
+      padding:10px;
+      font-size:11px;
+      white-space:pre-wrap;
+    `;
+    document.body.appendChild(box);
+  }
+
+  box.textContent = JSON.stringify(data, null, 2);
+}
+
+window.showGroupChatAdminDebug = showGroupChatAdminDebug;
