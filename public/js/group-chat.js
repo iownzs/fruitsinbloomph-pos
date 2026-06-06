@@ -162,6 +162,7 @@ let groupChatChannelsOpen = true;
 let groupChatAnnouncementOpen = true;
 let groupChatMembersOpen = false;
 let groupChatOrderPreviewOpen = false;
+let groupChatAdminSettingsOpen = false;
 
 shell(`
   <div class="group-chat-ref-app">
@@ -188,7 +189,7 @@ shell(`
             <strong>Maria Santos</strong>
             <small>Manager</small>
           </div>
-          <button class="icon-btn">⚙</button>
+          <button class="icon-btn" onclick="toggleGroupChatAdminSettings()" title="Admin Profile Settings">⚙</button>
         </div>
       </div>
     </aside>
@@ -264,6 +265,117 @@ shell(`
       </div>
 
       <button class="group-chat-ref-leave">Leave Channel</button>
+    </aside>
+
+    <aside id="groupChatAdminSettingsPanel" class="group-chat-admin-settings-panel">
+      <div class="group-chat-admin-settings-head">
+        <div>
+          <h2>Admin Profile Settings</h2>
+          <p class="muted">Owner/Admin controls for Group Chat</p>
+        </div>
+        <button class="icon-btn" onclick="toggleGroupChatAdminSettings()">×</button>
+      </div>
+
+      <section class="group-chat-admin-card">
+        <h3>1. Admin Profile</h3>
+        <div class="group-chat-admin-profile-grid">
+          <div class="group-chat-admin-avatar">MS</div>
+
+          <label>Admin Name
+            <input value="Maria Santos">
+          </label>
+
+          <label>Role
+            <select>
+              <option>Owner / Admin</option>
+              <option>Manager</option>
+            </select>
+          </label>
+
+          <label>Status
+            <select>
+              <option>Online</option>
+              <option>Busy</option>
+              <option>Away</option>
+            </select>
+          </label>
+
+          <label class="wide">Status Message
+            <input value="Managing the shop">
+          </label>
+        </div>
+      </section>
+
+      <section class="group-chat-admin-card">
+        <h3>2. Announcement Controls</h3>
+
+        <label>Announcement Title
+          <input value="Operations: Delivery meeting at 3:00 PM">
+        </label>
+
+        <label>Announcement Message
+          <textarea rows="3">Please update rider status before noon. Delivery team should check pending dispatch orders.</textarea>
+        </label>
+
+        <div class="group-chat-admin-toggle-row">
+          <span>Pin Announcement</span>
+          <button class="group-chat-admin-toggle active">On</button>
+        </div>
+
+        <div class="group-chat-admin-toggle-row">
+          <span>Show Announcement</span>
+          <button class="group-chat-admin-toggle active">On</button>
+        </div>
+      </section>
+
+      <section class="group-chat-admin-card">
+        <h3>3. Channel Management</h3>
+
+        <div class="group-chat-admin-channel-table">
+          ${GROUP_CHAT_CHANNELS.map(channel => `
+            <div class="group-chat-admin-channel-row">
+              <span>${channel.icon || "💬"} ${channel.name}</span>
+              <button class="group-chat-admin-mini active">Show</button>
+              <button class="group-chat-admin-mini ${channel.readOnly ? "active" : ""}">${channel.readOnly ? "Read-only" : "Can Send"}</button>
+            </div>
+          `).join("")}
+        </div>
+      </section>
+
+      <section class="group-chat-admin-card group-chat-admin-two">
+        <div>
+          <h3>4. Schedule Permission</h3>
+          <p>🔒 Admin can edit schedule</p>
+          <p>👥 Staff view-only</p>
+        </div>
+
+        <div>
+          <h3>5. System Message Controls</h3>
+          <p>✅ Order Updates</p>
+          <p>✅ Kitchen Updates</p>
+          <p>✅ Delivery Updates</p>
+          <p>✅ Stock Updates</p>
+        </div>
+      </section>
+
+      <section class="group-chat-admin-card">
+        <h3>6. Notification Controls</h3>
+
+        <div class="group-chat-admin-toggle-row">
+          <span>Mute Notifications</span>
+          <button class="group-chat-admin-toggle">Off</button>
+        </div>
+
+        <div class="group-chat-admin-toggle-row">
+          <span>Show Read Receipts</span>
+          <button class="group-chat-admin-toggle active">On</button>
+        </div>
+      </section>
+
+      <div class="group-chat-admin-actions">
+        <button class="btn btn-primary">Save Settings</button>
+        <button class="btn" onclick="toggleGroupChatAdminSettings()">Close</button>
+      </div>
     </aside>
   </div>
 `);
@@ -490,10 +602,18 @@ function updateGroupChatAnnouncementArrow(){
   });
 }
 
+function toggleGroupChatAdminSettings(){
+  groupChatAdminSettingsOpen = !groupChatAdminSettingsOpen;
+  groupChatMembersOpen = false;
+  groupChatOrderPreviewOpen = false;
+  applyGroupChatViewState();
+}
+
 function applyGroupChatViewState(){
   document.querySelector(".group-chat-ref-app")?.classList.toggle("channels-open", groupChatChannelsOpen);
   document.querySelector(".group-chat-ref-app")?.classList.toggle("members-open", groupChatMembersOpen);
   document.querySelector(".group-chat-ref-app")?.classList.toggle("order-preview-open", groupChatOrderPreviewOpen);
+  document.querySelector(".group-chat-ref-app")?.classList.toggle("admin-settings-open", groupChatAdminSettingsOpen);
   document.querySelector(".group-chat-ref-app")?.classList.toggle("announcement-hidden", !groupChatAnnouncementOpen);
 }
 
@@ -503,6 +623,7 @@ window.setGroupChatChannel = setGroupChatChannel;
 window.openGroupChatChannel = openGroupChatChannel;
 window.toggleGroupChatChannels = toggleGroupChatChannels;
 window.toggleGroupChatMembers = toggleGroupChatMembers;
+window.toggleGroupChatAdminSettings = toggleGroupChatAdminSettings;
 window.toggleGroupChatOrderPreview = toggleGroupChatOrderPreview;
 window.toggleGroupChatAnnouncement = toggleGroupChatAnnouncement;
 window.nextGroupChatAnnouncement = nextGroupChatAnnouncement;
