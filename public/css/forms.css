@@ -6448,3 +6448,36 @@ body[data-page="group-chat"] .group-chat-ref-status.offline {
     display: none !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat true desktop keep profile visible
+================================================== */
+@media (min-width: 1101px) {
+  body[data-page="group-chat"] .group-chat-ref-channels {
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-channel-scroll-area {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-channel-list {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-right: 4px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-profile {
+    flex: 0 0 auto !important;
+    margin-top: 10px !important;
+    display: grid !important;
+  }
+}
