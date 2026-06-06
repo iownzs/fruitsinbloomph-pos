@@ -6051,3 +6051,81 @@ body[data-page="group-chat"] .group-chat-schedule-day-card {
     z-index: 5 !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat admin layout composer row fix
+================================================== */
+@media (min-width: 821px) {
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-chat {
+    display: grid !important;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-chat-head {
+    grid-row: 1 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-slim-announcement {
+    grid-row: 2 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-pinned-row {
+    grid-row: 3 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-body {
+    grid-row: 4 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-channel-chatbox {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-channel-scroll {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    padding-bottom: 10px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-composer {
+    grid-row: 5 !important;
+    display: flex !important;
+    flex: none !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-height: 44px !important;
+    max-height: 54px !important;
+    margin-top: 8px !important;
+    padding: 8px !important;
+    border-top: 1px solid rgba(255,255,255,.08) !important;
+    background: rgba(15, 23, 42, .98) !important;
+    z-index: 30 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-composer input {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    height: 34px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-send,
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-composer .icon-btn {
+    flex: 0 0 auto !important;
+  }
+}
