@@ -5999,3 +5999,55 @@ body[data-page="group-chat"] .group-chat-schedule-day-card {
     font-size: 9px !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat keep composer visible in admin layouts
+================================================== */
+@media (min-width: 821px) {
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-chat {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-chat-head,
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-slim-announcement,
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-pinned-row,
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-composer {
+    flex: 0 0 auto !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-body {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-channel-chatbox {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-channel-scroll {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 12px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-composer {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-top: 8px !important;
+    padding-top: 8px !important;
+    background: rgba(15, 23, 42, .98) !important;
+    z-index: 5 !important;
+  }
+}
