@@ -1406,12 +1406,13 @@ window.FIB.getGroupChatChannels = async function(){
 
   const snapshot = await window.db
     .collection("chatChannels")
-    .where("isActive", "==", true)
     .orderBy("channelOrder")
     .get();
 
-  return snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  }));
+  return snapshot.docs
+    .map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }))
+    .filter(channel => channel.isActive !== false);
 };
