@@ -179,15 +179,17 @@ shell(`
         <span>Team Channels</span>
       </div>
 
-      <div id="groupChatChannelList" class="group-chat-ref-channel-list"></div>
+      <div class="group-chat-channel-scroll-area">
+        <div id="groupChatChannelList" class="group-chat-ref-channel-list"></div>
 
-      <div class="group-chat-ref-profile">
-        <div class="group-chat-ref-avatar">MS</div>
-        <div>
-          <strong>Maria Santos</strong>
-          <small>Manager</small>
+        <div class="group-chat-ref-profile">
+          <div class="group-chat-ref-avatar">MS</div>
+          <div>
+            <strong>Maria Santos</strong>
+            <small>Manager</small>
+          </div>
+          <button class="icon-btn">⚙</button>
         </div>
-        <button class="icon-btn">⚙</button>
       </div>
     </aside>
 

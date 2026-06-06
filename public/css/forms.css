@@ -4986,3 +4986,44 @@ body[data-page="group-chat"] .group-chat-channel-scroll {
     min-height: 34px !important;
   }
 }
+
+/* ==================================================
+   Group Chat mobile scroll channels with profile
+================================================== */
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-ref-channels {
+    height: calc(100dvh - 118px) !important;
+    max-height: calc(100dvh - 118px) !important;
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-channel-scroll-area {
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    padding-right: 2px !important;
+    padding-bottom: 12px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-channel-list {
+    overflow: visible !important;
+    padding-bottom: 0 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-profile {
+    display: grid !important;
+    grid-template-columns: 36px minmax(0, 1fr) 36px !important;
+    align-items: center !important;
+    gap: 9px !important;
+    min-height: 50px !important;
+    padding: 8px 10px !important;
+    margin-top: 8px !important;
+    border: 1px solid rgba(34, 211, 238, 0.14) !important;
+    border-radius: 16px !important;
+    background: rgba(255,255,255,.035) !important;
+  }
+}
