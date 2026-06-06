@@ -203,6 +203,7 @@ shell(`
         </div>
         <button class="group-chat-ref-members-btn" onclick="toggleGroupChatMembers()">👥</button>
         <button class="group-chat-ref-channels-btn" onclick="toggleGroupChatChannels()">Channels</button>
+        <button class="group-chat-ref-channels-btn" onclick="createSalesUserProfileFromMobile()">Create Sales</button>
       </header>
 
       <section id="groupChatSlimAnnouncement" class="group-chat-ref-slim-announcement">
@@ -1028,3 +1029,36 @@ function showGroupChatAdminDebug(){
 }
 
 window.showGroupChatAdminDebug = showGroupChatAdminDebug;
+
+
+async function createSalesUserProfileFromMobile(){
+  try{
+    if(!window.FIB_FIREBASE_READY || !window.db || typeof firebase === "undefined"){
+      alert("Firebase is not ready.");
+      return;
+    }
+
+    const uid = prompt("Paste Sales Auth UID:");
+    if(!uid || !uid.trim()){
+      alert("Sales UID is required.");
+      return;
+    }
+
+    await window.db.collection("users").doc(uid.trim()).set({
+      name: "Sales Staff",
+      displayName: "Sales Staff",
+      email: "sales@fib.local",
+      username: "sales",
+      role: "Sales",
+      status: "Active",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    alert("Sales user profile created.");
+  }catch(error){
+    alert("Create Sales user failed: " + (error.message || error));
+  }
+}
+
+window.createSalesUserProfileFromMobile = createSalesUserProfileFromMobile;
