@@ -642,14 +642,18 @@ function renderGroupChatOrderPreview(){
 
 function openGroupChatChannel(channelId){
   activeGroupChatChannel = channelId;
-  groupChatChannelsOpen = false;
+
+  // Mobile opens selected channel as chat screen.
+  // Desktop keeps channel list visible and updates center chat.
+  groupChatChannelsOpen = window.innerWidth > 820;
+
   groupChatMembersOpen = false;
   groupChatOrderPreviewOpen = false;
 
   renderGroupChat();
 
   requestAnimationFrame(() => {
-    groupChatChannelsOpen = false;
+    groupChatChannelsOpen = window.innerWidth > 820;
     applyGroupChatViewState();
   });
 }
