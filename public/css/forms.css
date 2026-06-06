@@ -6404,3 +6404,47 @@ body[data-page="group-chat"] .group-chat-ref-status.offline {
     box-shadow: none !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat true desktop channels + chat layout
+   Fix channel click after closing members
+================================================== */
+@media (min-width: 1101px) {
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open:not(.members-open):not(.admin-settings-open):not(.order-preview-open) {
+    display: grid !important;
+    grid-template-columns: minmax(260px, 340px) minmax(0, 1fr) !important;
+    gap: 14px !important;
+    align-items: stretch !important;
+    height: calc(100dvh - 92px) !important;
+    max-height: calc(100dvh - 92px) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open:not(.members-open):not(.admin-settings-open):not(.order-preview-open) .group-chat-ref-channels {
+    display: grid !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open:not(.members-open):not(.admin-settings-open):not(.order-preview-open) .group-chat-ref-chat {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open:not(.members-open):not(.admin-settings-open):not(.order-preview-open) .group-chat-ref-right,
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open:not(.members-open):not(.admin-settings-open):not(.order-preview-open) .group-chat-ref-members-panel,
+  body[data-page="group-chat"] .group-chat-ref-app.channels-open:not(.members-open):not(.admin-settings-open):not(.order-preview-open) .group-chat-admin-settings-panel {
+    display: none !important;
+  }
+}
