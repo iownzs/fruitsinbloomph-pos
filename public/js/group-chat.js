@@ -241,31 +241,36 @@ shell(`
       </div>
 
       <div class="group-chat-ref-members-list">
-        ${GROUP_CHAT_MEMBERS.map(member => `
-          <div class="group-chat-ref-member">
-            <div class="group-chat-ref-avatar">${member.avatar}</div>
-            <div>
-              <strong>${member.name}</strong>
-              <small>${member.role}</small>
+        <section class="group-chat-members-section">
+          <h3>Online Members</h3>
+          ${GROUP_CHAT_MEMBERS.filter(member => String(member.status).toLowerCase() === "online").map(member => `
+            <div class="group-chat-ref-member">
+              <div class="group-chat-ref-avatar">${member.avatar}</div>
+              <div>
+                <strong>${member.name}</strong>
+                <small>${member.role}</small>
+              </div>
+              <span class="group-chat-ref-status online">Online</span>
             </div>
-            <span class="group-chat-ref-status">${member.status}</span>
-            ${member.tag ? `<span class="badge">${member.tag}</span>` : ""}
-          </div>
-        `).join("")}
+          `).join("")}
+        </section>
+
+        <section class="group-chat-members-section">
+          <h3>Offline Members</h3>
+          ${GROUP_CHAT_MEMBERS.filter(member => String(member.status).toLowerCase() !== "online").map(member => `
+            <div class="group-chat-ref-member offline">
+              <div class="group-chat-ref-avatar">${member.avatar}</div>
+              <div>
+                <strong>${member.name}</strong>
+                <small>${member.role}</small>
+              </div>
+              <span class="group-chat-ref-status offline">Offline</span>
+            </div>
+          `).join("")}
+        </section>
       </div>
 
-      <button class="group-chat-ref-settings-row">👥 View all members <span>›</span></button>
-
-      <div class="group-chat-ref-settings">
-        <h3>Chat Settings</h3>
-        <button>🔕 Mute Notifications <span>○</span></button>
-        <button>👁 Show Read Receipts <span>●</span></button>
-        <button>🔒 Channel Visibility <small>Team Only</small></button>
-        <button>📣 Announcement Permissions <small>Admins Only</small></button>
-        <button>👥 Manage Members <span>›</span></button>
-      </div>
-
-      <button class="group-chat-ref-leave">Leave Channel</button>
+      <button class="group-chat-ref-leave">Close Members</button>
     </aside>
 
     <aside id="groupChatAdminSettingsPanel" class="group-chat-admin-settings-panel">
