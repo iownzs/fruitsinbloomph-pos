@@ -163,6 +163,7 @@ let groupChatAnnouncementOpen = true;
 let groupChatMembersOpen = false;
 let groupChatOrderPreviewOpen = false;
 let groupChatAdminSettingsOpen = false;
+let groupChatScheduleEditMode = false;
 
 shell(`
   <div class="group-chat-ref-app">
@@ -556,12 +557,35 @@ function renderGroupChatSchedule(){
   document.getElementById("groupChatBody").innerHTML = `
     <section class="group-chat-channel-chatbox" data-channel="schedule">
       <div class="group-chat-channel-scroll">
-        <div class="group-chat-ref-schedule">
-          ${GROUP_CHAT_SCHEDULE.map(day => `
-            <div>
+        <div class="group-chat-schedule-toolbar">
+          <div>
+            <strong>Weekly Staff Schedule</strong>
+            <small>Admin can edit. Staff view-only.</small>
+          </div>
+
+          <div class="group-chat-schedule-actions">
+            ${
+              groupChatScheduleEditMode
+                ? `
+                  <button class="group-chat-schedule-btn save" onclick="saveGroupChatSchedule()">Save</button>
+                  <button class="group-chat-schedule-btn" onclick="cancelGroupChatScheduleEdit()">Cancel</button>
+                `
+                : `<button class="group-chat-schedule-btn edit" onclick="toggleGroupChatScheduleEdit()">Edit Schedule</button>`
+            }
+          </div>
+        </div>
+
+        <div class="group-chat-ref-schedule ${groupChatScheduleEditMode ? "editing" : ""}">
+          ${GROUP_CHAT_SCHEDULE.map((day, index) => `
+            <div class="group-chat-schedule-day-card">
               <strong>${day.date}</strong>
               <small>${day.day}</small>
-              <p>${day.staff}</p>
+
+              ${
+                groupChatScheduleEditMode
+                  ? `<textarea data-schedule-index="${index}" rows="3">${day.staff}</textarea>`
+                  : `<p>${day.staff}</p>`
+              }
             </div>
           `).join("")}
         </div>
@@ -685,6 +709,28 @@ function toggleGroupChatAdminSettings(){
   applyGroupChatViewState();
 }
 
+function toggleGroupChatScheduleEdit(){
+  groupChatScheduleEditMode = true;
+  renderGroupChatSchedule();
+}
+
+function cancelGroupChatScheduleEdit(){
+  groupChatScheduleEditMode = false;
+  renderGroupChatSchedule();
+}
+
+function saveGroupChatSchedule(){
+  document.querySelectorAll("[data-schedule-index]").forEach(input => {
+    const index = Number(input.dataset.scheduleIndex);
+    if(GROUP_CHAT_SCHEDULE[index]){
+      GROUP_CHAT_SCHEDULE[index].staff = input.value.trim() || "No schedule";
+    }
+  });
+
+  groupChatScheduleEditMode = false;
+  renderGroupChatSchedule();
+}
+
 function applyGroupChatViewState(){
   document.querySelector(".group-chat-ref-app")?.classList.toggle("channels-open", groupChatChannelsOpen);
   document.querySelector(".group-chat-ref-app")?.classList.toggle("members-open", groupChatMembersOpen);
@@ -703,3 +749,6 @@ window.toggleGroupChatAdminSettings = toggleGroupChatAdminSettings;
 window.toggleGroupChatOrderPreview = toggleGroupChatOrderPreview;
 window.toggleGroupChatAnnouncement = toggleGroupChatAnnouncement;
 window.nextGroupChatAnnouncement = nextGroupChatAnnouncement;
+window.toggleGroupChatScheduleEdit = toggleGroupChatScheduleEdit;
+window.cancelGroupChatScheduleEdit = cancelGroupChatScheduleEdit;
+window.saveGroupChatSchedule = saveGroupChatSchedule;
