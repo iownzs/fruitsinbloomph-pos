@@ -483,3 +483,26 @@ Address preview for long address.
 Items icon only + click preview all items.
 Card Message icon only + click preview full message.
 ```
+
+## Group Chat Schedule Channel Update
+
+Schedule Channel:
+- Current Week Auto View
+- Previous Week button
+- Next Week button
+- This Week button
+- Admin Edit Schedule
+- Staff View-only
+
+Schedule Behavior:
+- Schedule automatically opens to the current Monday-Sunday week based on today's date.
+- When the week is done, the Schedule Channel automatically changes to the next week.
+- Admin / Owner can edit current week, previous week, and next week.
+- Admin / Owner can edit the staff names assigned to duty schedule for each day/week.
+- Staff can view schedule only.
+- If no schedule exists for the current week, show a blank weekly schedule grid.
+
+Recommended database rule:
+- Collection: scheduleChannel
+- Document ID = weekStartDate
+- Example: 2026-06-08
