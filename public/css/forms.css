@@ -6031,3 +6031,76 @@ body[data-page="group-chat"] .group-chat-ref-status.offline {
     line-height: 1 !important;
   }
 }
+
+/* ==================================================
+   FINAL Group Chat mobile members compact layout
+================================================== */
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-ref-app.members-open .group-chat-ref-members-panel {
+    padding: 16px 18px 16px !important;
+    gap: 10px !important;
+    align-content: start !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-members-head {
+    padding: 0 !important;
+    margin: 0 0 14px !important;
+    min-height: auto !important;
+    display: block !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-members-head h2 {
+    font-size: 26px !important;
+    line-height: 1.1 !important;
+    margin: 0 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-members-head .icon-btn {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-members-list {
+    display: grid !important;
+    gap: 14px !important;
+    padding: 0 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-members-section {
+    gap: 8px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-members-section h3 {
+    margin: 0 0 8px !important;
+    font-size: 12px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-member {
+    min-height: 46px !important;
+    padding: 2px 0 !important;
+    gap: 10px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-member .group-chat-ref-avatar {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 13px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-member strong {
+    font-size: 15px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-member small {
+    font-size: 12px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-members-panel .group-chat-ref-leave {
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    margin-top: 10px !important;
+    padding: 0 14px !important;
+    border-radius: 14px !important;
+    font-size: 14px !important;
+  }
+}

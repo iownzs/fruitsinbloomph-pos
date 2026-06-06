@@ -237,7 +237,7 @@ shell(`
     <aside id="groupChatMembersPanel" class="group-chat-ref-panel group-chat-ref-members-panel">
       <div class="group-chat-ref-members-head">
         <h2>Members</h2>
-        <button class="icon-btn" onclick="toggleGroupChatMembers()">×</button>
+        
       </div>
 
       <div class="group-chat-ref-members-list">
@@ -270,7 +270,7 @@ shell(`
         </section>
       </div>
 
-      <button class="group-chat-ref-leave">Close Members</button>
+      <button class="group-chat-ref-leave" onclick="toggleGroupChatMembers()">Close Members</button>
     </aside>
 
     <aside id="groupChatAdminSettingsPanel" class="group-chat-admin-settings-panel">
