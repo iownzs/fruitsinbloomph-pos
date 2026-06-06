@@ -695,6 +695,20 @@ function toggleGroupChatChannels(){
 
 function toggleGroupChatMembers(){
   groupChatMembersOpen = !groupChatMembersOpen;
+
+  const isTrueDesktop = window.innerWidth >= 1101;
+
+  if(groupChatMembersOpen){
+    groupChatAdminSettingsOpen = false;
+    groupChatOrderPreviewOpen = false;
+
+    // Mobile + desktop-mobile should show Members as focused panel.
+    // True desktop can keep channels/chat visible.
+    if(!isTrueDesktop){
+      groupChatChannelsOpen = false;
+    }
+  }
+
   applyGroupChatViewState();
 }
 

@@ -6291,3 +6291,43 @@ body[data-page="group-chat"] .group-chat-ref-status.offline {
     font-weight: 800 !important;
   }
 }
+
+/* ==================================================
+   HARD FIX Group Chat mobile-desktop members state
+   Prevent normal chat rules from hiding members panel
+================================================== */
+@media (min-width: 821px) and (max-width: 1100px) {
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open) {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding: 8px 10px 18px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open) .group-chat-ref-channels,
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open) .group-chat-ref-chat,
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open) .group-chat-ref-right,
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open) .group-chat-admin-settings-panel {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.members-open:not(.admin-settings-open) .group-chat-ref-members-panel {
+    display: grid !important;
+    width: min(100%, 620px) !important;
+    height: auto !important;
+    max-height: calc(100dvh - 130px) !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    padding: 18px !important;
+    border-radius: 20px !important;
+    align-content: start !important;
+    gap: 12px !important;
+  }
+}
