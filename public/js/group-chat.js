@@ -203,7 +203,6 @@ shell(`
         </div>
         <button class="group-chat-ref-members-btn" onclick="toggleGroupChatMembers()">👥</button>
         <button class="group-chat-ref-channels-btn" onclick="toggleGroupChatChannels()">Channels</button>
-        <button class="group-chat-ref-channels-btn" onclick="seedGroupChatChannelsFromMobile()">Seed</button>
       </header>
 
       <section id="groupChatSlimAnnouncement" class="group-chat-ref-slim-announcement">
@@ -840,20 +839,3 @@ function showGroupChatAdminDebug(){
 }
 
 window.showGroupChatAdminDebug = showGroupChatAdminDebug;
-
-
-async function seedGroupChatChannelsFromMobile(){
-  try{
-    if(!window.FIB_FIREBASE_READY || !window.FIB?.seedGroupChatChannels){
-      alert("Firebase Group Chat seed is not ready.");
-      return;
-    }
-
-    const result = await window.FIB.seedGroupChatChannels();
-    alert("Group Chat channels seeded: " + result.count);
-  }catch(error){
-    alert("Seed failed: " + (error.message || error));
-  }
-}
-
-window.seedGroupChatChannelsFromMobile = seedGroupChatChannelsFromMobile;
