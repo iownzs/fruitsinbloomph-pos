@@ -1,6 +1,7 @@
 (function () {
   const USERNAME_EMAIL_MAP = {
-    admin: "iownzs@gmail.com"
+    admin: "iownzs@gmail.com",
+    sales: "sales@fib.local"
   };
 
   const ROLE_REDIRECTS = {
