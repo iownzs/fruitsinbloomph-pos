@@ -643,17 +643,24 @@ function renderGroupChatOrderPreview(){
 function openGroupChatChannel(channelId){
   activeGroupChatChannel = channelId;
 
-  // Mobile opens selected channel as chat screen.
-  // Desktop keeps channel list visible and updates center chat.
-  groupChatChannelsOpen = window.innerWidth > 820;
+  const isTrueDesktop = window.innerWidth >= 1101;
+
+  // Mobile/tablet/desktop-mobile: open selected chat screen.
+  // True desktop: keep channel list visible and update center chat.
+  groupChatChannelsOpen = isTrueDesktop;
 
   groupChatMembersOpen = false;
   groupChatOrderPreviewOpen = false;
 
+  // If not true desktop, close admin settings so chat can open.
+  if(!isTrueDesktop){
+    groupChatAdminSettingsOpen = false;
+  }
+
   renderGroupChat();
 
   requestAnimationFrame(() => {
-    groupChatChannelsOpen = window.innerWidth > 820;
+    groupChatChannelsOpen = window.innerWidth >= 1101;
     applyGroupChatViewState();
   });
 }
@@ -667,7 +674,17 @@ function getActiveChannel(){
 }
 
 function toggleGroupChatChannels(){
-  groupChatChannelsOpen = !groupChatChannelsOpen;
+  const isTrueDesktop = window.innerWidth >= 1101;
+
+  if(isTrueDesktop){
+    groupChatChannelsOpen = true;
+  }else{
+    groupChatChannelsOpen = !groupChatChannelsOpen;
+    groupChatAdminSettingsOpen = false;
+    groupChatMembersOpen = false;
+    groupChatOrderPreviewOpen = false;
+  }
+
   applyGroupChatViewState();
 }
 
