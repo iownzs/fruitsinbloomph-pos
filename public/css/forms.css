@@ -5455,3 +5455,74 @@ body[data-page="group-chat"] .group-chat-schedule-day-card {
     line-height: 1.35 !important;
   }
 }
+
+/* ==================================================
+   Group Chat admin settings desktop layout polish
+================================================== */
+@media (min-width: 821px) {
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open {
+    grid-template-columns: minmax(320px, 0.9fr) 520px !important;
+    gap: 16px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-settings-panel {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    padding: 16px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-card {
+    padding: 12px !important;
+    gap: 9px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-profile-grid {
+    grid-template-columns: 70px 1fr 1fr !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-channel-table {
+    gap: 8px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-channel-role-card {
+    padding: 10px 12px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-channel-top {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-role-lines {
+    gap: 2px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-role-lines p {
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-mini,
+  body[data-page="group-chat"] .group-chat-admin-toggle {
+    padding: 5px 9px !important;
+    font-size: 10px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-actions {
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: 5 !important;
+    padding: 12px 0 0 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-ref-channels {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-channel-scroll-area {
+    overflow-y: auto !important;
+    min-height: 0 !important;
+  }
+}
