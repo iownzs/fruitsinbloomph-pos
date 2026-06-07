@@ -226,21 +226,9 @@ const GROUP_CHAT_ROLE_PERMISSIONS = {
 };
 
 function getCurrentGroupChatUserRole(){
-  const directRole =
-    localStorage.getItem("userRole") ||
-    localStorage.getItem("role") ||
-    localStorage.getItem("currentUserRole") ||
-    localStorage.getItem("fibUserRole") ||
-    sessionStorage.getItem("userRole") ||
-    sessionStorage.getItem("role") ||
-    sessionStorage.getItem("currentUserRole") ||
-    sessionStorage.getItem("fibUserRole");
-
-  if(directRole){
-    return directRole;
-  }
-
-  const possibleUserKeys = [
+  // Real login user from login.js should be the source of truth.
+  const userStorageKeys = [
+    "posUser",
     "currentUser",
     "fibCurrentUser",
     "fibUser",
@@ -250,8 +238,8 @@ function getCurrentGroupChatUserRole(){
     "authUser"
   ];
 
-  for(const key of possibleUserKeys){
-    const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
+  for(const key of userStorageKeys){
+    const raw = sessionStorage.getItem(key) || localStorage.getItem(key);
 
     if(!raw){
       continue;
@@ -272,6 +260,21 @@ function getCurrentGroupChatUserRole(){
     }catch(error){
       // Ignore non-JSON storage values.
     }
+  }
+
+  // Test role fallback only. This should not override real posUser login.
+  const directRole =
+    sessionStorage.getItem("userRole") ||
+    sessionStorage.getItem("role") ||
+    sessionStorage.getItem("currentUserRole") ||
+    sessionStorage.getItem("fibUserRole") ||
+    localStorage.getItem("userRole") ||
+    localStorage.getItem("role") ||
+    localStorage.getItem("currentUserRole") ||
+    localStorage.getItem("fibUserRole");
+
+  if(directRole){
+    return directRole;
   }
 
   // Safe fallback: normal staff access, not admin.
@@ -335,6 +338,7 @@ function normalizeGroupChatRole(role){
   const aliases = {
     "owner": "Owner/Admin",
     "owner/admin": "Owner/Admin",
+    "owner / admin": "Owner/Admin",
     "owner admin": "Owner/Admin",
     "admin": "Admin",
     "manager": "Manager",
