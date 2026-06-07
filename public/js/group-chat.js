@@ -226,13 +226,56 @@ const GROUP_CHAT_ROLE_PERMISSIONS = {
 };
 
 function getCurrentGroupChatUserRole(){
-  const storedRole =
+  const directRole =
     localStorage.getItem("userRole") ||
     localStorage.getItem("role") ||
     localStorage.getItem("currentUserRole") ||
-    localStorage.getItem("fibUserRole");
+    localStorage.getItem("fibUserRole") ||
+    sessionStorage.getItem("userRole") ||
+    sessionStorage.getItem("role") ||
+    sessionStorage.getItem("currentUserRole") ||
+    sessionStorage.getItem("fibUserRole");
 
-  return storedRole || "Owner/Admin";
+  if(directRole){
+    return directRole;
+  }
+
+  const possibleUserKeys = [
+    "currentUser",
+    "fibCurrentUser",
+    "fibUser",
+    "user",
+    "staffUser",
+    "loggedInUser",
+    "authUser"
+  ];
+
+  for(const key of possibleUserKeys){
+    const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
+
+    if(!raw){
+      continue;
+    }
+
+    try{
+      const user = JSON.parse(raw);
+      const parsedRole =
+        user.role ||
+        user.userRole ||
+        user.staffRole ||
+        user.accountRole ||
+        user.permissionRole;
+
+      if(parsedRole){
+        return parsedRole;
+      }
+    }catch(error){
+      // Ignore non-JSON storage values.
+    }
+  }
+
+  // Safe fallback: normal staff access, not admin.
+  return "Sales";
 }
 
 function normalizeGroupChatRole(role){
@@ -872,7 +915,7 @@ function renderGroupChat(){
   const channel = getActiveChannel();
 
   document.getElementById("groupChatActiveName").textContent = channel.name;
-  document.getElementById("groupChatActiveDesc").textContent = channel.desc;
+  document.getElementById("groupChatActiveDesc").textContent = `${channel.desc} • Role: ${normalizeGroupChatRole(getCurrentGroupChatUserRole())}`;
 
   renderGroupChatAnnouncement();
   renderGroupChatChannels();
