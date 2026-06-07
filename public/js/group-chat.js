@@ -236,9 +236,28 @@ function getCurrentGroupChatUserRole(){
 }
 
 function normalizeGroupChatRole(role){
-  if(role === "Owner") return "Owner/Admin";
-  if(role === "Admin") return "Admin";
-  return role || "Owner/Admin";
+  const rawRole = String(role || "Owner/Admin").trim();
+  const key = rawRole.toLowerCase().replace(/[_-]+/g, " ");
+
+  const aliases = {
+    "owner": "Owner/Admin",
+    "owner/admin": "Owner/Admin",
+    "owner admin": "Owner/Admin",
+    "admin": "Admin",
+    "manager": "Manager",
+    "sales": "Sales",
+    "sales staff": "Sales",
+    "cashier": "Cashier",
+    "kitchen": "Kitchen Staff",
+    "kitchen staff": "Kitchen Staff",
+    "delivery": "Delivery Staff",
+    "delivery staff": "Delivery Staff",
+    "rider": "Rider",
+    "inventory": "Inventory Staff",
+    "inventory staff": "Inventory Staff"
+  };
+
+  return aliases[key] || rawRole;
 }
 
 function getGroupChatChannelRules(channelId){
@@ -265,7 +284,13 @@ function canEditGroupChatChannel(channelId){
 
 function getVisibleGroupChatChannels(){
   const visibleChannels = GROUP_CHAT_CHANNELS.filter(channel => canViewGroupChatChannel(channel.id));
-  return visibleChannels.length ? visibleChannels : GROUP_CHAT_CHANNELS;
+
+  if(visibleChannels.length){
+    return visibleChannels;
+  }
+
+  // Safe fallback: show only System + General if role data is missing/mismatched.
+  return GROUP_CHAT_CHANNELS.filter(channel => ["system", "system_message", "general"].includes(channel.id));
 }
 
 
