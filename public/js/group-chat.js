@@ -278,6 +278,56 @@ function getCurrentGroupChatUserRole(){
   return "Sales";
 }
 
+function getCurrentGroupChatUserProfile(){
+  const role = normalizeGroupChatRole(getCurrentGroupChatUserRole());
+
+  const possibleUserKeys = [
+    "currentUser",
+    "fibCurrentUser",
+    "fibUser",
+    "user",
+    "staffUser",
+    "loggedInUser",
+    "authUser"
+  ];
+
+  for(const key of possibleUserKeys){
+    const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
+
+    if(!raw){
+      continue;
+    }
+
+    try{
+      const user = JSON.parse(raw);
+      const name =
+        user.name ||
+        user.displayName ||
+        user.fullName ||
+        user.staffName ||
+        user.username ||
+        user.email ||
+        role;
+
+      return {
+        name,
+        role,
+        avatar: String(name || role || "U").trim().slice(0, 1).toUpperCase()
+      };
+    }catch(error){
+      // Ignore non-JSON values.
+    }
+  }
+
+  const fallbackName = role === "Sales" ? "Sales" : role;
+
+  return {
+    name: fallbackName,
+    role,
+    avatar: String(fallbackName || "U").trim().slice(0, 1).toUpperCase()
+  };
+}
+
 function normalizeGroupChatRole(role){
   const rawRole = String(role || "Owner/Admin").trim();
   const key = rawRole.toLowerCase().replace(/[_-]+/g, " ");
@@ -357,10 +407,10 @@ shell(`
         <div id="groupChatChannelList" class="group-chat-ref-channel-list"></div>
 
         <div class="group-chat-ref-profile">
-          <div class="group-chat-ref-avatar">MS</div>
+          <div class="group-chat-ref-avatar">${getCurrentGroupChatUserProfile().avatar}</div>
           <div>
-            <strong>Maria Santos</strong>
-            <small>Manager</small>
+            <strong>${getCurrentGroupChatUserProfile().name}</strong>
+            <small>${getCurrentGroupChatUserProfile().role}</small>
           </div>
           <button class="icon-btn" onclick="toggleGroupChatAdminSettings()" title="Admin Profile Settings">⚙</button>
         </div>
