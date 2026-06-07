@@ -165,6 +165,110 @@ let groupChatOrderPreviewOpen = false;
 let groupChatAdminSettingsOpen = false;
 let groupChatScheduleEditMode = false;
 
+/* Group Chat role permissions */
+const GROUP_CHAT_ROLE_PERMISSIONS = {
+  system: {
+    allowedRoles: ["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"],
+    canSendRoles: [],
+    canEditRoles: ["Owner/Admin", "Admin"],
+    readOnly: true,
+    systemOnly: true
+  },
+  general: {
+    allowedRoles: ["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"],
+    canSendRoles: ["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"],
+    canEditRoles: ["Owner/Admin", "Admin", "Manager"],
+    readOnly: false
+  },
+  sales: {
+    allowedRoles: ["Owner/Admin", "Admin", "Manager", "Sales", "Cashier"],
+    canSendRoles: ["Owner/Admin", "Admin", "Manager", "Sales", "Cashier"],
+    canEditRoles: ["Owner/Admin", "Admin", "Manager"],
+    readOnly: false
+  },
+  kitchen: {
+    allowedRoles: ["Owner/Admin", "Admin", "Manager", "Kitchen Staff"],
+    canSendRoles: ["Owner/Admin", "Admin", "Manager", "Kitchen Staff"],
+    canEditRoles: ["Owner/Admin", "Admin", "Manager"],
+    readOnly: false
+  },
+  delivery: {
+    allowedRoles: ["Owner/Admin", "Admin", "Manager", "Delivery Staff", "Rider"],
+    canSendRoles: ["Owner/Admin", "Admin", "Manager", "Delivery Staff"],
+    canEditRoles: ["Owner/Admin", "Admin", "Manager"],
+    readOnly: false
+  },
+  riders: {
+    allowedRoles: ["Owner/Admin", "Admin", "Manager", "Delivery Staff", "Rider"],
+    canSendRoles: ["Owner/Admin", "Admin", "Manager", "Delivery Staff", "Rider"],
+    canEditRoles: ["Owner/Admin", "Admin", "Manager"],
+    readOnly: false
+  },
+  schedule: {
+    allowedRoles: ["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"],
+    canSendRoles: ["Owner/Admin", "Admin"],
+    canEditRoles: ["Owner/Admin", "Admin"],
+    readOnly: true,
+    staffViewOnly: true
+  },
+  issues: {
+    allowedRoles: ["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"],
+    canSendRoles: ["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"],
+    canEditRoles: ["Owner/Admin", "Admin", "Manager"],
+    readOnly: false
+  },
+  chitchat: {
+    allowedRoles: ["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"],
+    canSendRoles: ["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"],
+    canEditRoles: ["Owner/Admin", "Admin", "Manager"],
+    readOnly: false
+  }
+};
+
+function getCurrentGroupChatUserRole(){
+  const storedRole =
+    localStorage.getItem("userRole") ||
+    localStorage.getItem("role") ||
+    localStorage.getItem("currentUserRole") ||
+    localStorage.getItem("fibUserRole");
+
+  return storedRole || "Owner/Admin";
+}
+
+function normalizeGroupChatRole(role){
+  if(role === "Owner") return "Owner/Admin";
+  if(role === "Admin") return "Admin";
+  return role || "Owner/Admin";
+}
+
+function getGroupChatChannelRules(channelId){
+  return GROUP_CHAT_ROLE_PERMISSIONS[channelId] || GROUP_CHAT_ROLE_PERMISSIONS.general;
+}
+
+function canViewGroupChatChannel(channelId){
+  const role = normalizeGroupChatRole(getCurrentGroupChatUserRole());
+  const rules = getGroupChatChannelRules(channelId);
+  return rules.allowedRoles.includes(role);
+}
+
+function canSendGroupChatChannel(channelId){
+  const role = normalizeGroupChatRole(getCurrentGroupChatUserRole());
+  const rules = getGroupChatChannelRules(channelId);
+  return !rules.readOnly && rules.canSendRoles.includes(role);
+}
+
+function canEditGroupChatChannel(channelId){
+  const role = normalizeGroupChatRole(getCurrentGroupChatUserRole());
+  const rules = getGroupChatChannelRules(channelId);
+  return rules.canEditRoles.includes(role);
+}
+
+function getVisibleGroupChatChannels(){
+  const visibleChannels = GROUP_CHAT_CHANNELS.filter(channel => canViewGroupChatChannel(channel.id));
+  return visibleChannels.length ? visibleChannels : GROUP_CHAT_CHANNELS;
+}
+
+
 shell(`
   <div class="group-chat-ref-app">
     <aside id="groupChatChannelsPanel" class="group-chat-ref-panel group-chat-ref-channels">
@@ -768,7 +872,7 @@ function renderGroupChat(){
 function renderGroupChatChannels(){
   const wrap = document.getElementById("groupChatChannelList");
 
-  wrap.innerHTML = GROUP_CHAT_CHANNELS.map(channel => `
+  wrap.innerHTML = getVisibleGroupChatChannels().map(channel => `
     <button class="group-chat-ref-channel ${channel.id === activeGroupChatChannel ? "active" : ""}" onclick="openGroupChatChannel('${channel.id}')">
       <span class="group-chat-ref-channel-icon">${channel.icon}</span>
       <span>
@@ -823,7 +927,7 @@ function renderGroupChatSchedule(){
                   <button class="group-chat-schedule-btn save" onclick="saveGroupChatSchedule()">Save</button>
                   <button class="group-chat-schedule-btn" onclick="cancelGroupChatScheduleEdit()">Cancel</button>
                 `
-                : `<button class="group-chat-schedule-btn edit" onclick="toggleGroupChatScheduleEdit()">Edit Schedule</button>`
+                : `${canEditGroupChatChannel("schedule") ? `<button class="group-chat-schedule-btn edit" onclick="toggleGroupChatScheduleEdit()">Edit Schedule</button>` : `<span class="group-chat-schedule-viewonly">View Only</span>`}`
             }
           </div>
         </div>
@@ -850,7 +954,11 @@ function renderGroupChatSchedule(){
 function renderGroupChatComposer(channel){
   const composer = document.getElementById("groupChatComposer");
 
-  if(channel.readonly){
+  if(!composer){
+    return;
+  }
+
+  if(!canSendGroupChatChannel(channel.id)){
     composer.innerHTML = `<div class="group-chat-ref-readonly">You can’t send messages in this channel.</div>`;
     return;
   }
@@ -923,7 +1031,15 @@ function setGroupChatChannel(channelId){
 }
 
 function getActiveChannel(){
-  return GROUP_CHAT_CHANNELS.find(channel => channel.id === activeGroupChatChannel) || GROUP_CHAT_CHANNELS[0];
+  const visibleChannels = getVisibleGroupChatChannels();
+  const activeChannel = visibleChannels.find(channel => channel.id === activeGroupChatChannel);
+
+  if(activeChannel){
+    return activeChannel;
+  }
+
+  activeGroupChatChannel = visibleChannels[0]?.id || "general";
+  return visibleChannels[0] || GROUP_CHAT_CHANNELS[0];
 }
 
 function toggleGroupChatChannels(){
