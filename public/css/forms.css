@@ -6651,3 +6651,110 @@ body[data-page="group-chat"] .group-chat-admin-channel-top small {
     padding: 7px 6px;
   }
 }
+
+/* ==================================================
+   FIX Group Chat Channel Management compact role pills
+================================================== */
+body[data-page="group-chat"] .group-chat-admin-selected-channel-card {
+  display: grid !important;
+  gap: 12px !important;
+  padding: 12px !important;
+  max-height: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-admin-permission-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+}
+
+body[data-page="group-chat"] .group-chat-admin-permission-grid > div {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+  padding: 10px !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.025) !important;
+}
+
+body[data-page="group-chat"] .group-chat-admin-permission-grid h4 {
+  grid-column: 1 / -1 !important;
+  margin: 0 0 2px !important;
+  font-size: 11px !important;
+  color: var(--muted) !important;
+  text-transform: uppercase !important;
+  letter-spacing: .04em !important;
+}
+
+body[data-page="group-chat"] .group-chat-admin-role-check {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  min-height: 34px !important;
+  padding: 6px 8px !important;
+  border: 1px solid rgba(255,255,255,.09) !important;
+  border-radius: 12px !important;
+  background: rgba(15,23,42,.55) !important;
+  color: var(--text) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+}
+
+body[data-page="group-chat"] .group-chat-admin-role-check input,
+body[data-page="group-chat"] .group-chat-admin-readonly-check input {
+  flex: 0 0 auto !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  accent-color: #22c55e !important;
+}
+
+body[data-page="group-chat"] .group-chat-admin-role-check span {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+}
+
+body[data-page="group-chat"] .group-chat-admin-channel-top {
+  align-items: start !important;
+  gap: 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-admin-readonly-check {
+  min-height: 34px !important;
+  padding: 6px 8px !important;
+  border: 1px solid rgba(255,255,255,.09) !important;
+  border-radius: 12px !important;
+  background: rgba(15,23,42,.55) !important;
+  font-size: 11px !important;
+}
+
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-admin-permission-grid > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    padding: 9px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-role-check {
+    min-height: 32px !important;
+    padding: 6px 7px !important;
+    font-size: 10px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-channel-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-channel-tab {
+    min-height: 38px !important;
+    font-size: 10px !important;
+    line-height: 1.05 !important;
+  }
+}
