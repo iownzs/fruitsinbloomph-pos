@@ -391,6 +391,105 @@ function getVisibleGroupChatChannels(){
 }
 
 
+
+const GROUP_CHAT_ROLE_OPTIONS = [
+  "Owner/Admin",
+  "Admin",
+  "Manager",
+  "Sales",
+  "Cashier",
+  "Kitchen Staff",
+  "Delivery Staff",
+  "Rider",
+  "Inventory Staff"
+];
+
+function renderGroupChatRoleCheckboxes(channelId, permissionKey){
+  const rules = getGroupChatChannelRules(channelId);
+  const selectedRoles = rules[permissionKey] || [];
+
+  return GROUP_CHAT_ROLE_OPTIONS.map(role => `
+    <label class="group-chat-admin-role-check">
+      <input
+        type="checkbox"
+        data-channel-id="${channelId}"
+        data-perm="${permissionKey}"
+        value="${role}"
+        ${selectedRoles.includes(role) ? "checked" : ""}
+      >
+      <span>${role}</span>
+    </label>
+  `).join("");
+}
+
+function renderGroupChatAdminChannelEditor(channel){
+  const rules = getGroupChatChannelRules(channel.id);
+  const readOnly = Boolean(rules.readOnly || channel.readonly);
+
+  return `
+    <div class="group-chat-admin-channel-role-card" data-channel-id="${channel.id}">
+      <div class="group-chat-admin-channel-top">
+        <strong>${channel.icon || "💬"} ${channel.name}</strong>
+        <label class="group-chat-admin-readonly-check">
+          <input type="checkbox" data-channel-id="${channel.id}" data-perm="readOnly" ${readOnly ? "checked" : ""}>
+          <span>Read Only</span>
+        </label>
+      </div>
+
+      <div class="group-chat-admin-permission-grid">
+        <div>
+          <h4>Can View</h4>
+          ${renderGroupChatRoleCheckboxes(channel.id, "allowedRoles")}
+        </div>
+
+        <div>
+          <h4>Can Send</h4>
+          ${renderGroupChatRoleCheckboxes(channel.id, "canSendRoles")}
+        </div>
+
+        <div>
+          <h4>Can Edit</h4>
+          ${renderGroupChatRoleCheckboxes(channel.id, "canEditRoles")}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function saveGroupChatAdminSettings(){
+  document.querySelectorAll(".group-chat-admin-channel-role-card").forEach(card => {
+    const channelId = card.dataset.channelId;
+
+    if(!channelId || !GROUP_CHAT_ROLE_PERMISSIONS[channelId]){
+      return;
+    }
+
+    const rules = GROUP_CHAT_ROLE_PERMISSIONS[channelId];
+
+    ["allowedRoles", "canSendRoles", "canEditRoles"].forEach(permissionKey => {
+      rules[permissionKey] = Array.from(
+        card.querySelectorAll(`input[data-perm="${permissionKey}"]:checked`)
+      ).map(input => input.value);
+    });
+
+    const readOnlyInput = card.querySelector('input[data-perm="readOnly"]');
+    rules.readOnly = Boolean(readOnlyInput?.checked);
+  });
+
+  renderGroupChatChannels();
+  renderGroupChatComposer(getActiveChannel());
+  applyGroupChatViewState();
+
+  const saveButton = document.querySelector(".group-chat-admin-actions .btn-primary");
+  if(saveButton){
+    const originalText = saveButton.textContent;
+    saveButton.textContent = "Saved";
+    setTimeout(() => {
+      saveButton.textContent = originalText;
+    }, 1200);
+  }
+}
+
 shell(`
   <div class="group-chat-ref-app">
     <aside id="groupChatChannelsPanel" class="group-chat-ref-panel group-chat-ref-channels">
@@ -562,91 +661,10 @@ shell(`
 
       <section class="group-chat-admin-card">
         <h3>3. Channel Management</h3>
+        <p class="muted">Edit who can view, send, and manage each channel.</p>
 
         <div class="group-chat-admin-channel-table">
-          ${GROUP_CHAT_CHANNELS.map(channel => {
-            const roleMap = {
-              system: {
-                allowed: "Admin, Manager, Sales, Cashier, Kitchen, Delivery, Rider, Inventory",
-                send: "System only",
-                edit: "Admin only",
-                mode: "Read-only"
-              },
-              general: {
-                allowed: "Admin, Manager, Sales, Cashier, Kitchen, Delivery, Inventory",
-                send: "Allowed staff",
-                edit: "Admin, Manager",
-                mode: "Can Send"
-              },
-              sales: {
-                allowed: "Admin, Manager, Sales, Cashier",
-                send: "Admin, Manager, Sales, Cashier",
-                edit: "Admin, Manager",
-                mode: "Can Send"
-              },
-              kitchen: {
-                allowed: "Admin, Manager, Kitchen Staff",
-                send: "Admin, Manager, Kitchen Staff",
-                edit: "Admin, Manager",
-                mode: "Can Send"
-              },
-              delivery: {
-                allowed: "Admin, Manager, Delivery Staff",
-                send: "Admin, Manager, Delivery Staff",
-                edit: "Admin, Manager",
-                mode: "Can Send"
-              },
-              riders: {
-                allowed: "Admin, Manager, Delivery Staff, Rider",
-                send: "Admin, Manager, Delivery Staff, Rider",
-                edit: "Admin, Manager",
-                mode: "Can Send"
-              },
-              schedule: {
-                allowed: "Admin, Manager, Staff",
-                send: "Admin edit only",
-                edit: "Admin only",
-                mode: "Staff View-only"
-              },
-              issues: {
-                allowed: "Admin, Manager, Sales, Kitchen, Delivery, Inventory",
-                send: "Allowed staff",
-                edit: "Admin, Manager",
-                mode: "Can Send"
-              },
-              chitchat: {
-                allowed: "Admin, Manager, Sales, Cashier, Kitchen, Delivery, Inventory",
-                send: "Allowed staff",
-                edit: "Admin, Manager",
-                mode: "Can Send"
-              }
-            };
-
-            const rules = roleMap[channel.id] || {
-              allowed: "Admin, Manager",
-              send: "Allowed staff",
-              edit: "Admin, Manager",
-              mode: channel.readOnly ? "Read-only" : "Can Send"
-            };
-
-            return `
-              <div class="group-chat-admin-channel-role-card">
-                <div class="group-chat-admin-channel-top">
-                  <strong>${channel.icon || "💬"} ${channel.name}</strong>
-                  <div>
-                    <button class="group-chat-admin-mini active">Show</button>
-                    <button class="group-chat-admin-mini ${channel.readOnly ? "active" : ""}">${rules.mode}</button>
-                  </div>
-                </div>
-
-                <div class="group-chat-admin-role-lines">
-                  <p><b>Allowed:</b> ${rules.allowed}</p>
-                  <p><b>Can Send:</b> ${rules.send}</p>
-                  <p><b>Can Edit:</b> ${rules.edit}</p>
-                </div>
-              </div>
-            `;
-          }).join("")}
+          ${GROUP_CHAT_CHANNELS.map(channel => renderGroupChatAdminChannelEditor(channel)).join("")}
         </div>
       </section>
 
@@ -681,7 +699,7 @@ shell(`
       </section>
 
       <div class="group-chat-admin-actions">
-        <button class="btn btn-primary">Save Settings</button>
+        <button class="btn btn-primary" onclick="saveGroupChatAdminSettings()">Save Settings</button>
         <button class="btn" onclick="toggleGroupChatAdminSettings()">Close</button>
       </div>
     </aside>
@@ -1325,3 +1343,5 @@ function showGroupChatAdminDebug(){
 }
 
 window.showGroupChatAdminDebug = showGroupChatAdminDebug;
+
+window.saveGroupChatAdminSettings = saveGroupChatAdminSettings;

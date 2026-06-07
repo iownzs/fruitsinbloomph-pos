@@ -6542,3 +6542,49 @@ body[data-page="group-chat"] .group-chat-schedule-viewonly {
   font-size: 11px;
   font-weight: 800;
 }
+
+/* ==================================================
+   Group Chat editable channel role permissions
+================================================== */
+body[data-page="group-chat"] .group-chat-admin-permission-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+body[data-page="group-chat"] .group-chat-admin-permission-grid h4 {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+body[data-page="group-chat"] .group-chat-admin-role-check,
+body[data-page="group-chat"] .group-chat-admin-readonly-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  color: var(--text);
+  font-size: 11px;
+}
+
+body[data-page="group-chat"] .group-chat-admin-role-check input,
+body[data-page="group-chat"] .group-chat-admin-readonly-check input {
+  width: 14px;
+  height: 14px;
+  accent-color: #22c55e;
+}
+
+body[data-page="group-chat"] .group-chat-admin-readonly-check {
+  justify-content: flex-end;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+@media (max-width: 1100px) {
+  body[data-page="group-chat"] .group-chat-admin-permission-grid {
+    grid-template-columns: 1fr;
+  }
+}
