@@ -6588,3 +6588,66 @@ body[data-page="group-chat"] .group-chat-admin-readonly-check {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==================================================
+   Group Chat compact channel management editor
+================================================== */
+body[data-page="group-chat"] .group-chat-admin-channel-management {
+  display: grid;
+  gap: 10px;
+}
+
+body[data-page="group-chat"] .group-chat-admin-channel-tabs {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+body[data-page="group-chat"] .group-chat-admin-channel-tab {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 7px 10px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  background: rgba(255,255,255,.05);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+body[data-page="group-chat"] .group-chat-admin-channel-tab.active {
+  color: #dcfce7;
+  background: rgba(34,197,94,.20);
+  border-color: rgba(34,197,94,.45);
+}
+
+body[data-page="group-chat"] .group-chat-admin-selected-channel-card {
+  padding: 10px;
+}
+
+body[data-page="group-chat"] .group-chat-admin-channel-top small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+@media (max-width: 1100px) {
+  body[data-page="group-chat"] .group-chat-admin-channel-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-channel-tab {
+    width: 100%;
+    justify-content: center;
+    padding: 7px 6px;
+  }
+}

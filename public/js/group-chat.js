@@ -164,6 +164,7 @@ let groupChatMembersOpen = false;
 let groupChatOrderPreviewOpen = false;
 let groupChatAdminSettingsOpen = false;
 let groupChatScheduleEditMode = false;
+let activeGroupChatAdminChannel = "general";
 
 /* Group Chat role permissions */
 const GROUP_CHAT_ROLE_PERMISSIONS = {
@@ -422,14 +423,53 @@ function renderGroupChatRoleCheckboxes(channelId, permissionKey){
   `).join("");
 }
 
+function getActiveGroupChatAdminChannel(){
+  return GROUP_CHAT_CHANNELS.find(channel => channel.id === activeGroupChatAdminChannel) || GROUP_CHAT_CHANNELS[0];
+}
+
+function setGroupChatAdminChannel(channelId){
+  activeGroupChatAdminChannel = channelId;
+  renderGroupChatAdminChannelManagement();
+}
+
+function renderGroupChatAdminChannelManagement(){
+  const wrap = document.getElementById("groupChatAdminChannelManagement");
+
+  if(!wrap){
+    return;
+  }
+
+  const selectedChannel = getActiveGroupChatAdminChannel();
+
+  wrap.innerHTML = `
+    <div class="group-chat-admin-channel-tabs">
+      ${GROUP_CHAT_CHANNELS.map(channel => `
+        <button
+          class="group-chat-admin-channel-tab ${channel.id === selectedChannel.id ? "active" : ""}"
+          onclick="setGroupChatAdminChannel('${channel.id}')"
+        >
+          <span>${channel.icon || "💬"}</span>
+          <strong>${channel.name}</strong>
+        </button>
+      `).join("")}
+    </div>
+
+    ${renderGroupChatAdminChannelEditor(selectedChannel)}
+  `;
+}
+
 function renderGroupChatAdminChannelEditor(channel){
   const rules = getGroupChatChannelRules(channel.id);
   const readOnly = Boolean(rules.readOnly || channel.readonly);
 
   return `
-    <div class="group-chat-admin-channel-role-card" data-channel-id="${channel.id}">
+    <div class="group-chat-admin-selected-channel-card group-chat-admin-channel-role-card" data-channel-id="${channel.id}">
       <div class="group-chat-admin-channel-top">
-        <strong>${channel.icon || "💬"} ${channel.name}</strong>
+        <div>
+          <strong>${channel.icon || "💬"} ${channel.name}</strong>
+          <small>${channel.desc || "Channel permissions"}</small>
+        </div>
+
         <label class="group-chat-admin-readonly-check">
           <input type="checkbox" data-channel-id="${channel.id}" data-perm="readOnly" ${readOnly ? "checked" : ""}>
           <span>Read Only</span>
@@ -478,6 +518,7 @@ function saveGroupChatAdminSettings(){
 
   renderGroupChatChannels();
   renderGroupChatComposer(getActiveChannel());
+  renderGroupChatAdminChannelManagement();
   applyGroupChatViewState();
 
   const saveButton = document.querySelector(".group-chat-admin-actions .btn-primary");
@@ -489,6 +530,7 @@ function saveGroupChatAdminSettings(){
     }, 1200);
   }
 }
+
 
 shell(`
   <div class="group-chat-ref-app">
@@ -551,6 +593,7 @@ shell(`
 
     <aside id="groupChatRightPanel" class="group-chat-ref-panel group-chat-ref-right">
       <div id="groupChatOrderPreview" class="group-chat-order-preview"></div>
+
       <div class="group-chat-ref-pinned">
         <h3>📌 Pinned Messages</h3>
         <div class="group-chat-ref-mini-row">Ops Update: New POS update live. <small>May 19</small></div>
@@ -562,7 +605,6 @@ shell(`
     <aside id="groupChatMembersPanel" class="group-chat-ref-panel group-chat-ref-members-panel">
       <div class="group-chat-ref-members-head">
         <h2>Members</h2>
-        
       </div>
 
       <div class="group-chat-ref-members-list">
@@ -610,15 +652,17 @@ shell(`
       <section class="group-chat-admin-card">
         <h3>1. Admin Profile</h3>
         <div class="group-chat-admin-profile-grid">
-          <div class="group-chat-admin-avatar">MS</div>
+          <div class="group-chat-admin-avatar">${getCurrentGroupChatUserProfile().avatar}</div>
 
           <label>Admin Name
-            <input value="Maria Santos">
+            <input value="${getCurrentGroupChatUserProfile().name}">
           </label>
 
           <label>Role
             <select>
+              <option>${getCurrentGroupChatUserProfile().role}</option>
               <option>Owner / Admin</option>
+              <option>Admin</option>
               <option>Manager</option>
             </select>
           </label>
@@ -661,10 +705,28 @@ shell(`
 
       <section class="group-chat-admin-card">
         <h3>3. Channel Management</h3>
-        <p class="muted">Edit who can view, send, and manage each channel.</p>
+        <p class="muted">Choose one channel, then edit who can view, send, or manage it.</p>
 
-        <div class="group-chat-admin-channel-table">
-          ${GROUP_CHAT_CHANNELS.map(channel => renderGroupChatAdminChannelEditor(channel)).join("")}
+        <div id="groupChatAdminChannelManagement" class="group-chat-admin-channel-management">
+          ${(() => {
+            const selectedChannel = GROUP_CHAT_CHANNELS.find(channel => channel.id === activeGroupChatAdminChannel) || GROUP_CHAT_CHANNELS[0];
+
+            return `
+              <div class="group-chat-admin-channel-tabs">
+                ${GROUP_CHAT_CHANNELS.map(channel => `
+                  <button
+                    class="group-chat-admin-channel-tab ${channel.id === selectedChannel.id ? "active" : ""}"
+                    onclick="setGroupChatAdminChannel('${channel.id}')"
+                  >
+                    <span>${channel.icon || "💬"}</span>
+                    <strong>${channel.name}</strong>
+                  </button>
+                `).join("")}
+              </div>
+
+              ${renderGroupChatAdminChannelEditor(selectedChannel)}
+            `;
+          })()}
         </div>
       </section>
 
@@ -1345,3 +1407,5 @@ function showGroupChatAdminDebug(){
 window.showGroupChatAdminDebug = showGroupChatAdminDebug;
 
 window.saveGroupChatAdminSettings = saveGroupChatAdminSettings;
+
+window.setGroupChatAdminChannel = setGroupChatAdminChannel;
