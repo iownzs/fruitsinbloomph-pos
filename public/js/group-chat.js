@@ -412,7 +412,7 @@ shell(`
             <strong>${getCurrentGroupChatUserProfile().name}</strong>
             <small>${getCurrentGroupChatUserProfile().role}</small>
           </div>
-          <button class="icon-btn" onclick="toggleGroupChatAdminSettings()" title="Admin Profile Settings">⚙</button>
+          ${canEditGroupChatChannel("general") ? `<button class="icon-btn" onclick="toggleGroupChatAdminSettings()" title="Admin Profile Settings">⚙</button>` : ""}
         </div>
       </div>
     </aside>
