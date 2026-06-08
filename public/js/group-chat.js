@@ -1395,7 +1395,7 @@ function renderGroupChatSchedule(){
       ${groupChatScheduleEditMode ? `
         <button class="group-chat-schedule-btn group-chat-schedule-save" type="button" onclick="saveGroupChatSchedule()">Save Schedule</button>
         <button class="group-chat-schedule-btn" type="button" onclick="cancelGroupChatScheduleEdit()">Cancel</button>
-      ` : `${canEditGroupChatChannel("schedule") ? `<button class="group-chat-schedule-btn group-chat-schedule-edit" type="button" onclick="toggleGroupChatScheduleEdit()">Edit Schedule</button>` : `<button class="group-chat-schedule-btn" type="button">View Only</button>`}`}
+      ` : `${canEditGroupChatChannel("schedule") ? `<button class="group-chat-schedule-btn group-chat-schedule-edit" type="button" onclick="toggleGroupChatScheduleEdit()">Edit Schedule</button>` : ``}`}
     </div>
   </div>
 </div>

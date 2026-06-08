@@ -748,3 +748,14 @@
   min-height: 40px !important;
   border-radius: 14px !important;
 }
+
+
+/* Hide empty schedule controls for staff */
+.group-chat-schedule-edit-row:empty,
+.group-chat-schedule-mobile-controls:empty {
+  display: none !important;
+}
+
+.group-chat-schedule-edit-row {
+  min-height: 0 !important;
+}
