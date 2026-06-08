@@ -1477,6 +1477,117 @@ ${groupChatScheduleEditMode ? `
 `;
 }
 
+
+function getGroupChatMentionTrigger(value){
+  const text = String(value || "");
+  const lastAt = text.lastIndexOf("@");
+  const lastHash = text.lastIndexOf("#");
+  const triggerIndex = Math.max(lastAt, lastHash);
+
+  if(triggerIndex < 0){
+    return null;
+  }
+
+  const trigger = text[triggerIndex];
+  const query = text.slice(triggerIndex + 1);
+
+  // Stop suggestions if user already typed a space after @ or #
+  if(/\s/.test(query)){
+    return null;
+  }
+
+  return { trigger, query, triggerIndex };
+}
+
+function renderGroupChatInlineSuggest(){
+  const input = document.getElementById("groupChatMessageInput");
+  const panel = document.getElementById("groupChatInlineSuggest");
+  if(!input || !panel){
+    return;
+  }
+
+  const active = getGroupChatMentionTrigger(input.value);
+
+  if(!active){
+    panel.classList.remove("open");
+    panel.innerHTML = "";
+    return;
+  }
+
+  if(active.trigger === "@"){
+    const q = active.query.toLowerCase();
+    const members = GROUP_CHAT_MEMBERS
+      .filter(member => !q || String(member.name).toLowerCase().includes(q) || String(member.role).toLowerCase().includes(q))
+      .slice(0, 8);
+
+    panel.innerHTML = `
+      <div class="group-chat-inline-title">Mention Staff</div>
+      ${members.map(member => `
+        <button type="button" class="group-chat-inline-choice" onclick="selectGroupChatInlineMention('@${String(member.name).replace(/'/g, "\\'")}')">
+          <span>${member.avatar || "👤"}</span>
+          <strong>${member.name}</strong>
+          <small>${member.role}</small>
+        </button>
+      `).join("")}
+    `;
+    panel.classList.add("open");
+    return;
+  }
+
+  if(active.trigger === "#"){
+    const q = active.query.toUpperCase();
+    const samples = ["ORD-1024", "ORD-1025", "ORD-1026", "ORD-2026"];
+    const orders = samples.filter(order => !q || order.includes(q.replace(/^ORD-?/, "")) || order.includes(q)).slice(0, 8);
+
+    panel.innerHTML = `
+      <div class="group-chat-inline-title">Mention Order</div>
+      ${orders.map(order => `
+        <button type="button" class="group-chat-inline-choice" onclick="selectGroupChatInlineMention('#${order}')">
+          <span>🧾</span>
+          <strong>${order}</strong>
+          <small>Order mention</small>
+        </button>
+      `).join("")}
+    `;
+    panel.classList.add("open");
+  }
+}
+
+function selectGroupChatInlineMention(value){
+  const input = document.getElementById("groupChatMessageInput");
+  const panel = document.getElementById("groupChatInlineSuggest");
+  if(!input){
+    return;
+  }
+
+  const active = getGroupChatMentionTrigger(input.value);
+  if(!active){
+    insertTextInGroupChatInput(value);
+    return;
+  }
+
+  const before = input.value.slice(0, active.triggerIndex);
+  const after = input.value.slice(active.triggerIndex + active.query.length + 1);
+  input.value = `${before}${value} ${after}`.replace(/\s+$/, " ");
+  input.focus();
+
+  panel?.classList.remove("open");
+  if(panel){
+    panel.innerHTML = "";
+  }
+}
+
+function handleGroupChatInputTyping(){
+  renderGroupChatInlineSuggest();
+}
+
+function handleGroupChatInputBlur(){
+  setTimeout(() => {
+    const panel = document.getElementById("groupChatInlineSuggest");
+    panel?.classList.remove("open");
+  }, 180);
+}
+
 function renderGroupChatComposer(channel){
   const composer = document.getElementById("groupChatComposer");
   if(!composer){
@@ -1498,6 +1609,7 @@ function renderGroupChatComposer(channel){
 
   composer.innerHTML = `
 <div class="group-chat-emoji-panel" id="groupChatEmojiPanel"></div>
+<div class="group-chat-inline-suggest" id="groupChatInlineSuggest"></div>
 
 <div class="group-chat-composer-messenger">
   <button class="group-chat-mini-tool" type="button" onclick="toggleGroupChatEmojiPanel()" title="Emoji">😊</button>
@@ -1509,7 +1621,7 @@ function renderGroupChatComposer(channel){
     class="group-chat-messenger-input"
     type="text"
     placeholder="Message..."
-    onkeydown="handleGroupChatComposerKeydown(event)"
+    onkeydown="handleGroupChatComposerKeydown(event)" oninput="handleGroupChatInputTyping()" onblur="handleGroupChatInputBlur()"
   >
 
   <button class="group-chat-messenger-send" type="button" onclick="sendGroupChatMessageFromComposer()">Send</button>
@@ -1860,3 +1972,6 @@ window.saveLocalGroupChatMessageEdit = saveLocalGroupChatMessageEdit;
 
 window.toggleGroupChatEmojiPanel = toggleGroupChatEmojiPanel;
 window.insertGroupChatEmojiValue = insertGroupChatEmojiValue;
+window.handleGroupChatInputTyping = handleGroupChatInputTyping;
+window.handleGroupChatInputBlur = handleGroupChatInputBlur;
+window.selectGroupChatInlineMention = selectGroupChatInlineMention;
