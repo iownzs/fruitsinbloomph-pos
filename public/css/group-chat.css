@@ -2094,3 +2094,26 @@ body:has(.group-chat-schedule-floating-actions) .group-chat-schedule-grid {
     justify-self: end !important;
   }
 }
+
+
+/* Fix composer send icon clipping */
+@media (max-width: 820px) {
+  #groupChatComposer .group-chat-composer-messenger {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-right: 0 !important;
+    grid-template-columns: 38px minmax(0, 1fr) 38px !important;
+    gap: 6px !important;
+    padding-right: 0 !important;
+  }
+
+  #groupChatComposer .group-chat-messenger-send {
+    justify-self: end !important;
+    margin-right: 0 !important;
+  }
+
+  #groupChatComposer .group-chat-messenger-input {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+}
