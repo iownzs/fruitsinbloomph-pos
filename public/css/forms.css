@@ -7204,3 +7204,18 @@ body[data-page="group-chat"] .group-chat-permission-toggle.read-only {
     font-size: 8px !important;
   }
 }
+
+/* ==================================================
+   Group Chat locked channel mode label
+================================================== */
+body[data-page="group-chat"] .group-chat-permission-toggle.read-only.is-disabled {
+  min-width: 82px !important;
+  color: #fde68a !important;
+  background: rgba(245,158,11,.18) !important;
+  border-color: rgba(245,158,11,.38) !important;
+  opacity: 1 !important;
+}
+
+body[data-page="group-chat"] .group-chat-permission-row.head span:last-child {
+  white-space: nowrap !important;
+}

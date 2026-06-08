@@ -460,11 +460,20 @@ function renderGroupChatAdminChannelManagement(){
 
 function renderGroupChatAdminChannelEditor(channel){
   const rules = getGroupChatChannelRules(channel.id);
-  const readOnly = Boolean(rules.readOnly || channel.readonly);
+  const isScheduleChannel = channel.id === "schedule";
+  const isSystemChannel = channel.id === "system";
+  const lockedReadOnly = isScheduleChannel || isSystemChannel;
+  const readOnly = lockedReadOnly ? true : Boolean(rules.readOnly);
+  const editLabel = isScheduleChannel ? "Edit Schedule" : "Edit";
+  const channelModeText = isScheduleChannel
+    ? "Read Only is locked. Schedule Editing is Admin only."
+    : isSystemChannel
+      ? "Read Only is locked. System messages are automated only."
+      : "Read Only disables sending for this channel.";
 
   const permissionRows = GROUP_CHAT_ROLE_OPTIONS.map(role => {
     const canView = rules.allowedRoles.includes(role);
-    const canSend = rules.canSendRoles.includes(role);
+    const canSend = lockedReadOnly ? false : rules.canSendRoles.includes(role);
     const canEdit = rules.canEditRoles.includes(role);
 
     return `
@@ -482,19 +491,19 @@ function renderGroupChatAdminChannelEditor(channel){
           <span>${canView ? "ON" : "OFF"}</span>
         </label>
 
-        <label class="group-chat-permission-toggle ${canSend ? "is-on" : "is-off"} ${readOnly ? "is-disabled" : ""}" title="Can Send">
+        <label class="group-chat-permission-toggle ${canSend ? "is-on" : "is-off"} ${(readOnly || lockedReadOnly) ? "is-disabled" : ""}" title="Can Send">
           <input
             type="checkbox"
             data-channel-id="${channel.id}"
             data-perm="canSendRoles"
             value="${role}"
             ${canSend ? "checked" : ""}
-            ${readOnly ? "disabled" : ""}
+            ${(readOnly || lockedReadOnly) ? "disabled" : ""}
           >
-          <span>${readOnly ? "OFF" : canSend ? "ON" : "OFF"}</span>
+          <span>${lockedReadOnly ? "OFF" : canSend ? "ON" : "OFF"}</span>
         </label>
 
-        <label class="group-chat-permission-toggle ${canEdit ? "is-on" : "is-off"}" title="Can Edit">
+        <label class="group-chat-permission-toggle ${canEdit ? "is-on" : "is-off"}" title="${editLabel}">
           <input
             type="checkbox"
             data-channel-id="${channel.id}"
@@ -520,12 +529,18 @@ function renderGroupChatAdminChannelEditor(channel){
       <div class="group-chat-channel-mode-row">
         <div>
           <strong>Channel Mode</strong>
-          <small>Read Only disables sending for this channel.</small>
+          <small>${channelModeText}</small>
         </div>
 
-        <label class="group-chat-permission-toggle read-only ${readOnly ? "is-on" : "is-off"}">
-          <input type="checkbox" data-channel-id="${channel.id}" data-perm="readOnly" ${readOnly ? "checked" : ""}>
-          <span>${readOnly ? "ON" : "OFF"}</span>
+        <label class="group-chat-permission-toggle read-only ${readOnly ? "is-on" : "is-off"} ${lockedReadOnly ? "is-disabled" : ""}">
+          <input
+            type="checkbox"
+            data-channel-id="${channel.id}"
+            data-perm="readOnly"
+            ${readOnly ? "checked" : ""}
+            ${lockedReadOnly ? "disabled" : ""}
+          >
+          <span>${lockedReadOnly ? "LOCKED ON" : readOnly ? "ON" : "OFF"}</span>
         </label>
       </div>
 
@@ -534,7 +549,7 @@ function renderGroupChatAdminChannelEditor(channel){
           <strong>Role</strong>
           <span>View</span>
           <span>Send</span>
-          <span>Edit</span>
+          <span>${editLabel}</span>
         </div>
 
         ${permissionRows}
@@ -562,7 +577,10 @@ function saveGroupChatAdminSettings(){
       ).map(input => input.value);
     });
 
-    if(rules.readOnly){
+    if(channelId === "system" || channelId === "schedule"){
+      rules.readOnly = true;
+      rules.canSendRoles = [];
+    }else if(rules.readOnly){
       rules.canSendRoles = [];
     }
   });
