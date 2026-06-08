@@ -1613,8 +1613,6 @@ function renderGroupChatComposer(channel){
 
 <div class="group-chat-composer-messenger">
   <button class="group-chat-mini-tool" type="button" onclick="toggleGroupChatEmojiPanel()" title="Emoji">😊</button>
-  <button class="group-chat-mini-tool" type="button" onclick="openGroupChatMentionStaff()" title="Mention Staff">@</button>
-  <button class="group-chat-mini-tool" type="button" onclick="openGroupChatMentionOrder()" title="Mention Order">#</button>
 
   <input
     id="groupChatMessageInput"

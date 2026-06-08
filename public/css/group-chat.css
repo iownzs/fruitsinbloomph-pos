@@ -1843,3 +1843,19 @@ body:has(.group-chat-schedule-floating-actions) .group-chat-schedule-grid {
     max-height: 220px;
   }
 }
+
+
+/* Composer after removing @ and # icons */
+.group-chat-composer-messenger {
+  grid-template-columns: 38px minmax(0, 1fr) auto !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-composer-messenger {
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+  }
+
+  .group-chat-messenger-send {
+    grid-column: 1 / -1 !important;
+  }
+}
