@@ -1,0 +1,217 @@
+/* Group Chat dedicated styles */
+
+.group-chat-ref-app {
+  --gc-border: rgba(20, 184, 166, 0.22);
+  --gc-soft: rgba(240, 253, 250, 0.92);
+  --gc-text: #0f172a;
+  --gc-muted: #64748b;
+  --gc-primary: #0f766e;
+  --gc-primary-soft: #ccfbf1;
+}
+
+.group-chat-message-actions,
+.group-chat-composer-tools,
+.group-chat-schedule-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.group-chat-message-actions {
+  margin-top: 8px;
+}
+
+.group-chat-action-btn,
+.group-chat-tool-btn,
+.group-chat-schedule-btn {
+  border: 1px solid var(--gc-border);
+  background: #ffffff;
+  color: var(--gc-primary);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.group-chat-action-btn:hover,
+.group-chat-tool-btn:hover,
+.group-chat-schedule-btn:hover {
+  background: var(--gc-primary-soft);
+}
+
+.group-chat-composer-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.group-chat-composer-input {
+  width: 100%;
+  min-height: 42px;
+  border-radius: 14px;
+  border: 1px solid var(--gc-border);
+  padding: 10px 12px;
+  outline: none;
+}
+
+.group-chat-send-btn {
+  border: none;
+  background: var(--gc-primary);
+  color: #ffffff;
+  border-radius: 14px;
+  min-height: 42px;
+  padding: 0 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.group-chat-readonly-note {
+  border: 1px solid var(--gc-border);
+  background: var(--gc-soft);
+  color: var(--gc-muted);
+  border-radius: 14px;
+  padding: 12px;
+  font-weight: 700;
+}
+
+.group-chat-reactions {
+  display: inline-flex;
+  margin-top: 8px;
+  border: 1px solid var(--gc-border);
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: #fff;
+  font-size: 12px;
+  color: var(--gc-primary);
+  font-weight: 800;
+}
+
+.group-chat-schedule-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.group-chat-schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.group-chat-schedule-day {
+  border: 1px solid var(--gc-border);
+  border-radius: 16px;
+  background: var(--gc-soft);
+  padding: 12px;
+  min-height: 120px;
+}
+
+.group-chat-schedule-date {
+  font-weight: 900;
+  color: var(--gc-text);
+}
+
+.group-chat-schedule-dayname {
+  font-size: 12px;
+  color: var(--gc-muted);
+  margin-bottom: 8px;
+}
+
+.group-chat-schedule-staff {
+  font-size: 13px;
+  color: var(--gc-text);
+  white-space: pre-wrap;
+}
+
+.group-chat-schedule-input {
+  width: 100%;
+  min-height: 80px;
+  border-radius: 12px;
+  border: 1px solid var(--gc-border);
+  padding: 8px;
+  resize: vertical;
+}
+
+.group-chat-modal-lite {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(15, 23, 42, 0.42);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.group-chat-modal-card {
+  width: min(440px, 100%);
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid var(--gc-border);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+}
+
+.group-chat-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--gc-border);
+}
+
+.group-chat-modal-body {
+  padding: 14px 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.group-chat-modal-list {
+  display: grid;
+  gap: 8px;
+}
+
+.group-chat-modal-choice {
+  border: 1px solid var(--gc-border);
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.group-chat-modal-choice:hover {
+  background: var(--gc-primary-soft);
+}
+
+.group-chat-order-input {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--gc-border);
+  padding: 10px 12px;
+}
+
+@media (max-width: 820px) {
+  .group-chat-composer-row {
+    grid-template-columns: 1fr;
+  }
+
+  .group-chat-composer-tools {
+    width: 100%;
+  }
+
+  .group-chat-tool-btn,
+  .group-chat-send-btn {
+    flex: 1;
+  }
+
+  .group-chat-schedule-grid {
+    grid-template-columns: 1fr;
+  }
+}

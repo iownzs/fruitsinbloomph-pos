@@ -122,15 +122,70 @@ const GROUP_CHAT_MEMBERS = [
   { name: "Alex Rivera", role: "Ops Manager", status: "Offline", tag: "", avatar: "AR" }
 ];
 
-const GROUP_CHAT_SCHEDULE = [
-  { date: "Jun 1", day: "Mon", staff: "Admin, Sales, Kitchen" },
-  { date: "Jun 2", day: "Tue", staff: "Admin, Sales, Delivery" },
-  { date: "Jun 3", day: "Wed", staff: "Admin, Kitchen, Riders" },
-  { date: "Jun 4", day: "Thu", staff: "Sales, Kitchen, Delivery" },
-  { date: "Jun 5", day: "Fri", staff: "Admin, Sales, Riders" },
-  { date: "Jun 6", day: "Sat", staff: "Sales, Kitchen" },
-  { date: "Jun 7", day: "Sun", staff: "Admin, Delivery" }
-];
+
+let groupChatScheduleWeekOffset = 0;
+
+function getGroupChatWeekDates(offsetWeeks = 0){
+  const today = new Date();
+  const day = today.getDay();
+  const mondayDiff = day === 0 ? -6 : 1 - day;
+  const monday = new Date(today);
+  monday.setHours(0, 0, 0, 0);
+  monday.setDate(today.getDate() + mondayDiff + (offsetWeeks * 7));
+
+  return Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + index);
+    return {
+      date: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+      day: date.toLocaleDateString("en-US", { weekday: "short" }),
+      key: date.toISOString().slice(0, 10),
+      staff: ""
+    };
+  });
+}
+
+const GROUP_CHAT_SCHEDULE_STAFF = {
+  0: ["Admin", "Sales", "Kitchen"],
+  1: ["Admin", "Sales", "Delivery"],
+  2: ["Admin", "Kitchen", "Riders"],
+  3: ["Sales", "Kitchen", "Delivery"],
+  4: ["Admin", "Sales", "Riders"],
+  5: ["Sales", "Kitchen"],
+  6: ["Admin", "Delivery"]
+};
+
+let GROUP_CHAT_SCHEDULE = buildGroupChatSchedule();
+
+function buildGroupChatSchedule(){
+  return getGroupChatWeekDates(groupChatScheduleWeekOffset).map((day, index) => {
+    const staffRows = GROUP_CHAT_SCHEDULE_STAFF[index] || [];
+    return {
+      ...day,
+      staff: staffRows.filter(Boolean).join("
+")
+    };
+  });
+}
+
+function refreshGroupChatSchedule(){
+  GROUP_CHAT_SCHEDULE = buildGroupChatSchedule();
+}
+
+function changeGroupChatScheduleWeek(direction){
+  groupChatScheduleWeekOffset += direction;
+  refreshGroupChatSchedule();
+  groupChatScheduleEditMode = false;
+  renderGroupChatSchedule();
+}
+
+function resetGroupChatScheduleWeek(){
+  groupChatScheduleWeekOffset = 0;
+  refreshGroupChatSchedule();
+  groupChatScheduleEditMode = false;
+  renderGroupChatSchedule();
+}
+
 
 const GROUP_CHAT_ANNOUNCEMENTS = [
   {
@@ -1152,91 +1207,240 @@ function renderGroupChatChannels(){
   `).join("");
 }
 
-function renderGroupChatMessages(channel){
-  const messages = GROUP_CHAT_MESSAGES[channel.id] || [];
 
-  document.getElementById("groupChatBody").innerHTML = `
-    <section class="group-chat-channel-chatbox" data-channel="${channel.id}">
-      <div class="group-chat-channel-scroll">
-        <div class="group-chat-ref-message-list">
-          ${messages.map(message => `
-            <article class="group-chat-ref-message">
-              <div class="group-chat-ref-avatar">${message.avatar}</div>
-              <div>
-                <div class="group-chat-ref-message-meta">
-                  <strong>${message.name}</strong>
-                  <span>${message.time}</span>
-                </div>
-                <p>${message.text}</p>
-                ${message.reactions ? `<div class="group-chat-ref-reactions">${message.reactions}</div>` : ""}
-              </div>
-            </article>
+function escapeGroupChatText(value){
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function getGroupChatInput(){
+  return document.getElementById("groupChatMessageInput");
+}
+
+function insertTextInGroupChatInput(text){
+  const input = getGroupChatInput();
+  if(!input){
+    return;
+  }
+  const current = input.value || "";
+  input.value = current ? `${current} ${text}` : text;
+  input.focus();
+}
+
+function insertGroupChatEmoji(){
+  insertTextInGroupChatInput("😊");
+}
+
+function closeGroupChatLiteModal(){
+  document.getElementById("groupChatLiteModal")?.remove();
+}
+
+function openGroupChatMentionStaff(){
+  closeGroupChatLiteModal();
+  const modal = document.createElement("div");
+  modal.id = "groupChatLiteModal";
+  modal.className = "group-chat-modal-lite";
+  modal.innerHTML = `
+    <div class="group-chat-modal-card">
+      <div class="group-chat-modal-head">
+        <strong>Mention Staff</strong>
+        <button class="group-chat-action-btn" type="button" onclick="closeGroupChatLiteModal()">Close</button>
+      </div>
+      <div class="group-chat-modal-body">
+        <div class="group-chat-modal-list">
+          ${GROUP_CHAT_MEMBERS.map(member => `
+            <button class="group-chat-modal-choice" type="button" onclick="insertTextInGroupChatInput('@${String(member.name).replace(/'/g, "\'")}'); closeGroupChatLiteModal();">
+              ${member.avatar || "👤"} ${member.name} — ${member.role}
+            </button>
           `).join("")}
         </div>
       </div>
-    </section>
-  `;
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function openGroupChatMentionOrder(){
+  closeGroupChatLiteModal();
+  const modal = document.createElement("div");
+  modal.id = "groupChatLiteModal";
+  modal.className = "group-chat-modal-lite";
+  modal.innerHTML = `
+    <div class="group-chat-modal-card">
+      <div class="group-chat-modal-head">
+        <strong>Mention Order</strong>
+        <button class="group-chat-action-btn" type="button" onclick="closeGroupChatLiteModal()">Close</button>
+      </div>
+      <div class="group-chat-modal-body">
+        <input id="groupChatOrderMentionInput" class="group-chat-order-input" placeholder="Example: ORD-1024">
+        <button class="group-chat-send-btn" type="button" onclick="insertGroupChatOrderMention()">Insert Order Tag</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  setTimeout(() => document.getElementById("groupChatOrderMentionInput")?.focus(), 50);
+}
+
+function insertGroupChatOrderMention(){
+  const raw = document.getElementById("groupChatOrderMentionInput")?.value || "";
+  const cleaned = raw.trim().toUpperCase();
+  if(!cleaned){
+    return;
+  }
+  const orderId = cleaned.startsWith("ORD-") ? cleaned : `ORD-${cleaned.replace(/^ORD[-\s]?/i, "")}`;
+  insertTextInGroupChatInput(`#${orderId}`);
+  closeGroupChatLiteModal();
+}
+
+function replyGroupChatMessage(index){
+  const channel = getActiveChannel();
+  const message = (GROUP_CHAT_MESSAGES[channel.id] || [])[index];
+  if(!message){
+    return;
+  }
+  insertTextInGroupChatInput(`Replying to @${message.name}:`);
+}
+
+function reactGroupChatMessage(index){
+  const channel = getActiveChannel();
+  const message = (GROUP_CHAT_MESSAGES[channel.id] || [])[index];
+  if(!message){
+    return;
+  }
+  message.reactions = message.reactions ? `${message.reactions} 👍` : "👍 1";
+  renderGroupChatMessages(channel);
+}
+
+function editGroupChatMessage(index){
+  const channel = getActiveChannel();
+  const message = (GROUP_CHAT_MESSAGES[channel.id] || [])[index];
+  if(!message || !canEditGroupChatChannel(channel.id)){
+    return;
+  }
+
+  closeGroupChatLiteModal();
+  const modal = document.createElement("div");
+  modal.id = "groupChatLiteModal";
+  modal.className = "group-chat-modal-lite";
+  modal.innerHTML = `
+    <div class="group-chat-modal-card">
+      <div class="group-chat-modal-head">
+        <strong>Edit Message</strong>
+        <button class="group-chat-action-btn" type="button" onclick="closeGroupChatLiteModal()">Close</button>
+      </div>
+      <div class="group-chat-modal-body">
+        <textarea id="groupChatEditMessageInput" class="group-chat-schedule-input">${escapeGroupChatText(message.text)}</textarea>
+        <button class="group-chat-send-btn" type="button" onclick="saveLocalGroupChatMessageEdit(${index})">Save Edit</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function saveLocalGroupChatMessageEdit(index){
+  const channel = getActiveChannel();
+  const message = (GROUP_CHAT_MESSAGES[channel.id] || [])[index];
+  const text = document.getElementById("groupChatEditMessageInput")?.value?.trim();
+  if(!message || !text){
+    return;
+  }
+  message.text = `${text} (edited)`;
+  closeGroupChatLiteModal();
+  renderGroupChatMessages(channel);
+}
+
+function renderGroupChatMessages(channel){
+  const messages = GROUP_CHAT_MESSAGES[channel.id] || [];
+  const canEdit = canEditGroupChatChannel(channel.id);
+
+  document.getElementById("groupChatBody").innerHTML = `
+${messages.map((message, index) => `
+<div class="group-chat-message" data-message-index="${index}">
+  <div class="group-chat-avatar">${escapeGroupChatText(message.avatar)}</div>
+  <div class="group-chat-message-content">
+    <div class="group-chat-message-meta">
+      <strong>${escapeGroupChatText(message.name)}</strong>
+      <span>${escapeGroupChatText(message.role || "")}</span>
+      <span>${escapeGroupChatText(message.time || "")}</span>
+    </div>
+    <div class="group-chat-message-text">${escapeGroupChatText(message.text).replace(/\n/g, "<br>")}</div>
+    ${message.reactions ? `<div class="group-chat-reactions">${escapeGroupChatText(message.reactions)}</div>` : ""}
+    <div class="group-chat-message-actions">
+      <button class="group-chat-action-btn" type="button" onclick="replyGroupChatMessage(${index})">Reply</button>
+      <button class="group-chat-action-btn" type="button" onclick="reactGroupChatMessage(${index})">React</button>
+      ${canEdit ? `<button class="group-chat-action-btn" type="button" onclick="editGroupChatMessage(${index})">Edit</button>` : ""}
+    </div>
+  </div>
+</div>
+`).join("")}
+`;
 }
 
 function renderGroupChatSchedule(){
+  refreshGroupChatSchedule();
+
   document.getElementById("groupChatBody").innerHTML = `
-    <section class="group-chat-channel-chatbox" data-channel="schedule">
-      <div class="group-chat-channel-scroll">
-        <div class="group-chat-schedule-toolbar">
-          <div>
-            <strong>Weekly Staff Schedule</strong>
-            <small>Admin can edit. Staff view-only.</small>
-          </div>
+<div class="group-chat-schedule-head">
+  <div>
+    <h3>Weekly Staff Schedule</h3>
+    <p>Current week auto view. Admin can edit. Staff view-only.</p>
+  </div>
+  <div class="group-chat-schedule-toolbar">
+    <button class="group-chat-schedule-btn" type="button" onclick="changeGroupChatScheduleWeek(-1)">Previous</button>
+    <button class="group-chat-schedule-btn" type="button" onclick="resetGroupChatScheduleWeek()">This Week</button>
+    <button class="group-chat-schedule-btn" type="button" onclick="changeGroupChatScheduleWeek(1)">Next</button>
+    ${groupChatScheduleEditMode ? `
+      <button class="group-chat-schedule-btn" type="button" onclick="saveGroupChatSchedule()">Save</button>
+      <button class="group-chat-schedule-btn" type="button" onclick="cancelGroupChatScheduleEdit()">Cancel</button>
+    ` : `${canEditGroupChatChannel("schedule") ? `<button class="group-chat-schedule-btn" type="button" onclick="toggleGroupChatScheduleEdit()">Edit Schedule</button>` : `<button class="group-chat-schedule-btn" type="button">View Only</button>`}`}
+  </div>
+</div>
 
-          <div class="group-chat-schedule-actions">
-            ${
-              groupChatScheduleEditMode
-                ? `
-                  <button class="group-chat-schedule-btn save" onclick="saveGroupChatSchedule()">Save</button>
-                  <button class="group-chat-schedule-btn" onclick="cancelGroupChatScheduleEdit()">Cancel</button>
-                `
-                : `${canEditGroupChatChannel("schedule") ? `<button class="group-chat-schedule-btn edit" onclick="toggleGroupChatScheduleEdit()">Edit Schedule</button>` : `<span class="group-chat-schedule-viewonly">View Only</span>`}`
-            }
-          </div>
-        </div>
-
-        <div class="group-chat-ref-schedule ${groupChatScheduleEditMode ? "editing" : ""}">
-          ${GROUP_CHAT_SCHEDULE.map((day, index) => `
-            <div class="group-chat-schedule-day-card">
-              <strong>${day.date}</strong>
-              <small>${day.day}</small>
-
-              ${
-                groupChatScheduleEditMode
-                  ? `<textarea data-schedule-index="${index}" rows="3">${day.staff}</textarea>`
-                  : `<p>${day.staff}</p>`
-              }
-            </div>
-          `).join("")}
-        </div>
-      </div>
-    </section>
-  `;
+<div class="group-chat-schedule-grid">
+  ${GROUP_CHAT_SCHEDULE.map((day, index) => `
+    <div class="group-chat-schedule-day">
+      <div class="group-chat-schedule-date">${day.date}</div>
+      <div class="group-chat-schedule-dayname">${day.day}</div>
+      ${groupChatScheduleEditMode ? `
+        <textarea class="group-chat-schedule-input" data-schedule-index="${index}" placeholder="Staff name per line, up to 20 rows">${escapeGroupChatText(day.staff)}</textarea>
+      ` : `
+        <div class="group-chat-schedule-staff">${escapeGroupChatText(day.staff || "—").replace(/\n/g, "<br>")}</div>
+      `}
+    </div>
+  `).join("")}
+</div>
+`;
 }
 
 function renderGroupChatComposer(channel){
   const composer = document.getElementById("groupChatComposer");
-
   if(!composer){
     return;
   }
 
   if(!canSendGroupChatChannel(channel.id)){
-    composer.innerHTML = `<div class="group-chat-ref-readonly">You can’t send messages in this channel.</div>`;
+    composer.innerHTML = `
+<div class="group-chat-readonly-note">
+  You can’t send messages in this channel.
+</div>`;
     return;
   }
 
   composer.innerHTML = `
-    <input id="groupChatMessageInput" placeholder="Type a message..." onkeydown="handleGroupChatComposerKeydown(event)">
-    <button class="icon-btn">😊</button>
-    <button class="icon-btn" onclick="toggleGroupChatOrderPreview()">@</button>
-    <button class="group-chat-ref-send" onclick="sendGroupChatMessageFromComposer()">➤</button>
-  `;
+<div class="group-chat-composer-row">
+  <div class="group-chat-composer-tools">
+    <button class="group-chat-tool-btn" type="button" onclick="insertGroupChatEmoji()">Emoji</button>
+    <button class="group-chat-tool-btn" type="button" onclick="openGroupChatMentionStaff()">Mention Staff</button>
+    <button class="group-chat-tool-btn" type="button" onclick="openGroupChatMentionOrder()">Mention Order</button>
+  </div>
+  <input
+    id="groupChatMessageInput"
+    class="group-chat-composer-input"
+    type="text"
+    placeholder="Type a message..."
+    onkeydown="handleGroupChatComposerKeydown(event)"
+  >
+  <button class="group-chat-send-btn" type="button" onclick="sendGroupChatMessageFromComposer()">Send</button>
+</div>`;
 }
 
 function renderGroupChatOrderPreview(){
@@ -1394,12 +1598,17 @@ function cancelGroupChatScheduleEdit(){
 function saveGroupChatSchedule(){
   document.querySelectorAll("[data-schedule-index]").forEach(input => {
     const index = Number(input.dataset.scheduleIndex);
-    if(GROUP_CHAT_SCHEDULE[index]){
-      GROUP_CHAT_SCHEDULE[index].staff = input.value.trim() || "No schedule";
-    }
+    const rows = input.value
+      .split(/\n|,/)
+      .map(item => item.trim())
+      .filter(Boolean)
+      .slice(0, 20);
+
+    GROUP_CHAT_SCHEDULE_STAFF[index] = rows;
   });
 
   groupChatScheduleEditMode = false;
+  refreshGroupChatSchedule();
   renderGroupChatSchedule();
 }
 
@@ -1537,3 +1746,18 @@ function toggleGroupChatSystemControl(button){
 }
 
 window.toggleGroupChatSystemControl = toggleGroupChatSystemControl;
+
+
+window.changeGroupChatScheduleWeek = changeGroupChatScheduleWeek;
+window.resetGroupChatScheduleWeek = resetGroupChatScheduleWeek;
+window.insertGroupChatEmoji = insertGroupChatEmoji;
+window.openGroupChatMentionStaff = openGroupChatMentionStaff;
+window.openGroupChatMentionOrder = openGroupChatMentionOrder;
+window.insertGroupChatOrderMention = insertGroupChatOrderMention;
+window.closeGroupChatLiteModal = closeGroupChatLiteModal;
+window.insertTextInGroupChatInput = insertTextInGroupChatInput;
+window.replyGroupChatMessage = replyGroupChatMessage;
+window.reactGroupChatMessage = reactGroupChatMessage;
+window.editGroupChatMessage = editGroupChatMessage;
+window.saveLocalGroupChatMessageEdit = saveLocalGroupChatMessageEdit;
+
