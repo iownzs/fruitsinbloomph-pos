@@ -248,3 +248,67 @@
     margin-top: 22px !important;
   }
 }
+
+
+/* Group Chat schedule dark theme polish */
+.group-chat-schedule-toolbar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.group-chat-schedule-btn {
+  width: 100%;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  color: #f8fafc;
+  min-height: 44px;
+}
+
+.group-chat-schedule-btn:hover {
+  background: rgba(20, 184, 166, 0.22);
+}
+
+.group-chat-schedule-grid {
+  margin-top: 18px;
+}
+
+.group-chat-schedule-day {
+  background: rgba(15, 23, 42, 0.96) !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  color: #f8fafc !important;
+}
+
+.group-chat-schedule-date {
+  color: #f8fafc !important;
+}
+
+.group-chat-schedule-dayname {
+  color: #94a3b8 !important;
+}
+
+.group-chat-schedule-staff {
+  color: #e2e8f0 !important;
+  line-height: 1.65;
+  white-space: normal;
+}
+
+.group-chat-schedule-input {
+  background: rgba(2, 6, 23, 0.78);
+  color: #f8fafc;
+  border-color: rgba(34, 211, 238, 0.18);
+}
+
+@media (max-width: 820px) {
+  .group-chat-schedule-toolbar {
+    grid-template-columns: 1fr;
+    width: min(180px, 100%);
+  }
+
+  .group-chat-schedule-day {
+    min-height: 130px;
+  }
+}

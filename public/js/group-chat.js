@@ -162,7 +162,7 @@ function buildGroupChatSchedule(){
     const staffRows = GROUP_CHAT_SCHEDULE_STAFF[index] || [];
     return {
       ...day,
-      staff: staffRows.filter(Boolean).join("\\n")
+      staff: staffRows.filter(Boolean).join("\n")
     };
   });
 }
@@ -1400,7 +1400,7 @@ function renderGroupChatSchedule(){
       <div class="group-chat-schedule-date">${day.date}</div>
       <div class="group-chat-schedule-dayname">${day.day}</div>
       ${groupChatScheduleEditMode ? `
-        <textarea class="group-chat-schedule-input" data-schedule-index="${index}" placeholder="Staff name per line, up to 20 rows">${escapeGroupChatText(day.staff)}</textarea>
+        <textarea class="group-chat-schedule-input" data-schedule-index="${index}" placeholder="Staff name per line, up to 20 rows">${escapeGroupChatText(day.staff).replace(/\\\\n/g, "\\n")}</textarea>
       ` : `
         <div class="group-chat-schedule-staff">${escapeGroupChatText(day.staff || "—").replace(/\n/g, "<br>")}</div>
       `}
