@@ -1391,19 +1391,6 @@ function renderGroupChatSchedule(){
   document.getElementById("groupChatBody").innerHTML = `
 <div class="group-chat-schedule-head">
   <div class="group-chat-schedule-mobile-controls">
-    <div class="group-chat-week-range-row">
-      <div>
-        <div class="group-chat-week-range-label">Week Range</div>
-        <div class="group-chat-week-range">${getGroupChatScheduleWeekRange()}</div>
-      </div>
-      <button class="group-chat-this-week-btn" type="button" onclick="resetGroupChatScheduleWeek()">This Week</button>
-    </div>
-
-    <div class="group-chat-schedule-nav-row">
-      <button class="group-chat-schedule-btn" type="button" onclick="changeGroupChatScheduleWeek(-1)">Previous</button>
-      <button class="group-chat-schedule-btn" type="button" onclick="changeGroupChatScheduleWeek(1)">Next</button>
-    </div>
-
     <div class="group-chat-schedule-edit-row">
       ${groupChatScheduleEditMode ? `
         <button class="group-chat-schedule-btn group-chat-schedule-save" type="button" onclick="saveGroupChatSchedule()">Save Schedule</button>
