@@ -2342,3 +2342,22 @@ body:has(#groupChatActiveName) #groupChatBody.group-chat-ref-body {
     max-height: 150px !important;
   }
 }
+
+
+/* More reaction emoji grid */
+.group-chat-react-modal-card {
+  width: min(92vw, 420px) !important;
+}
+
+.group-chat-react-picker {
+  grid-template-columns: repeat(6, 1fr) !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-react-picker {
+    grid-template-columns: repeat(4, 1fr) !important;
+    max-height: 280px !important;
+  }
+}
