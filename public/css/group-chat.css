@@ -2181,3 +2181,45 @@ body:has(.group-chat-schedule-floating-actions) .group-chat-schedule-grid {
     justify-self: end !important;
   }
 }
+
+/* FINAL chatbox message scroll fix */
+.group-chat-ref-chat {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+
+#groupChatBody.group-chat-ref-body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 4px !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+#groupChatBody.group-chat-ref-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+#groupChatBody.group-chat-ref-body::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.35);
+  border-radius: 999px;
+}
+
+footer#groupChatComposer.group-chat-ref-composer {
+  flex: 0 0 auto !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-ref-chat {
+    max-height: calc(100vh - 178px) !important;
+    overflow: hidden !important;
+  }
+
+  #groupChatBody.group-chat-ref-body {
+    max-height: 46vh !important;
+    overflow-y: auto !important;
+    padding-bottom: 12px !important;
+  }
+}
