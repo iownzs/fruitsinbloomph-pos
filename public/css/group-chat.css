@@ -851,3 +851,37 @@
     line-height: 1.2 !important;
   }
 }
+
+
+/* Group Chat schedule extra compact text sizing */
+@media (max-width: 820px) {
+  .group-chat-schedule-grid {
+    gap: 6px !important;
+    max-height: 60vh !important;
+    padding-bottom: 28px !important;
+  }
+
+  .group-chat-schedule-day {
+    grid-template-columns: 58px 1fr !important;
+    column-gap: 8px !important;
+    padding: 7px 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .group-chat-schedule-date {
+    font-size: 13px !important;
+    line-height: 1.05 !important;
+  }
+
+  .group-chat-schedule-dayname {
+    font-size: 9px !important;
+    line-height: 1 !important;
+    margin-top: 2px !important;
+  }
+
+  .group-chat-schedule-staff {
+    font-size: 12px !important;
+    line-height: 1.22 !important;
+    padding-left: 8px !important;
+  }
+}
