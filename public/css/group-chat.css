@@ -1859,3 +1859,39 @@ body:has(.group-chat-schedule-floating-actions) .group-chat-schedule-grid {
     grid-column: 1 / -1 !important;
   }
 }
+
+
+/* Messenger composer: emoji + message + send icon */
+.group-chat-composer-messenger {
+  grid-template-columns: 38px minmax(0, 1fr) 42px !important;
+  gap: 8px !important;
+}
+
+.group-chat-messenger-send {
+  width: 42px !important;
+  min-width: 42px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-composer-messenger {
+    grid-template-columns: 34px minmax(0, 1fr) 40px !important;
+    gap: 7px !important;
+  }
+
+  .group-chat-messenger-send {
+    grid-column: auto !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    font-size: 17px !important;
+  }
+}

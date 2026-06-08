@@ -1622,7 +1622,7 @@ function renderGroupChatComposer(channel){
     onkeydown="handleGroupChatComposerKeydown(event)" oninput="handleGroupChatInputTyping()" onblur="handleGroupChatInputBlur()"
   >
 
-  <button class="group-chat-messenger-send" type="button" onclick="sendGroupChatMessageFromComposer()">Send</button>
+  <button class="group-chat-messenger-send" type="button" onclick="sendGroupChatMessageFromComposer()" title="Send">➤</button>
 </div>`;
 }
 
