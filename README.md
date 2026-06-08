@@ -16,3 +16,7 @@ Next:
 - Test all pages
 - Confirm no console errors
 - Connect Firebase in Phase 2
+
+## Documentation
+
+- [Group Chat Structure](docs/GROUP_CHAT.md)
