@@ -1309,10 +1309,26 @@ function replyGroupChatMessage(index){
 function reactGroupChatMessage(index){
   const channel = getActiveChannel();
   const message = (GROUP_CHAT_MESSAGES[channel.id] || [])[index];
+
   if(!message){
     return;
   }
-  message.reactions = message.reactions ? `${message.reactions} 👍` : "👍 1";
+
+  const defaultReaction = "👍";
+  const current = String(message.reactions || "").trim();
+
+  // If already reacted with 👍, remove it instead of repeating.
+  if(current.includes(defaultReaction)){
+    const cleaned = current
+      .replace(/👍\s*\d*/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    message.reactions = cleaned;
+  } else {
+    message.reactions = current ? `${current} ${defaultReaction} 1` : `${defaultReaction} 1`;
+  }
+
   renderGroupChatMessages(channel);
 }
 
