@@ -726,7 +726,7 @@ shell(`
       </div>
 
       <section class="group-chat-admin-card">
-        <h3>1. Admin Profile</h3>
+        <h3>Admin Profile</h3>
         <div class="group-chat-admin-profile-grid">
           <div class="group-chat-admin-avatar">${getCurrentGroupChatUserProfile().avatar}</div>
 
@@ -758,7 +758,7 @@ shell(`
       </section>
 
       <section class="group-chat-admin-card">
-        <h3>2. Announcement Controls</h3>
+        <h3>Announcement Controls</h3>
 
         <label>Announcement Title
           <input value="Operations: Delivery meeting at 3:00 PM">
@@ -780,29 +780,21 @@ shell(`
       </section>
 
       <section class="group-chat-admin-card">
-        <h3>3. Channel Management</h3>
+        <h3>Channel Management</h3>
         <p class="muted">Choose one channel, then edit who can view, send, or manage it.</p>
         <div id="groupChatAdminChannelManagement" class="group-chat-admin-channel-management"></div>
       </section>
 
-      <section class="group-chat-admin-card group-chat-admin-two">
-        <div>
-          <h3>4. Schedule Permission</h3>
-          <p>🔒 Admin can edit schedule</p>
-          <p>👥 Staff view-only</p>
-        </div>
-
-        <div>
-          <h3>5. System Message Controls</h3>
-          <p>✅ Order Updates</p>
-          <p>✅ Kitchen Updates</p>
-          <p>✅ Delivery Updates</p>
-          <p>✅ Stock Updates</p>
-        </div>
+      <section class="group-chat-admin-card">
+        <h3>System Message Controls</h3>
+        <p>✅ Order Updates</p>
+        <p>✅ Kitchen Updates</p>
+        <p>✅ Delivery Updates</p>
+        <p>✅ Stock Updates</p>
       </section>
 
       <section class="group-chat-admin-card">
-        <h3>6. Notification Controls</h3>
+        <h3>Notification Controls</h3>
 
         <div class="group-chat-admin-toggle-row">
           <span>Mute Notifications</span>
