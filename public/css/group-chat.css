@@ -1452,3 +1452,34 @@ body:has(.group-chat-schedule-floating-actions) .group-chat-schedule-grid {
     font-size: 12px !important;
   }
 }
+
+
+/* Schedule edit mode scroll fix */
+@media (max-width: 820px) {
+  .group-chat-schedule-grid {
+    max-height: 54vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-right: 4px !important;
+    padding-bottom: 120px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .group-chat-schedule-grid::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .group-chat-schedule-grid::-webkit-scrollbar-thumb {
+    background: rgba(34, 211, 238, 0.35);
+    border-radius: 999px;
+  }
+
+  .group-chat-schedule-day {
+    overflow: visible !important;
+  }
+
+  .group-chat-schedule-input {
+    max-height: 120px !important;
+    overflow-y: auto !important;
+  }
+}
