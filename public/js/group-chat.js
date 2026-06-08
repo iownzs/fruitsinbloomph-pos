@@ -162,8 +162,7 @@ function buildGroupChatSchedule(){
     const staffRows = GROUP_CHAT_SCHEDULE_STAFF[index] || [];
     return {
       ...day,
-      staff: staffRows.filter(Boolean).join("
-")
+      staff: staffRows.filter(Boolean).join("\\n")
     };
   });
 }
