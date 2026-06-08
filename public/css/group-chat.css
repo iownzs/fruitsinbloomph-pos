@@ -2260,3 +2260,85 @@ body:has(#groupChatActiveName) #groupChatBody.group-chat-ref-body {
     overflow-y: auto !important;
   }
 }
+
+/* Edit message modal mobile polish */
+.group-chat-modal-lite {
+  align-items: center !important;
+  justify-items: center !important;
+  padding: 16px !important;
+}
+
+.group-chat-modal-card {
+  width: min(92vw, 460px) !important;
+  max-height: 82vh !important;
+  border-radius: 22px !important;
+  background: rgba(15, 23, 42, 0.98) !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  overflow: hidden !important;
+}
+
+.group-chat-modal-head {
+  padding: 14px 16px !important;
+  background: rgba(15, 23, 42, 0.98) !important;
+  border-bottom: 1px solid rgba(34, 211, 238, 0.14) !important;
+}
+
+.group-chat-modal-head strong {
+  color: #f8fafc !important;
+  font-size: 18px !important;
+}
+
+.group-chat-modal-head .group-chat-action-btn {
+  background: rgba(30, 41, 59, 0.92) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  border-radius: 999px !important;
+  padding: 9px 14px !important;
+}
+
+.group-chat-modal-body {
+  padding: 16px !important;
+  display: grid !important;
+  gap: 14px !important;
+  max-height: calc(82vh - 64px) !important;
+  overflow-y: auto !important;
+}
+
+#groupChatEditMessageInput {
+  min-height: 120px !important;
+  max-height: 180px !important;
+  border-radius: 16px !important;
+  background: rgba(2, 6, 23, 0.82) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  padding: 12px !important;
+  font-size: 15px !important;
+}
+
+.group-chat-modal-body .group-chat-send-btn {
+  width: 100% !important;
+  min-height: 46px !important;
+  border-radius: 16px !important;
+  background: #0f766e !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  font-weight: 900 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-modal-card {
+    width: 92vw !important;
+    max-height: 72vh !important;
+  }
+
+  .group-chat-modal-body {
+    max-height: calc(72vh - 64px) !important;
+  }
+
+  #groupChatEditMessageInput {
+    min-height: 110px !important;
+    max-height: 150px !important;
+  }
+}
