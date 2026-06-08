@@ -1402,7 +1402,7 @@ function renderGroupChatSchedule(){
       ${groupChatScheduleEditMode ? `
         <textarea class="group-chat-schedule-input" data-schedule-index="${index}" placeholder="Staff name per line, up to 20 rows">${escapeGroupChatText(day.staff).replace(/\\\\n/g, "\\n")}</textarea>
       ` : `
-        <div class="group-chat-schedule-staff">${escapeGroupChatText(day.staff || "—").replace(/\n/g, "<br>")}</div>
+        <div class="group-chat-schedule-staff">${escapeGroupChatText(String(day.staff || "—")).replace(/\\n/g, "<br>").replace(/\n/g, "<br>")}</div>
       `}
     </div>
   `).join("")}
@@ -1413,6 +1413,11 @@ function renderGroupChatSchedule(){
 function renderGroupChatComposer(channel){
   const composer = document.getElementById("groupChatComposer");
   if(!composer){
+    return;
+  }
+
+  if(channel.id === "schedule" || channel.id === "system"){
+    composer.innerHTML = "";
     return;
   }
 

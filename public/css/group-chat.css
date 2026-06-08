@@ -312,3 +312,23 @@
     min-height: 130px;
   }
 }
+
+
+/* Group Chat schedule staff visibility fix */
+.group-chat-schedule-day {
+  min-height: 160px !important;
+  padding-bottom: 18px !important;
+}
+
+.group-chat-schedule-staff {
+  display: block !important;
+  margin-top: 14px !important;
+  color: #e2e8f0 !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  white-space: normal !important;
+}
+
+.group-chat-readonly-note:empty {
+  display: none !important;
+}
