@@ -885,3 +885,53 @@
     padding-left: 8px !important;
   }
 }
+
+
+/* Group Chat Schedule top edit button */
+.group-chat-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.group-chat-title-row h2 {
+  margin: 0;
+}
+
+.group-chat-schedule-top-edit {
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border-radius: 999px;
+  min-height: 38px;
+  padding: 0 16px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.group-chat-schedule-edit-mode-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 10px 0 12px;
+}
+
+.group-chat-schedule-edit-mode-actions .group-chat-schedule-btn {
+  min-height: 40px !important;
+  border-radius: 14px !important;
+}
+
+.group-chat-schedule-edit-mode-actions .group-chat-schedule-save {
+  background: rgba(16, 185, 129, 0.18) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  color: #34d399 !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-schedule-top-edit {
+    min-height: 36px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+}

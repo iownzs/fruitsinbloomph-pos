@@ -1400,6 +1400,12 @@ function renderGroupChatSchedule(){
   </div>
 </div>
 
+${groupChatScheduleEditMode ? `
+  <div class="group-chat-schedule-edit-mode-actions">
+    <button class="group-chat-schedule-btn group-chat-schedule-save" type="button" onclick="saveGroupChatSchedule()">Save Schedule</button>
+    <button class="group-chat-schedule-btn" type="button" onclick="cancelGroupChatScheduleEdit()">Cancel</button>
+  </div>
+` : ""}
 <div class="group-chat-schedule-grid">
   ${GROUP_CHAT_SCHEDULE.map((day, index) => `
     <div class="group-chat-schedule-day">
