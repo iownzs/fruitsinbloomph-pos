@@ -462,6 +462,52 @@ function renderGroupChatAdminChannelEditor(channel){
   const rules = getGroupChatChannelRules(channel.id);
   const readOnly = Boolean(rules.readOnly || channel.readonly);
 
+  const permissionRows = GROUP_CHAT_ROLE_OPTIONS.map(role => {
+    const canView = rules.allowedRoles.includes(role);
+    const canSend = rules.canSendRoles.includes(role);
+    const canEdit = rules.canEditRoles.includes(role);
+
+    return `
+      <div class="group-chat-permission-row">
+        <strong>${role}</strong>
+
+        <label class="group-chat-permission-toggle ${canView ? "is-on" : "is-off"}" title="Can View">
+          <input
+            type="checkbox"
+            data-channel-id="${channel.id}"
+            data-perm="allowedRoles"
+            value="${role}"
+            ${canView ? "checked" : ""}
+          >
+          <span>${canView ? "ON" : "OFF"}</span>
+        </label>
+
+        <label class="group-chat-permission-toggle ${canSend ? "is-on" : "is-off"} ${readOnly ? "is-disabled" : ""}" title="Can Send">
+          <input
+            type="checkbox"
+            data-channel-id="${channel.id}"
+            data-perm="canSendRoles"
+            value="${role}"
+            ${canSend ? "checked" : ""}
+            ${readOnly ? "disabled" : ""}
+          >
+          <span>${readOnly ? "OFF" : canSend ? "ON" : "OFF"}</span>
+        </label>
+
+        <label class="group-chat-permission-toggle ${canEdit ? "is-on" : "is-off"}" title="Can Edit">
+          <input
+            type="checkbox"
+            data-channel-id="${channel.id}"
+            data-perm="canEditRoles"
+            value="${role}"
+            ${canEdit ? "checked" : ""}
+          >
+          <span>${canEdit ? "ON" : "OFF"}</span>
+        </label>
+      </div>
+    `;
+  }).join("");
+
   return `
     <div class="group-chat-admin-selected-channel-card group-chat-admin-channel-role-card" data-channel-id="${channel.id}">
       <div class="group-chat-admin-channel-top">
@@ -469,28 +515,29 @@ function renderGroupChatAdminChannelEditor(channel){
           <strong>${channel.icon || "💬"} ${channel.name}</strong>
           <small>${channel.desc || "Channel permissions"}</small>
         </div>
+      </div>
 
-        <label class="group-chat-admin-readonly-check">
+      <div class="group-chat-channel-mode-row">
+        <div>
+          <strong>Channel Mode</strong>
+          <small>Read Only disables sending for this channel.</small>
+        </div>
+
+        <label class="group-chat-permission-toggle read-only ${readOnly ? "is-on" : "is-off"}">
           <input type="checkbox" data-channel-id="${channel.id}" data-perm="readOnly" ${readOnly ? "checked" : ""}>
-          <span>Read Only</span>
+          <span>${readOnly ? "ON" : "OFF"}</span>
         </label>
       </div>
 
-      <div class="group-chat-admin-permission-grid">
-        <div>
-          <h4>Can View</h4>
-          ${renderGroupChatRoleCheckboxes(channel.id, "allowedRoles")}
+      <div class="group-chat-permission-matrix">
+        <div class="group-chat-permission-row head">
+          <strong>Role</strong>
+          <span>View</span>
+          <span>Send</span>
+          <span>Edit</span>
         </div>
 
-        <div>
-          <h4>Can Send</h4>
-          ${renderGroupChatRoleCheckboxes(channel.id, "canSendRoles")}
-        </div>
-
-        <div>
-          <h4>Can Edit</h4>
-          ${renderGroupChatRoleCheckboxes(channel.id, "canEditRoles")}
-        </div>
+        ${permissionRows}
       </div>
     </div>
   `;
@@ -506,14 +553,18 @@ function saveGroupChatAdminSettings(){
 
     const rules = GROUP_CHAT_ROLE_PERMISSIONS[channelId];
 
+    const readOnlyInput = card.querySelector('input[data-perm="readOnly"]');
+    rules.readOnly = Boolean(readOnlyInput?.checked);
+
     ["allowedRoles", "canSendRoles", "canEditRoles"].forEach(permissionKey => {
       rules[permissionKey] = Array.from(
         card.querySelectorAll(`input[data-perm="${permissionKey}"]:checked`)
       ).map(input => input.value);
     });
 
-    const readOnlyInput = card.querySelector('input[data-perm="readOnly"]');
-    rules.readOnly = Boolean(readOnlyInput?.checked);
+    if(rules.readOnly){
+      rules.canSendRoles = [];
+    }
   });
 
   renderGroupChatChannels();
@@ -530,243 +581,6 @@ function saveGroupChatAdminSettings(){
     }, 1200);
   }
 }
-
-
-shell(`
-  <div class="group-chat-ref-app">
-    <aside id="groupChatChannelsPanel" class="group-chat-ref-panel group-chat-ref-channels">
-      <section class="group-chat-ref-announcement">
-        <div class="group-chat-ref-icon">📣</div>
-        <div>
-          <strong id="groupChatSidebarAnnouncementTitle">Header Announcement</strong>
-          <p id="groupChatSidebarAnnouncementText">Loading announcement...</p>
-        </div>
-        <button class="icon-btn group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
-      </section>
-
-      <div class="group-chat-ref-channel-head group-chat-ref-channel-head-clean">
-        <span>Team Channels</span>
-      </div>
-
-      <div class="group-chat-channel-scroll-area">
-        <div id="groupChatChannelList" class="group-chat-ref-channel-list"></div>
-
-        <div class="group-chat-ref-profile">
-          <div class="group-chat-ref-avatar">${getCurrentGroupChatUserProfile().avatar}</div>
-          <div>
-            <strong>${getCurrentGroupChatUserProfile().name}</strong>
-            <small>${getCurrentGroupChatUserProfile().role}</small>
-          </div>
-          ${canEditGroupChatChannel("general") ? `<button class="icon-btn" onclick="toggleGroupChatAdminSettings()" title="Admin Profile Settings">⚙</button>` : ""}
-        </div>
-      </div>
-    </aside>
-
-    <main class="group-chat-ref-chat">
-      <header class="group-chat-ref-chat-head group-chat-ref-chat-head-clean">
-        <div>
-          <h3 id="groupChatActiveName">General</h3>
-          <p id="groupChatActiveDesc">23 members, 4 online</p>
-        </div>
-        <button class="group-chat-ref-members-btn" onclick="toggleGroupChatMembers()">👥</button>
-        <button class="group-chat-ref-channels-btn" onclick="toggleGroupChatChannels()">Channels</button>
-      </header>
-
-      <section id="groupChatSlimAnnouncement" class="group-chat-ref-slim-announcement">
-        <span>📣</span>
-        <div class="group-chat-announcement-copy">
-          <strong id="groupChatSlimAnnouncementText">Announcement</strong>
-          <p id="groupChatSlimAnnouncementMessage"></p>
-        </div>
-        <button class="group-chat-announcement-next" onclick="nextGroupChatAnnouncement()" title="Next sample announcement">Next</button>
-        <button class="group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)" title="Minimize announcement">⌃</button>
-      </section>
-
-      <button class="group-chat-ref-pinned-row" onclick="toggleGroupChatOrderPreview()">
-        📌 Pinned <strong>3</strong> <span>›</span>
-      </button>
-
-      <section id="groupChatBody" class="group-chat-ref-body"></section>
-
-      <footer id="groupChatComposer" class="group-chat-ref-composer"></footer>
-    </main>
-
-    <aside id="groupChatRightPanel" class="group-chat-ref-panel group-chat-ref-right">
-      <div id="groupChatOrderPreview" class="group-chat-order-preview"></div>
-
-      <div class="group-chat-ref-pinned">
-        <h3>📌 Pinned Messages</h3>
-        <div class="group-chat-ref-mini-row">Ops Update: New POS update live. <small>May 19</small></div>
-        <div class="group-chat-ref-mini-row">Inventory check every Monday 8 AM. <small>May 18</small></div>
-        <div class="group-chat-ref-mini-row">Delivery meeting at 3:00 PM daily. <small>May 17</small></div>
-      </div>
-    </aside>
-
-    <aside id="groupChatMembersPanel" class="group-chat-ref-panel group-chat-ref-members-panel">
-      <div class="group-chat-ref-members-head">
-        <h2>Members</h2>
-      </div>
-
-      <div class="group-chat-ref-members-list">
-        <section class="group-chat-members-section">
-          <h3>Online Members</h3>
-          ${GROUP_CHAT_MEMBERS.filter(member => String(member.status).toLowerCase() === "online").map(member => `
-            <div class="group-chat-ref-member">
-              <div class="group-chat-ref-avatar">${member.avatar}</div>
-              <div>
-                <strong>${member.name}</strong>
-                <small>${member.role}</small>
-              </div>
-              <span class="group-chat-ref-status online">Online</span>
-            </div>
-          `).join("")}
-        </section>
-
-        <section class="group-chat-members-section">
-          <h3>Offline Members</h3>
-          ${GROUP_CHAT_MEMBERS.filter(member => String(member.status).toLowerCase() !== "online").map(member => `
-            <div class="group-chat-ref-member offline">
-              <div class="group-chat-ref-avatar">${member.avatar}</div>
-              <div>
-                <strong>${member.name}</strong>
-                <small>${member.role}</small>
-              </div>
-              <span class="group-chat-ref-status offline">Offline</span>
-            </div>
-          `).join("")}
-        </section>
-      </div>
-
-      <button class="group-chat-ref-leave" onclick="toggleGroupChatMembers()">Close Members</button>
-    </aside>
-
-    <aside id="groupChatAdminSettingsPanel" class="group-chat-admin-settings-panel">
-      <div class="group-chat-admin-settings-head">
-        <div>
-          <h2>Admin Profile Settings</h2>
-          <p class="muted">Owner/Admin controls for Group Chat</p>
-        </div>
-        <button class="icon-btn" onclick="toggleGroupChatAdminSettings()">×</button>
-      </div>
-
-      <section class="group-chat-admin-card">
-        <h3>1. Admin Profile</h3>
-        <div class="group-chat-admin-profile-grid">
-          <div class="group-chat-admin-avatar">${getCurrentGroupChatUserProfile().avatar}</div>
-
-          <label>Admin Name
-            <input value="${getCurrentGroupChatUserProfile().name}">
-          </label>
-
-          <label>Role
-            <select>
-              <option>${getCurrentGroupChatUserProfile().role}</option>
-              <option>Owner / Admin</option>
-              <option>Admin</option>
-              <option>Manager</option>
-            </select>
-          </label>
-
-          <label>Status
-            <select>
-              <option>Online</option>
-              <option>Busy</option>
-              <option>Away</option>
-            </select>
-          </label>
-
-          <label class="wide">Status Message
-            <input value="Managing the shop">
-          </label>
-        </div>
-      </section>
-
-      <section class="group-chat-admin-card">
-        <h3>2. Announcement Controls</h3>
-
-        <label>Announcement Title
-          <input value="Operations: Delivery meeting at 3:00 PM">
-        </label>
-
-        <label>Announcement Message
-          <textarea rows="3">Please update rider status before noon. Delivery team should check pending dispatch orders.</textarea>
-        </label>
-
-        <div class="group-chat-admin-toggle-row">
-          <span>Pin Announcement</span>
-          <button class="group-chat-admin-toggle active">On</button>
-        </div>
-
-        <div class="group-chat-admin-toggle-row">
-          <span>Show Announcement</span>
-          <button class="group-chat-admin-toggle active">On</button>
-        </div>
-      </section>
-
-      <section class="group-chat-admin-card">
-        <h3>3. Channel Management</h3>
-        <p class="muted">Choose one channel, then edit who can view, send, or manage it.</p>
-
-        <div id="groupChatAdminChannelManagement" class="group-chat-admin-channel-management">
-          ${(() => {
-            const selectedChannel = GROUP_CHAT_CHANNELS.find(channel => channel.id === activeGroupChatAdminChannel) || GROUP_CHAT_CHANNELS[0];
-
-            return `
-              <div class="group-chat-admin-channel-tabs">
-                ${GROUP_CHAT_CHANNELS.map(channel => `
-                  <button
-                    class="group-chat-admin-channel-tab ${channel.id === selectedChannel.id ? "active" : ""}"
-                    onclick="setGroupChatAdminChannel('${channel.id}')"
-                  >
-                    <span>${channel.icon || "💬"}</span>
-                    <strong>${channel.name}</strong>
-                  </button>
-                `).join("")}
-              </div>
-
-              ${renderGroupChatAdminChannelEditor(selectedChannel)}
-            `;
-          })()}
-        </div>
-      </section>
-
-      <section class="group-chat-admin-card group-chat-admin-two">
-        <div>
-          <h3>4. Schedule Permission</h3>
-          <p>🔒 Admin can edit schedule</p>
-          <p>👥 Staff view-only</p>
-        </div>
-
-        <div>
-          <h3>5. System Message Controls</h3>
-          <p>✅ Order Updates</p>
-          <p>✅ Kitchen Updates</p>
-          <p>✅ Delivery Updates</p>
-          <p>✅ Stock Updates</p>
-        </div>
-      </section>
-
-      <section class="group-chat-admin-card">
-        <h3>6. Notification Controls</h3>
-
-        <div class="group-chat-admin-toggle-row">
-          <span>Mute Notifications</span>
-          <button class="group-chat-admin-toggle">Off</button>
-        </div>
-
-        <div class="group-chat-admin-toggle-row">
-          <span>Show Read Receipts</span>
-          <button class="group-chat-admin-toggle active">On</button>
-        </div>
-      </section>
-
-      <div class="group-chat-admin-actions">
-        <button class="btn btn-primary" onclick="saveGroupChatAdminSettings()">Save Settings</button>
-        <button class="btn" onclick="toggleGroupChatAdminSettings()">Close</button>
-      </div>
-    </aside>
-  </div>
-`);
 
 function renderGroupChatAnnouncement(){
   const announcement = GROUP_CHAT_ANNOUNCEMENTS[activeGroupChatAnnouncementIndex] || GROUP_CHAT_ANNOUNCEMENTS[0];
@@ -1409,3 +1223,24 @@ window.showGroupChatAdminDebug = showGroupChatAdminDebug;
 window.saveGroupChatAdminSettings = saveGroupChatAdminSettings;
 
 window.setGroupChatAdminChannel = setGroupChatAdminChannel;
+
+document.addEventListener("change", event => {
+  const toggle = event.target?.closest?.(".group-chat-permission-toggle");
+  if(!toggle){
+    return;
+  }
+
+  const input = toggle.querySelector("input");
+  const label = toggle.querySelector("span");
+
+  toggle.classList.toggle("is-on", Boolean(input?.checked));
+  toggle.classList.toggle("is-off", !input?.checked);
+
+  if(label){
+    label.textContent = input?.checked ? "ON" : "OFF";
+  }
+
+  if(input?.dataset?.perm === "readOnly"){
+    renderGroupChatAdminChannelManagement();
+  }
+});
