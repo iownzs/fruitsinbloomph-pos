@@ -787,10 +787,28 @@ shell(`
 
       <section class="group-chat-admin-card">
         <h3>System Message Controls</h3>
-        <p>✅ Order Updates</p>
-        <p>✅ Kitchen Updates</p>
-        <p>✅ Delivery Updates</p>
-        <p>✅ Stock Updates</p>
+
+        <div class="group-chat-system-control-list">
+          <div class="group-chat-system-control-row">
+            <span>Order Updates</span>
+            <button class="group-chat-system-toggle active" type="button" data-system-log="orders" onclick="toggleGroupChatSystemControl(this)">ON</button>
+          </div>
+
+          <div class="group-chat-system-control-row">
+            <span>Kitchen Updates</span>
+            <button class="group-chat-system-toggle active" type="button" data-system-log="kitchen" onclick="toggleGroupChatSystemControl(this)">ON</button>
+          </div>
+
+          <div class="group-chat-system-control-row">
+            <span>Delivery Updates</span>
+            <button class="group-chat-system-toggle active" type="button" data-system-log="delivery" onclick="toggleGroupChatSystemControl(this)">ON</button>
+          </div>
+
+          <div class="group-chat-system-control-row">
+            <span>Stock Updates</span>
+            <button class="group-chat-system-toggle active" type="button" data-system-log="stock" onclick="toggleGroupChatSystemControl(this)">ON</button>
+          </div>
+        </div>
       </section>
 
       <section class="group-chat-admin-card">
@@ -1512,3 +1530,10 @@ document.addEventListener("change", event => {
     renderGroupChatAdminChannelManagement();
   }
 });
+
+function toggleGroupChatSystemControl(button){
+  const isActive = button.classList.toggle("active");
+  button.textContent = isActive ? "ON" : "OFF";
+}
+
+window.toggleGroupChatSystemControl = toggleGroupChatSystemControl;
