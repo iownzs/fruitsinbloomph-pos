@@ -2223,3 +2223,40 @@ footer#groupChatComposer.group-chat-ref-composer {
     padding-bottom: 12px !important;
   }
 }
+
+/* Fix Schedule double-scroll after chatbox scroll patch */
+body:has(#groupChatActiveName) #groupChatBody.group-chat-ref-body {
+  scrollbar-gutter: stable;
+}
+
+/* Schedule view should use only the schedule list scroll, not body scroll */
+.group-chat-ref-chat:has(.group-chat-schedule-grid) {
+  overflow: hidden !important;
+}
+
+.group-chat-ref-chat:has(.group-chat-schedule-grid) #groupChatBody.group-chat-ref-body {
+  flex: 0 1 auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  padding-right: 0 !important;
+}
+
+/* Keep only one scrollbar on schedule grid */
+.group-chat-ref-chat:has(.group-chat-schedule-grid) .group-chat-schedule-grid {
+  max-height: 54vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 4px !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-ref-chat:has(.group-chat-schedule-grid) #groupChatBody.group-chat-ref-body {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .group-chat-ref-chat:has(.group-chat-schedule-grid) .group-chat-schedule-grid {
+    max-height: 52vh !important;
+    overflow-y: auto !important;
+  }
+}
