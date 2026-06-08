@@ -1374,6 +1374,17 @@ ${messages.map((message, index) => `
 `;
 }
 
+
+function getGroupChatScheduleWeekRange(){
+  const days = GROUP_CHAT_SCHEDULE || [];
+  if(!days.length){
+    return "";
+  }
+  const first = days[0]?.date || "";
+  const last = days[days.length - 1]?.date || "";
+  return first && last ? `${first} - ${last}` : "";
+}
+
 function renderGroupChatSchedule(){
   refreshGroupChatSchedule();
 
@@ -1383,14 +1394,26 @@ function renderGroupChatSchedule(){
     <h3>Weekly Staff Schedule</h3>
     <p>Current week auto view. Admin can edit. Staff view-only.</p>
   </div>
-  <div class="group-chat-schedule-toolbar">
-    <button class="group-chat-schedule-btn" type="button" onclick="changeGroupChatScheduleWeek(-1)">Previous</button>
-    <button class="group-chat-schedule-btn" type="button" onclick="resetGroupChatScheduleWeek()">This Week</button>
-    <button class="group-chat-schedule-btn" type="button" onclick="changeGroupChatScheduleWeek(1)">Next</button>
-    ${groupChatScheduleEditMode ? `
-      <button class="group-chat-schedule-btn" type="button" onclick="saveGroupChatSchedule()">Save</button>
-      <button class="group-chat-schedule-btn" type="button" onclick="cancelGroupChatScheduleEdit()">Cancel</button>
-    ` : `${canEditGroupChatChannel("schedule") ? `<button class="group-chat-schedule-btn" type="button" onclick="toggleGroupChatScheduleEdit()">Edit Schedule</button>` : `<button class="group-chat-schedule-btn" type="button">View Only</button>`}`}
+  <div class="group-chat-schedule-mobile-controls">
+    <div class="group-chat-week-range-row">
+      <div>
+        <div class="group-chat-week-range-label">Week Range</div>
+        <div class="group-chat-week-range">${getGroupChatScheduleWeekRange()}</div>
+      </div>
+      <button class="group-chat-this-week-btn" type="button" onclick="resetGroupChatScheduleWeek()">This Week</button>
+    </div>
+
+    <div class="group-chat-schedule-nav-row">
+      <button class="group-chat-schedule-btn" type="button" onclick="changeGroupChatScheduleWeek(-1)">Previous</button>
+      <button class="group-chat-schedule-btn" type="button" onclick="changeGroupChatScheduleWeek(1)">Next</button>
+    </div>
+
+    <div class="group-chat-schedule-edit-row">
+      ${groupChatScheduleEditMode ? `
+        <button class="group-chat-schedule-btn group-chat-schedule-save" type="button" onclick="saveGroupChatSchedule()">Save Schedule</button>
+        <button class="group-chat-schedule-btn" type="button" onclick="cancelGroupChatScheduleEdit()">Cancel</button>
+      ` : `${canEditGroupChatChannel("schedule") ? `<button class="group-chat-schedule-btn group-chat-schedule-edit" type="button" onclick="toggleGroupChatScheduleEdit()">Edit Schedule</button>` : `<button class="group-chat-schedule-btn" type="button">View Only</button>`}`}
+    </div>
   </div>
 </div>
 
