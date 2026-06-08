@@ -1686,3 +1686,79 @@ body:has(.group-chat-schedule-floating-actions) .group-chat-schedule-grid {
     grid-template-columns: repeat(6, 1fr);
   }
 }
+
+
+/* Group Chat emoji picker and mention modal polish */
+.group-chat-emoji-panel {
+  position: absolute !important;
+  left: 12px !important;
+  right: 12px !important;
+  bottom: 108px !important;
+  z-index: 80 !important;
+  max-height: 210px !important;
+  overflow-y: auto !important;
+  padding: 10px !important;
+  border-radius: 18px !important;
+  background: rgba(15, 23, 42, 0.98) !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.36) !important;
+}
+
+.group-chat-composer {
+  position: relative !important;
+}
+
+.group-chat-emoji-choice {
+  color: #f8fafc !important;
+}
+
+.group-chat-modal-card {
+  background: rgba(15, 23, 42, 0.98) !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  color: #f8fafc !important;
+  max-height: 78vh !important;
+  overflow: hidden !important;
+}
+
+.group-chat-modal-head {
+  background: rgba(15, 23, 42, 0.98) !important;
+  border-bottom: 1px solid rgba(34, 211, 238, 0.14) !important;
+}
+
+.group-chat-modal-head strong {
+  color: #f8fafc !important;
+}
+
+.group-chat-modal-body {
+  max-height: calc(78vh - 66px) !important;
+  overflow-y: auto !important;
+}
+
+.group-chat-modal-choice {
+  background: rgba(30, 41, 59, 0.78) !important;
+  color: #f8fafc !important;
+  border-color: rgba(34, 211, 238, 0.14) !important;
+}
+
+.group-chat-modal-choice:hover {
+  background: rgba(20, 184, 166, 0.2) !important;
+}
+
+.group-chat-order-input {
+  background: rgba(2, 6, 23, 0.78) !important;
+  color: #f8fafc !important;
+  border-color: rgba(34, 211, 238, 0.18) !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-emoji-panel {
+    bottom: 104px !important;
+    max-height: 190px !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
+
+  .group-chat-modal-card {
+    width: min(92vw, 420px) !important;
+    border-radius: 22px !important;
+  }
+}
