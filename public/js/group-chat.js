@@ -1457,14 +1457,48 @@ document.addEventListener("change", event => {
   const input = toggle.querySelector("input");
   const label = toggle.querySelector("span");
 
-  toggle.classList.toggle("is-on", Boolean(input?.checked));
-  toggle.classList.toggle("is-off", !input?.checked);
-
-  if(label){
-    label.textContent = input?.checked ? "ON" : "OFF";
+  if(!input){
+    return;
   }
 
-  if(input?.dataset?.perm === "readOnly"){
+  const channelId = input.dataset.channelId;
+  const permissionKey = input.dataset.perm;
+
+  if(channelId && GROUP_CHAT_ROLE_PERMISSIONS[channelId]){
+    const rules = GROUP_CHAT_ROLE_PERMISSIONS[channelId];
+
+    if(permissionKey === "readOnly"){
+      rules.readOnly = Boolean(input.checked);
+
+      if(rules.readOnly){
+        rules.canSendRoles = [];
+      }
+    }
+
+    if(["allowedRoles", "canSendRoles", "canEditRoles"].includes(permissionKey)){
+      const role = input.value;
+      const list = Array.isArray(rules[permissionKey]) ? rules[permissionKey] : [];
+
+      if(input.checked && !list.includes(role)){
+        list.push(role);
+      }
+
+      if(!input.checked){
+        rules[permissionKey] = list.filter(item => item !== role);
+      }else{
+        rules[permissionKey] = list;
+      }
+    }
+  }
+
+  toggle.classList.toggle("is-on", Boolean(input.checked));
+  toggle.classList.toggle("is-off", !input.checked);
+
+  if(label){
+    label.textContent = input.checked ? "ON" : "OFF";
+  }
+
+  if(permissionKey === "readOnly"){
     renderGroupChatAdminChannelManagement();
   }
 });
