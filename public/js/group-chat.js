@@ -698,13 +698,15 @@ shell(`
 
     <main class="group-chat-ref-chat">
       <header class="group-chat-ref-chat-head group-chat-ref-chat-head-clean">
-        <div>
+        <div class="group-chat-ref-chat-title-block">
           <h3 id="groupChatActiveName">General</h3>
           <p id="groupChatActiveDesc">23 members, 4 online</p>
         </div>
-        <button class="group-chat-ref-members-btn" onclick="toggleGroupChatMembers()">👥</button>
-        <span id="groupChatScheduleHeaderActions" class="group-chat-schedule-header-actions"></span>
-        <button class="group-chat-ref-channels-btn" onclick="toggleGroupChatChannels()">Channels</button>
+        <div class="group-chat-ref-chat-actions">
+          <button class="group-chat-ref-members-btn" onclick="toggleGroupChatMembers()">👥</button>
+          <span id="groupChatScheduleHeaderActions" class="group-chat-schedule-header-actions"></span>
+          <button class="group-chat-ref-channels-btn" onclick="toggleGroupChatChannels()">Channels</button>
+        </div>
       </header>
 
       <section id="groupChatSlimAnnouncement" class="group-chat-ref-slim-announcement">
