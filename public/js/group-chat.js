@@ -1390,10 +1390,6 @@ function renderGroupChatSchedule(){
 
   document.getElementById("groupChatBody").innerHTML = `
 <div class="group-chat-schedule-head">
-  <div>
-    <h3>Weekly Staff Schedule</h3>
-    <p>Current week auto view. Admin can edit. Staff view-only.</p>
-  </div>
   <div class="group-chat-schedule-mobile-controls">
     <div class="group-chat-week-range-row">
       <div>

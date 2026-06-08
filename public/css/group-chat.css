@@ -613,3 +613,111 @@
     grid-template-columns: 74px 1fr !important;
   }
 }
+
+
+/* Group Chat Schedule compact full-week mobile view */
+.group-chat-schedule-head {
+  margin-bottom: 10px !important;
+  gap: 8px !important;
+}
+
+.group-chat-schedule-mobile-controls {
+  margin-top: 0 !important;
+  padding: 12px !important;
+  border-radius: 18px !important;
+}
+
+.group-chat-week-range-row {
+  margin-bottom: 2px !important;
+}
+
+.group-chat-week-range-label {
+  display: none !important;
+}
+
+.group-chat-week-range {
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+}
+
+.group-chat-this-week-btn {
+  min-height: 34px !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+}
+
+.group-chat-schedule-nav-row,
+.group-chat-schedule-edit-row {
+  gap: 8px !important;
+}
+
+.group-chat-schedule-btn {
+  min-height: 38px !important;
+  border-radius: 14px !important;
+  font-size: 13px !important;
+}
+
+.group-chat-schedule-grid {
+  margin-top: 10px !important;
+  gap: 8px !important;
+  max-height: none !important;
+  overflow: visible !important;
+  padding-bottom: 6px !important;
+}
+
+.group-chat-schedule-day {
+  display: grid !important;
+  grid-template-columns: 72px 1fr !important;
+  align-items: center !important;
+  min-height: auto !important;
+  height: auto !important;
+  padding: 10px 12px !important;
+  border-radius: 14px !important;
+  overflow: visible !important;
+}
+
+.group-chat-schedule-date {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  font-size: 15px !important;
+  line-height: 1.1 !important;
+  font-weight: 900 !important;
+}
+
+.group-chat-schedule-dayname {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  margin: 2px 0 0 !important;
+  font-size: 11px !important;
+  line-height: 1.1 !important;
+  color: #94a3b8 !important;
+}
+
+.group-chat-schedule-staff {
+  grid-column: 2 !important;
+  grid-row: 1 / span 2 !important;
+  margin: 0 !important;
+  padding-left: 10px !important;
+  border-left: 1px solid rgba(34, 211, 238, 0.16) !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  white-space: pre-line !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-schedule-mobile-controls {
+    padding: 10px !important;
+  }
+
+  .group-chat-schedule-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .group-chat-schedule-day {
+    grid-template-columns: 72px 1fr !important;
+    padding: 9px 12px !important;
+  }
+}
