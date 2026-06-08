@@ -1353,42 +1353,90 @@ function saveLocalGroupChatMessageEdit(index){
   renderGroupChatMessages(channel);
 }
 
+
+function normalizeGroupChatReactions(reactions){
+  if(!reactions){
+    return "";
+  }
+
+  if(Array.isArray(reactions)){
+    return reactions.join(" ");
+  }
+
+  return String(reactions);
+}
+
+function getGroupChatEmojiList(){
+  return [
+    "😀","😊","😂","😍","🥰","👍","👏","🙏","❤️","🎉","✅",
+    "📌","⚠️","🔔","🕒","❌","📝","🧾","🛒","📦","🎁","💐",
+    "🍓","🍍","🥭","🍌","🍎","🍫","🚚","🛵","📍","🏠"
+  ];
+}
+
+function toggleGroupChatEmojiPanel(){
+  const panel = document.getElementById("groupChatEmojiPanel");
+  if(!panel){
+    return;
+  }
+
+  const isOpen = panel.classList.contains("open");
+  panel.classList.toggle("open", !isOpen);
+
+  if(!isOpen){
+    panel.innerHTML = getGroupChatEmojiList().map(emoji => `
+      <button type="button" class="group-chat-emoji-choice" onclick="insertGroupChatEmojiValue('${emoji}')">${emoji}</button>
+    `).join("");
+  }
+}
+
+function insertGroupChatEmojiValue(emoji){
+  insertTextInGroupChatInput(emoji);
+  document.getElementById("groupChatEmojiPanel")?.classList.remove("open");
+}
+
+function insertGroupChatEmoji(){
+  toggleGroupChatEmojiPanel();
+}
+
 function renderGroupChatMessages(channel){
   const messages = GROUP_CHAT_MESSAGES[channel.id] || [];
   const canEdit = canEditGroupChatChannel(channel.id);
 
   document.getElementById("groupChatBody").innerHTML = `
-${messages.map((message, index) => `
-<div class="group-chat-message" data-message-index="${index}">
-  <div class="group-chat-avatar">${escapeGroupChatText(message.avatar)}</div>
-  <div class="group-chat-message-content">
-    <div class="group-chat-message-meta">
-      <strong>${escapeGroupChatText(message.name)}</strong>
-      <span>${escapeGroupChatText(message.role || "")}</span>
-      <span>${escapeGroupChatText(message.time || "")}</span>
-    </div>
-    <div class="group-chat-message-text">${escapeGroupChatText(message.text).replace(/\n/g, "<br>")}</div>
-    ${message.reactions ? `<div class="group-chat-reactions">${escapeGroupChatText(message.reactions)}</div>` : ""}
-    <div class="group-chat-message-actions">
-      <button class="group-chat-action-btn" type="button" onclick="replyGroupChatMessage(${index})">Reply</button>
-      <button class="group-chat-action-btn" type="button" onclick="reactGroupChatMessage(${index})">React</button>
-      ${canEdit ? `<button class="group-chat-action-btn" type="button" onclick="editGroupChatMessage(${index})">Edit</button>` : ""}
-    </div>
-  </div>
-</div>
-`).join("")}
+${messages.map((message, index) => {
+  const avatar = escapeGroupChatText(message.avatar || getInitials(message.name || "User"));
+  const name = escapeGroupChatText(message.name || "User");
+  const role = escapeGroupChatText(message.role || "");
+  const time = escapeGroupChatText(message.time || "");
+  const text = escapeGroupChatText(message.text || "").replace(/\n/g, "<br>");
+  const reactions = normalizeGroupChatReactions(message.reactions);
+
+  return `
+    <article class="group-chat-msg-row" data-message-index="${index}">
+      <div class="group-chat-msg-avatar">${avatar}</div>
+
+      <div class="group-chat-msg-main">
+        <div class="group-chat-msg-meta">
+          <strong>${name}</strong>
+          ${role ? `<span>${role}</span>` : ""}
+          ${time ? `<span>${time}</span>` : ""}
+        </div>
+
+        <div class="group-chat-msg-bubble">${text}</div>
+
+        ${reactions ? `<div class="group-chat-msg-reactions">${escapeGroupChatText(reactions)}</div>` : ""}
+
+        <div class="group-chat-msg-actions">
+          <button type="button" onclick="replyGroupChatMessage(${index})">Reply</button>
+          <button type="button" onclick="reactGroupChatMessage(${index})">React</button>
+          ${canEdit ? `<button type="button" onclick="editGroupChatMessage(${index})">Edit</button>` : ""}
+        </div>
+      </div>
+    </article>
+  `;
+}).join("")}
 `;
-}
-
-
-function getGroupChatScheduleWeekRange(){
-  const days = GROUP_CHAT_SCHEDULE || [];
-  if(!days.length){
-    return "";
-  }
-  const first = days[0]?.date || "";
-  const last = days[days.length - 1]?.date || "";
-  return first && last ? `${first} - ${last}` : "";
 }
 
 function renderGroupChatSchedule(){
@@ -1449,20 +1497,22 @@ function renderGroupChatComposer(channel){
   }
 
   composer.innerHTML = `
-<div class="group-chat-composer-row">
-  <div class="group-chat-composer-tools">
-    <button class="group-chat-tool-btn" type="button" onclick="insertGroupChatEmoji()">Emoji</button>
-    <button class="group-chat-tool-btn" type="button" onclick="openGroupChatMentionStaff()">Mention Staff</button>
-    <button class="group-chat-tool-btn" type="button" onclick="openGroupChatMentionOrder()">Mention Order</button>
-  </div>
+<div class="group-chat-emoji-panel" id="groupChatEmojiPanel"></div>
+
+<div class="group-chat-composer-messenger">
+  <button class="group-chat-mini-tool" type="button" onclick="toggleGroupChatEmojiPanel()" title="Emoji">😊</button>
+  <button class="group-chat-mini-tool" type="button" onclick="openGroupChatMentionStaff()" title="Mention Staff">@</button>
+  <button class="group-chat-mini-tool" type="button" onclick="openGroupChatMentionOrder()" title="Mention Order">#</button>
+
   <input
     id="groupChatMessageInput"
-    class="group-chat-composer-input"
+    class="group-chat-messenger-input"
     type="text"
-    placeholder="Type a message..."
+    placeholder="Message..."
     onkeydown="handleGroupChatComposerKeydown(event)"
   >
-  <button class="group-chat-send-btn" type="button" onclick="sendGroupChatMessageFromComposer()">Send</button>
+
+  <button class="group-chat-messenger-send" type="button" onclick="sendGroupChatMessageFromComposer()">Send</button>
 </div>`;
 }
 
@@ -1807,3 +1857,6 @@ window.reactGroupChatMessage = reactGroupChatMessage;
 window.editGroupChatMessage = editGroupChatMessage;
 window.saveLocalGroupChatMessageEdit = saveLocalGroupChatMessageEdit;
 
+
+window.toggleGroupChatEmojiPanel = toggleGroupChatEmojiPanel;
+window.insertGroupChatEmojiValue = insertGroupChatEmojiValue;
