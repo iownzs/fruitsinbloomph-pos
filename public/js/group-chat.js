@@ -1314,21 +1314,50 @@ function reactGroupChatMessage(index){
     return;
   }
 
-  const defaultReaction = "👍";
-  const current = String(message.reactions || "").trim();
+  closeGroupChatLiteModal();
 
-  // If already reacted with 👍, remove it instead of repeating.
-  if(current.includes(defaultReaction)){
-    const cleaned = current
-      .replace(/👍\s*\d*/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
+  const emojis = ["❤️", "👍", "😂", "🎉", "✅", "👏", "🙏", "😍", "🔥", "💯", "😮", "😢", "😡", "📌", "⚠️", "🚚", "🛵", "🍓", "🍍", "🥭", "🍫", "🎁", "🧾", "📝"];
 
-    message.reactions = cleaned;
-  } else {
-    message.reactions = current ? `${current} ${defaultReaction} 1` : `${defaultReaction} 1`;
+  const modal = document.createElement("div");
+  modal.id = "groupChatLiteModal";
+  modal.className = "group-chat-modal-lite";
+  modal.innerHTML = `
+    <div class="group-chat-modal-card group-chat-react-modal-card">
+      <div class="group-chat-modal-head">
+        <strong>React</strong>
+        <button class="group-chat-action-btn" type="button" onclick="closeGroupChatLiteModal()">Close</button>
+      </div>
+      <div class="group-chat-react-picker">
+        ${emojis.map(emoji => `
+          <button type="button" class="group-chat-react-choice" onclick="toggleGroupChatEmojiReaction(${index}, '${emoji}')">${emoji}</button>
+        `).join("")}
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+}
+
+function toggleGroupChatEmojiReaction(index, emoji){
+  const channel = getActiveChannel();
+  const message = (GROUP_CHAT_MESSAGES[channel.id] || [])[index];
+
+  if(!message){
+    return;
   }
 
+  const current = String(message.reactions || "").trim();
+
+  if(current.includes(emoji)){
+    message.reactions = current
+      .replaceAll(`${emoji} 1`, "")
+      .replaceAll(emoji, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  } else {
+    message.reactions = current ? `${current} ${emoji} 1` : `${emoji} 1`;
+  }
+
+  closeGroupChatLiteModal();
   renderGroupChatMessages(channel);
 }
 
@@ -1989,3 +2018,4 @@ window.insertGroupChatEmojiValue = insertGroupChatEmojiValue;
 window.handleGroupChatInputTyping = handleGroupChatInputTyping;
 window.handleGroupChatInputBlur = handleGroupChatInputBlur;
 window.selectGroupChatInlineMention = selectGroupChatInlineMention;
+window.toggleGroupChatEmojiReaction = toggleGroupChatEmojiReaction;
