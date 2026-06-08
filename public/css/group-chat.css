@@ -1949,3 +1949,66 @@ body:has(.group-chat-schedule-floating-actions) .group-chat-schedule-grid {
     font-size: 15px !important;
   }
 }
+
+
+/* Group Chat messenger final polish */
+.group-chat-msg-bubble {
+  max-width: 88% !important;
+}
+
+.group-chat-msg-actions {
+  gap: 0 !important;
+  margin-top: 4px !important;
+  padding-left: 4px !important;
+}
+
+.group-chat-msg-actions button {
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  color: #94a3b8 !important;
+}
+
+.group-chat-msg-actions button:not(:last-child)::after {
+  content: "·";
+  color: #64748b;
+  margin: 0 8px;
+}
+
+.group-chat-msg-actions button:hover {
+  color: #34d399 !important;
+}
+
+.group-chat-composer-messenger {
+  gap: 5px !important;
+}
+
+.group-chat-messenger-input {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.group-chat-ref-composer,
+.group-chat-composer,
+#groupChatComposer {
+  padding-bottom: 12px !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-msg-bubble {
+    max-width: 90% !important;
+  }
+
+  .group-chat-composer-messenger {
+    gap: 5px !important;
+  }
+
+  .group-chat-msg-actions button {
+    font-size: 11px !important;
+  }
+
+  .group-chat-ref-composer,
+  .group-chat-composer,
+  #groupChatComposer {
+    padding-bottom: 16px !important;
+  }
+}
