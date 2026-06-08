@@ -7219,3 +7219,30 @@ body[data-page="group-chat"] .group-chat-permission-toggle.read-only.is-disabled
 body[data-page="group-chat"] .group-chat-permission-row.head span:last-child {
   white-space: nowrap !important;
 }
+
+/* ==================================================
+   Align permission header text with ON/OFF toggles
+================================================== */
+body[data-page="group-chat"] .group-chat-permission-row.head {
+  align-items: center !important;
+}
+
+body[data-page="group-chat"] .group-chat-permission-row.head strong {
+  text-align: left !important;
+}
+
+body[data-page="group-chat"] .group-chat-permission-row.head span {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+
+body[data-page="group-chat"] .group-chat-permission-row:not(.head) > strong {
+  text-align: left !important;
+}
+
+body[data-page="group-chat"] .group-chat-permission-row .group-chat-permission-toggle {
+  justify-self: center !important;
+}

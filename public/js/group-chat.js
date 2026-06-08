@@ -464,7 +464,7 @@ function renderGroupChatAdminChannelEditor(channel){
   const isSystemChannel = channel.id === "system";
   const lockedReadOnly = isScheduleChannel || isSystemChannel;
   const readOnly = lockedReadOnly ? true : Boolean(rules.readOnly);
-  const editLabel = isScheduleChannel ? "Edit Schedule" : isSystemChannel ? "Manage" : "Edit";
+  const editLabel = isScheduleChannel ? "Edit Schedule" : isSystemChannel ? "Manage" : "Edit Msg";
   const channelModeText = isScheduleChannel
     ? "Read Only is locked. Schedule Editing is Admin only."
     : isSystemChannel
