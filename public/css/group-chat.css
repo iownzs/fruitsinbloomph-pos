@@ -1146,3 +1146,56 @@
     font-size: 14px !important;
   }
 }
+
+
+/* Schedule edit floating bottom actions */
+.group-chat-schedule-floating-actions {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+  z-index: 9999;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  border-radius: 22px;
+  background: rgba(15, 23, 42, 0.96);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(14px);
+}
+
+.group-chat-schedule-floating-save,
+.group-chat-schedule-floating-close {
+  min-height: 48px;
+  border-radius: 16px;
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.group-chat-schedule-floating-save {
+  background: rgba(16, 185, 129, 0.22);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.group-chat-schedule-floating-close {
+  background: rgba(30, 41, 59, 0.94);
+  color: #f8fafc;
+}
+
+body:has(.group-chat-schedule-floating-actions) .group-chat-schedule-grid {
+  padding-bottom: 92px !important;
+}
+
+@media (min-width: 821px) {
+  .group-chat-schedule-floating-actions {
+    left: 50%;
+    right: auto;
+    width: min(520px, calc(100vw - 32px));
+    transform: translateX(-50%);
+  }
+}

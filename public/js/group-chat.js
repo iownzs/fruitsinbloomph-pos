@@ -1404,6 +1404,13 @@ function renderGroupChatSchedule(){
   </div>
 </div>
 
+${groupChatScheduleEditMode ? `
+  <div class="group-chat-schedule-floating-actions">
+    <button class="group-chat-schedule-floating-save" type="button" onclick="saveGroupChatSchedule()">Save Schedule</button>
+    <button class="group-chat-schedule-floating-close" type="button" onclick="cancelGroupChatScheduleEdit()">Close</button>
+  </div>
+` : ""}
+
 <div class="group-chat-schedule-grid">
   ${GROUP_CHAT_SCHEDULE.map((day, index) => `
     <div class="group-chat-schedule-day">
@@ -1502,10 +1509,7 @@ function renderGroupChatScheduleHeaderActions(){
     return;
   }
 
-  wrap.innerHTML = groupChatScheduleEditMode ? `
-    <button class="group-chat-schedule-header-icon group-chat-schedule-header-save" type="button" onclick="saveGroupChatSchedule()" title="Save Schedule">✅</button>
-    <button class="group-chat-schedule-header-icon group-chat-schedule-header-cancel" type="button" onclick="cancelGroupChatScheduleEdit()" title="Cancel Edit">✖️</button>
-  ` : `
+  wrap.innerHTML = groupChatScheduleEditMode ? "" : `
     <button class="group-chat-schedule-header-icon" type="button" onclick="toggleGroupChatScheduleEdit()" title="Edit Schedule">✏️</button>
   `;
 }
