@@ -2012,3 +2012,43 @@ body:has(.group-chat-schedule-floating-actions) .group-chat-schedule-grid {
     padding-bottom: 16px !important;
   }
 }
+
+
+/* Group Chat composer full-width alignment fix */
+#groupChatComposer,
+.group-chat-composer,
+.group-chat-ref-composer {
+  width: 100% !important;
+}
+
+.group-chat-composer-messenger {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 40px minmax(0, 1fr) 40px !important;
+  gap: 6px !important;
+  align-items: center !important;
+}
+
+.group-chat-messenger-input {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.group-chat-messenger-send {
+  justify-self: end !important;
+  margin-left: 0 !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-composer-messenger {
+    grid-template-columns: 38px minmax(0, 1fr) 38px !important;
+    gap: 6px !important;
+  }
+
+  #groupChatComposer,
+  .group-chat-composer,
+  .group-chat-ref-composer {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
