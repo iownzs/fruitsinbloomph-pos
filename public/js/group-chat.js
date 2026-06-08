@@ -175,6 +175,7 @@ function changeGroupChatScheduleWeek(direction){
   groupChatScheduleWeekOffset += direction;
   refreshGroupChatSchedule();
   groupChatScheduleEditMode = false;
+  renderGroupChatScheduleHeaderActions();
   renderGroupChatSchedule();
 }
 
@@ -182,6 +183,7 @@ function resetGroupChatScheduleWeek(){
   groupChatScheduleWeekOffset = 0;
   refreshGroupChatSchedule();
   groupChatScheduleEditMode = false;
+  renderGroupChatScheduleHeaderActions();
   renderGroupChatSchedule();
 }
 
@@ -701,6 +703,7 @@ shell(`
           <p id="groupChatActiveDesc">23 members, 4 online</p>
         </div>
         <button class="group-chat-ref-members-btn" onclick="toggleGroupChatMembers()">👥</button>
+        <span id="groupChatScheduleHeaderActions" class="group-chat-schedule-header-actions"></span>
         <button class="group-chat-ref-channels-btn" onclick="toggleGroupChatChannels()">Channels</button>
       </header>
 
@@ -1169,6 +1172,7 @@ function renderGroupChat(){
 
   document.getElementById("groupChatActiveName").textContent = channel.name;
   document.getElementById("groupChatActiveDesc").textContent = `${channel.desc} • Role: ${normalizeGroupChatRole(getCurrentGroupChatUserRole())}`;
+  renderGroupChatScheduleHeaderActions();
 
   renderGroupChatAnnouncement();
   renderGroupChatChannels();
@@ -1483,6 +1487,29 @@ function renderGroupChatOrderPreview(){
   `;
 }
 
+
+function renderGroupChatScheduleHeaderActions(){
+  const wrap = document.getElementById("groupChatScheduleHeaderActions");
+  if(!wrap){
+    return;
+  }
+
+  const channel = getActiveChannel();
+  const canEditSchedule = channel && channel.id === "schedule" && canEditGroupChatChannel("schedule");
+
+  if(!canEditSchedule){
+    wrap.innerHTML = "";
+    return;
+  }
+
+  wrap.innerHTML = groupChatScheduleEditMode ? `
+    <button class="group-chat-schedule-header-icon group-chat-schedule-header-save" type="button" onclick="saveGroupChatSchedule()" title="Save Schedule">✅</button>
+    <button class="group-chat-schedule-header-icon group-chat-schedule-header-cancel" type="button" onclick="cancelGroupChatScheduleEdit()" title="Cancel Edit">✖️</button>
+  ` : `
+    <button class="group-chat-schedule-header-icon" type="button" onclick="toggleGroupChatScheduleEdit()" title="Edit Schedule">✏️</button>
+  `;
+}
+
 function openGroupChatChannel(channelId){
   activeGroupChatChannel = channelId;
 
@@ -1597,11 +1624,13 @@ function toggleGroupChatAdminSettings(){
 
 function toggleGroupChatScheduleEdit(){
   groupChatScheduleEditMode = true;
+  renderGroupChatScheduleHeaderActions();
   renderGroupChatSchedule();
 }
 
 function cancelGroupChatScheduleEdit(){
   groupChatScheduleEditMode = false;
+  renderGroupChatScheduleHeaderActions();
   renderGroupChatSchedule();
 }
 
@@ -1619,6 +1648,7 @@ function saveGroupChatSchedule(){
 
   groupChatScheduleEditMode = false;
   refreshGroupChatSchedule();
+  renderGroupChatScheduleHeaderActions();
   renderGroupChatSchedule();
 }
 
