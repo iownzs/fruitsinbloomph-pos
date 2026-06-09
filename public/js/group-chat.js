@@ -827,7 +827,7 @@ shell(`
 
         <div class="group-chat-ann-pin-panel active" data-ann-pin-panel="announcement">
           <div class="group-chat-admin-selected-channel-card group-chat-ann-pin-card">
-            <p>Only 1 active announcement per channel or group chat.</p>
+            
 
             <div class="group-chat-ann-pin-list">
               <div class="group-chat-ann-pin-item">
@@ -870,7 +870,7 @@ shell(`
 
         <div class="group-chat-ann-pin-panel" data-ann-pin-panel="pin">
           <div class="group-chat-admin-selected-channel-card group-chat-ann-pin-card">
-            <p>Only 1 active pinned message per channel.</p>
+            
 
             <div class="group-chat-ann-pin-list">
               <div class="group-chat-ann-pin-item">
