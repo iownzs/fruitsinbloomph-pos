@@ -2751,3 +2751,40 @@ body:has(#groupChatActiveName) #groupChatBody.group-chat-ref-body {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* Extra compact Announcement / Pin role permissions */
+.group-chat-ann-pin-permissions {
+  padding: 10px !important;
+  gap: 8px !important;
+}
+
+.group-chat-ann-pin-permission-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+.group-chat-ann-pin-permission-grid span {
+  flex: 1 1 auto !important;
+  min-width: fit-content !important;
+  padding: 7px 10px !important;
+  border-radius: 999px !important;
+  font-size: 10px !important;
+  white-space: nowrap !important;
+}
+
+.group-chat-ann-pin-permissions small {
+  font-size: 11px !important;
+  line-height: 1.25 !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-ann-pin-permission-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+  }
+
+  .group-chat-ann-pin-permission-grid span {
+    flex: 1 1 auto !important;
+  }
+}
