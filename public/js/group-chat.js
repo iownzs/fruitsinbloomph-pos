@@ -871,15 +871,25 @@ shell(`
         </div>
 
         <div class="group-chat-ann-pin-panel" data-ann-pin-panel="permissions">
-          <div class="group-chat-ann-pin-permissions">
-            <strong>Role Permissions</strong>
-            <div class="group-chat-ann-pin-permission-grid">
-              <span>Role</span>
-              <span>Create / Edit Announcement</span>
-              <span>Show / Hide</span>
-              <span>Pin / Unpin</span>
+          <div class="group-chat-ann-pin-role-card">
+            <div class="group-chat-ann-pin-role-head">
+              <span>ROLE</span>
+              <span>CREATE ANN</span>
+              <span>SHOW ANN</span>
+              <span>PIN MSG</span>
             </div>
-            <small>Use Channel Management role permissions to control which roles can manage announcement and pinned messages.</small>
+
+            ${["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"].map((role, index) => {
+              const allowed = index <= 2;
+              return `
+                <div class="group-chat-ann-pin-role-row">
+                  <strong>${role}</strong>
+                  <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
+                  <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
+                  <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
+                </div>
+              `;
+            }).join("")}
           </div>
         </div>
       </section>
