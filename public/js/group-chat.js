@@ -868,7 +868,7 @@ shell(`
             <span>Role</span>
             <span>Create / Edit Announcement</span>
             <span>Show / Hide</span>
-            <span>Pin / Unpin Msg</span>
+            <span>Pin / Unpin</span>
           </div>
           <small>Use Channel Management role permissions to control which roles can manage announcement and pinned messages.</small>
         </div>
