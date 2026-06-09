@@ -2578,3 +2578,86 @@ body:has(#groupChatActiveName) #groupChatBody.group-chat-ref-body {
     border-radius: 16px !important;
   }
 }
+
+/* Compact Announcement / Pin Message admin layout */
+.group-chat-ann-pin-layout {
+  gap: 8px !important;
+  margin-top: 8px !important;
+}
+
+.group-chat-ann-pin-card,
+.group-chat-ann-pin-permissions {
+  padding: 10px !important;
+  border-radius: 14px !important;
+}
+
+.group-chat-ann-pin-card {
+  gap: 6px !important;
+}
+
+.group-chat-ann-pin-card h4 {
+  font-size: 14px !important;
+  line-height: 1.15 !important;
+}
+
+.group-chat-ann-pin-card p,
+.group-chat-admin-note,
+.group-chat-ann-pin-permissions small {
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+}
+
+.group-chat-ann-pin-list {
+  gap: 5px !important;
+}
+
+.group-chat-ann-pin-item {
+  padding: 7px 8px !important;
+  border-radius: 11px !important;
+  font-size: 11px !important;
+  min-height: 34px !important;
+}
+
+.group-chat-ann-pin-badge {
+  padding: 3px 7px !important;
+  font-size: 10px !important;
+}
+
+.group-chat-ann-pin-permissions {
+  margin-top: 8px !important;
+  gap: 6px !important;
+}
+
+.group-chat-ann-pin-permissions strong {
+  font-size: 13px !important;
+}
+
+.group-chat-ann-pin-permission-grid {
+  gap: 5px !important;
+}
+
+.group-chat-ann-pin-permission-grid span {
+  padding: 7px 8px !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-ann-pin-layout {
+    gap: 8px !important;
+  }
+
+  .group-chat-ann-pin-card,
+  .group-chat-ann-pin-permissions {
+    padding: 10px !important;
+    border-radius: 14px !important;
+  }
+
+  .group-chat-ann-pin-item {
+    min-height: 32px !important;
+  }
+
+  .group-chat-ann-pin-permission-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
