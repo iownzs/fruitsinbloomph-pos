@@ -1347,14 +1347,13 @@ function toggleGroupChatEmojiReaction(index, emoji){
 
   const current = String(message.reactions || "").trim();
 
+  // One reaction only:
+  // same emoji = remove
+  // different emoji = replace old reaction
   if(current.includes(emoji)){
-    message.reactions = current
-      .replaceAll(`${emoji} 1`, "")
-      .replaceAll(emoji, "")
-      .replace(/\s+/g, " ")
-      .trim();
+    message.reactions = "";
   } else {
-    message.reactions = current ? `${current} ${emoji} 1` : `${emoji} 1`;
+    message.reactions = `${emoji} 1`;
   }
 
   closeGroupChatLiteModal();
