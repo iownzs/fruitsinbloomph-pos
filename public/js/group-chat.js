@@ -1332,7 +1332,6 @@ function reactGroupChatMessage(index){
           <button type="button" class="group-chat-react-choice" onclick="toggleGroupChatEmojiReaction(${index}, '${emoji}')">${emoji}</button>
         `).join("")}
       </div>
-      <button class="group-chat-react-close-bottom" type="button" onclick="closeGroupChatLiteModal()">Close</button>
     </div>`;
 
   document.body.appendChild(modal);
