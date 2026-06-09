@@ -831,13 +831,10 @@ shell(`
 
             <div class="group-chat-ann-pin-list">
               <div class="group-chat-ann-pin-item">
-                <span>Create / Edit</span>
+                <span>Announcement Feature</span>
                 <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
               </div>
-              <div class="group-chat-ann-pin-item">
-                <span>Show / Hide</span>
-                <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
-              </div>
+
             </div>
 
             <div class="group-chat-ann-pin-role-card group-chat-ann-role-card">
@@ -868,13 +865,10 @@ shell(`
 
             <div class="group-chat-ann-pin-list">
               <div class="group-chat-ann-pin-item">
-                <span>Pin New Message</span>
+                <span>Pin Message Feature</span>
                 <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
               </div>
-              <div class="group-chat-ann-pin-item">
-                <span>Unpin Message</span>
-                <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
-              </div>
+
             </div>
 
             <div class="group-chat-ann-pin-role-card group-chat-pin-role-card">
