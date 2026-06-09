@@ -2688,3 +2688,55 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-
     max-width: 50px !important;
   }
 }
+
+/* FINAL FIX: Align Announcement / Pin table headers with role rows */
+body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row,
+body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.45fr) 82px 82px !important;
+  align-items: center !important;
+  column-gap: 8px !important;
+  width: 100% !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row {
+  padding: 0 12px !important;
+  justify-items: stretch !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row {
+  padding: 6px 12px !important;
+  justify-items: stretch !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row > :nth-child(1),
+body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row > :nth-child(1) {
+  justify-self: start !important;
+  text-align: left !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row > :nth-child(2),
+body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row > :nth-child(3),
+body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row > :nth-child(2),
+body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row > :nth-child(3) {
+  justify-self: center !important;
+  text-align: center !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row .group-chat-permission-toggle {
+  justify-self: center !important;
+}
+
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row,
+  body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row {
+    grid-template-columns: minmax(0, 1.35fr) 74px 74px !important;
+    column-gap: 6px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row,
+  body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
