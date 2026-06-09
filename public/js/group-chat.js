@@ -1337,6 +1337,46 @@ function reactGroupChatMessage(index){
   document.body.appendChild(modal);
 }
 
+
+function getGroupChatReactionUserId(){
+  const user = getCurrentGroupChatUser ? getCurrentGroupChatUser() : null;
+  const storedUser = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("posUser") || "null");
+    } catch(err) {
+      return null;
+    }
+  })();
+
+  return String(
+    user?.uid ||
+    user?.id ||
+    user?.email ||
+    user?.name ||
+    storedUser?.uid ||
+    storedUser?.id ||
+    storedUser?.email ||
+    storedUser?.username ||
+    "current-user"
+  );
+}
+
+function summarizeGroupChatReactionUsers(reactionUsers){
+  const counts = {};
+
+  Object.values(reactionUsers || {}).forEach(emoji => {
+    if(!emoji){
+      return;
+    }
+
+    counts[emoji] = (counts[emoji] || 0) + 1;
+  });
+
+  return Object.entries(counts)
+    .map(([emoji, count]) => `${emoji} ${count}`)
+    .join(" ");
+}
+
 function toggleGroupChatEmojiReaction(index, emoji){
   const channel = getActiveChannel();
   const message = (GROUP_CHAT_MESSAGES[channel.id] || [])[index];
@@ -1345,16 +1385,22 @@ function toggleGroupChatEmojiReaction(index, emoji){
     return;
   }
 
-  const current = String(message.reactions || "").trim();
+  const userId = getGroupChatReactionUserId();
+  const reactionUsers = message.reactionUsers && typeof message.reactionUsers === "object"
+    ? { ...message.reactionUsers }
+    : {};
 
-  // One reaction only:
-  // same emoji = remove
-  // different emoji = replace old reaction
-  if(current.includes(emoji)){
-    message.reactions = "";
+  // One reaction per user:
+  // same emoji = remove user's reaction
+  // different emoji = replace user's old reaction
+  if(reactionUsers[userId] === emoji){
+    delete reactionUsers[userId];
   } else {
-    message.reactions = `${emoji} 1`;
+    reactionUsers[userId] = emoji;
   }
+
+  message.reactionUsers = reactionUsers;
+  message.reactions = summarizeGroupChatReactionUsers(reactionUsers);
 
   closeGroupChatLiteModal();
   renderGroupChatMessages(channel);
