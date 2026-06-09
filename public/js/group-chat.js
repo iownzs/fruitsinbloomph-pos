@@ -1339,7 +1339,7 @@ function reactGroupChatMessage(index){
 
 
 function getGroupChatReactionUserId(){
-  const user = getCurrentGroupChatUser ? getCurrentGroupChatUser() : null;
+  const user = (typeof getCurrentGroupChatUser === "function") ? getCurrentGroupChatUser() : null;
   const storedUser = (() => {
     try {
       return JSON.parse(localStorage.getItem("posUser") || "null");
