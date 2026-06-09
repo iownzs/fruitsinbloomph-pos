@@ -2937,3 +2937,36 @@ body:has(#groupChatActiveName) #groupChatBody.group-chat-ref-body {
     font-size: 9px !important;
   }
 }
+
+
+/* Announcement / Pin roles inside tabs */
+.group-chat-ann-pin-tabs-two {
+  grid-template-columns: 1fr 1fr !important;
+}
+
+.group-chat-ann-pin-card .group-chat-ann-pin-role-card {
+  margin-top: 12px !important;
+}
+
+.group-chat-ann-pin-role-card h4 {
+  margin: 0 0 6px !important;
+  color: #f8fafc !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+}
+
+.group-chat-ann-role-head,
+.group-chat-ann-role-row,
+.group-chat-pin-role-head,
+.group-chat-pin-role-row {
+  grid-template-columns: 1.65fr 0.9fr 0.9fr !important;
+}
+
+@media (max-width: 820px) {
+  .group-chat-ann-role-head,
+  .group-chat-ann-role-row,
+  .group-chat-pin-role-head,
+  .group-chat-pin-role-row {
+    grid-template-columns: 1.45fr 0.75fr 0.75fr !important;
+  }
+}

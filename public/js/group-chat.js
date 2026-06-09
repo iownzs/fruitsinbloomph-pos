@@ -820,15 +820,13 @@ shell(`
         <h3>Announcement / Pin Message Controls</h3>
         <p class="group-chat-admin-note">Manage the active announcement and active pinned message for Group Chat.</p>
 
-        <div class="group-chat-ann-pin-tabs">
+        <div class="group-chat-ann-pin-tabs group-chat-ann-pin-tabs-two">
           <button class="group-chat-ann-pin-tab active" type="button" data-ann-pin-tab="announcement" onclick="openGroupChatAnnPinTab('announcement')">📢 Announcement</button>
           <button class="group-chat-ann-pin-tab" type="button" data-ann-pin-tab="pin" onclick="openGroupChatAnnPinTab('pin')">📌 Pin Message</button>
-          <button class="group-chat-ann-pin-tab" type="button" data-ann-pin-tab="permissions" onclick="openGroupChatAnnPinTab('permissions')">Roles</button>
         </div>
 
         <div class="group-chat-ann-pin-panel active" data-ann-pin-panel="announcement">
           <div class="group-chat-ann-pin-card">
-            <h4>📢 Announcement</h4>
             <p>Only 1 active announcement per channel or group chat.</p>
 
             <div class="group-chat-ann-pin-list">
@@ -841,12 +839,31 @@ shell(`
                 <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
               </div>
             </div>
+
+            <div class="group-chat-ann-pin-role-card group-chat-ann-role-card">
+              <h4>Roles</h4>
+              <div class="group-chat-ann-pin-role-head group-chat-ann-role-head">
+                <span>ROLE</span>
+                <span>CREATE ANN</span>
+                <span>SHOW ANN</span>
+              </div>
+
+              ${["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"].map((role, index) => {
+                const allowed = index <= 2;
+                return `
+                  <div class="group-chat-ann-pin-role-row group-chat-ann-role-row">
+                    <strong>${role}</strong>
+                    <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
+                    <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
+                  </div>
+                `;
+              }).join("")}
+            </div>
           </div>
         </div>
 
         <div class="group-chat-ann-pin-panel" data-ann-pin-panel="pin">
           <div class="group-chat-ann-pin-card">
-            <h4>📌 Pin Message</h4>
             <p>Only 1 active pinned message per channel.</p>
 
             <div class="group-chat-ann-pin-list">
@@ -859,29 +876,26 @@ shell(`
                 <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div class="group-chat-ann-pin-panel" data-ann-pin-panel="permissions">
-          <div class="group-chat-ann-pin-role-card">
-            <div class="group-chat-ann-pin-role-head">
-              <span>ROLE</span>
-              <span>CREATE ANN</span>
-              <span>SHOW ANN</span>
-              <span>PIN MSG</span>
+            <div class="group-chat-ann-pin-role-card group-chat-pin-role-card">
+              <h4>Roles</h4>
+              <div class="group-chat-ann-pin-role-head group-chat-pin-role-head">
+                <span>ROLE</span>
+                <span>PIN NEW</span>
+                <span>UNPIN</span>
+              </div>
+
+              ${["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"].map((role, index) => {
+                const allowed = index <= 2;
+                return `
+                  <div class="group-chat-ann-pin-role-row group-chat-pin-role-row">
+                    <strong>${role}</strong>
+                    <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
+                    <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
+                  </div>
+                `;
+              }).join("")}
             </div>
-
-            ${["Owner/Admin", "Admin", "Manager", "Sales", "Cashier", "Kitchen Staff", "Delivery Staff", "Rider", "Inventory Staff"].map((role, index) => {
-              const allowed = index <= 2;
-              return `
-                <div class="group-chat-ann-pin-role-row">
-                  <strong>${role}</strong>
-                  <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
-                  <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
-                  <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
-                </div>
-              `;
-            }).join("")}
           </div>
         </div>
       </section>
