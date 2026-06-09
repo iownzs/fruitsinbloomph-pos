@@ -832,7 +832,10 @@ shell(`
             <div class="group-chat-ann-pin-list">
               <div class="group-chat-ann-pin-item">
                 <span>Announcement Feature</span>
-                <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
+                <label class="group-chat-permission-toggle is-on">
+                  <input type="checkbox" checked onchange="toggleGroupChatAnnPinPermission(this)">
+                  <span>ON</span>
+                </label>
               </div>
 
             </div>
@@ -850,8 +853,14 @@ shell(`
                 return `
                   <div class="group-chat-permission-row group-chat-ann-pin-role-row group-chat-ann-role-row">
                     <strong>${role}</strong>
-                    <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
-                    <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
+                    <label class="group-chat-permission-toggle ${allowed ? "is-on" : "is-off"}">
+                      <input type="checkbox" ${allowed ? "checked" : ""} onchange="toggleGroupChatAnnPinPermission(this)">
+                      <span>${allowed ? "ON" : "OFF"}</span>
+                    </label>
+                    <label class="group-chat-permission-toggle ${allowed ? "is-on" : "is-off"}">
+                      <input type="checkbox" ${allowed ? "checked" : ""} onchange="toggleGroupChatAnnPinPermission(this)">
+                      <span>${allowed ? "ON" : "OFF"}</span>
+                    </label>
                   </div>
                 `;
               }).join("")}
@@ -866,7 +875,10 @@ shell(`
             <div class="group-chat-ann-pin-list">
               <div class="group-chat-ann-pin-item">
                 <span>Pin Message Feature</span>
-                <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
+                <label class="group-chat-permission-toggle is-on">
+                  <input type="checkbox" checked onchange="toggleGroupChatAnnPinPermission(this)">
+                  <span>ON</span>
+                </label>
               </div>
 
             </div>
@@ -884,8 +896,14 @@ shell(`
                 return `
                   <div class="group-chat-permission-row group-chat-ann-pin-role-row group-chat-pin-role-row">
                     <strong>${role}</strong>
-                    <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
-                    <button class="group-chat-ann-pin-toggle ${allowed ? "active" : ""}" type="button" onclick="toggleGroupChatAnnPinControl(this)">${allowed ? "ON" : "OFF"}</button>
+                    <label class="group-chat-permission-toggle ${allowed ? "is-on" : "is-off"}">
+                      <input type="checkbox" ${allowed ? "checked" : ""} onchange="toggleGroupChatAnnPinPermission(this)">
+                      <span>${allowed ? "ON" : "OFF"}</span>
+                    </label>
+                    <label class="group-chat-permission-toggle ${allowed ? "is-on" : "is-off"}">
+                      <input type="checkbox" ${allowed ? "checked" : ""} onchange="toggleGroupChatAnnPinPermission(this)">
+                      <span>${allowed ? "ON" : "OFF"}</span>
+                    </label>
                   </div>
                 `;
               }).join("")}
@@ -948,6 +966,22 @@ shell(`
 `);
 
 
+
+
+function toggleGroupChatAnnPinPermission(input){
+  const label = input.closest(".group-chat-permission-toggle");
+  const span = label?.querySelector("span");
+  const isOn = Boolean(input.checked);
+
+  if(label){
+    label.classList.toggle("is-on", isOn);
+    label.classList.toggle("is-off", !isOn);
+  }
+
+  if(span){
+    span.textContent = isOn ? "ON" : "OFF";
+  }
+}
 
 function toggleGroupChatAnnPinControl(button){
   const isActive = button.classList.toggle("active");
@@ -2227,3 +2261,5 @@ window.showGroupChatReactionUsers = showGroupChatReactionUsers;
 window.openGroupChatAnnPinTab = openGroupChatAnnPinTab;
 
 window.toggleGroupChatAnnPinControl = toggleGroupChatAnnPinControl;
+
+window.toggleGroupChatAnnPinPermission = toggleGroupChatAnnPinPermission;
