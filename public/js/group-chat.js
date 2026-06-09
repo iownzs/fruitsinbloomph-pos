@@ -820,7 +820,13 @@ shell(`
         <h3>Announcement / Pin Message Controls</h3>
         <p class="group-chat-admin-note">Manage the active announcement and active pinned message for Group Chat.</p>
 
-        <div class="group-chat-ann-pin-layout">
+        <div class="group-chat-ann-pin-tabs">
+          <button class="group-chat-ann-pin-tab active" type="button" data-ann-pin-tab="announcement" onclick="openGroupChatAnnPinTab('announcement')">📢 Announcement</button>
+          <button class="group-chat-ann-pin-tab" type="button" data-ann-pin-tab="pin" onclick="openGroupChatAnnPinTab('pin')">📌 Pin Message</button>
+          <button class="group-chat-ann-pin-tab" type="button" data-ann-pin-tab="permissions" onclick="openGroupChatAnnPinTab('permissions')">Roles</button>
+        </div>
+
+        <div class="group-chat-ann-pin-panel active" data-ann-pin-panel="announcement">
           <div class="group-chat-ann-pin-card">
             <h4>📢 Announcement</h4>
             <p>Only 1 active announcement per channel or group chat.</p>
@@ -828,19 +834,21 @@ shell(`
             <div class="group-chat-ann-pin-list">
               <div class="group-chat-ann-pin-item">
                 <span>Create / Edit / Replace</span>
-                <span class="group-chat-ann-pin-badge">Allowed Roles</span>
+                <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
               </div>
               <div class="group-chat-ann-pin-item">
                 <span>Show / Hide Announcement</span>
-                <span class="group-chat-ann-pin-badge">Admin Control</span>
+                <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
               </div>
               <div class="group-chat-ann-pin-item">
                 <span>Staff Access</span>
-                <span class="group-chat-ann-pin-badge">View Only</span>
+                <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
               </div>
             </div>
           </div>
+        </div>
 
+        <div class="group-chat-ann-pin-panel" data-ann-pin-panel="pin">
           <div class="group-chat-ann-pin-card">
             <h4>📌 Pin Message</h4>
             <p>Only 1 active pinned message per channel.</p>
@@ -848,32 +856,33 @@ shell(`
             <div class="group-chat-ann-pin-list">
               <div class="group-chat-ann-pin-item">
                 <span>Pin New Message</span>
-                <span class="group-chat-ann-pin-badge">Replace Old</span>
+                <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
               </div>
               <div class="group-chat-ann-pin-item">
                 <span>Unpin Message</span>
-                <span class="group-chat-ann-pin-badge">Allowed Roles</span>
+                <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
               </div>
               <div class="group-chat-ann-pin-item">
                 <span>Staff Access</span>
-                <span class="group-chat-ann-pin-badge">View Only</span>
+                <button class="group-chat-ann-pin-toggle active" type="button" onclick="toggleGroupChatAnnPinControl(this)">ON</button>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="group-chat-ann-pin-permissions">
-          <strong>Role Permissions</strong>
-          <div class="group-chat-ann-pin-permission-grid">
-            <span>Role</span>
-            <span>Create / Edit Announcement</span>
-            <span>Show / Hide</span>
-            <span>Pin / Unpin</span>
+        <div class="group-chat-ann-pin-panel" data-ann-pin-panel="permissions">
+          <div class="group-chat-ann-pin-permissions">
+            <strong>Role Permissions</strong>
+            <div class="group-chat-ann-pin-permission-grid">
+              <span>Role</span>
+              <span>Create / Edit Announcement</span>
+              <span>Show / Hide</span>
+              <span>Pin / Unpin</span>
+            </div>
+            <small>Use Channel Management role permissions to control which roles can manage announcement and pinned messages.</small>
           </div>
-          <small>Use Channel Management role permissions to control which roles can manage announcement and pinned messages.</small>
         </div>
       </section>
-
       <section class="group-chat-admin-card">
         <h3>Channel Management</h3>
         <p class="muted">Choose one channel, then edit who can view, send, or manage it.</p>
@@ -927,6 +936,23 @@ shell(`
     </aside>
   </div>
 `);
+
+
+
+function toggleGroupChatAnnPinControl(button){
+  const isActive = button.classList.toggle("active");
+  button.textContent = isActive ? "ON" : "OFF";
+}
+
+function openGroupChatAnnPinTab(tab){
+  document.querySelectorAll(".group-chat-ann-pin-tab").forEach(button => {
+    button.classList.toggle("active", button.dataset.annPinTab === tab);
+  });
+
+  document.querySelectorAll(".group-chat-ann-pin-panel").forEach(panel => {
+    panel.classList.toggle("active", panel.dataset.annPinPanel === tab);
+  });
+}
 
 function renderGroupChatAnnouncement(){
   const announcement = GROUP_CHAT_ANNOUNCEMENTS[activeGroupChatAnnouncementIndex] || GROUP_CHAT_ANNOUNCEMENTS[0];
@@ -2187,3 +2213,7 @@ window.selectGroupChatInlineMention = selectGroupChatInlineMention;
 window.toggleGroupChatEmojiReaction = toggleGroupChatEmojiReaction;
 
 window.showGroupChatReactionUsers = showGroupChatReactionUsers;
+
+window.openGroupChatAnnPinTab = openGroupChatAnnPinTab;
+
+window.toggleGroupChatAnnPinControl = toggleGroupChatAnnPinControl;
