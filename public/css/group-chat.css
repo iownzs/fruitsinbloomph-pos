@@ -2744,3 +2744,10 @@ body:has(#groupChatActiveName) #groupChatBody.group-chat-ref-body {
     grid-template-columns: 1fr 1fr !important;
   }
 }
+
+/* Undo double column for Announcement / Pin role permissions */
+@media (max-width: 820px) {
+  .group-chat-ann-pin-permission-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
