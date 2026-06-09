@@ -784,6 +784,7 @@ shell(`
         <button class="icon-btn" onclick="toggleGroupChatAdminSettings()">×</button>
       </div>
 
+      <div class="group-chat-admin-settings-scroll">
       <section class="group-chat-admin-card">
         <h3>Announcement / Pin Message Controls</h3>
         <p class="group-chat-admin-note">Manage the active announcement and active pinned message for Group Chat.</p>
@@ -940,6 +941,8 @@ shell(`
           </div>
         </div>
       </section>
+
+      </div>
 
       <div class="group-chat-admin-actions">
         <button class="btn btn-primary" onclick="saveGroupChatAdminSettings()">Save Settings</button>

@@ -2763,3 +2763,58 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
     padding-left: 16px !important;
   }
 }
+
+/* FINAL: Admin Settings uses inner scroll, not forced fit */
+@media (max-width: 1100px) {
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open {
+    height: calc(100dvh - 98px) !important;
+    max-height: calc(100dvh - 98px) !important;
+    overflow: hidden !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-admin-settings-panel {
+    transform: none !important;
+    width: auto !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+
+    display: grid !important;
+    grid-template-rows: auto 1fr auto !important;
+    gap: 10px !important;
+
+    overflow: hidden !important;
+    padding: 12px !important;
+    padding-bottom: 12px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-settings-head {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+    background: rgba(15, 23, 42, 0.98) !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-settings-scroll {
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    display: grid !important;
+    gap: 10px !important;
+    padding-right: 2px !important;
+    padding-bottom: 4px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-actions {
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: 30 !important;
+    margin-top: 0 !important;
+    padding-top: 8px !important;
+    padding-bottom: 0 !important;
+    background: rgba(15, 23, 42, 0.98) !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+}
