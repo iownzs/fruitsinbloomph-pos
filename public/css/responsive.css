@@ -2399,3 +2399,63 @@ body[data-page="group-chat"] .group-chat-ann-pin-item .group-chat-ann-pin-toggle
     grid-template-columns: minmax(0, 1.45fr) 54px 54px !important;
   }
 }
+
+/* FINAL exact compact Ann/Pin table sizing */
+body[data-page="group-chat"] .group-chat-ann-pin-card {
+  padding: 10px !important;
+  border-radius: 16px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-tabs {
+  gap: 10px !important;
+  margin: 10px 0 12px !important;
+}
+
+body[data-page="group-chat"] .group-chat-admin-channel-tab.group-chat-ann-pin-tab {
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 7px 10px !important;
+  font-size: 13px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-item {
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 6px 10px !important;
+  border-radius: 13px !important;
+  font-size: 12px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-card.group-chat-permission-matrix {
+  padding: 8px !important;
+  border-radius: 15px !important;
+  gap: 5px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row {
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 8px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row {
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 4px 8px !important;
+  border-radius: 11px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-row strong {
+  font-size: 11px !important;
+}
+
+body[data-page="group-chat"] .group-chat-permission-toggle,
+body[data-page="group-chat"] .group-chat-ann-pin-toggle {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 23px !important;
+  min-height: 23px !important;
+  max-height: 23px !important;
+  font-size: 8px !important;
+}
