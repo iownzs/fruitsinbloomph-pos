@@ -817,24 +817,60 @@ shell(`
       </section>
 
       <section class="group-chat-admin-card">
-        <h3>Announcement Controls</h3>
+        <h3>Announcement / Pin Message Controls</h3>
+        <p class="group-chat-admin-note">Manage the active announcement and active pinned message for Group Chat.</p>
 
-        <label>Announcement Title
-          <input value="Operations: Delivery meeting at 3:00 PM">
-        </label>
+        <div class="group-chat-ann-pin-layout">
+          <div class="group-chat-ann-pin-card">
+            <h4>📢 Announcement</h4>
+            <p>Only 1 active announcement per channel or group chat.</p>
 
-        <label>Announcement Message
-          <textarea rows="3">Please update rider status before noon. Delivery team should check pending dispatch orders.</textarea>
-        </label>
+            <div class="group-chat-ann-pin-list">
+              <div class="group-chat-ann-pin-item">
+                <span>Create / Edit / Replace</span>
+                <span class="group-chat-ann-pin-badge">Allowed Roles</span>
+              </div>
+              <div class="group-chat-ann-pin-item">
+                <span>Show / Hide Announcement</span>
+                <span class="group-chat-ann-pin-badge">Admin Control</span>
+              </div>
+              <div class="group-chat-ann-pin-item">
+                <span>Staff Access</span>
+                <span class="group-chat-ann-pin-badge">View Only</span>
+              </div>
+            </div>
+          </div>
 
-        <div class="group-chat-admin-toggle-row">
-          <span>Pin Announcement</span>
-          <button class="group-chat-admin-toggle active">On</button>
+          <div class="group-chat-ann-pin-card">
+            <h4>📌 Pin Message</h4>
+            <p>Only 1 active pinned message per channel.</p>
+
+            <div class="group-chat-ann-pin-list">
+              <div class="group-chat-ann-pin-item">
+                <span>Pin New Message</span>
+                <span class="group-chat-ann-pin-badge">Replace Old</span>
+              </div>
+              <div class="group-chat-ann-pin-item">
+                <span>Unpin Message</span>
+                <span class="group-chat-ann-pin-badge">Allowed Roles</span>
+              </div>
+              <div class="group-chat-ann-pin-item">
+                <span>Staff Access</span>
+                <span class="group-chat-ann-pin-badge">View Only</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="group-chat-admin-toggle-row">
-          <span>Show Announcement</span>
-          <button class="group-chat-admin-toggle active">On</button>
+        <div class="group-chat-ann-pin-permissions">
+          <strong>Role Permissions</strong>
+          <div class="group-chat-ann-pin-permission-grid">
+            <span>Role</span>
+            <span>Create / Edit Announcement</span>
+            <span>Show / Hide</span>
+            <span>Pin / Unpin Msg</span>
+          </div>
+          <small>Use Channel Management role permissions to control which roles can manage announcement and pinned messages.</small>
         </div>
       </section>
 
