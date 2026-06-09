@@ -6833,7 +6833,7 @@ body[data-page="group-chat"] .group-chat-admin-channel-top small {
 }
 
 body[data-page="group-chat"] .group-chat-admin-settings-panel {
-  padding-bottom: 92px !important;
+  padding-bottom: 18px !important;
 }
 
 body[data-page="group-chat"] .group-chat-admin-actions {
@@ -6868,7 +6868,7 @@ body[data-page="group-chat"] .group-chat-admin-actions {
     overflow: hidden !important;
 
     padding: 10px !important;
-    padding-bottom: 66px !important;
+    padding-bottom: 18px !important;
     border-radius: 18px !important;
   }
 
