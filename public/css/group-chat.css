@@ -3435,3 +3435,36 @@ body[data-page="group-chat"] .group-chat-ann-pin-toggle {
     max-height: 25px !important;
   }
 }
+
+/* FINAL: Let Announcement / Pin inherit Channel Management sizing */
+body[data-page="group-chat"] .group-chat-ann-pin-role-card.group-chat-permission-matrix {
+  padding: 10px !important;
+  gap: 6px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row,
+body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row {
+  grid-template-columns: minmax(0, 1.45fr) 0.8fr 0.8fr !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row {
+  min-height: 38px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-row strong {
+  font-size: 12px !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-toggle {
+  width: 50px !important;
+  min-width: 50px !important;
+  height: 25px !important;
+  min-height: 25px !important;
+  font-size: 9px !important;
+}
+
+body[data-page="group-chat"] .group-chat-admin-channel-tab.group-chat-ann-pin-tab {
+  min-height: 46px !important;
+  height: 46px !important;
+  font-size: 13px !important;
+}
