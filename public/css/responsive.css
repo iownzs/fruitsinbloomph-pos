@@ -2818,3 +2818,82 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
     gap: 10px !important;
   }
 }
+
+/* FINAL: mobile-desktop Admin Settings readable + inner scroll */
+@media (min-width: 821px) and (max-width: 1100px) {
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open {
+    height: calc(100dvh - 86px) !important;
+    max-height: calc(100dvh - 86px) !important;
+    overflow: hidden !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: 10px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app.admin-settings-open .group-chat-admin-settings-panel {
+    transform: none !important;
+    width: min(92vw, 760px) !important;
+    max-width: 760px !important;
+    height: calc(100dvh - 120px) !important;
+    max-height: calc(100dvh - 120px) !important;
+
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+
+    padding: 14px !important;
+    gap: 10px !important;
+    border-radius: 20px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-settings-scroll {
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    display: grid !important;
+    gap: 12px !important;
+    padding-right: 4px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-settings-head h2 {
+    font-size: 18px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-settings-head p {
+    font-size: 12px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-card {
+    padding: 12px !important;
+    gap: 10px !important;
+    border-radius: 16px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-card h3 {
+    font-size: 14px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-note,
+  body[data-page="group-chat"] .group-chat-admin-card .muted {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-actions {
+    position: static !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding-top: 10px !important;
+    background: rgba(15, 23, 42, 0.98) !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-admin-actions .btn,
+  body[data-page="group-chat"] .group-chat-admin-actions button {
+    height: 44px !important;
+    min-height: 44px !important;
+    font-size: 14px !important;
+    border-radius: 15px !important;
+  }
+}
