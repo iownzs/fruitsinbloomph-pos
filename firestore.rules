@@ -129,6 +129,36 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+
+    // Group Chat channels.
+    // Logged-in active staff can read channels.
+    // Owner/Admin can seed or manage channel settings.
+    match /chatChannels/{channelId} {
+      allow read: if canReadPOS();
+      allow create, update, delete: if isOwnerAdmin();
+    }
+
+    // Group Chat messages.
+    // Logged-in active staff can read and send messages.
+    // Sender can update their own message for edit/reaction fields.
+    // Owner/Admin can moderate messages.
+    match /chatMessages/{messageId} {
+      allow read: if canReadPOS();
+
+      allow create: if activeUser()
+        && request.resource.data.senderId == request.auth.uid
+        && request.resource.data.channelId is string
+        && request.resource.data.messageText is string;
+
+      allow update: if activeUser()
+        && (
+          resource.data.senderId == request.auth.uid
+          || isOwnerAdmin()
+        );
+
+      allow delete: if false;
+    }
+
     // Default deny everything else.
     match /{document=**} {
       allow read, write: if false;
