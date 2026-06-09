@@ -2459,3 +2459,19 @@ body[data-page="group-chat"] .group-chat-ann-pin-toggle {
   max-height: 23px !important;
   font-size: 8px !important;
 }
+
+/* Match Announcement / Pin background with Channel Management semi-gray */
+body[data-page="group-chat"] .group-chat-ann-pin-card,
+body[data-page="group-chat"] .group-chat-ann-pin-role-card.group-chat-permission-matrix {
+  background: rgba(30, 41, 59, 0.48) !important;
+  border: 1px solid rgba(148, 163, 184, 0.14) !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-row,
+body[data-page="group-chat"] .group-chat-ann-pin-item {
+  background: rgba(15, 23, 42, 0.58) !important;
+}
+
+body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row {
+  background: transparent !important;
+}
