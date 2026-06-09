@@ -1600,7 +1600,7 @@ ${messages.map((message, index) => {
 
         <div class="group-chat-msg-bubble">${text}</div>
 
-        ${reactions ? `<div class="group-chat-msg-reactions">${escapeGroupChatText(reactions)}</div>` : ""}
+        ${reactions ? `<button class="group-chat-msg-reactions" type="button" onclick="showGroupChatReactionUsers(${index})">${escapeGroupChatText(reactions)}</button>` : ""}
 
         <div class="group-chat-msg-actions">
           <button type="button" onclick="replyGroupChatMessage(${index})">Reply</button>
