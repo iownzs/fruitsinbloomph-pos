@@ -2740,3 +2740,9 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-row.group-chat-permission-
     padding-right: 10px !important;
   }
 }
+
+/* Align ROLE header left like role names */
+body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission-row > :nth-child(1) {
+  justify-self: start !important;
+  text-align: left !important;
+}
