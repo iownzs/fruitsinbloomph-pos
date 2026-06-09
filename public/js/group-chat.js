@@ -691,7 +691,7 @@ shell(`
             <strong>${getCurrentGroupChatUserProfile().name}</strong>
             <small>${getCurrentGroupChatUserProfile().role}</small>
           </div>
-          ${canEditGroupChatChannel("general") ? `<button class="icon-btn" onclick="toggleGroupChatAdminSettings()" title="Admin Profile Settings">⚙</button>` : ""}
+          ${canEditGroupChatChannel("general") ? `<button class="icon-btn" onclick="toggleGroupChatAdminSettings()" title="Admin Settings">⚙</button>` : ""}
         </div>
       </div>
     </aside>
@@ -778,43 +778,11 @@ shell(`
     <aside id="groupChatAdminSettingsPanel" class="group-chat-admin-settings-panel">
       <div class="group-chat-admin-settings-head">
         <div>
-          <h2>Admin Profile Settings</h2>
-          <p class="muted">Owner/Admin controls for Group Chat</p>
+          <h2>Admin Settings</h2>
+          <p class="muted">Manage Group Chat controls and permissions</p>
         </div>
         <button class="icon-btn" onclick="toggleGroupChatAdminSettings()">×</button>
       </div>
-
-      <section class="group-chat-admin-card">
-        <h3>Admin Profile</h3>
-        <div class="group-chat-admin-profile-grid">
-          <div class="group-chat-admin-avatar">${getCurrentGroupChatUserProfile().avatar}</div>
-
-          <label>Admin Name
-            <input value="${getCurrentGroupChatUserProfile().name}">
-          </label>
-
-          <label>Role
-            <select>
-              <option>${getCurrentGroupChatUserProfile().role}</option>
-              <option>Owner / Admin</option>
-              <option>Admin</option>
-              <option>Manager</option>
-            </select>
-          </label>
-
-          <label>Status
-            <select>
-              <option>Online</option>
-              <option>Busy</option>
-              <option>Away</option>
-            </select>
-          </label>
-
-          <label class="wide">Status Message
-            <input value="Managing the shop">
-          </label>
-        </div>
-      </section>
 
       <section class="group-chat-admin-card">
         <h3>Announcement / Pin Message Controls</h3>
