@@ -1,47 +1,16 @@
 const GROUP_CHAT_CHANNELS = [
-  { id: "system", name: "System Message", icon: "🔔", count: 1, desc: "Read-only", readonly: true },
-  { id: "general", name: "General", icon: "👥", count: 4, desc: "23 members, 4 online" },
-  { id: "sales", name: "Sales", icon: "📈", count: 2, desc: "Sales and cashier updates" },
-  { id: "kitchen", name: "Kitchen", icon: "🍳", count: 1, desc: "Kitchen preparation updates" },
-  { id: "delivery", name: "Delivery", icon: "🚚", count: 3, desc: "Delivery coordination" },
-  { id: "riders", name: "Riders", icon: "🛵", count: 2, desc: "Rider dispatch updates" },
-  { id: "schedule", name: "Schedule", icon: "📅", count: 1, desc: "Weekly staff schedule", readonly: true },
-  { id: "issues", name: "Issues", icon: "⚠️", count: 2, desc: "Problems and incidents" },
-  { id: "chitchat", name: "Chitchat", icon: "#", count: 3, desc: "Casual staff chat" }
+  { id: "system", name: "System Message", icon: "🔔", count: 0, desc: "Read-only", readonly: true },
+  { id: "general", name: "General", icon: "👥", count: 0, desc: "23 members, 4 online" },
+  { id: "sales", name: "Sales", icon: "📈", count: 0, desc: "Sales and cashier updates" },
+  { id: "kitchen", name: "Kitchen", icon: "🍳", count: 0, desc: "Kitchen preparation updates" },
+  { id: "delivery", name: "Delivery", icon: "🚚", count: 0, desc: "Delivery coordination" },
+  { id: "riders", name: "Riders", icon: "🛵", count: 0, desc: "Rider dispatch updates" },
+  { id: "schedule", name: "Schedule", icon: "📅", count: 0, desc: "Weekly staff schedule", readonly: true },
+  { id: "issues", name: "Issues", icon: "⚠️", count: 0, desc: "Problems and incidents" },
+  { id: "chitchat", name: "Chitchat", icon: "#", count: 0, desc: "Casual staff chat" }
 ];
 
-const GROUP_CHAT_MESSAGES = {
-  system: [
-    { name: "System", role: "POS", avatar: "S", time: "9:00 AM", text: "Order ORD-1024 was sent to Delivery.", reactions: "✅ 12" },
-    { name: "System", role: "Inventory", avatar: "S", time: "9:05 AM", text: "Ingredient deduction recorded for ORD-1023.", reactions: "👍 8" },
-    { name: "System", role: "Kitchen", avatar: "S", time: "9:12 AM", text: "Order ORD-1022 marked Ready.", reactions: "✅ 10" }
-  ],
-  general: [
-    { name: "Maria Santos", role: "Manager", avatar: "MS", time: "9:15 AM", text: "Good morning team! Let’s crush it today and make it a great day for our customers.", reactions: "❤️ 7 🎉 2" },
-    { name: "Jake Thompson", role: "Shift Supervisor", avatar: "JT", time: "9:17 AM", text: "Morning! The lunch rush looks busy—kitchen, let’s stay ahead! 💪", reactions: "👍 2" },
-    { name: "Leah Nguyen", role: "Kitchen Lead", avatar: "LN", time: "9:24 AM", text: "On it! Prep list is done and team is all set. ✅", reactions: "🙌 3" },
-    { name: "Rohit Patel", role: "Delivery Coordinator", avatar: "RP", time: "9:28 AM", text: "Delivery update: 2 new riders starting today. Welcome aboard!", reactions: "🎉 2" },
-    { name: "Alex Rivera", role: "Ops Manager", avatar: "AR", time: "9:32 AM", text: "Heads up: We’re low on cups. Ordering more now.", reactions: "" }
-  ],
-  sales: [
-    { name: "Marlon", role: "Sales", avatar: "M", time: "9:15 AM", text: "Customer asked for delivery update on ORD-1024.", reactions: "👍 2" }
-  ],
-  kitchen: [
-    { name: "Kitchen Staff", role: "Kitchen", avatar: "KS", time: "9:20 AM", text: "Preparing pantry orders first.", reactions: "✅ 3" }
-  ],
-  delivery: [
-    { name: "Delivery Staff", role: "Delivery", avatar: "DS", time: "9:30 AM", text: "Waiting for rider assignment.", reactions: "👍 2" }
-  ],
-  riders: [
-    { name: "Rider Team", role: "Rider", avatar: "RT", time: "9:35 AM", text: "Available riders: Juan, Carlo.", reactions: "🛵 2" }
-  ],
-  issues: [
-    { name: "Admin", role: "Manager", avatar: "A", time: "Yesterday", text: "Log any delayed orders here with order ID.", reactions: "" }
-  ],
-  chitchat: [
-    { name: "Team", role: "Staff", avatar: "T", time: "Yesterday", text: "Welcome to Chitchat.", reactions: "😊 3" }
-  ]
-};
+const GROUP_CHAT_MESSAGES = {};
 
 
 function addGroupChatScrollTestMessages(){
