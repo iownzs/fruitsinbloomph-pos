@@ -1361,10 +1361,36 @@ function getGroupChatReactionUserId(){
   );
 }
 
+
+function getGroupChatReactionUserName(){
+  const user = (typeof getCurrentGroupChatUser === "function") ? getCurrentGroupChatUser() : null;
+  const storedUser = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("posUser") || "null");
+    } catch(err) {
+      return null;
+    }
+  })();
+
+  return String(
+    user?.name ||
+    user?.displayName ||
+    user?.username ||
+    user?.email ||
+    storedUser?.name ||
+    storedUser?.displayName ||
+    storedUser?.username ||
+    storedUser?.email ||
+    "Current User"
+  );
+}
+
 function summarizeGroupChatReactionUsers(reactionUsers){
   const counts = {};
 
-  Object.values(reactionUsers || {}).forEach(emoji => {
+  Object.values(reactionUsers || {}).forEach(value => {
+    const emoji = typeof value === "string" ? value : value?.emoji;
+
     if(!emoji){
       return;
     }
@@ -1386,17 +1412,24 @@ function toggleGroupChatEmojiReaction(index, emoji){
   }
 
   const userId = getGroupChatReactionUserId();
+  const userName = getGroupChatReactionUserName();
   const reactionUsers = message.reactionUsers && typeof message.reactionUsers === "object"
     ? { ...message.reactionUsers }
     : {};
 
+  const currentValue = reactionUsers[userId];
+  const currentEmoji = typeof currentValue === "string" ? currentValue : currentValue?.emoji;
+
   // One reaction per user:
   // same emoji = remove user's reaction
   // different emoji = replace user's old reaction
-  if(reactionUsers[userId] === emoji){
+  if(currentEmoji === emoji){
     delete reactionUsers[userId];
   } else {
-    reactionUsers[userId] = emoji;
+    reactionUsers[userId] = {
+      emoji,
+      name: userName
+    };
   }
 
   message.reactionUsers = reactionUsers;
@@ -1404,6 +1437,58 @@ function toggleGroupChatEmojiReaction(index, emoji){
 
   closeGroupChatLiteModal();
   renderGroupChatMessages(channel);
+}
+
+
+function showGroupChatReactionUsers(index){
+  const channel = getActiveChannel();
+  const message = (GROUP_CHAT_MESSAGES[channel.id] || [])[index];
+
+  if(!message){
+    return;
+  }
+
+  const reactionUsers = message.reactionUsers && typeof message.reactionUsers === "object"
+    ? message.reactionUsers
+    : {};
+
+  const rows = Object.values(reactionUsers)
+    .map(value => {
+      const emoji = typeof value === "string" ? value : value?.emoji;
+      const name = typeof value === "string" ? "User" : (value?.name || "User");
+
+      if(!emoji){
+        return "";
+      }
+
+      return `
+        <div class="group-chat-reaction-user-row">
+          <span class="group-chat-reaction-user-emoji">${emoji}</span>
+          <span class="group-chat-reaction-user-name">${name}</span>
+        </div>
+      `;
+    })
+    .filter(Boolean)
+    .join("");
+
+  closeGroupChatLiteModal();
+
+  const modal = document.createElement("div");
+  modal.id = "groupChatLiteModal";
+  modal.className = "group-chat-modal-lite";
+  modal.innerHTML = `
+    <div class="group-chat-modal-card group-chat-reaction-users-card">
+      <div class="group-chat-modal-head">
+        <strong>Reactions</strong>
+        <button class="group-chat-action-btn" type="button" onclick="closeGroupChatLiteModal()">Close</button>
+      </div>
+      <div class="group-chat-reaction-users-list">
+        ${rows || `<div class="group-chat-reaction-empty">No reactions yet.</div>`}
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
 }
 
 function editGroupChatMessage(index){
@@ -2064,3 +2149,5 @@ window.handleGroupChatInputTyping = handleGroupChatInputTyping;
 window.handleGroupChatInputBlur = handleGroupChatInputBlur;
 window.selectGroupChatInlineMention = selectGroupChatInlineMention;
 window.toggleGroupChatEmojiReaction = toggleGroupChatEmojiReaction;
+
+window.showGroupChatReactionUsers = showGroupChatReactionUsers;
