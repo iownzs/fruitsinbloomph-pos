@@ -914,14 +914,30 @@ shell(`
       <section class="group-chat-admin-card">
         <h3>Notification Controls</h3>
 
-        <div class="group-chat-admin-toggle-row">
-          <span>Mute Notifications</span>
-          <button class="group-chat-admin-toggle">Off</button>
-        </div>
+        <div class="group-chat-global-notification-card">
+          <div class="group-chat-global-notification-row">
+            <div>
+              <strong>Mute Notifications</strong>
+              <small>Turn off Group Chat notification alerts globally.</small>
+            </div>
 
-        <div class="group-chat-admin-toggle-row">
-          <span>Show Read Receipts</span>
-          <button class="group-chat-admin-toggle active">On</button>
+            <label class="group-chat-permission-toggle is-off">
+              <input type="checkbox" onchange="toggleGroupChatGlobalNotification(this)">
+              <span>OFF</span>
+            </label>
+          </div>
+
+          <div class="group-chat-global-notification-row">
+            <div>
+              <strong>Show Read Receipts</strong>
+              <small>Show seen/read status for Group Chat messages.</small>
+            </div>
+
+            <label class="group-chat-permission-toggle is-on">
+              <input type="checkbox" checked onchange="toggleGroupChatGlobalNotification(this)">
+              <span>ON</span>
+            </label>
+          </div>
         </div>
       </section>
 
@@ -935,6 +951,22 @@ shell(`
 
 
 
+
+
+function toggleGroupChatGlobalNotification(input){
+  const label = input.closest(".group-chat-permission-toggle");
+  const span = label?.querySelector("span");
+  const isOn = Boolean(input.checked);
+
+  if(label){
+    label.classList.toggle("is-on", isOn);
+    label.classList.toggle("is-off", !isOn);
+  }
+
+  if(span){
+    span.textContent = isOn ? "ON" : "OFF";
+  }
+}
 
 function toggleGroupChatAnnPinPermission(input){
   const label = input.closest(".group-chat-permission-toggle");
@@ -2231,3 +2263,5 @@ window.openGroupChatAnnPinTab = openGroupChatAnnPinTab;
 window.toggleGroupChatAnnPinControl = toggleGroupChatAnnPinControl;
 
 window.toggleGroupChatAnnPinPermission = toggleGroupChatAnnPinPermission;
+
+window.toggleGroupChatGlobalNotification = toggleGroupChatGlobalNotification;
