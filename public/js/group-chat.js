@@ -1125,6 +1125,17 @@ function formatGroupChatMessageTime(value){
   }
 }
 
+
+function updateGroupChatChannelCount(channelId){
+  const channel = GROUP_CHAT_CHANNELS.find(item => item.id === channelId);
+  if(!channel){
+    return;
+  }
+
+  channel.count = (GROUP_CHAT_MESSAGES[channelId] || []).length;
+  renderGroupChatChannels();
+}
+
 function normalizeGroupChatFirebaseMessage(message){
   return {
     id: message.id || message.messageId || "",
@@ -1171,6 +1182,7 @@ function startActiveGroupChatMessageListener(){
       }
 
       GROUP_CHAT_MESSAGES[channel.id] = firebaseMessages.map(normalizeGroupChatFirebaseMessage);
+      updateGroupChatChannelCount(channel.id);
       renderGroupChatMessages(channel);
       scrollGroupChatToBottom();
     });
@@ -1220,6 +1232,7 @@ async function loadActiveGroupChatMessagesFromFirebase(){
 
     if(Array.isArray(firebaseMessages)){
       GROUP_CHAT_MESSAGES[channel.id] = firebaseMessages.map(normalizeGroupChatFirebaseMessage);
+      updateGroupChatChannelCount(channel.id);
       renderGroupChatMessages(channel);
       return true;
     }
