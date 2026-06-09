@@ -1089,13 +1089,37 @@ async function loadGroupChatChannelsFromFirebase(){
   return true;
 }
 
+
+async function loadGroupChatChannelCountsFromFirebase(){
+  if(!window.FIB_FIREBASE_READY || !window.FIB?.getGroupChatMessages){
+    return false;
+  }
+
+  const channels = GROUP_CHAT_CHANNELS.filter(channel => channel.id !== "schedule");
+
+  await Promise.all(channels.map(async channel => {
+    try{
+      const firestoreChannelId = getGroupChatFirestoreChannelId(channel);
+      const messages = await window.FIB.getGroupChatMessages(firestoreChannelId);
+      channel.count = Array.isArray(messages) ? messages.length : 0;
+    }catch(error){
+      console.warn("Could not load Group Chat count for", channel.id, error);
+    }
+  }));
+
+  renderGroupChatChannels();
+  return true;
+}
+
 async function initGroupChat(){
   renderGroupChat();
+  loadGroupChatChannelCountsFromFirebase();
 
   try{
     const loaded = await loadGroupChatChannelsFromFirebase();
     if(loaded){
       renderGroupChat();
+      loadGroupChatChannelCountsFromFirebase();
       console.log("Group Chat channels loaded from Firebase.");
     }
   }catch(error){
