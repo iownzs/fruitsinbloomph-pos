@@ -2240,7 +2240,10 @@ function applyGroupChatViewState(){
 
 
 function updateGroupChatViewportHeight(){
-  const height = window.visualViewport?.height || window.innerHeight;
+  const viewportHeight = window.visualViewport?.height || window.innerHeight;
+  const screenHeight = window.screen?.height || viewportHeight;
+  const height = Math.min(viewportHeight, screenHeight);
+
   document.documentElement.style.setProperty("--group-chat-vh", `${height}px`);
 }
 
