@@ -3159,16 +3159,4 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
   }
 }
 
-/* Group Chat: make bottom edge visible without pushing input down */
-@media (max-width: 1100px) {
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
-    border-bottom: 1px solid rgba(34, 211, 238, 0.16) !important;
-    box-shadow: inset 0 -1px 0 rgba(34, 211, 238, 0.10) !important;
-  }
 
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) #groupChatComposer.group-chat-ref-composer {
-    padding-bottom: 8px !important;
-    border-bottom-left-radius: 18px !important;
-    border-bottom-right-radius: 18px !important;
-  }
-}
