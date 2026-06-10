@@ -2242,9 +2242,12 @@ function applyGroupChatViewState(){
 function updateGroupChatViewportHeight(){
   const viewportHeight = window.visualViewport?.height || window.innerHeight;
   const screenHeight = window.screen?.height || viewportHeight;
-  const height = Math.min(viewportHeight, screenHeight);
 
-  document.documentElement.style.setProperty("--group-chat-vh", `${height}px`);
+  // Android Chrome desktop mode reports innerHeight too tall.
+  // screenHeight alone is too short, so use a balanced cap.
+  const balancedHeight = Math.min(viewportHeight, Math.round(screenHeight * 1.45));
+
+  document.documentElement.style.setProperty("--group-chat-vh", `${balancedHeight}px`);
 }
 
 window.addEventListener("resize", updateGroupChatViewportHeight);
