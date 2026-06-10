@@ -1763,6 +1763,37 @@ function insertGroupChatEmoji(){
   toggleGroupChatEmojiPanel();
 }
 
+
+function getGroupChatCurrentAuthUid(){
+  try{
+    return firebase?.auth?.().currentUser?.uid || "";
+  }catch(error){
+    return "";
+  }
+}
+
+function getGroupChatCurrentUserName(){
+  try{
+    const posUser = JSON.parse(localStorage.getItem("posUser") || "{}");
+    return String(posUser.name || posUser.displayName || posUser.username || "").trim().toLowerCase();
+  }catch(error){
+    return "";
+  }
+}
+
+function isGroupChatOwnMessage(message){
+  const currentUid = getGroupChatCurrentAuthUid();
+
+  if(currentUid && message.senderId && message.senderId === currentUid){
+    return true;
+  }
+
+  const currentName = getGroupChatCurrentUserName();
+  const messageName = String(message.senderName || message.name || "").trim().toLowerCase();
+
+  return !!currentName && !!messageName && currentName === messageName;
+}
+
 function renderGroupChatMessages(channel){
   const messages = GROUP_CHAT_MESSAGES[channel.id] || [];
   const canEdit = canEditGroupChatChannel(channel.id);
@@ -1775,9 +1806,10 @@ ${messages.map((message, index) => {
   const time = escapeGroupChatText(message.time || "");
   const text = escapeGroupChatText(message.text || "").replace(/\n/g, "<br>");
   const reactions = normalizeGroupChatReactions(message.reactions);
+  const ownMessageClass = isGroupChatOwnMessage(message) ? " own" : "";
 
   return `
-    <article class="group-chat-msg-row" data-message-index="${index}">
+    <article class="group-chat-msg-row${ownMessageClass}" data-message-index="${index}">
       <div class="group-chat-msg-avatar">${avatar}</div>
 
       <div class="group-chat-msg-main">

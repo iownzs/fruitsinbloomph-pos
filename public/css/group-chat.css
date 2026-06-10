@@ -3468,3 +3468,40 @@ body[data-page="group-chat"] .group-chat-admin-channel-tab.group-chat-ann-pin-ta
   height: 46px !important;
   font-size: 13px !important;
 }
+
+/* Messenger-style: current user's own messages on the right */
+.group-chat-msg-row.own {
+  justify-content: flex-end;
+}
+
+.group-chat-msg-row.own .group-chat-msg-avatar {
+  display: none;
+}
+
+.group-chat-msg-row.own .group-chat-msg-main {
+  align-items: flex-end;
+  margin-left: auto;
+  max-width: 82%;
+}
+
+.group-chat-msg-row.own .group-chat-msg-meta {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.group-chat-msg-row.own .group-chat-msg-bubble {
+  margin-left: auto;
+  border-color: rgba(20, 184, 166, 0.42);
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.96), rgba(15, 118, 110, 0.96));
+  color: #ffffff;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 18px;
+}
+
+.group-chat-msg-row.own .group-chat-msg-actions {
+  justify-content: flex-end;
+}
+
+.group-chat-msg-row.own .group-chat-msg-reactions {
+  align-self: flex-end;
+}
