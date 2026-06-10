@@ -2245,7 +2245,7 @@ function updateGroupChatViewportHeight(){
 
   // Android Chrome desktop mode reports innerHeight too tall.
   // screenHeight alone is too short, so use a balanced cap.
-  const balancedHeight = Math.min(viewportHeight, Math.round(screenHeight * 1.80));
+  const balancedHeight = Math.min(viewportHeight, Math.round(screenHeight * 1.87));
 
   document.documentElement.style.setProperty("--group-chat-vh", `${balancedHeight}px`);
 }
