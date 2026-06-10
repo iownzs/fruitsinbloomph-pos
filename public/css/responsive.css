@@ -3134,3 +3134,27 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
 }
 
 
+
+/* FINAL TUNE: reduce empty page space below Group Chat card */
+@media (max-width: 1100px) {
+  body[data-page="group-chat"] {
+    padding-bottom: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  body[data-page="group-chat"] main,
+  body[data-page="group-chat"] .main-content,
+  body[data-page="group-chat"] .page-content,
+  body[data-page="group-chat"] #app {
+    padding-bottom: 4px !important;
+    margin-bottom: 0 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) {
+    margin-bottom: 0 !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
+    margin-bottom: 0 !important;
+  }
+}
