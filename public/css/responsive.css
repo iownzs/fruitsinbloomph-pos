@@ -3132,3 +3132,22 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
     max-height: 100% !important;
   }
 }
+
+/* FINAL POLISH: show chat card bottom edge and reduce space below input */
+@media (max-width: 1100px) {
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
+    padding-bottom: 0 !important;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.16) !important;
+    border-bottom-left-radius: 18px !important;
+    border-bottom-right-radius: 18px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) #groupChatComposer.group-chat-ref-composer {
+    margin-bottom: 0 !important;
+    padding-bottom: 5px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) #groupChatComposer .group-chat-composer-messenger {
+    margin-bottom: 0 !important;
+  }
+}
