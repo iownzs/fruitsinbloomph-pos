@@ -1432,6 +1432,85 @@ window.FIB.syncGroupChatChannelIcons = async function(){
   return true;
 };
 
+
+// Sync final Group Chat channel names/icons to Firestore.
+// Firestore is the source of truth; frontend values are fallback only.
+window.FIB.syncGroupChatChannelsFinalMeta = async function(){
+  if(!window.db || !firebase?.auth?.().currentUser){
+    return false;
+  }
+
+  const channelMeta = {
+    system_message: {
+      name: "System Message",
+      title: "System Message",
+      icon: "🔔",
+      description: "🔒 Read-only"
+    },
+    general: {
+      name: "General",
+      title: "General",
+      icon: "👥",
+      description: "General team chat."
+    },
+    sales: {
+      name: "Sales",
+      title: "Sales",
+      icon: "📈",
+      description: "Sales team chat."
+    },
+    kitchen: {
+      name: "Kitchen",
+      title: "Kitchen",
+      icon: "🍳",
+      description: "Kitchen team chat."
+    },
+    delivery: {
+      name: "Delivery",
+      title: "Delivery",
+      icon: "🚚",
+      description: "Delivery team chat."
+    },
+    riders: {
+      name: "Riders",
+      title: "Riders",
+      icon: "🛵",
+      description: "Rider team chat."
+    },
+    schedule: {
+      name: "Schedule",
+      title: "Schedule",
+      icon: "📅",
+      description: "🔒 Weekly staff schedule"
+    },
+    issues: {
+      name: "Issues",
+      title: "Issues",
+      icon: "⚠️",
+      description: "Report and track issues."
+    },
+    chitchat: {
+      name: "Chitchat",
+      title: "Chitchat",
+      icon: "#",
+      description: "Casual team chat."
+    }
+  };
+
+  const batch = window.db.batch();
+
+  Object.entries(channelMeta).forEach(([channelId, meta]) => {
+    const ref = window.db.collection("chatChannels").doc(channelId);
+    batch.set(ref, {
+      ...meta,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+  });
+
+  await batch.commit();
+  return true;
+};
+
 window.FIB.getGroupChatChannels = async function(){
   if(!window.db) throw new Error("Firestore not ready.");
 
