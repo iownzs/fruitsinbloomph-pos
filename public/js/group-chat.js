@@ -2074,7 +2074,11 @@ function renderGroupChatScheduleHeaderActions(){
 
 
 function isGroupChatTrueDesktop(){
-  const isTouchDevice = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+  const isTouchDevice =
+    ("ontouchstart" in window) ||
+    (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) ||
+    (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+
   return window.innerWidth >= 1101 && !isTouchDevice;
 }
 
