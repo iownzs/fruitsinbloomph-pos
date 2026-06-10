@@ -81,7 +81,7 @@ function addGroupChatScrollTestMessages(){
   });
 }
 
-addGroupChatScrollTestMessages();
+// addGroupChatScrollTestMessages(); // Disabled: Firebase chatMessages only
 
 const GROUP_CHAT_MEMBERS = [
   { name: "Maria Santos", role: "Manager", status: "Online", tag: "Admin", avatar: "MS" },
