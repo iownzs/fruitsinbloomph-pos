@@ -2083,11 +2083,15 @@ function isGroupChatTrueDesktop(){
 }
 
 function isGroupChatMobileDesktopMode(){
-  const ua = navigator.userAgent || "";
-  const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
   const screenMin = Math.min(window.screen?.width || 9999, window.screen?.height || 9999);
+  const hasTouch =
+    ("ontouchstart" in window) ||
+    (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) ||
+    (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
 
-  return isMobileDevice && screenMin <= 600 && window.innerWidth >= 900;
+  // Android Chrome desktop site can report Linux/X11 userAgent,
+  // so detect by small physical screen + touch + wide desktop viewport.
+  return hasTouch && screenMin <= 600 && window.innerWidth >= 900;
 }
 
 
