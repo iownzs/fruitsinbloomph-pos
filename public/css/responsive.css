@@ -3082,14 +3082,14 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
 /* EXACT FIX: mobile/Android desktop chat screen only.
    JS already removes .channels-open, so only the active chat screen is affected. */
 @media (max-width: 1100px) {
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) {
+  html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) {
     height: calc(100dvh - 54px) !important;
     max-height: calc(100dvh - 54px) !important;
     min-height: 0 !important;
     overflow: hidden !important;
   }
 
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
+  html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
     height: 100% !important;
     max-height: 100% !important;
     min-height: 0 !important;
@@ -3098,13 +3098,13 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
     overflow: hidden !important;
   }
 
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat-head,
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-slim-announcement,
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-pinned-row {
+  html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat-head,
+  html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-slim-announcement,
+  html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-pinned-row {
     flex: 0 0 auto !important;
   }
 
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) #groupChatBody.group-chat-ref-body {
+  html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) #groupChatBody.group-chat-ref-body {
     flex: 1 1 auto !important;
     min-height: 0 !important;
     max-height: none !important;
@@ -3112,7 +3112,7 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
     overflow-x: hidden !important;
   }
 
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) #groupChatComposer.group-chat-ref-composer {
+  html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) #groupChatComposer.group-chat-ref-composer {
     flex: 0 0 auto !important;
     position: relative !important;
     bottom: auto !important;
@@ -3122,41 +3122,14 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
 
 /* EXACT FIX 2: Android desktop mode real visible viewport height */
 @media (max-width: 1100px) {
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) {
+  html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) {
     height: calc(var(--group-chat-vh, 100dvh) - 54px) !important;
     max-height: calc(var(--group-chat-vh, 100dvh) - 54px) !important;
   }
 
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
+  html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
     height: 100% !important;
     max-height: 100% !important;
   }
 }
-
-
-
-/* FINAL TUNE: reduce empty page space below Group Chat card */
-@media (max-width: 1100px) {
-  body[data-page="group-chat"] {
-    padding-bottom: 0 !important;
-    overflow-x: hidden !important;
-  }
-
-  body[data-page="group-chat"] main,
-  body[data-page="group-chat"] .main-content,
-  body[data-page="group-chat"] .page-content,
-  body[data-page="group-chat"] #app {
-    padding-bottom: 4px !important;
-    margin-bottom: 0 !important;
-  }
-
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) {
-    margin-bottom: 0 !important;
-  }
-
-  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
-    margin-bottom: 0 !important;
-  }
-}
-
 

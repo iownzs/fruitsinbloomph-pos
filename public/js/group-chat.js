@@ -2082,6 +2082,15 @@ function isGroupChatTrueDesktop(){
   return window.innerWidth >= 1101 && !isTouchDevice;
 }
 
+function isGroupChatMobileDesktopMode(){
+  const ua = navigator.userAgent || "";
+  const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+  const screenMin = Math.min(window.screen?.width || 9999, window.screen?.height || 9999);
+
+  return isMobileDevice && screenMin <= 600 && window.innerWidth >= 900;
+}
+
+
 
 function openGroupChatChannel(channelId){
   activeGroupChatChannel = channelId;
@@ -2242,12 +2251,14 @@ function applyGroupChatViewState(){
 function updateGroupChatViewportHeight(){
   const viewportHeight = window.visualViewport?.height || window.innerHeight;
   const screenHeight = window.screen?.height || viewportHeight;
+  const isMobileDesktop = typeof isGroupChatMobileDesktopMode === "function" && isGroupChatMobileDesktopMode();
 
-  // Android Chrome desktop mode reports innerHeight too tall.
-  // screenHeight alone is too short, so use a balanced cap.
-  const balancedHeight = Math.min(viewportHeight, Math.round(screenHeight * 1.85));
+  const height = isMobileDesktop
+    ? Math.min(viewportHeight, Math.round(screenHeight * 1.85))
+    : viewportHeight;
 
-  document.documentElement.style.setProperty("--group-chat-vh", `${balancedHeight}px`);
+  document.documentElement.style.setProperty("--group-chat-vh", `${height}px`);
+  document.documentElement.classList.toggle("group-chat-mobile-desktop-mode", Boolean(isMobileDesktop));
 }
 
 window.addEventListener("resize", updateGroupChatViewportHeight);
