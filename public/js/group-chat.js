@@ -13,6 +13,38 @@ const GROUP_CHAT_CHANNELS = [
 const GROUP_CHAT_MESSAGES = {};
 
 
+const GROUP_CHAT_FINAL_CHANNEL_META = {
+  system: { name: "System Message", title: "System Message", icon: "🔔", description: "🔒 Read-only" },
+  system_message: { name: "System Message", title: "System Message", icon: "🔔", description: "🔒 Read-only" },
+  general: { name: "General", title: "General", icon: "👥", description: "General team chat." },
+  sales: { name: "Sales", title: "Sales", icon: "📈", description: "Sales team chat." },
+  kitchen: { name: "Kitchen", title: "Kitchen", icon: "🍳", description: "Kitchen team chat." },
+  delivery: { name: "Delivery", title: "Delivery", icon: "🚚", description: "Delivery team chat." },
+  riders: { name: "Riders", title: "Riders", icon: "🛵", description: "Rider team chat." },
+  schedule: { name: "Schedule", title: "Schedule", icon: "📅", description: "🔒 Weekly staff schedule" },
+  issues: { name: "Issues", title: "Issues", icon: "⚠️", description: "Report and track issues." },
+  chitchat: { name: "Chitchat", title: "Chitchat", icon: "#", description: "Casual team chat." }
+};
+
+function applyGroupChatFinalChannelMeta(){
+  GROUP_CHAT_CHANNELS.forEach(channel => {
+    const key = channel.firestoreId || (channel.id === "system" ? "system_message" : channel.id);
+    const meta = GROUP_CHAT_FINAL_CHANNEL_META[key] || GROUP_CHAT_FINAL_CHANNEL_META[channel.id];
+
+    if(!meta){
+      return;
+    }
+
+    channel.name = meta.name;
+    channel.title = meta.title;
+    channel.icon = meta.icon;
+    channel.description = meta.description;
+  });
+}
+
+
+
+
 function addGroupChatScrollTestMessages(){
   const extra = {
     system: [
@@ -1091,12 +1123,14 @@ async function initGroupChat(){
     }
 
     const loaded = await loadGroupChatChannelsFromFirebase();
+    applyGroupChatFinalChannelMeta();
 
     if(loaded && window.FIB_FIREBASE_READY && window.FIB?.getGroupChatMessages){
       await loadGroupChatChannelCountsFromFirebase({ render: false });
     }
 
-    renderGroupChat();
+    applyGroupChatFinalChannelMeta();
+  renderGroupChat();
 
     if(loaded){
       console.log("Group Chat channels and counts loaded from Firebase.");
