@@ -1131,6 +1131,8 @@ async function initGroupChat(){
 
     applyGroupChatFinalChannelMeta();
   renderGroupChat();
+  setTimeout(scrollGroupChatToLatest, 100);
+  setTimeout(scrollGroupChatToLatest, 300);
 
     if(loaded){
       console.log("Group Chat channels and counts loaded from Firebase.");
@@ -1223,6 +1225,8 @@ function startActiveGroupChatMessageListener(){
       updateGroupChatChannelCount(channel.id);
       renderGroupChatMessages(channel);
       scrollGroupChatToBottom();
+      setTimeout(scrollGroupChatToLatest, 80);
+      setTimeout(scrollGroupChatToLatest, 250);
     });
 
     return true;
@@ -1234,7 +1238,23 @@ function startActiveGroupChatMessageListener(){
 
 
 
+
+function scrollGroupChatToLatest(){
+  const scrollTargets = [
+    document.querySelector(".group-chat-message-scroll"),
+    document.querySelector(".group-chat-messages-scroll"),
+    document.querySelector(".group-chat-messages"),
+    document.querySelector(".group-chat-chatbox"),
+    document.querySelector("#groupChatMessages")
+  ].filter(Boolean);
+
+  scrollTargets.forEach(target => {
+    target.scrollTop = target.scrollHeight;
+  });
+}
+
 function scrollGroupChatToBottom(){
+  scrollGroupChatToLatest();
   requestAnimationFrame(() => {
     const scrollBox = document.querySelector(".group-chat-channel-scroll");
     if(scrollBox){
@@ -1272,6 +1292,9 @@ async function loadActiveGroupChatMessagesFromFirebase(){
       GROUP_CHAT_MESSAGES[channel.id] = firebaseMessages.map(normalizeGroupChatFirebaseMessage);
       updateGroupChatChannelCount(channel.id);
       renderGroupChatMessages(channel);
+      scrollGroupChatToBottom();
+      setTimeout(scrollGroupChatToLatest, 80);
+      setTimeout(scrollGroupChatToLatest, 250);
       return true;
     }
   }catch(error){
