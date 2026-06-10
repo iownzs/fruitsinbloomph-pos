@@ -2072,10 +2072,17 @@ function renderGroupChatScheduleHeaderActions(){
   `;
 }
 
+
+function isGroupChatTrueDesktop(){
+  const isTouchDevice = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+  return window.innerWidth >= 1101 && !isTouchDevice;
+}
+
+
 function openGroupChatChannel(channelId){
   activeGroupChatChannel = channelId;
 
-  const isTrueDesktop = window.innerWidth >= 1101;
+  const isTrueDesktop = isGroupChatTrueDesktop();
 
   // Mobile/tablet/desktop-mobile: open selected chat screen.
   // True desktop: keep channel list visible and update center chat.
@@ -2096,7 +2103,7 @@ function openGroupChatChannel(channelId){
   setTimeout(scrollGroupChatToLatest, 700);
 
   requestAnimationFrame(() => {
-    groupChatChannelsOpen = window.innerWidth >= 1101;
+    groupChatChannelsOpen = isGroupChatTrueDesktop();
     applyGroupChatViewState();
     scrollGroupChatToLatest();
   });
@@ -2119,7 +2126,7 @@ function getActiveChannel(){
 }
 
 function toggleGroupChatChannels(){
-  const isTrueDesktop = window.innerWidth >= 1101;
+  const isTrueDesktop = isGroupChatTrueDesktop();
 
   if(isTrueDesktop){
     groupChatChannelsOpen = true;
@@ -2136,7 +2143,7 @@ function toggleGroupChatChannels(){
 function toggleGroupChatMembers(){
   groupChatMembersOpen = !groupChatMembersOpen;
 
-  const isTrueDesktop = window.innerWidth >= 1101;
+  const isTrueDesktop = isGroupChatTrueDesktop();
 
   if(groupChatMembersOpen){
     groupChatAdminSettingsOpen = false;
