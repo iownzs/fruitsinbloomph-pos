@@ -3083,8 +3083,8 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
    JS already removes .channels-open, so only the active chat screen is affected. */
 @media (max-width: 1100px) {
   html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) {
-    height: calc(100dvh - 54px) !important;
-    max-height: calc(100dvh - 54px) !important;
+    height: calc(var(--group-chat-vh, 100dvh) - 54px) !important;
+    max-height: calc(var(--group-chat-vh, 100dvh) - 54px) !important;
     min-height: 0 !important;
     overflow: hidden !important;
   }
