@@ -1241,6 +1241,7 @@ function startActiveGroupChatMessageListener(){
 
 function scrollGroupChatToLatest(){
   const scrollTargets = [
+    document.querySelector(".group-chat-channel-scroll"),
     document.querySelector(".group-chat-message-scroll"),
     document.querySelector(".group-chat-messages-scroll"),
     document.querySelector(".group-chat-messages"),
@@ -1251,6 +1252,11 @@ function scrollGroupChatToLatest(){
   scrollTargets.forEach(target => {
     target.scrollTop = target.scrollHeight;
   });
+
+  const lastMessage = document.querySelector(".group-chat-msg-row:last-child");
+  if(lastMessage){
+    lastMessage.scrollIntoView({ block: "end", behavior: "auto" });
+  }
 }
 
 function scrollGroupChatToBottom(){
@@ -2053,9 +2059,14 @@ function openGroupChatChannel(channelId){
 
   renderGroupChat();
 
+  setTimeout(scrollGroupChatToLatest, 100);
+  setTimeout(scrollGroupChatToLatest, 350);
+  setTimeout(scrollGroupChatToLatest, 700);
+
   requestAnimationFrame(() => {
     groupChatChannelsOpen = window.innerWidth >= 1101;
     applyGroupChatViewState();
+    scrollGroupChatToLatest();
   });
 }
 
