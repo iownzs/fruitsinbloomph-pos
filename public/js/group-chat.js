@@ -2238,6 +2238,17 @@ function applyGroupChatViewState(){
   document.querySelector(".group-chat-ref-app")?.classList.toggle("announcement-hidden", !groupChatAnnouncementOpen);
 }
 
+
+function updateGroupChatViewportHeight(){
+  const height = window.visualViewport?.height || window.innerHeight;
+  document.documentElement.style.setProperty("--group-chat-vh", `${height}px`);
+}
+
+window.addEventListener("resize", updateGroupChatViewportHeight);
+window.visualViewport?.addEventListener("resize", updateGroupChatViewportHeight);
+window.visualViewport?.addEventListener("scroll", updateGroupChatViewportHeight);
+updateGroupChatViewportHeight();
+
 initGroupChat();
 setTimeout(addGroupChatLayoutDebugButton, 500);
 

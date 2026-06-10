@@ -3119,3 +3119,16 @@ body[data-page="group-chat"] .group-chat-ann-pin-role-head.group-chat-permission
     z-index: 20 !important;
   }
 }
+
+/* EXACT FIX 2: Android desktop mode real visible viewport height */
+@media (max-width: 1100px) {
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) {
+    height: calc(var(--group-chat-vh, 100dvh) - 54px) !important;
+    max-height: calc(var(--group-chat-vh, 100dvh) - 54px) !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
+    height: 100% !important;
+    max-height: 100% !important;
+  }
+}
