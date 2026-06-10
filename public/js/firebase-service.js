@@ -1401,6 +1401,37 @@ window.FIB.seedGroupChatChannels = async function(){
   };
 };
 
+
+// Sync final Group Chat channel icons to Firestore.
+// Firestore remains the main source; frontend icons are fallback only.
+window.FIB.syncGroupChatChannelIcons = async function(){
+  if(!window.db || !firebase?.auth?.().currentUser){
+    return false;
+  }
+
+  const iconMap = {
+    system_message: "🔔",
+    general: "👥",
+    sales: "📈",
+    kitchen: "🍳",
+    delivery: "🚚",
+    riders: "🛵",
+    schedule: "📅",
+    issues: "⚠️",
+    chitchat: "#"
+  };
+
+  const batch = window.db.batch();
+
+  Object.entries(iconMap).forEach(([channelId, icon]) => {
+    const ref = window.db.collection("chatChannels").doc(channelId);
+    batch.set(ref, { icon, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+  });
+
+  await batch.commit();
+  return true;
+};
+
 window.FIB.getGroupChatChannels = async function(){
   if(!window.db) throw new Error("Firestore not ready.");
 
