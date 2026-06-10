@@ -1081,18 +1081,29 @@ async function loadGroupChatChannelCountsFromFirebase(){
 }
 
 async function initGroupChat(){
-  renderGroupChat();
-  loadGroupChatChannelCountsFromFirebase();
-
   try{
+    if(window.FIB_FIREBASE_READY && window.FIB?.syncGroupChatChannelsFinalMeta){
+      try{
+        await window.FIB.syncGroupChatChannelsFinalMeta();
+      }catch(syncMetaError){
+        console.warn("Group Chat final channel meta sync skipped:", syncMetaError);
+      }
+    }
+
     const loaded = await loadGroupChatChannelsFromFirebase();
+
+    if(loaded && window.FIB_FIREBASE_READY && window.FIB?.getGroupChatMessages){
+      await loadGroupChatChannelCountsFromFirebase({ render: false });
+    }
+
+    renderGroupChat();
+
     if(loaded){
-      renderGroupChat();
-      loadGroupChatChannelCountsFromFirebase();
-      console.log("Group Chat channels loaded from Firebase.");
+      console.log("Group Chat channels and counts loaded from Firebase.");
     }
   }catch(error){
     console.warn("Group Chat Firebase channel load failed:", error);
+    renderGroupChat();
   }
 }
 
