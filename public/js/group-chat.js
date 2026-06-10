@@ -2258,7 +2258,7 @@ function updateGroupChatViewportHeight(){
   const isMobileDesktop = typeof isGroupChatMobileDesktopMode === "function" && isGroupChatMobileDesktopMode();
 
   const height = isMobileDesktop
-    ? Math.min(viewportHeight, Math.round(screenHeight * 1.75))
+    ? Math.min(viewportHeight, Math.round(screenHeight * 1.90))
     : viewportHeight;
 
   document.documentElement.style.setProperty("--group-chat-vh", `${height}px`);
