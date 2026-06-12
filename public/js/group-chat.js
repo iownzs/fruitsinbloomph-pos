@@ -2271,7 +2271,6 @@ window.visualViewport?.addEventListener("scroll", updateGroupChatViewportHeight)
 updateGroupChatViewportHeight();
 
 initGroupChat();
-setTimeout(addGroupChatLayoutDebugButton, 500);
 
 window.setGroupChatChannel = setGroupChatChannel;
 window.openGroupChatChannel = openGroupChatChannel;
@@ -2333,99 +2332,6 @@ function showGroupChatAdminDebug(){
 window.showGroupChatAdminDebug = showGroupChatAdminDebug;
 
 
-function showGroupChatLayoutDebug(){
-  const app = document.querySelector(".group-chat-ref-app");
-  const chat = document.querySelector(".group-chat-ref-chat");
-  const body = document.querySelector("#groupChatBody");
-  const composer = document.querySelector("#groupChatComposer");
-
-  const isTouch =
-    ("ontouchstart" in window) ||
-    (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) ||
-    (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
-
-  const data = {
-    innerWidth: window.innerWidth,
-    innerHeight: window.innerHeight,
-    screenWidth: window.screen?.width,
-    screenHeight: window.screen?.height,
-    devicePixelRatio: window.devicePixelRatio,
-    userAgent: navigator.userAgent,
-    maxTouchPoints: navigator.maxTouchPoints,
-    pointerCoarse: window.matchMedia ? window.matchMedia("(pointer: coarse)").matches : "no matchMedia",
-    ontouchstart: ("ontouchstart" in window),
-    isTouch,
-    isGroupChatTrueDesktop: typeof isGroupChatTrueDesktop === "function" ? isGroupChatTrueDesktop() : "missing",
-    appClass: app?.className || "missing",
-    chatDisplay: chat ? getComputedStyle(chat).display : "missing",
-    chatHeight: chat ? getComputedStyle(chat).height : "missing",
-    chatOverflow: chat ? getComputedStyle(chat).overflow : "missing",
-    bodyHeight: body ? getComputedStyle(body).height : "missing",
-    bodyOverflowY: body ? getComputedStyle(body).overflowY : "missing",
-    composerDisplay: composer ? getComputedStyle(composer).display : "missing",
-    composerPosition: composer ? getComputedStyle(composer).position : "missing",
-    composerBottom: composer ? getComputedStyle(composer).bottom : "missing",
-    composerRect: composer ? composer.getBoundingClientRect().toJSON?.() || {
-      top: composer.getBoundingClientRect().top,
-      bottom: composer.getBoundingClientRect().bottom,
-      height: composer.getBoundingClientRect().height
-    } : "missing"
-  };
-
-  let box = document.getElementById("groupChatLayoutDebugBox");
-
-  if(!box){
-    box = document.createElement("pre");
-    box.id = "groupChatLayoutDebugBox";
-    box.style.cssText = `
-      position: fixed;
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-      z-index: 999999;
-      max-height: 55vh;
-      overflow: auto;
-      background: #020617;
-      color: #22c55e;
-      border: 1px solid #22c55e;
-      border-radius: 12px;
-      padding: 10px;
-      font-size: 11px;
-      white-space: pre-wrap;
-    `;
-    document.body.appendChild(box);
-  }
-
-  box.textContent = JSON.stringify(data, null, 2);
-}
-
-function addGroupChatLayoutDebugButton(){
-  if(document.getElementById("groupChatLayoutDebugBtn")){
-    return;
-  }
-
-  const btn = document.createElement("button");
-  btn.id = "groupChatLayoutDebugBtn";
-  btn.type = "button";
-  btn.textContent = "Debug";
-  btn.onclick = showGroupChatLayoutDebug;
-  btn.style.cssText = `
-    position: fixed;
-    right: 10px;
-    bottom: 74px;
-    z-index: 999998;
-    border: 1px solid rgba(34, 211, 238, 0.45);
-    background: rgba(15, 23, 42, 0.96);
-    color: #e0f2fe;
-    border-radius: 999px;
-    padding: 8px 12px;
-    font-size: 12px;
-    font-weight: 800;
-  `;
-  document.body.appendChild(btn);
-}
-
-window.showGroupChatLayoutDebug = showGroupChatLayoutDebug;
 
 window.saveGroupChatAdminSettings = saveGroupChatAdminSettings;
 
