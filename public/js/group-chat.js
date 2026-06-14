@@ -1823,6 +1823,10 @@ ${messages.map((message, index) => {
       onpointerup="cancelGroupChatMessageHold()"
       onpointerleave="cancelGroupChatMessageHold()"
       onpointercancel="cancelGroupChatMessageHold()"
+      ontouchstart="startGroupChatMessageHold(event, ${index})"
+      ontouchmove="moveGroupChatMessageHold(event)"
+      ontouchend="cancelGroupChatMessageHold()"
+      ontouchcancel="cancelGroupChatMessageHold()"
       oncontextmenu="openGroupChatMessageActionMenu(event, ${index})">
       <div class="group-chat-msg-avatar">${avatar}</div>
 
@@ -1852,22 +1856,23 @@ let groupChatHoldTimer = null;
 let groupChatHoldStart = null;
 
 function startGroupChatMessageHold(event, index){
-  if(event && event.button && event.button !== 0){
+  if(event && event.type !== "touchstart" && event.button && event.button !== 0){
     return;
   }
 
   closeGroupChatMessageActionMenu();
 
+  const touch = event.touches?.[0] || event.changedTouches?.[0] || null;
   const target = event.currentTarget;
   const rect = target?.getBoundingClientRect?.();
-  const x = event.clientX || rect?.right || window.innerWidth - 40;
-  const y = event.clientY || rect?.bottom || window.innerHeight - 120;
+  const clientX = touch?.clientX || event.clientX || rect?.right || window.innerWidth - 40;
+  const clientY = touch?.clientY || event.clientY || rect?.bottom || window.innerHeight - 120;
 
   groupChatHoldStart = {
-    x,
-    y,
-    startX: event.clientX || 0,
-    startY: event.clientY || 0,
+    x: clientX,
+    y: clientY,
+    startX: clientX || 0,
+    startY: clientY || 0,
     index,
     target
   };
@@ -1891,8 +1896,12 @@ function moveGroupChatMessageHold(event){
     return;
   }
 
-  const dx = Math.abs((event.clientX || 0) - groupChatHoldStart.startX);
-  const dy = Math.abs((event.clientY || 0) - groupChatHoldStart.startY);
+  const touch = event.touches?.[0] || event.changedTouches?.[0] || null;
+  const clientX = touch?.clientX || event.clientX || 0;
+  const clientY = touch?.clientY || event.clientY || 0;
+
+  const dx = Math.abs(clientX - groupChatHoldStart.startX);
+  const dy = Math.abs(clientY - groupChatHoldStart.startY);
 
   if(dx > 12 || dy > 12){
     cancelGroupChatMessageHold();
