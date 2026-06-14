@@ -1806,7 +1806,15 @@ ${messages.map((message, index) => {
   const time = escapeGroupChatText(message.time || "");
   const text = escapeGroupChatText(message.text || "").replace(/\n/g, "<br>");
   const reactions = normalizeGroupChatReactions(message.reactions);
-  const ownMessageClass = isGroupChatOwnMessage(message) ? " own" : "";
+  const isOwnMessage = isGroupChatOwnMessage(message);
+  const ownMessageClass = isOwnMessage ? " own" : "";
+  const metaHtml = isOwnMessage
+    ? `${time ? `<span class="group-chat-msg-time-only">${time}</span>` : ""}`
+    : `
+          <strong>${name}</strong>
+          ${role ? `<span>${role}</span>` : ""}
+          ${time ? `<span>${time}</span>` : ""}
+      `;
 
   return `
     <article class="group-chat-msg-row${ownMessageClass}" data-message-index="${index}">
@@ -1814,9 +1822,7 @@ ${messages.map((message, index) => {
 
       <div class="group-chat-msg-main">
         <div class="group-chat-msg-meta">
-          <strong>${name}</strong>
-          ${role ? `<span>${role}</span>` : ""}
-          ${time ? `<span>${time}</span>` : ""}
+          ${metaHtml}
         </div>
 
         <div class="group-chat-msg-bubble">${text}</div>
@@ -1824,9 +1830,9 @@ ${messages.map((message, index) => {
         ${reactions ? `<button class="group-chat-msg-reactions" type="button" onclick="showGroupChatReactionUsers(${index})">${escapeGroupChatText(reactions)}</button>` : ""}
 
         <div class="group-chat-msg-actions">
-          <button type="button" onclick="replyGroupChatMessage(${index})">Reply</button>
-          <button type="button" onclick="reactGroupChatMessage(${index})">React</button>
-          ${canEdit ? `<button type="button" onclick="editGroupChatMessage(${index})">Edit</button>` : ""}
+          <button class="group-chat-msg-action-btn" type="button" onclick="replyGroupChatMessage(${index})">Reply</button>
+          <button class="group-chat-msg-action-btn" type="button" onclick="reactGroupChatMessage(${index})">React</button>
+          ${canEdit ? `<button class="group-chat-msg-action-btn" type="button" onclick="editGroupChatMessage(${index})">Edit</button>` : ""}
         </div>
       </div>
     </article>
