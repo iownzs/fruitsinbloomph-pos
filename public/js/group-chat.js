@@ -1835,7 +1835,17 @@ ${messages.map((message, index) => {
           ${metaHtml}
         </div>
 
-        <div class="group-chat-msg-bubble">${text}</div>
+        <div class="group-chat-msg-bubble"
+          onpointerdown="startGroupChatMessageHold(event, ${index})"
+          onpointermove="moveGroupChatMessageHold(event)"
+          onpointerup="cancelGroupChatMessageHold()"
+          onpointerleave="cancelGroupChatMessageHold()"
+          onpointercancel="cancelGroupChatMessageHold()"
+          ontouchstart="startGroupChatMessageHold(event, ${index})"
+          ontouchmove="moveGroupChatMessageHold(event)"
+          ontouchend="cancelGroupChatMessageHold()"
+          ontouchcancel="cancelGroupChatMessageHold()"
+          oncontextmenu="openGroupChatMessageActionMenu(event, ${index})">${text}</div>
 
         ${reactions ? `<button class="group-chat-msg-reactions" type="button" onclick="showGroupChatReactionUsers(${index})">${escapeGroupChatText(reactions)}</button>` : ""}
 
@@ -1858,6 +1868,10 @@ let groupChatHoldStart = null;
 function startGroupChatMessageHold(event, index){
   if(event && event.type !== "touchstart" && event.button && event.button !== 0){
     return;
+  }
+
+  if(event?.type === "touchstart"){
+    event.preventDefault?.();
   }
 
   closeGroupChatMessageActionMenu();

@@ -3710,3 +3710,21 @@ body[data-page="group-chat"] .group-chat-admin-channel-tab.group-chat-ann-pin-ta
 html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-actions {
   display: none !important;
 }
+
+/* FINAL HOLD ACTION FIX: hide visible actions on all touch devices */
+@media (pointer: coarse) {
+  body[data-page="group-chat"] .group-chat-msg-actions {
+    display: none !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-msg-bubble {
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    touch-action: manipulation !important;
+  }
+}
+
+/* Keep actions hidden in Android desktop mode too */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-actions {
+  display: none !important;
+}
