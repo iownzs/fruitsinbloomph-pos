@@ -1817,7 +1817,13 @@ ${messages.map((message, index) => {
       `;
 
   return `
-    <article class="group-chat-msg-row${ownMessageClass}" data-message-index="${index}">
+    <article class="group-chat-msg-row${ownMessageClass}" data-message-index="${index}"
+      onpointerdown="startGroupChatMessageHold(event, ${index})"
+      onpointermove="moveGroupChatMessageHold(event)"
+      onpointerup="cancelGroupChatMessageHold()"
+      onpointerleave="cancelGroupChatMessageHold()"
+      onpointercancel="cancelGroupChatMessageHold()"
+      oncontextmenu="openGroupChatMessageActionMenu(event, ${index})">
       <div class="group-chat-msg-avatar">${avatar}</div>
 
       <div class="group-chat-msg-main">
@@ -1840,6 +1846,109 @@ ${messages.map((message, index) => {
 }).join("")}
 `;
 }
+
+
+let groupChatHoldTimer = null;
+let groupChatHoldStart = null;
+
+function startGroupChatMessageHold(event, index){
+  if(event && event.button && event.button !== 0){
+    return;
+  }
+
+  closeGroupChatMessageActionMenu();
+
+  const target = event.currentTarget;
+  const rect = target?.getBoundingClientRect?.();
+  const x = event.clientX || rect?.right || window.innerWidth - 40;
+  const y = event.clientY || rect?.bottom || window.innerHeight - 120;
+
+  groupChatHoldStart = {
+    x,
+    y,
+    startX: event.clientX || 0,
+    startY: event.clientY || 0,
+    index,
+    target
+  };
+
+  clearTimeout(groupChatHoldTimer);
+
+  groupChatHoldTimer = setTimeout(() => {
+    navigator.vibrate?.(12);
+    openGroupChatMessageActionMenu({
+      preventDefault(){},
+      stopPropagation(){},
+      clientX: groupChatHoldStart?.x || x,
+      clientY: groupChatHoldStart?.y || y,
+      currentTarget: target
+    }, index);
+  }, 520);
+}
+
+function moveGroupChatMessageHold(event){
+  if(!groupChatHoldStart){
+    return;
+  }
+
+  const dx = Math.abs((event.clientX || 0) - groupChatHoldStart.startX);
+  const dy = Math.abs((event.clientY || 0) - groupChatHoldStart.startY);
+
+  if(dx > 12 || dy > 12){
+    cancelGroupChatMessageHold();
+  }
+}
+
+function cancelGroupChatMessageHold(){
+  clearTimeout(groupChatHoldTimer);
+  groupChatHoldTimer = null;
+  groupChatHoldStart = null;
+}
+
+function closeGroupChatMessageActionMenu(){
+  document.getElementById("groupChatMessageActionMenu")?.remove();
+}
+
+function openGroupChatMessageActionMenu(event, index){
+  event?.preventDefault?.();
+  event?.stopPropagation?.();
+  cancelGroupChatMessageHold();
+  closeGroupChatMessageActionMenu();
+
+  const channel = getActiveChannel();
+  const canEdit = canEditGroupChatChannel(channel.id);
+  const menu = document.createElement("div");
+
+  menu.id = "groupChatMessageActionMenu";
+  menu.className = "group-chat-message-action-menu";
+
+  menu.innerHTML = `
+    <button type="button" onclick="replyGroupChatMessage(${index}); closeGroupChatMessageActionMenu();">↩ Reply</button>
+    <button type="button" onclick="reactGroupChatMessage(${index}); closeGroupChatMessageActionMenu();">😊 React</button>
+    ${canEdit ? `<button type="button" onclick="editGroupChatMessage(${index}); closeGroupChatMessageActionMenu();">✏️ Edit</button>` : ""}
+  `;
+
+  document.body.appendChild(menu);
+
+  const menuRect = menu.getBoundingClientRect();
+  const x = Math.min(Math.max(10, event.clientX || window.innerWidth - 140), window.innerWidth - menuRect.width - 10);
+  const y = Math.min(Math.max(80, event.clientY || window.innerHeight - 160), window.innerHeight - menuRect.height - 14);
+
+  menu.style.left = `${x}px`;
+  menu.style.top = `${y}px`;
+
+  setTimeout(() => {
+    document.addEventListener("click", closeGroupChatMessageActionMenu, { once: true });
+    document.addEventListener("scroll", closeGroupChatMessageActionMenu, { once: true, capture: true });
+  }, 50);
+}
+
+window.startGroupChatMessageHold = startGroupChatMessageHold;
+window.moveGroupChatMessageHold = moveGroupChatMessageHold;
+window.cancelGroupChatMessageHold = cancelGroupChatMessageHold;
+window.openGroupChatMessageActionMenu = openGroupChatMessageActionMenu;
+window.closeGroupChatMessageActionMenu = closeGroupChatMessageActionMenu;
+
 
 function renderGroupChatSchedule(){
   refreshGroupChatSchedule();

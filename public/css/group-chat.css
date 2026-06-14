@@ -3671,3 +3671,42 @@ body[data-page="group-chat"] .group-chat-admin-channel-tab.group-chat-ann-pin-ta
 .group-chat-msg-row.own .group-chat-msg-bubble {
   margin-bottom: 0 !important;
 }
+
+/* FINAL CHAT UI POLISH 4: hold message to Reply / React / Edit */
+.group-chat-message-action-menu {
+  position: fixed;
+  z-index: 999990;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 211, 238, 0.22);
+  background: rgba(15, 23, 42, 0.98);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+}
+
+.group-chat-message-action-menu button {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 10px;
+  background: rgba(30, 41, 59, 0.92);
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.group-chat-message-action-menu button:active {
+  transform: scale(0.96);
+}
+
+/* Mobile/touch: actions are opened by hold instead of always visible */
+@media (max-width: 820px) {
+  body[data-page="group-chat"] .group-chat-msg-actions {
+    display: none !important;
+  }
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-actions {
+  display: none !important;
+}
