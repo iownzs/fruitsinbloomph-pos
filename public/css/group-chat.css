@@ -3640,3 +3640,34 @@ body[data-page="group-chat"] .group-chat-admin-channel-tab.group-chat-ann-pin-ta
     margin-bottom: 2px !important;
   }
 }
+
+/* FINAL CHAT UI POLISH 3: compact action row under own bubble */
+.group-chat-msg-row.own .group-chat-msg-actions {
+  width: auto !important;
+  justify-content: flex-end !important;
+  align-self: flex-end !important;
+  gap: 2px !important;
+  margin-top: 2px !important;
+  opacity: 0.58 !important;
+}
+
+.group-chat-msg-row.own .group-chat-msg-actions button {
+  min-height: 18px !important;
+  padding: 1px 3px !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+}
+
+.group-chat-msg-row.own .group-chat-msg-actions button + button::before {
+  margin-right: 4px !important;
+}
+
+.group-chat-msg-row.own .group-chat-msg-meta {
+  align-self: flex-end !important;
+  width: auto !important;
+  margin-bottom: 2px !important;
+}
+
+.group-chat-msg-row.own .group-chat-msg-bubble {
+  margin-bottom: 0 !important;
+}
