@@ -222,6 +222,7 @@ let groupChatOrderPreviewOpen = false;
 let groupChatAdminSettingsOpen = false;
 let groupChatScheduleEditMode = false;
 let activeGroupChatAdminChannel = "general";
+let activeGroupChatReplyQuote = null;
 
 /* Group Chat role permissions */
 const GROUP_CHAT_ROLE_PERMISSIONS = {
@@ -1338,6 +1339,8 @@ async function sendGroupChatMessageFromComposer(){
     );
 
     input.value = "";
+    activeGroupChatReplyQuote = null;
+    renderGroupChatReplyQuotePreview();
     scrollGroupChatToBottom();
   }catch(error){
     alert("Send failed: " + (error.message || error));
@@ -1375,6 +1378,7 @@ function renderGroupChat(){
   }
 
   renderGroupChatComposer(channel);
+  renderGroupChatReplyQuotePreview();
   renderGroupChatOrderPreview();
   renderGroupChatAdminChannelManagement();
   applyGroupChatViewState();
@@ -1486,13 +1490,65 @@ function insertGroupChatOrderMention(){
   closeGroupChatLiteModal();
 }
 
+
+function getGroupChatReplyQuoteText(message){
+  return String(message?.text || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 90);
+}
+
+function renderGroupChatReplyQuotePreview(){
+  const composer = document.getElementById("groupChatComposer");
+
+  if(!composer){
+    return;
+  }
+
+  document.getElementById("groupChatReplyQuotePreview")?.remove();
+
+  if(!activeGroupChatReplyQuote){
+    return;
+  }
+
+  const preview = document.createElement("div");
+  preview.id = "groupChatReplyQuotePreview";
+  preview.className = "group-chat-reply-quote-preview";
+  preview.innerHTML = `
+    <strong>Replying to ${escapeGroupChatText(activeGroupChatReplyQuote.name || "User")}</strong>
+    <span>"${escapeGroupChatText(activeGroupChatReplyQuote.quote || "")}"</span>
+  `;
+
+  composer.prepend(preview);
+}
+
+
 function replyGroupChatMessage(index){
   const channel = getActiveChannel();
   const message = (GROUP_CHAT_MESSAGES[channel.id] || [])[index];
+
   if(!message){
     return;
   }
-  insertTextInGroupChatInput(`Replying to @${message.name}:`);
+
+  const name = String(message.name || "User");
+  const quote = getGroupChatReplyQuoteText(message);
+
+  activeGroupChatReplyQuote = {
+    channelId: channel.id,
+    index,
+    name,
+    quote
+  };
+
+  renderGroupChatReplyQuotePreview();
+
+  const input = getGroupChatInput();
+  if(input){
+    input.value = `Replying to @${name}: "${quote}" `;
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+  }
 }
 
 function reactGroupChatMessage(index){
