@@ -3431,3 +3431,85 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatCompo
   padding-top: 6px !important;
   padding-bottom: 8px !important;
 }
+
+/* FINAL FIX: Android desktop pinned/order preview compact card, not zoom/full screen */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right {
+  top: 56px !important;
+  bottom: auto !important;
+  left: 8px !important;
+  right: 8px !important;
+  height: auto !important;
+  max-height: 46vh !important;
+  min-height: 0 !important;
+  padding: 8px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  background: #0f172a !important;
+  border: 1px solid rgba(34, 211, 238, 0.22) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55) !important;
+  transform: none !important;
+  zoom: 1 !important;
+}
+
+/* Compact order preview card */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-order-preview {
+  padding: 9px !important;
+  margin: 0 0 7px 0 !important;
+  border-radius: 12px !important;
+  background: #111c30 !important;
+}
+
+/* Compact pinned messages card */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-pinned {
+  padding: 9px !important;
+  margin: 0 !important;
+  border-radius: 12px !important;
+  background: #111c30 !important;
+}
+
+/* Reduce text and spacing inside overlay */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right h3 {
+  font-size: 12px !important;
+  margin: 0 0 6px 0 !important;
+  line-height: 1.15 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right p,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right span,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right small,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right div {
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+}
+
+/* Make order preview rows tighter */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-mini-row {
+  padding: 4px 0 !important;
+  margin: 0 !important;
+}
+
+/* Smaller buttons inside preview */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right button {
+  min-height: 24px !important;
+  padding: 4px 7px !important;
+  font-size: 10px !important;
+  border-radius: 9px !important;
+}
+
+/* Keep chat underneath normal width */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-chat {
+  width: 100% !important;
+  max-width: 100% !important;
+}
