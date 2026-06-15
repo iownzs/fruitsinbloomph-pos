@@ -1587,6 +1587,7 @@ window.FIB.sendGroupChatMessage = async function(channelId, messageText, extraDa
     senderRole: staffRole,
     senderAvatar: staffAvatar,
     messageText: String(messageText).trim(),
+    replyTo: extraData.replyTo || null,
     mentionedStaff: extraData.mentionedStaff || [],
     mentionedOrderId: extraData.mentionedOrderId || "",
     mentionedOrderNumber: extraData.mentionedOrderNumber || "",
