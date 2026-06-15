@@ -3213,3 +3213,49 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatCompo
 html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatMessageInput {
   font-size: 16px !important;
 }
+
+/* FINAL FIX: Android desktop mode pinned click should not create right-side space */
+html.group-chat-mobile-desktop-mode,
+html.group-chat-mobile-desktop-mode body {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #app,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] main,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .main-content,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .page-content {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) {
+  width: calc(100vw - 28px) !important;
+  max-width: calc(100vw - 28px) !important;
+  min-width: 0 !important;
+  margin-left: 14px !important;
+  margin-right: 14px !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-chat {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-pinned-row,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-slim-announcement,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatBody,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatComposer {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
