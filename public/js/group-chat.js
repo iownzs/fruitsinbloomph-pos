@@ -1904,7 +1904,6 @@ ${messages.map((message, index) => {
     ? `${time ? `<span class="group-chat-msg-time-only">${time}</span>` : ""}`
     : `
           <strong>${name}</strong>
-          ${role ? `<span>${role}</span>` : ""}
           ${time ? `<span>${time}</span>` : ""}
       `;
 
