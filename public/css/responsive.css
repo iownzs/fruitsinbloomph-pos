@@ -3306,3 +3306,78 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref
   max-width: 100% !important;
   box-sizing: border-box !important;
 }
+
+/* FINAL FIX: Compact solid pinned/order overlay in Android desktop mode */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right {
+  top: 62px !important;
+  bottom: 62px !important;
+  left: 8px !important;
+  right: 8px !important;
+  padding: 8px !important;
+  background: #0f172a !important;
+  border: 1px solid rgba(34, 211, 238, 0.20) !important;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  opacity: 1 !important;
+}
+
+/* Remove transparent see-through effect behind overlay contents */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Compact cards inside pinned/order preview overlay */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-order-preview,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-pinned {
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.16) !important;
+  border-radius: 14px !important;
+  padding: 10px !important;
+  margin: 0 0 8px 0 !important;
+  box-shadow: none !important;
+}
+
+/* Compact heading */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-order-preview h3,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-pinned h3 {
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+  margin: 0 0 8px 0 !important;
+}
+
+/* Compact rows/text */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-mini-row,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-order-preview * {
+  font-size: 11px !important;
+  line-height: 1.25 !important;
+}
+
+/* Make close button smaller */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-order-preview button,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right button {
+  min-height: 28px !important;
+  padding: 5px 9px !important;
+  font-size: 11px !important;
+  border-radius: 10px !important;
+}
+
+/* Keep chat behind normal but not visible through overlay */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-chat {
+  opacity: 1 !important;
+  filter: none !important;
+}
