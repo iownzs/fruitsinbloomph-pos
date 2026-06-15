@@ -3381,3 +3381,53 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
   opacity: 1 !important;
   filter: none !important;
 }
+
+/* FINAL TUNE: compact Android desktop chat message spacing */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-row {
+  margin-bottom: 7px !important;
+  gap: 6px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-main {
+  gap: 2px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-meta {
+  margin-bottom: 2px !important;
+  line-height: 1.1 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-meta strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-meta span {
+  font-size: 10px !important;
+  line-height: 1.1 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-bubble {
+  padding: 7px 10px !important;
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+  border-radius: 14px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-inline-quote {
+  margin-bottom: 5px !important;
+  padding: 6px 8px !important;
+  border-radius: 10px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-inline-quote strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg-inline-quote span {
+  font-size: 10px !important;
+  line-height: 1.15 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatBody.group-chat-ref-body {
+  padding-top: 6px !important;
+  padding-bottom: 8px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatComposer.group-chat-ref-composer {
+  padding-top: 6px !important;
+  padding-bottom: 8px !important;
+}
