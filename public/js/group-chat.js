@@ -1355,7 +1355,7 @@ async function sendGroupChatMessageFromComposer(){
       throw new Error("Firebase chat message service is not ready.");
     }
 
-    const replyToPayload = activeGroupChatReplyQuote ? {
+    const replyToPayload = activeGroupChatReplyQuote && activeGroupChatReplyQuote.channelId === channel.id ? {
       name: activeGroupChatReplyQuote.name,
       quote: activeGroupChatReplyQuote.quote
     } : null;
@@ -1536,7 +1536,8 @@ function renderGroupChatReplyQuotePreview(){
 
   document.getElementById("groupChatReplyQuotePreview")?.remove();
 
-  if(!activeGroupChatReplyQuote){
+  if(!activeGroupChatReplyQuote || activeGroupChatReplyQuote.channelId !== activeGroupChatChannel){
+    activeGroupChatReplyQuote = null;
     return;
   }
 
@@ -2322,6 +2323,10 @@ function isGroupChatMobileDesktopMode(){
 
 
 function openGroupChatChannel(channelId){
+  if(activeGroupChatChannel !== channelId){
+    activeGroupChatReplyQuote = null;
+  }
+
   activeGroupChatChannel = channelId;
 
   const isTrueDesktop = isGroupChatTrueDesktop();
