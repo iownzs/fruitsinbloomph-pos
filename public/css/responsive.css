@@ -3152,3 +3152,64 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-msg
   padding: 0 !important;
   overflow: hidden !important;
 }
+
+/* FINAL FIX: prevent Android zoom and keep reply quote above input */
+@media (max-width: 1100px), (pointer: coarse) {
+  body[data-page="group-chat"] #groupChatComposer.group-chat-ref-composer {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  body[data-page="group-chat"] #groupChatReplyQuotePreview.group-chat-reply-quote-preview {
+    order: 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+    margin: 0 0 6px 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  body[data-page="group-chat"] #groupChatComposer .group-chat-composer-messenger {
+    order: 2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+  }
+
+  body[data-page="group-chat"] #groupChatMessageInput,
+  body[data-page="group-chat"] #groupChatComposer textarea,
+  body[data-page="group-chat"] #groupChatComposer input {
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+    transform: none !important;
+  }
+}
+
+/* Android desktop mode: same fix, but scoped */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatComposer.group-chat-ref-composer {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatReplyQuotePreview.group-chat-reply-quote-preview {
+  order: 1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 auto !important;
+  margin: 0 0 6px 0 !important;
+  box-sizing: border-box !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatComposer .group-chat-composer-messenger {
+  order: 2 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatMessageInput {
+  font-size: 16px !important;
+}
