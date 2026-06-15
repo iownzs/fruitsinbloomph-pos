@@ -1177,6 +1177,27 @@ function updateGroupChatChannelCount(channelId){
   renderGroupChatChannels();
 }
 
+
+function normalizeGroupChatReplyTo(replyTo){
+  if(!replyTo || typeof replyTo !== "object"){
+    return null;
+  }
+
+  const quote = String(replyTo.quote || replyTo.text || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 120);
+
+  if(!quote){
+    return null;
+  }
+
+  return {
+    name: String(replyTo.name || replyTo.senderName || "User"),
+    quote
+  };
+}
+
 function normalizeGroupChatFirebaseMessage(message){
   return {
     id: message.id || message.messageId || "",
@@ -1185,6 +1206,7 @@ function normalizeGroupChatFirebaseMessage(message){
     role: message.senderRole || "",
     time: formatGroupChatMessageTime(message.createdAt),
     text: message.messageText || "",
+    replyTo: normalizeGroupChatReplyTo(message.replyTo),
     reactions: Array.isArray(message.reactions) && message.reactions.length
       ? message.reactions.join(" ")
       : ""
@@ -1333,12 +1355,19 @@ async function sendGroupChatMessageFromComposer(){
       throw new Error("Firebase chat message service is not ready.");
     }
 
+    const replyToPayload = activeGroupChatReplyQuote ? {
+      name: activeGroupChatReplyQuote.name,
+      quote: activeGroupChatReplyQuote.quote
+    } : null;
+
     await window.FIB.sendGroupChatMessage(
       getGroupChatFirestoreChannelId(channel),
-      messageText
+      messageText,
+      replyToPayload ? { replyTo: replyToPayload } : {}
     );
 
     input.value = "";
+    input.placeholder = "Message...";
     activeGroupChatReplyQuote = null;
     renderGroupChatReplyQuotePreview();
     scrollGroupChatToBottom();
@@ -1545,9 +1574,9 @@ function replyGroupChatMessage(index){
 
   const input = getGroupChatInput();
   if(input){
-    input.value = `Replying to @${name}: "${quote}" `;
+    input.value = "";
+    input.placeholder = `Reply to @${name}...`;
     input.focus();
-    input.setSelectionRange(input.value.length, input.value.length);
   }
 }
 
@@ -1861,6 +1890,13 @@ ${messages.map((message, index) => {
   const role = escapeGroupChatText(message.role || "");
   const time = escapeGroupChatText(message.time || "");
   const text = escapeGroupChatText(message.text || "").replace(/\n/g, "<br>");
+  const replyTo = normalizeGroupChatReplyTo(message.replyTo);
+  const replyQuoteHtml = replyTo ? `
+    <div class="group-chat-msg-inline-quote">
+      <strong>${escapeGroupChatText(replyTo.name)}</strong>
+      <span>${escapeGroupChatText(replyTo.quote)}</span>
+    </div>
+  ` : "";
   const reactions = normalizeGroupChatReactions(message.reactions);
   const isOwnMessage = isGroupChatOwnMessage(message);
   const ownMessageClass = isOwnMessage ? " own" : "";
@@ -1901,7 +1937,7 @@ ${messages.map((message, index) => {
           ontouchmove="moveGroupChatMessageHold(event)"
           ontouchend="cancelGroupChatMessageHold()"
           ontouchcancel="cancelGroupChatMessageHold()"
-          oncontextmenu="openGroupChatMessageActionMenu(event, ${index})">${text}</div>
+          oncontextmenu="openGroupChatMessageActionMenu(event, ${index})">${replyQuoteHtml}<span class="group-chat-msg-text">${text}</span></div>
 
         ${reactions ? `<button class="group-chat-msg-reactions" type="button" onclick="showGroupChatReactionUsers(${index})">${escapeGroupChatText(reactions)}</button>` : ""}
 
