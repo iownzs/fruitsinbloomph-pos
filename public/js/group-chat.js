@@ -1870,10 +1870,6 @@ function startGroupChatMessageHold(event, index){
     return;
   }
 
-  if(event?.type === "touchstart"){
-    event.preventDefault?.();
-  }
-
   closeGroupChatMessageActionMenu();
 
   const touch = event.touches?.[0] || event.changedTouches?.[0] || null;
