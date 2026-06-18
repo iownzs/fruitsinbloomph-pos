@@ -4776,3 +4776,89 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinne
 html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details .group-chat-pinned-details-body {
   max-height: 95px !important;
 }
+
+/* FINAL TUNE: smaller pinned button + pinned bubble */
+body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details {
+  margin: 6px 0 8px 0 !important;
+}
+
+/* Pinned pill button */
+body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary {
+  min-height: 28px !important;
+  padding: 5px 10px !important;
+  gap: 5px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary span,
+body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary strong,
+body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary small {
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+/* Pinned opened card */
+body[data-page="group-chat"] .group-chat-pinned-details-body {
+  margin-top: 6px !important;
+  padding: 8px 10px !important;
+  border-radius: 12px !important;
+  max-height: 120px !important;
+}
+
+/* Pinned card header */
+body[data-page="group-chat"] .group-chat-pinned-details-head {
+  margin-bottom: 5px !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-details-head strong {
+  font-size: 12px !important;
+  line-height: 1.15 !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-details-head button {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  font-size: 13px !important;
+}
+
+/* Pinned rows */
+body[data-page="group-chat"] .group-chat-pinned-details-row {
+  padding: 2px 0 !important;
+  gap: 7px !important;
+  font-size: 11px !important;
+  line-height: 1.15 !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-details-row small {
+  font-size: 9px !important;
+}
+
+/* Android desktop mode even smaller */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary span,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary small {
+  font-size: 8px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-details-body {
+  padding: 6px 8px !important;
+  max-height: 82px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-details-head strong {
+  font-size: 9px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-details-row {
+  font-size: 8px !important;
+  padding: 1px 0 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-details-row small {
+  font-size: 7px !important;
+}
