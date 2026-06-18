@@ -3744,3 +3744,24 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref
 html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right {
   pointer-events: auto !important;
 }
+
+/* FINAL FIX: force inline pinned panel to visibly open */
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-inline-panel {
+  display: none !important;
+  position: relative !important;
+  z-index: 115 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-inline-panel.open {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 0 8px 0 !important;
+  padding: 10px 12px !important;
+  border-radius: 14px !important;
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  box-sizing: border-box !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}

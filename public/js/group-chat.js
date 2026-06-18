@@ -2433,9 +2433,25 @@ function handleGroupChatDelegatedClick(event){
 }
 
 function closeGroupChatPinnedPanel(event){
+  event?.preventDefault?.();
   event?.stopPropagation?.();
+
   groupChatPinnedPanelOpen = false;
-  renderGroupChat();
+
+  const panel = document.getElementById("groupChatPinnedInlinePanel");
+  const button = document.getElementById("groupChatPinnedToggleBtn");
+
+  if(panel){
+    panel.classList.remove("open");
+    panel.style.display = "none";
+  }
+
+  if(button){
+    const arrow = button.querySelector("span");
+    if(arrow){
+      arrow.textContent = "›";
+    }
+  }
 }
 
 function toggleGroupChatPinnedPanel(event){
@@ -2447,7 +2463,22 @@ function toggleGroupChatPinnedPanel(event){
   groupChatMembersOpen = false;
   groupChatAdminSettingsOpen = false;
 
-  renderGroupChat();
+  const panel = document.getElementById("groupChatPinnedInlinePanel");
+  const button = document.getElementById("groupChatPinnedToggleBtn");
+
+  if(panel){
+    panel.classList.toggle("open", groupChatPinnedPanelOpen);
+    panel.style.display = groupChatPinnedPanelOpen ? "block" : "none";
+  }
+
+  if(button){
+    const arrow = button.querySelector("span");
+    if(arrow){
+      arrow.textContent = groupChatPinnedPanelOpen ? "⌃" : "›";
+    }
+  }
+
+  applyGroupChatViewState();
 }
 
 function toggleGroupChatOrderPreview(){
