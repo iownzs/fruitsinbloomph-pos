@@ -722,14 +722,14 @@ shell(`
         <button class="group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)">⌃</button>
       </section>
 
-      <button id="groupChatPinnedToggleBtn" class="group-chat-ref-pinned-row" type="button" onclick="toggleGroupChatPinnedPanel(event)">
+      <button id="groupChatPinnedToggleBtn" class="group-chat-ref-pinned-row" type="button" data-group-chat-action="toggle-pinned">
         📌 Pinned <strong>3</strong> <span>${groupChatPinnedPanelOpen ? "⌃" : "›"}</span>
       </button>
 
       <section id="groupChatPinnedInlinePanel" class="group-chat-pinned-inline-panel ${groupChatPinnedPanelOpen ? "open" : ""}">
         <div class="group-chat-pinned-inline-head">
           <h3>📌 Pinned Messages</h3>
-          <button type="button" onclick="closeGroupChatPinnedPanel(event)">×</button>
+          <button type="button" data-group-chat-action="close-pinned">×</button>
         </div>
         <div class="group-chat-pinned-inline-row"><span>Ops Update: New POS update live.</span><small>May 19</small></div>
         <div class="group-chat-pinned-inline-row"><span>Inventory check every Monday 8 AM.</span><small>May 18</small></div>
@@ -2419,6 +2419,19 @@ function toggleGroupChatMembers(){
 }
 
 
+function handleGroupChatDelegatedClick(event){
+  const pinnedButton = event.target?.closest?.('[data-group-chat-action="toggle-pinned"]');
+  if(pinnedButton){
+    toggleGroupChatPinnedPanel(event);
+    return;
+  }
+
+  const pinnedClose = event.target?.closest?.('[data-group-chat-action="close-pinned"]');
+  if(pinnedClose){
+    closeGroupChatPinnedPanel(event);
+  }
+}
+
 function closeGroupChatPinnedPanel(event){
   event?.stopPropagation?.();
   groupChatPinnedPanelOpen = false;
@@ -2539,6 +2552,9 @@ window.toggleGroupChatChannels = toggleGroupChatChannels;
 window.toggleGroupChatMembers = toggleGroupChatMembers;
 window.toggleGroupChatAdminSettings = toggleGroupChatAdminSettings;
 window.toggleGroupChatOrderPreview = toggleGroupChatOrderPreview;
+document.addEventListener("click", handleGroupChatDelegatedClick, true);
+document.addEventListener("touchend", handleGroupChatDelegatedClick, true);
+
 window.toggleGroupChatPinnedPanel = toggleGroupChatPinnedPanel;
 window.closeGroupChatPinnedPanel = closeGroupChatPinnedPanel;
 window.toggleGroupChatAnnouncement = toggleGroupChatAnnouncement;

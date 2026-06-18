@@ -3680,3 +3680,35 @@ body[data-page="group-chat"] .group-chat-pinned-inline-head button {
   font-weight: 900 !important;
   line-height: 1 !important;
 }
+
+/* FINAL FIX: make inline pinned button clickable above chat layers */
+body[data-page="group-chat"] #groupChatPinnedToggleBtn.group-chat-ref-pinned-row {
+  position: relative !important;
+  z-index: 120 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-inline-panel,
+body[data-page="group-chat"] .group-chat-pinned-inline-panel * {
+  pointer-events: auto !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-inline-head button {
+  position: relative !important;
+  z-index: 125 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+/* Prevent hidden right overlay from blocking pinned taps */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-right {
+  pointer-events: none !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right {
+  pointer-events: auto !important;
+}
