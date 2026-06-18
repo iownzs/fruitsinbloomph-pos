@@ -4949,3 +4949,54 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pin
 html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-details-row small {
   font-size: 7px !important;
 }
+
+/* FINAL TUNE: mobile-desktop pinned size +1 minimized, +2 maximized */
+
+/* Minimized pinned pill +1 */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary {
+  min-height: 25px !important;
+  height: 25px !important;
+  padding: 5px 10px !important;
+  gap: 5px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary span,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details summary small {
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+/* Maximized pinned card/bubble +2 */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedDetails.group-chat-pinned-details .group-chat-pinned-details-body {
+  padding: 9px 11px !important;
+  max-height: 104px !important;
+  border-radius: 14px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-details-head {
+  margin-bottom: 7px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-details-head strong {
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-details-head button {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  font-size: 13px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-details-row {
+  font-size: 10px !important;
+  padding: 3px 0 !important;
+  line-height: 1.18 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-details-row small {
+  font-size: 9px !important;
+}
