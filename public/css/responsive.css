@@ -4006,3 +4006,59 @@ body[data-page="group-chat"] .group-chat-pinned-inline-head button {
     opacity: 0.72 !important;
   }
 }
+
+/* FINAL TRUE FIX: pinned card is rendered inside chat body */
+body[data-page="group-chat"] #groupChatPinnedInlinePanel {
+  display: none !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedBodyPanel.group-chat-pinned-body-panel {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 0 12px 0 !important;
+  padding: 10px 12px !important;
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  border-radius: 15px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedBodyPanel .group-chat-pinned-inline-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  margin: 0 0 8px 0 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedBodyPanel .group-chat-pinned-inline-head h3 {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedBodyPanel .group-chat-pinned-inline-head button {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  min-height: 26px !important;
+  border-radius: 999px !important;
+  position: static !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedBodyPanel .group-chat-pinned-inline-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  align-items: center !important;
+  padding: 3px 0 !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedBodyPanel .group-chat-pinned-inline-row small {
+  font-size: 10px !important;
+  opacity: 0.72 !important;
+}
