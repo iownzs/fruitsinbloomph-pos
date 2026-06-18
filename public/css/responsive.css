@@ -4506,3 +4506,90 @@ body[data-page="group-chat"] .group-chat-pinned-announcement-row {
 body[data-page="group-chat"] #groupChatPinnedBodyPanel {
   display: none !important;
 }
+
+/* FINAL PINNED: direct announcement-style open + smaller text */
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-announcement {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  margin: 8px 0 10px 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  z-index: 30 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedToggleBtn.group-chat-ref-pinned-row {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-height: 34px !important;
+  padding: 7px 12px !important;
+  border-radius: 999px !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  width: auto !important;
+  max-width: max-content !important;
+  background: rgba(15, 23, 42, 0.74) !important;
+  border: 1px solid rgba(34, 211, 238, 0.14) !important;
+  color: #e2e8f0 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 35 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedToggleBtn span,
+body[data-page="group-chat"] #groupChatPinnedToggleBtn strong,
+body[data-page="group-chat"] #groupChatPinnedToggleBtn small {
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-announcement-body {
+  display: none !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.open .group-chat-pinned-announcement-body {
+  display: block !important;
+  margin-top: 8px !important;
+  padding: 10px 12px !important;
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.20) !important;
+  border-radius: 14px !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-announcement-head strong {
+  font-size: 13px !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-announcement-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  padding: 3px 0 !important;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-announcement-row small {
+  font-size: 10px !important;
+  opacity: 0.72 !important;
+}
+
+/* Android desktop mode compact */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedToggleBtn.group-chat-ref-pinned-row {
+  min-height: 26px !important;
+  padding: 5px 9px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedToggleBtn span,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedToggleBtn strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatPinnedToggleBtn small {
+  font-size: 10px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pinned-announcement-row {
+  font-size: 9px !important;
+}

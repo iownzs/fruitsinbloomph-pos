@@ -723,7 +723,7 @@ shell(`
       </section>
 
       <section id="groupChatPinnedInlinePanel" class="group-chat-pinned-announcement ${groupChatPinnedPanelOpen ? "open" : ""}">
-        <button id="groupChatPinnedToggleBtn" class="group-chat-ref-pinned-row" type="button" data-group-chat-action="toggle-pinned">
+        <button id="groupChatPinnedToggleBtn" class="group-chat-ref-pinned-row" type="button" onclick="toggleGroupChatPinnedPanel(event)">
           <span>📌 Pinned</span>
           <strong>3</strong>
           <small>${groupChatPinnedPanelOpen ? "⌃" : "›"}</small>
@@ -732,7 +732,7 @@ shell(`
         <div class="group-chat-pinned-announcement-body">
           <div class="group-chat-pinned-announcement-head">
             <strong>📌 Pinned Messages</strong>
-            <button type="button" data-group-chat-action="close-pinned">×</button>
+            <button type="button" onclick="closeGroupChatPinnedPanel(event)">×</button>
           </div>
           <div class="group-chat-pinned-announcement-row"><span>Ops Update: New POS update live.</span><small>May 19</small></div>
           <div class="group-chat-pinned-announcement-row"><span>Inventory check every Monday 8 AM.</span><small>May 18</small></div>
@@ -2446,21 +2446,41 @@ function closeGroupChatPinnedPanel(event){
   event?.stopPropagation?.();
 
   groupChatPinnedPanelOpen = false;
-  renderGroupChat();
-}
 
+  const panel = document.getElementById("groupChatPinnedInlinePanel");
+  const button = document.getElementById("groupChatPinnedToggleBtn");
+
+  if(panel){
+    panel.classList.remove("open");
+  }
+
+  if(button){
+    const arrow = button.querySelector("small");
+    if(arrow){
+      arrow.textContent = "›";
+    }
+  }
+}
 function toggleGroupChatPinnedPanel(event){
   event?.preventDefault?.();
   event?.stopPropagation?.();
 
   groupChatPinnedPanelOpen = !groupChatPinnedPanelOpen;
-  groupChatOrderPreviewOpen = false;
-  groupChatMembersOpen = false;
-  groupChatAdminSettingsOpen = false;
 
-  renderGroupChat();
+  const panel = document.getElementById("groupChatPinnedInlinePanel");
+  const button = document.getElementById("groupChatPinnedToggleBtn");
+
+  if(panel){
+    panel.classList.toggle("open", groupChatPinnedPanelOpen);
+  }
+
+  if(button){
+    const arrow = button.querySelector("small");
+    if(arrow){
+      arrow.textContent = groupChatPinnedPanelOpen ? "⌃" : "›";
+    }
+  }
 }
-
 function toggleGroupChatOrderPreview(){
   groupChatOrderPreviewOpen = !groupChatOrderPreviewOpen;
   applyGroupChatViewState();
@@ -2563,7 +2583,6 @@ window.toggleGroupChatChannels = toggleGroupChatChannels;
 window.toggleGroupChatMembers = toggleGroupChatMembers;
 window.toggleGroupChatAdminSettings = toggleGroupChatAdminSettings;
 window.toggleGroupChatOrderPreview = toggleGroupChatOrderPreview;
-document.addEventListener("click", handleGroupChatDelegatedClick, true);
 
 window.toggleGroupChatPinnedPanel = toggleGroupChatPinnedPanel;
 window.closeGroupChatPinnedPanel = closeGroupChatPinnedPanel;
