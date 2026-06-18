@@ -2553,7 +2553,6 @@ window.toggleGroupChatMembers = toggleGroupChatMembers;
 window.toggleGroupChatAdminSettings = toggleGroupChatAdminSettings;
 window.toggleGroupChatOrderPreview = toggleGroupChatOrderPreview;
 document.addEventListener("click", handleGroupChatDelegatedClick, true);
-document.addEventListener("touchend", handleGroupChatDelegatedClick, true);
 
 window.toggleGroupChatPinnedPanel = toggleGroupChatPinnedPanel;
 window.closeGroupChatPinnedPanel = closeGroupChatPinnedPanel;
