@@ -4217,3 +4217,79 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
   top: 24vh !important;
   max-height: 170px !important;
 }
+
+/* FINAL TUNE: pinned floating card as dropdown under Pinned button */
+
+/* Normal mobile */
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-inline-panel.open {
+  position: fixed !important;
+  left: 7vw !important;
+  right: 7vw !important;
+  top: 41vh !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: 150px !important;
+  padding: 10px 12px !important;
+  border-radius: 15px !important;
+  z-index: 9999 !important;
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.24) !important;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.42) !important;
+  overflow-y: auto !important;
+}
+
+/* Android desktop / desktop-site on phone */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+#groupChatPinnedInlinePanel.group-chat-pinned-inline-panel.open {
+  left: 36px !important;
+  right: 36px !important;
+  top: 158px !important;
+  max-height: 124px !important;
+  padding: 8px 10px !important;
+  border-radius: 12px !important;
+}
+
+/* Compact text inside pinned dropdown */
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-head {
+  margin-bottom: 6px !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-head h3 {
+  font-size: 13px !important;
+  line-height: 1.15 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-head button {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  min-height: 26px !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-row {
+  padding: 3px 0 !important;
+  font-size: 11px !important;
+  line-height: 1.18 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-row small {
+  font-size: 10px !important;
+}
+
+/* Smaller on Android desktop mode */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+#groupChatPinnedInlinePanel .group-chat-pinned-inline-head h3 {
+  font-size: 11px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+#groupChatPinnedInlinePanel .group-chat-pinned-inline-row {
+  font-size: 9px !important;
+  padding: 2px 0 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+#groupChatPinnedInlinePanel .group-chat-pinned-inline-row small {
+  font-size: 8px !important;
+}
