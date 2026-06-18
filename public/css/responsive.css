@@ -4062,3 +4062,81 @@ body[data-page="group-chat"] #groupChatPinnedBodyPanel .group-chat-pinned-inline
   font-size: 10px !important;
   opacity: 0.72 !important;
 }
+
+/* FINAL TRY: pinned opens as floating card under pinned button */
+body[data-page="group-chat"] .group-chat-ref-chat {
+  position: relative !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-inline-panel {
+  display: none !important;
+  position: absolute !important;
+  left: 16px !important;
+  right: 16px !important;
+  top: auto !important;
+  z-index: 150 !important;
+  width: auto !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin-top: 8px !important;
+  padding: 10px 12px !important;
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.22) !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.38) !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-inline-panel.open {
+  display: block !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  margin: 0 0 8px 0 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-head h3 {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-head button {
+  position: static !important;
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  min-height: 26px !important;
+  border-radius: 999px !important;
+  z-index: 151 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  align-items: center !important;
+  padding: 3px 0 !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-row small {
+  font-size: 10px !important;
+  opacity: 0.72 !important;
+}
+
+/* Hide any old pinned body card from previous test */
+body[data-page="group-chat"] #groupChatPinnedBodyPanel {
+  display: none !important;
+}
