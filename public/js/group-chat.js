@@ -1423,6 +1423,11 @@ function renderGroupChat(){
   renderGroupChatAdminChannelManagement();
   applyGroupChatViewState();
 
+  const chatMain = document.querySelector(".group-chat-ref-chat");
+  if(chatMain){
+    chatMain.classList.toggle("pinned-inline-open", Boolean(groupChatPinnedPanelOpen));
+  }
+
   if(!startActiveGroupChatMessageListener()){
     loadActiveGroupChatMessagesFromFirebase();
   }
@@ -2452,6 +2457,11 @@ function closeGroupChatPinnedPanel(event){
       arrow.textContent = "›";
     }
   }
+
+  const chatMain = document.querySelector(".group-chat-ref-chat");
+  if(chatMain){
+    chatMain.classList.remove("pinned-inline-open");
+  }
 }
 
 function toggleGroupChatPinnedPanel(event){
@@ -2479,6 +2489,11 @@ function toggleGroupChatPinnedPanel(event){
   }
 
   applyGroupChatViewState();
+
+  const chatMain = document.querySelector(".group-chat-ref-chat");
+  if(chatMain){
+    chatMain.classList.toggle("pinned-inline-open", Boolean(groupChatPinnedPanelOpen));
+  }
 }
 
 function toggleGroupChatOrderPreview(){
