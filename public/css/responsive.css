@@ -3513,3 +3513,43 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
   width: 100% !important;
   max-width: 100% !important;
 }
+
+/* FINAL: Pinned button opens pinned messages only, compact */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open #groupChatOrderPreview {
+  display: none !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right {
+  top: 62px !important;
+  bottom: auto !important;
+  max-height: 32vh !important;
+  height: auto !important;
+  padding: 8px !important;
+  background: #0f172a !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-pinned {
+  padding: 10px !important;
+  margin: 0 !important;
+  border-radius: 14px !important;
+  background: #111c30 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-pinned h3 {
+  font-size: 13px !important;
+  margin-bottom: 8px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-mini-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  padding: 6px 0 !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}

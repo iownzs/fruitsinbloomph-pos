@@ -721,7 +721,7 @@ shell(`
         <button class="group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)">⌃</button>
       </section>
 
-      <button class="group-chat-ref-pinned-row" onclick="toggleGroupChatOrderPreview()">
+      <button class="group-chat-ref-pinned-row" onclick="toggleGroupChatPinnedPanel()">
         📌 Pinned <strong>3</strong> <span>›</span>
       </button>
 
@@ -2406,6 +2406,19 @@ function toggleGroupChatMembers(){
   applyGroupChatViewState();
 }
 
+function toggleGroupChatPinnedPanel(){
+  groupChatOrderPreviewOpen = !groupChatOrderPreviewOpen;
+  groupChatMembersOpen = false;
+  groupChatAdminSettingsOpen = false;
+
+  applyGroupChatViewState();
+
+  const orderPreview = document.getElementById("groupChatOrderPreview");
+  if(orderPreview){
+    orderPreview.style.display = "none";
+  }
+}
+
 function toggleGroupChatOrderPreview(){
   groupChatOrderPreviewOpen = !groupChatOrderPreviewOpen;
   applyGroupChatViewState();
@@ -2508,6 +2521,7 @@ window.toggleGroupChatChannels = toggleGroupChatChannels;
 window.toggleGroupChatMembers = toggleGroupChatMembers;
 window.toggleGroupChatAdminSettings = toggleGroupChatAdminSettings;
 window.toggleGroupChatOrderPreview = toggleGroupChatOrderPreview;
+window.toggleGroupChatPinnedPanel = toggleGroupChatPinnedPanel;
 window.toggleGroupChatAnnouncement = toggleGroupChatAnnouncement;
 window.nextGroupChatAnnouncement = nextGroupChatAnnouncement;
 window.toggleGroupChatScheduleEdit = toggleGroupChatScheduleEdit;
