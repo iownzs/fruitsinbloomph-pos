@@ -3765,3 +3765,67 @@ body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-inlin
   visibility: visible !important;
   pointer-events: auto !important;
 }
+
+/* FINAL FIX: pinned panel should push messages down, not overlap bubbles */
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-inline-panel.open {
+  position: relative !important;
+  z-index: 5 !important;
+  display: block !important;
+  clear: both !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 0 12px 0 !important;
+  padding: 12px 14px !important;
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.18) !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+/* Make sure chat body starts below pinned card */
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.open + #groupChatBody.group-chat-ref-body {
+  padding-top: 8px !important;
+  margin-top: 0 !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Keep message bubbles below pinned card */
+body[data-page="group-chat"] #groupChatBody .group-chat-msg-row,
+body[data-page="group-chat"] #groupChatBody .group-chat-msg-bubble {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Pinned content layout */
+body[data-page="group-chat"] .group-chat-pinned-inline-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-inline-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+  align-items: center !important;
+  padding: 5px 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-inline-row span {
+  min-width: 0 !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Close button stays inside pinned header */
+body[data-page="group-chat"] .group-chat-pinned-inline-head button {
+  position: static !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 999px !important;
+}
