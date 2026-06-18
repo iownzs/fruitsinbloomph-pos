@@ -722,23 +722,23 @@ shell(`
         <button class="group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)">⌃</button>
       </section>
 
-      <section id="groupChatPinnedInlinePanel" class="group-chat-pinned-announcement ${groupChatPinnedPanelOpen ? "open" : ""}">
-        <button id="groupChatPinnedToggleBtn" class="group-chat-ref-pinned-row" type="button" onclick="toggleGroupChatPinnedPanel(event)">
+      <details id="groupChatPinnedDetails" class="group-chat-pinned-details">
+        <summary>
           <span>📌 Pinned</span>
           <strong>3</strong>
-          <small>${groupChatPinnedPanelOpen ? "⌃" : "›"}</small>
-        </button>
+          <small>›</small>
+        </summary>
 
-        <div class="group-chat-pinned-announcement-body">
-          <div class="group-chat-pinned-announcement-head">
+        <div class="group-chat-pinned-details-body">
+          <div class="group-chat-pinned-details-head">
             <strong>📌 Pinned Messages</strong>
-            <button type="button" onclick="closeGroupChatPinnedPanel(event)">×</button>
+            <button type="button" onclick="document.getElementById('groupChatPinnedDetails')?.removeAttribute('open')">×</button>
           </div>
-          <div class="group-chat-pinned-announcement-row"><span>Ops Update: New POS update live.</span><small>May 19</small></div>
-          <div class="group-chat-pinned-announcement-row"><span>Inventory check every Monday 8 AM.</span><small>May 18</small></div>
-          <div class="group-chat-pinned-announcement-row"><span>Delivery meeting at 3:00 PM daily.</span><small>May 17</small></div>
+          <div class="group-chat-pinned-details-row"><span>Ops Update: New POS update live.</span><small>May 19</small></div>
+          <div class="group-chat-pinned-details-row"><span>Inventory check every Monday 8 AM.</span><small>May 18</small></div>
+          <div class="group-chat-pinned-details-row"><span>Delivery meeting at 3:00 PM daily.</span><small>May 17</small></div>
         </div>
-      </section>
+      </details>
 
       <section id="groupChatBody" class="group-chat-ref-body"></section>
       <footer id="groupChatComposer" class="group-chat-ref-composer"></footer>
