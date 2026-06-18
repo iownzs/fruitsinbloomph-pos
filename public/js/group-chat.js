@@ -722,7 +722,7 @@ shell(`
         <button class="group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)">⌃</button>
       </section>
 
-      <button class="group-chat-ref-pinned-row" onclick="toggleGroupChatPinnedPanel()">
+      <button id="groupChatPinnedToggleBtn" class="group-chat-ref-pinned-row" type="button" onclick="toggleGroupChatPinnedPanel(event)">
         📌 Pinned <strong>3</strong> <span>${groupChatPinnedPanelOpen ? "⌃" : "›"}</span>
       </button>
 
@@ -1422,6 +1422,7 @@ function renderGroupChat(){
   renderGroupChatOrderPreview();
   renderGroupChatAdminChannelManagement();
   applyGroupChatViewState();
+  bindGroupChatPinnedButton();
 
   if(!startActiveGroupChatMessageListener()){
     loadActiveGroupChatMessagesFromFirebase();
@@ -2418,13 +2419,27 @@ function toggleGroupChatMembers(){
   applyGroupChatViewState();
 }
 
+function bindGroupChatPinnedButton(){
+  const button = document.getElementById("groupChatPinnedToggleBtn");
+  if(!button || button.dataset.bound === "1"){
+    return;
+  }
+
+  button.dataset.bound = "1";
+  button.addEventListener("click", toggleGroupChatPinnedPanel);
+  button.addEventListener("touchend", toggleGroupChatPinnedPanel);
+}
+
 function closeGroupChatPinnedPanel(event){
   event?.stopPropagation?.();
   groupChatPinnedPanelOpen = false;
   renderGroupChat();
 }
 
-function toggleGroupChatPinnedPanel(){
+function toggleGroupChatPinnedPanel(event){
+  event?.preventDefault?.();
+  event?.stopPropagation?.();
+
   groupChatPinnedPanelOpen = !groupChatPinnedPanelOpen;
   groupChatOrderPreviewOpen = false;
   groupChatMembersOpen = false;
