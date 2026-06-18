@@ -4140,3 +4140,80 @@ body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inli
 body[data-page="group-chat"] #groupChatPinnedBodyPanel {
   display: none !important;
 }
+
+/* FINAL FIX: pinned card floats above all channels, independent of chat scroll */
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-inline-panel {
+  display: none !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-inline-panel.open {
+  display: block !important;
+  position: fixed !important;
+  left: 7vw !important;
+  right: 7vw !important;
+  top: 38vh !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: 220px !important;
+  margin: 0 !important;
+  padding: 12px 14px !important;
+  z-index: 9999 !important;
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.28) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55) !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  margin: 0 0 8px 0 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-head h3 {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-head button {
+  position: static !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  border-radius: 999px !important;
+  z-index: 10000 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  align-items: center !important;
+  padding: 4px 0 !important;
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel .group-chat-pinned-inline-row small {
+  font-size: 10px !important;
+  opacity: 0.75 !important;
+}
+
+/* Android desktop mode: keep card smaller */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] 
+#groupChatPinnedInlinePanel.group-chat-pinned-inline-panel.open {
+  left: 5vw !important;
+  right: 5vw !important;
+  top: 24vh !important;
+  max-height: 170px !important;
+}
