@@ -3553,3 +3553,61 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
   font-size: 11px !important;
   line-height: 1.2 !important;
 }
+
+/* FINAL FIX: Pinned panel should fit content, not full-screen height */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-right {
+  top: 72px !important;
+  bottom: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 8px !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-pinned {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 14px 16px !important;
+  margin: 0 !important;
+  border-radius: 18px !important;
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.20) !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32) !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-pinned h3 {
+  font-size: 15px !important;
+  margin: 0 0 12px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-mini-row {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 5px 0 !important;
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open .group-chat-ref-mini-row small {
+  font-size: 11px !important;
+  opacity: 0.75 !important;
+}
+
+/* Hide order preview when pinned button is used */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
+.group-chat-ref-app:not(.channels-open).order-preview-open #groupChatOrderPreview {
+  display: none !important;
+}
