@@ -1422,7 +1422,6 @@ function renderGroupChat(){
   renderGroupChatOrderPreview();
   renderGroupChatAdminChannelManagement();
   applyGroupChatViewState();
-  bindGroupChatPinnedButton();
 
   if(!startActiveGroupChatMessageListener()){
     loadActiveGroupChatMessagesFromFirebase();
@@ -2419,16 +2418,6 @@ function toggleGroupChatMembers(){
   applyGroupChatViewState();
 }
 
-function bindGroupChatPinnedButton(){
-  const button = document.getElementById("groupChatPinnedToggleBtn");
-  if(!button || button.dataset.bound === "1"){
-    return;
-  }
-
-  button.dataset.bound = "1";
-  button.addEventListener("click", toggleGroupChatPinnedPanel);
-  button.addEventListener("touchend", toggleGroupChatPinnedPanel);
-}
 
 function closeGroupChatPinnedPanel(event){
   event?.stopPropagation?.();
