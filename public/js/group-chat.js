@@ -722,18 +722,22 @@ shell(`
         <button class="group-chat-announcement-arrow" data-announcement-action="hide" onclick="toggleGroupChatAnnouncement(this)">⌃</button>
       </section>
 
-      <button id="groupChatPinnedToggleBtn" class="group-chat-ref-pinned-row" type="button" data-group-chat-action="toggle-pinned">
-        📌 Pinned <strong>3</strong> <span>${groupChatPinnedPanelOpen ? "⌃" : "›"}</span>
-      </button>
+      <section id="groupChatPinnedInlinePanel" class="group-chat-pinned-announcement ${groupChatPinnedPanelOpen ? "open" : ""}">
+        <button id="groupChatPinnedToggleBtn" class="group-chat-ref-pinned-row" type="button" data-group-chat-action="toggle-pinned">
+          <span>📌 Pinned</span>
+          <strong>3</strong>
+          <small>${groupChatPinnedPanelOpen ? "⌃" : "›"}</small>
+        </button>
 
-      <section id="groupChatPinnedInlinePanel" class="group-chat-pinned-inline-panel ${groupChatPinnedPanelOpen ? "open" : ""}">
-        <div class="group-chat-pinned-inline-head">
-          <h3>📌 Pinned Messages</h3>
-          <button type="button" data-group-chat-action="close-pinned">×</button>
+        <div class="group-chat-pinned-announcement-body">
+          <div class="group-chat-pinned-announcement-head">
+            <strong>📌 Pinned Messages</strong>
+            <button type="button" data-group-chat-action="close-pinned">×</button>
+          </div>
+          <div class="group-chat-pinned-announcement-row"><span>Ops Update: New POS update live.</span><small>May 19</small></div>
+          <div class="group-chat-pinned-announcement-row"><span>Inventory check every Monday 8 AM.</span><small>May 18</small></div>
+          <div class="group-chat-pinned-announcement-row"><span>Delivery meeting at 3:00 PM daily.</span><small>May 17</small></div>
         </div>
-        <div class="group-chat-pinned-inline-row"><span>Ops Update: New POS update live.</span><small>May 19</small></div>
-        <div class="group-chat-pinned-inline-row"><span>Inventory check every Monday 8 AM.</span><small>May 18</small></div>
-        <div class="group-chat-pinned-inline-row"><span>Delivery meeting at 3:00 PM daily.</span><small>May 17</small></div>
       </section>
 
       <section id="groupChatBody" class="group-chat-ref-body"></section>
@@ -2442,21 +2446,7 @@ function closeGroupChatPinnedPanel(event){
   event?.stopPropagation?.();
 
   groupChatPinnedPanelOpen = false;
-
-  const panel = document.getElementById("groupChatPinnedInlinePanel");
-  const button = document.getElementById("groupChatPinnedToggleBtn");
-
-  if(panel){
-    panel.classList.remove("open");
-    panel.style.display = "none";
-  }
-
-  if(button){
-    const arrow = button.querySelector("span");
-    if(arrow){
-      arrow.textContent = "›";
-    }
-  }
+  renderGroupChat();
 }
 
 function toggleGroupChatPinnedPanel(event){
@@ -2468,22 +2458,7 @@ function toggleGroupChatPinnedPanel(event){
   groupChatMembersOpen = false;
   groupChatAdminSettingsOpen = false;
 
-  const panel = document.getElementById("groupChatPinnedInlinePanel");
-  const button = document.getElementById("groupChatPinnedToggleBtn");
-
-  if(panel){
-    panel.classList.toggle("open", groupChatPinnedPanelOpen);
-    panel.style.display = groupChatPinnedPanelOpen ? "block" : "none";
-  }
-
-  if(button){
-    const arrow = button.querySelector("span");
-    if(arrow){
-      arrow.textContent = groupChatPinnedPanelOpen ? "⌃" : "›";
-    }
-  }
-
-  applyGroupChatViewState();
+  renderGroupChat();
 }
 
 function toggleGroupChatOrderPreview(){
