@@ -4430,3 +4430,79 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-pin
 body[data-page="group-chat"] #groupChatPinnedBodyPanel {
   display: none !important;
 }
+
+/* FINAL OVERRIDE: pinned announcement style wins over old pinned experiments */
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-announcement {
+  display: block !important;
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 8px 0 10px 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  z-index: 20 !important;
+  pointer-events: auto !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-announcement .group-chat-pinned-announcement-body {
+  display: none !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedInlinePanel.group-chat-pinned-announcement.open .group-chat-pinned-announcement-body {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  margin-top: 8px !important;
+  padding: 12px 14px !important;
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.20) !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+  z-index: 21 !important;
+  overflow: visible !important;
+}
+
+body[data-page="group-chat"] #groupChatPinnedToggleBtn.group-chat-ref-pinned-row {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-height: 40px !important;
+  padding: 8px 14px !important;
+  border-radius: 999px !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  border: 1px solid rgba(34, 211, 238, 0.12) !important;
+  color: #e2e8f0 !important;
+  position: relative !important;
+  z-index: 22 !important;
+  pointer-events: auto !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-announcement-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-announcement-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 4px 0 !important;
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+}
+
+/* Hide old experiment card only */
+body[data-page="group-chat"] #groupChatPinnedBodyPanel {
+  display: none !important;
+}
