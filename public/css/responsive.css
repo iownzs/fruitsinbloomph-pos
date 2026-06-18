@@ -3611,3 +3611,72 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"]
 .group-chat-ref-app:not(.channels-open).order-preview-open #groupChatOrderPreview {
   display: none !important;
 }
+
+/* FINAL: Inline compact pinned panel, no overlay */
+body[data-page="group-chat"] .group-chat-pinned-inline-panel {
+  display: none;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-inline-panel.open {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 0 8px 0 !important;
+  padding: 10px 12px !important;
+  border-radius: 14px !important;
+  background: #111c30 !important;
+  border: 1px solid rgba(34, 211, 238, 0.16) !important;
+  box-sizing: border-box !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-inline-panel h3 {
+  font-size: 13px !important;
+  margin: 0 0 8px 0 !important;
+  line-height: 1.15 !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-inline-row {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 4px 0 !important;
+  font-size: 11px !important;
+  line-height: 1.25 !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-inline-row small {
+  font-size: 10px !important;
+  opacity: 0.72 !important;
+}
+
+/* Pinned button must not open right overlay anymore */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-app:not(.channels-open) .group-chat-ref-right {
+  display: none !important;
+}
+
+/* FINAL: Inline pinned close button */
+body[data-page="group-chat"] .group-chat-pinned-inline-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin-bottom: 8px !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-inline-head h3 {
+  margin: 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-pinned-inline-head button {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  background: rgba(15, 23, 42, 0.82) !important;
+  color: #e2e8f0 !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}

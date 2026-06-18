@@ -219,6 +219,7 @@ let groupChatChannelsOpen = true;
 let groupChatAnnouncementOpen = true;
 let groupChatMembersOpen = false;
 let groupChatOrderPreviewOpen = false;
+let groupChatPinnedPanelOpen = false;
 let groupChatAdminSettingsOpen = false;
 let groupChatScheduleEditMode = false;
 let activeGroupChatAdminChannel = "general";
@@ -722,8 +723,18 @@ shell(`
       </section>
 
       <button class="group-chat-ref-pinned-row" onclick="toggleGroupChatPinnedPanel()">
-        📌 Pinned <strong>3</strong> <span>›</span>
+        📌 Pinned <strong>3</strong> <span>${groupChatPinnedPanelOpen ? "⌃" : "›"}</span>
       </button>
+
+      <section id="groupChatPinnedInlinePanel" class="group-chat-pinned-inline-panel ${groupChatPinnedPanelOpen ? "open" : ""}">
+        <div class="group-chat-pinned-inline-head">
+          <h3>📌 Pinned Messages</h3>
+          <button type="button" onclick="closeGroupChatPinnedPanel(event)">×</button>
+        </div>
+        <div class="group-chat-pinned-inline-row"><span>Ops Update: New POS update live.</span><small>May 19</small></div>
+        <div class="group-chat-pinned-inline-row"><span>Inventory check every Monday 8 AM.</span><small>May 18</small></div>
+        <div class="group-chat-pinned-inline-row"><span>Delivery meeting at 3:00 PM daily.</span><small>May 17</small></div>
+      </section>
 
       <section id="groupChatBody" class="group-chat-ref-body"></section>
       <footer id="groupChatComposer" class="group-chat-ref-composer"></footer>
@@ -2325,6 +2336,7 @@ function isGroupChatMobileDesktopMode(){
 function openGroupChatChannel(channelId){
   if(activeGroupChatChannel !== channelId){
     activeGroupChatReplyQuote = null;
+    groupChatPinnedPanelOpen = false;
   }
 
   activeGroupChatChannel = channelId;
@@ -2406,17 +2418,19 @@ function toggleGroupChatMembers(){
   applyGroupChatViewState();
 }
 
+function closeGroupChatPinnedPanel(event){
+  event?.stopPropagation?.();
+  groupChatPinnedPanelOpen = false;
+  renderGroupChat();
+}
+
 function toggleGroupChatPinnedPanel(){
-  groupChatOrderPreviewOpen = !groupChatOrderPreviewOpen;
+  groupChatPinnedPanelOpen = !groupChatPinnedPanelOpen;
+  groupChatOrderPreviewOpen = false;
   groupChatMembersOpen = false;
   groupChatAdminSettingsOpen = false;
 
-  applyGroupChatViewState();
-
-  const orderPreview = document.getElementById("groupChatOrderPreview");
-  if(orderPreview){
-    orderPreview.style.display = "none";
-  }
+  renderGroupChat();
 }
 
 function toggleGroupChatOrderPreview(){
@@ -2522,6 +2536,7 @@ window.toggleGroupChatMembers = toggleGroupChatMembers;
 window.toggleGroupChatAdminSettings = toggleGroupChatAdminSettings;
 window.toggleGroupChatOrderPreview = toggleGroupChatOrderPreview;
 window.toggleGroupChatPinnedPanel = toggleGroupChatPinnedPanel;
+window.closeGroupChatPinnedPanel = closeGroupChatPinnedPanel;
 window.toggleGroupChatAnnouncement = toggleGroupChatAnnouncement;
 window.nextGroupChatAnnouncement = nextGroupChatAnnouncement;
 window.toggleGroupChatScheduleEdit = toggleGroupChatScheduleEdit;
