@@ -5836,3 +5836,56 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inl
   border-bottom: 1px solid rgba(148, 163, 184, 0.14) !important;
 }
 
+
+/* FINAL: Force @ staff / # order mention panel to float higher on Android desktop mode */
+@media (pointer: coarse) and (min-width: 900px) {
+  body[data-page="group-chat"] #groupChatInlineSuggest.group-chat-inline-suggest {
+    position: fixed !important;
+    left: 50% !important;
+    top: auto !important;
+    bottom: 150px !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+
+    width: min(62vw, 460px) !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+
+    z-index: 2147483647 !important;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+
+    border-radius: 18px !important;
+    border: 1px solid rgba(45, 212, 191, 0.38) !important;
+    background: rgba(15, 23, 42, 0.99) !important;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65) !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body[data-page="group-chat"] #groupChatInlineSuggest.group-chat-inline-suggest.open {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  body[data-page="group-chat"] #groupChatInlineSuggest .group-chat-inline-choice {
+    min-height: 48px !important;
+    padding: 10px 12px !important;
+    display: grid !important;
+    grid-template-columns: 32px 1fr !important;
+    gap: 10px !important;
+    align-items: center !important;
+  }
+
+  body[data-page="group-chat"] #groupChatInlineSuggest .group-chat-inline-title {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 2 !important;
+    padding: 10px 12px !important;
+    background: rgba(15, 23, 42, 0.99) !important;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.14) !important;
+  }
+}
+
