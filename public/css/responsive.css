@@ -5889,3 +5889,71 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inl
   }
 }
 
+
+/* FINAL: Better full order details modal size in mobile-desktop view */
+@media (pointer: coarse) and (min-width: 900px) {
+  body[data-page="group-chat"] .group-chat-full-order-modal {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 24px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-full-order-card {
+    width: min(58vw, 560px) !important;
+    max-width: 560px !important;
+    max-height: 82vh !important;
+    overflow-y: auto !important;
+    border-radius: 22px !important;
+    padding: 16px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-order-preview-head strong {
+    font-size: 18px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-order-preview-head small {
+    font-size: 11px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-order-preview-status-row {
+    padding: 13px !important;
+    border-radius: 16px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-order-preview-status-row strong {
+    font-size: 14px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-order-preview-status-row small {
+    font-size: 11px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-full-order-section,
+  body[data-page="group-chat"] .group-chat-full-order-two > div {
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-full-order-section h4,
+  body[data-page="group-chat"] .group-chat-full-order-two h4 {
+    font-size: 10px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-full-order-section strong,
+  body[data-page="group-chat"] .group-chat-full-order-two strong,
+  body[data-page="group-chat"] .group-chat-full-order-item strong {
+    font-size: 12px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-full-order-section span,
+  body[data-page="group-chat"] .group-chat-full-order-two small,
+  body[data-page="group-chat"] .group-chat-full-order-item small {
+    font-size: 10px !important;
+  }
+
+  body[data-page="group-chat"] .group-chat-order-preview-actions button {
+    min-height: 42px !important;
+    font-size: 13px !important;
+  }
+}
+
