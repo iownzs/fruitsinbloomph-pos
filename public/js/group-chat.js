@@ -1559,7 +1559,9 @@ function getGroupChatSampleOrderMention(orderId){
       paymentStatus: "Paid",
       orderType: "Delivery",
       customerName: "Emily Johnson",
+      customerPhone: "0912 345 6789",
       recipientName: "Emily Johnson",
+      recipientPhone: "0912 345 6789",
       dateTime: "May 21, 2025 • 12:30 PM",
       address: "Quezon City • Tap to view full address",
       itemsCount: 2,
@@ -1575,7 +1577,9 @@ function getGroupChatSampleOrderMention(orderId){
       paymentStatus: "Pending",
       orderType: "Pickup",
       customerName: "Maria Santos",
+      customerPhone: "0917 222 3344",
       recipientName: "Maria Santos",
+      recipientPhone: "0917 222 3344",
       dateTime: "Today • 3:00 PM",
       address: "Pickup at store",
       itemsCount: 3,
@@ -1591,7 +1595,9 @@ function getGroupChatSampleOrderMention(orderId){
       paymentStatus: "Paid",
       orderType: "Pickup",
       customerName: "Ben Cruz",
+      customerPhone: "0998 777 1122",
       recipientName: "Ben Cruz",
+      recipientPhone: "0998 777 1122",
       dateTime: "Today • 5:30 PM",
       address: "Pickup at store",
       itemsCount: 1,
@@ -1609,7 +1615,9 @@ function getGroupChatSampleOrderMention(orderId){
     paymentStatus: "Unknown",
     orderType: "Order",
     customerName: "",
+    customerPhone: "",
     recipientName: "",
+    recipientPhone: "",
     dateTime: "",
     address: "",
     itemsCount: 0,
@@ -2021,7 +2029,9 @@ function renderGroupChatOrderMentionChip(message){
   const payment = escapeGroupChatText(String(mention?.paymentStatus || ""));
   const type = escapeGroupChatText(String(mention?.orderType || ""));
   const customer = escapeGroupChatText(String(mention?.customerName || ""));
+  const customerPhone = escapeGroupChatText(String(mention?.customerPhone || ""));
   const recipient = escapeGroupChatText(String(mention?.recipientName || ""));
+  const recipientPhone = escapeGroupChatText(String(mention?.recipientPhone || ""));
   const dateTime = escapeGroupChatText(String(mention?.dateTime || ""));
   const address = escapeGroupChatText(String(mention?.address || ""));
   const items = escapeGroupChatText(String(mention?.itemsPreview || ""));
@@ -2039,7 +2049,9 @@ function renderGroupChatOrderMentionChip(message){
         data-payment="${payment}"
         data-type="${type}"
         data-customer="${customer}"
+        data-customer-phone="${customerPhone}"
         data-recipient="${recipient}"
+        data-recipient-phone="${recipientPhone}"
         data-date-time="${dateTime}"
         data-address="${address}"
         data-items="${items}"
@@ -2114,16 +2126,21 @@ function openGroupChatOrderMentionPreview(orderId){
         </div>
       </div>
 
-      <div class="group-chat-order-preview-date">${escapeGroupChatText(hidden.dataset.dateTime || "")}</div>
+      <div class="group-chat-order-preview-date">
+        <small>Delivery Date/Time</small>
+        <strong>${escapeGroupChatText(hidden.dataset.dateTime || "—")}</strong>
+      </div>
 
       <div class="group-chat-order-preview-grid">
         <div>
           <small>Customer</small>
           <strong>${escapeGroupChatText(hidden.dataset.customer || "—")}</strong>
+          <span>${escapeGroupChatText(hidden.dataset.customerPhone || "—")}</span>
         </div>
         <div>
           <small>Recipient</small>
           <strong>${escapeGroupChatText(hidden.dataset.recipient || "—")}</strong>
+          <span>${escapeGroupChatText(hidden.dataset.recipientPhone || "—")}</span>
         </div>
       </div>
 

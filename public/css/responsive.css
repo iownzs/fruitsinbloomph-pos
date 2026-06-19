@@ -5264,3 +5264,42 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ord
   min-width: 26px !important;
   font-size: 12px !important;
 }
+
+/* FINAL: Order preview customer/recipient numbers + delivery date/time */
+body[data-page="group-chat"] .group-chat-order-preview-date {
+  display: grid !important;
+  gap: 4px !important;
+  padding: 10px 12px !important;
+  border-radius: 15px !important;
+  border: 1px solid rgba(148, 163, 184, 0.14) !important;
+  background: rgba(15, 23, 42, 0.42) !important;
+  margin: 8px 0 12px !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-date strong {
+  color: #f8fafc !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-grid span {
+  display: block !important;
+  margin-top: 5px !important;
+  color: #94a3b8 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-date {
+  padding: 7px 9px !important;
+  border-radius: 12px !important;
+  gap: 2px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-date strong {
+  font-size: 10px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-grid span {
+  font-size: 8px !important;
+}
