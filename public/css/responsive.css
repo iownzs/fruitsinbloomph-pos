@@ -5681,3 +5681,23 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ord
 html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-quick-footer {
   font-size: 8px !important;
 }
+
+/* FINAL: Remove green background around Group Chat order quick card */
+body[data-page="group-chat"] .group-chat-msg-bubble:has(.group-chat-order-quick-card) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-msg-row.own .group-chat-msg-bubble:has(.group-chat-order-quick-card) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-quick-card {
+  background: rgba(15, 23, 42, 0.88) !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.20) !important;
+}
