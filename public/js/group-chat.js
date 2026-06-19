@@ -2628,6 +2628,10 @@ function renderGroupChatComposer(channel){
 function renderGroupChatOrderPreview(){
   const wrap = document.getElementById("groupChatOrderPreview");
 
+  if(!wrap){
+    return;
+  }
+
   wrap.innerHTML = `
     <div class="group-chat-ref-preview-head">
       <h3>Mention Order Preview</h3>
@@ -2636,21 +2640,18 @@ function renderGroupChatOrderPreview(){
 
     <div class="group-chat-ref-order-card">
       <div class="group-chat-ref-order-top">
-        <strong>ORD-2048</strong>
-        <span class="badge">Ready for Delivery</span>
+        <strong>Real Firebase Orders</strong>
+        <span class="badge">Live</span>
       </div>
 
-      <p><span>Customer</span><strong>Emily Johnson</strong></p>
-      <p><span>Recipient</span><strong>Emily Johnson</strong></p>
-      <p><span>Delivery</span><strong>May 21, 2025 • 12:30 PM</strong></p>
-      <p><span>Type</span><strong>Delivery</strong></p>
+      <p><span>How to use</span><strong>Type # in chat</strong></p>
+      <p><span>Select</span><strong>Choose an order from Firebase</strong></p>
+      <p><span>Preview</span><strong>Tap the #ORD chip after sending</strong></p>
 
       <div class="group-chat-ref-order-items">
-        <p><strong>1x Chicken Teriyaki Bowl</strong><span>₱699</span></p>
-        <p><strong>1x Iced Thai Tea</strong><span>₱190</span></p>
+        <p><strong>No sample order shown</strong><span>✅</span></p>
+        <p><strong>Order data comes from Firestore orders collection</strong><span>🔥</span></p>
       </div>
-
-      <button class="btn primary">Insert in Chat</button>
     </div>
   `;
 }
