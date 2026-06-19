@@ -105,6 +105,63 @@
       const customer = order.customer || {};
       const payment = order.payment || {};
 
+      const formatOrderMentionTime12 = value => {
+        const raw = String(value || "").trim();
+        if(!raw){
+          return "";
+        }
+
+        if(/\bAM\b|\bPM\b/i.test(raw)){
+          return raw.replace(/\s+/g, " ").toUpperCase();
+        }
+
+        const match = raw.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+        if(!match){
+          return raw.replace(/\b(\d{1,2}):(\d{2})(?::\d{2})?\b/g, (_, hh, mm) => {
+            let hour = Number(hh);
+            if(Number.isNaN(hour) || hour > 23){
+              return `${hh}:${mm}`;
+            }
+            const suffix = hour >= 12 ? "PM" : "AM";
+            hour = hour % 12 || 12;
+            return `${hour}:${mm} ${suffix}`;
+          });
+        }
+
+        let hour = Number(match[1]);
+        const minute = match[2];
+        const suffix = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+
+        return `${hour}:${minute} ${suffix}`;
+      };
+
+      const formatOrderMentionDateTime12 = value => {
+        const raw = String(value || "").trim();
+        if(!raw){
+          return "";
+        }
+
+        const dateObj = new Date(raw);
+        if(raw.includes("T") && !Number.isNaN(dateObj.getTime())){
+          const dateLabel = dateObj.toLocaleDateString("en-PH", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+          });
+
+          const timeLabel = dateObj.toLocaleTimeString("en-PH", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+          });
+
+          return `${dateLabel} • ${timeLabel}`;
+        }
+
+        return formatOrderMentionTime12(raw);
+      };
+
       const type = order.orderType || order.type || "";
       const isDelivery = String(type).toLowerCase() === "delivery";
 
@@ -182,7 +239,7 @@
             ""
           );
 
-      const dateTime = rawDateTime || [dateValue, timeValue].filter(Boolean).join(" • ");
+      const dateTime = rawDateTime ? formatOrderMentionDateTime12(rawDateTime) : [dateValue, formatOrderMentionTime12(timeValue)].filter(Boolean).join(" • ");
 
       const items = Array.isArray(order.items) ? order.items : [];
       const itemsPreview = items
