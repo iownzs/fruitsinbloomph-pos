@@ -5796,3 +5796,43 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inl
   user-select: none !important;
   -webkit-user-select: none !important;
 }
+
+/* FINAL: Better # order / @ staff mention panel position in mobile-desktop view */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-suggest {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: 110px !important;
+  transform: translateX(-50%) !important;
+  width: min(78vw, 420px) !important;
+  max-height: 260px !important;
+  overflow-y: auto !important;
+  z-index: 999999 !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(45, 212, 191, 0.35) !important;
+  background: rgba(15, 23, 42, 0.98) !important;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.55) !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-suggest.open {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-choice {
+  min-height: 44px !important;
+  padding: 9px 12px !important;
+  grid-template-columns: 30px 1fr !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-title {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 2 !important;
+  background: rgba(15, 23, 42, 0.98) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14) !important;
+}
+
