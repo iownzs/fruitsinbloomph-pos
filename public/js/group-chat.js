@@ -1972,9 +1972,8 @@ function renderGroupChatOrderMentionChip(message){
     return "";
   }
 
-  const source = escapeGroupChatText(String(mention?.source || "order"));
-  const sourceLogo = getGroupChatSourceLogo(mention?.source || source || "order");
-  const sourceClass = getGroupChatSourceLogoClass(mention?.source || source || "order");
+  const sourceLogo = getGroupChatSourceLogo(mention?.source || "order");
+  const sourceClass = getGroupChatSourceLogoClass(mention?.source || "order");
 
   const status = escapeGroupChatText(String(mention?.status || "Order"));
   const total = escapeGroupChatText(String(mention?.total || ""));
@@ -1992,41 +1991,32 @@ function renderGroupChatOrderMentionChip(message){
 
   const isPickup = String(mention?.orderType || "").toLowerCase() === "pickup";
   const scheduleLabel = isPickup ? "Pickup Date/Time" : "Delivery Date/Time";
-  const addressLabel = isPickup ? "Pickup Add" : "Delivery Add";
+  const addressLabel = isPickup ? "Pickup Address" : "Delivery Address";
 
   return `
     <button class="group-chat-order-mention-chip group-chat-order-quick-card" type="button" onclick="openGroupChatFullOrderDetails('${escapeGroupChatText(orderId)}')">
       <div class="group-chat-order-quick-top">
         <div>
           <strong>#${escapeGroupChatText(orderId)}</strong>
-          <small>${source} • ${payment || "Payment"} • ${type || "Order"}</small>
+          <small>${payment || "Payment"} • ${type || "Order"}</small>
         </div>
         <span class="group-chat-order-source-logo ${sourceClass}">${escapeGroupChatText(sourceLogo)}</span>
       </div>
 
-      <div class="group-chat-order-quick-row">
-        <span>Status</span>
+      <div class="group-chat-order-quick-status">
         <strong>${status || "Order"}${total ? ` • ${total}` : ""}</strong>
       </div>
 
-      <div class="group-chat-order-quick-row">
+      <div class="group-chat-order-quick-person">
         <span>Customer</span>
         <strong>${customer || "—"}</strong>
+        <small>${customerPhone || "—"}</small>
       </div>
 
-      <div class="group-chat-order-quick-row">
-        <span>Customer #</span>
-        <strong>${customerPhone || "—"}</strong>
-      </div>
-
-      <div class="group-chat-order-quick-row">
+      <div class="group-chat-order-quick-person">
         <span>Recipient</span>
         <strong>${recipient || "—"}</strong>
-      </div>
-
-      <div class="group-chat-order-quick-row">
-        <span>Recipient #</span>
-        <strong>${recipientPhone || "—"}</strong>
+        <small>${recipientPhone || "—"}</small>
       </div>
 
       <div class="group-chat-order-quick-row">
@@ -2042,6 +2032,10 @@ function renderGroupChatOrderMentionChip(message){
       <div class="group-chat-order-quick-row">
         <span>${count}</span>
         <strong>${items || "Tap to view items"}</strong>
+      </div>
+
+      <div class="group-chat-order-quick-footer">
+        Tap to view full details ›
       </div>
     </button>
   `;
