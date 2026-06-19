@@ -2198,8 +2198,10 @@ ${messages.map((message, index) => {
   const name = escapeGroupChatText(message.name || "User");
   const role = escapeGroupChatText(message.role || "");
   const time = escapeGroupChatText(message.time || "");
-  const text = escapeGroupChatText(message.text || "").replace(/\n/g, "<br>");
   const orderMentionChipHtml = renderGroupChatOrderMentionChip(message);
+  const text = orderMentionChipHtml
+    ? ""
+    : escapeGroupChatText(message.text || "").replace(/\n/g, "<br>");
   const replyTo = normalizeGroupChatReplyTo(message.replyTo);
   const replyQuoteHtml = replyTo ? `
     <div class="group-chat-msg-inline-quote">
