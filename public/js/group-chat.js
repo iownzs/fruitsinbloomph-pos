@@ -2049,23 +2049,120 @@ function renderGroupChatOrderMentionChip(message){
   `;
 }
 
+function getGroupChatSourceLogo(source){
+  const value = String(source || "").toLowerCase();
+
+  if(value.includes("facebook")) return "f";
+  if(value.includes("instagram")) return "◎";
+  if(value.includes("tiktok")) return "♪";
+  if(value.includes("viber")) return "☎";
+  if(value.includes("whatsapp")) return "☘";
+  if(value.includes("website") || value.includes("web")) return "🌐";
+  if(value.includes("walk")) return "🏬";
+
+  return "🧾";
+}
+
+function getGroupChatSourceLogoClass(source){
+  const value = String(source || "").toLowerCase();
+
+  if(value.includes("facebook")) return "facebook";
+  if(value.includes("instagram")) return "instagram";
+  if(value.includes("tiktok")) return "tiktok";
+  if(value.includes("viber")) return "viber";
+  if(value.includes("whatsapp")) return "whatsapp";
+  if(value.includes("website") || value.includes("web")) return "website";
+  if(value.includes("walk")) return "walkin";
+
+  return "other";
+}
+
+function closeGroupChatOrderMentionPreview(){
+  document.getElementById("groupChatOrderMentionPreviewModal")?.remove();
+}
+
 function openGroupChatOrderMentionPreview(orderId){
   const hidden = document.querySelector(`.group-chat-order-chip-hidden[data-order-id="${CSS.escape(orderId)}"]`);
   if(!hidden){
     return;
   }
 
-  alert(
-    `${orderId}\n` +
-    `${hidden.dataset.status || ""}\n` +
-    `${hidden.dataset.source || ""} • ${hidden.dataset.payment || ""} • ${hidden.dataset.type || ""}\n` +
-    `${hidden.dataset.dateTime || ""}\n\n` +
-    `Customer: ${hidden.dataset.customer || ""}\n` +
-    `Recipient: ${hidden.dataset.recipient || ""}\n` +
-    `Address: ${hidden.dataset.address || ""}\n` +
-    `Items: ${hidden.dataset.count || ""} - ${hidden.dataset.items || ""}\n` +
-    `Total: ${hidden.dataset.total || ""}`
-  );
+  closeGroupChatOrderMentionPreview();
+
+  const source = hidden.dataset.source || "order";
+  const sourceLogo = getGroupChatSourceLogo(source);
+  const sourceClass = getGroupChatSourceLogoClass(source);
+
+  const modal = document.createElement("div");
+  modal.id = "groupChatOrderMentionPreviewModal";
+  modal.className = "group-chat-order-preview-modal";
+  modal.innerHTML = `
+    <section class="group-chat-order-preview-card" role="dialog" aria-modal="true">
+      <div class="group-chat-order-preview-head">
+        <div>
+          <small>Order Preview</small>
+          <strong>${escapeGroupChatText(orderId)}</strong>
+        </div>
+        <button type="button" onclick="closeGroupChatOrderMentionPreview()">×</button>
+      </div>
+
+      <div class="group-chat-order-preview-status-row">
+        <span class="group-chat-order-source-logo ${sourceClass}">${escapeGroupChatText(sourceLogo)}</span>
+        <div>
+          <strong>${escapeGroupChatText(hidden.dataset.status || "Order Mention")}</strong>
+          <small>${escapeGroupChatText(hidden.dataset.payment || "Payment")} • ${escapeGroupChatText(hidden.dataset.type || "Order")}</small>
+        </div>
+      </div>
+
+      <div class="group-chat-order-preview-date">${escapeGroupChatText(hidden.dataset.dateTime || "")}</div>
+
+      <div class="group-chat-order-preview-grid">
+        <div>
+          <small>Customer</small>
+          <strong>${escapeGroupChatText(hidden.dataset.customer || "—")}</strong>
+        </div>
+        <div>
+          <small>Recipient</small>
+          <strong>${escapeGroupChatText(hidden.dataset.recipient || "—")}</strong>
+        </div>
+      </div>
+
+      <button class="group-chat-order-preview-line" type="button">
+        <span>
+          <small>Address</small>
+          <strong>${escapeGroupChatText(hidden.dataset.address || "—")}</strong>
+        </span>
+        <em>›</em>
+      </button>
+
+      <button class="group-chat-order-preview-line" type="button">
+        <span>
+          <small>Items</small>
+          <strong>${escapeGroupChatText(hidden.dataset.count || "Items")}</strong>
+          <small>${escapeGroupChatText(hidden.dataset.items || "")}</small>
+        </span>
+        <em>›</em>
+      </button>
+
+      <div class="group-chat-order-preview-total">
+        <small>Total</small>
+        <strong>${escapeGroupChatText(hidden.dataset.total || "—")}</strong>
+      </div>
+
+      <div class="group-chat-order-preview-actions">
+        <button type="button" onclick="closeGroupChatOrderMentionPreview()">Close</button>
+        <button type="button" class="primary" onclick="closeGroupChatOrderMentionPreview()">View Order</button>
+      </div>
+    </section>
+  `;
+
+  modal.addEventListener("click", event => {
+    if(event.target === modal){
+      closeGroupChatOrderMentionPreview();
+    }
+  });
+
+  document.body.appendChild(modal);
 }
 
 function renderGroupChatMessages(channel){
@@ -2897,6 +2994,7 @@ window.openGroupChatMentionOrder = openGroupChatMentionOrder;
 window.insertGroupChatOrderMention = insertGroupChatOrderMention;
 window.setGroupChatOrderMention = setGroupChatOrderMention;
 window.openGroupChatOrderMentionPreview = openGroupChatOrderMentionPreview;
+window.closeGroupChatOrderMentionPreview = closeGroupChatOrderMentionPreview;
 window.closeGroupChatLiteModal = closeGroupChatLiteModal;
 window.insertTextInGroupChatInput = insertTextInGroupChatInput;
 window.replyGroupChatMessage = replyGroupChatMessage;

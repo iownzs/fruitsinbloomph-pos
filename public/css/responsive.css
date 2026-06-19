@@ -5051,3 +5051,216 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ord
 html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-mention-chip em {
   font-size: 7px !important;
 }
+
+/* FINAL: Order mention preview modal */
+body[data-page="group-chat"] .group-chat-order-preview-modal {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 18px !important;
+  background: rgba(2, 6, 23, 0.72) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-card {
+  width: min(420px, 100%) !important;
+  max-height: min(78vh, 620px) !important;
+  overflow: auto !important;
+  border-radius: 24px !important;
+  padding: 18px !important;
+  border: 1px solid rgba(34, 211, 238, 0.22) !important;
+  background: linear-gradient(180deg, #101827, #07111f) !important;
+  color: #e5e7eb !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45) !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-head {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin-bottom: 14px !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-head small,
+body[data-page="group-chat"] .group-chat-order-preview-card small {
+  display: block !important;
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-head strong {
+  display: block !important;
+  margin-top: 3px !important;
+  color: #ffffff !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-head button {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(148, 163, 184, 0.22) !important;
+  background: rgba(15, 23, 42, 0.85) !important;
+  color: #e5e7eb !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-status-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 11px !important;
+  padding: 12px !important;
+  border-radius: 18px !important;
+  background: rgba(20, 184, 166, 0.14) !important;
+  border: 1px solid rgba(20, 184, 166, 0.18) !important;
+  margin-bottom: 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-source-logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 999px !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  background: #334155 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-source-logo.facebook { background: #1877f2 !important; }
+body[data-page="group-chat"] .group-chat-order-source-logo.instagram { background: radial-gradient(circle at 30% 30%, #feda75, #d62976, #962fbf, #4f5bd5) !important; }
+body[data-page="group-chat"] .group-chat-order-source-logo.tiktok { background: #020617 !important; }
+body[data-page="group-chat"] .group-chat-order-source-logo.viber { background: #7360f2 !important; }
+body[data-page="group-chat"] .group-chat-order-source-logo.whatsapp { background: #25d366 !important; }
+body[data-page="group-chat"] .group-chat-order-source-logo.website { background: #0ea5e9 !important; }
+body[data-page="group-chat"] .group-chat-order-source-logo.walkin { background: #f59e0b !important; }
+
+body[data-page="group-chat"] .group-chat-order-preview-status-row strong {
+  display: block !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-date {
+  color: #cbd5e1 !important;
+  font-size: 12px !important;
+  margin: 8px 2px 14px !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-grid > div,
+body[data-page="group-chat"] .group-chat-order-preview-line,
+body[data-page="group-chat"] .group-chat-order-preview-total {
+  border: 1px solid rgba(148, 163, 184, 0.14) !important;
+  background: rgba(15, 23, 42, 0.56) !important;
+  border-radius: 16px !important;
+  padding: 11px 12px !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-grid strong,
+body[data-page="group-chat"] .group-chat-order-preview-line strong {
+  display: block !important;
+  color: #f8fafc !important;
+  font-size: 13px !important;
+  margin-top: 3px !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-line {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  color: inherit !important;
+  text-align: left !important;
+  margin-bottom: 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-line em {
+  color: #22c55e !important;
+  font-size: 18px !important;
+  font-style: normal !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-total {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-top: 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-total strong {
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-actions {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  margin-top: 14px !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-actions button {
+  min-height: 42px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+  background: rgba(15, 23, 42, 0.8) !important;
+  color: #e5e7eb !important;
+  font-weight: 900 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-preview-actions button.primary {
+  border-color: rgba(20, 184, 166, 0.3) !important;
+  background: linear-gradient(135deg, #14b8a6, #0f766e) !important;
+  color: #ffffff !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-card {
+  max-height: 72vh !important;
+  border-radius: 18px !important;
+  padding: 12px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-head strong {
+  font-size: 15px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-card small {
+  font-size: 8px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-status-row strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-grid strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-line strong {
+  font-size: 10px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-date {
+  font-size: 9px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-source-logo {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  font-size: 12px !important;
+}
