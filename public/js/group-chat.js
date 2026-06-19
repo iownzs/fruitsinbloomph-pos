@@ -225,6 +225,7 @@ let groupChatScheduleEditMode = false;
 let activeGroupChatAdminChannel = "general";
 let activeGroupChatReplyQuote = null;
 let activeGroupChatOrderMention = null;
+let groupChatRecentOrderMentions = [];
 
 /* Group Chat role permissions */
 const GROUP_CHAT_ROLE_PERMISSIONS = {
@@ -2448,6 +2449,17 @@ function getGroupChatMentionTrigger(value){
   return { trigger, query, triggerIndex };
 }
 
+async function loadGroupChatRecentOrderMentions(){
+  try{
+    if(window.FIB_FIREBASE_READY && window.FIB?.getRecentOrderMentions){
+      groupChatRecentOrderMentions = await window.FIB.getRecentOrderMentions();
+    }
+  }catch(error){
+    console.warn("Could not load Firebase order mentions:", error);
+    groupChatRecentOrderMentions = [];
+  }
+}
+
 function renderGroupChatInlineSuggest(){
   const input = document.getElementById("groupChatMessageInput");
   const panel = document.getElementById("groupChatInlineSuggest");
@@ -2485,18 +2497,32 @@ function renderGroupChatInlineSuggest(){
 
   if(active.trigger === "#"){
     const q = active.query.toUpperCase();
-    const samples = ["ORD-1024", "ORD-1025", "ORD-1026", "ORD-2026"];
-    const orders = samples.filter(order => !q || order.includes(q.replace(/^ORD-?/, "")) || order.includes(q)).slice(0, 8);
+    const orders = (groupChatRecentOrderMentions || [])
+      .filter(order => {
+        const id = String(order.orderId || "").toUpperCase();
+        const customer = String(order.customerName || "").toUpperCase();
+        const recipient = String(order.recipientName || "").toUpperCase();
+        const search = q.replace(/^ORD-?/, "");
+
+        return !q || id.includes(search) || id.includes(q) || customer.includes(q) || recipient.includes(q);
+      })
+      .slice(0, 50);
 
     panel.innerHTML = `
       <div class="group-chat-inline-title">Mention Order</div>
-      ${orders.map(order => `
-        <button type="button" class="group-chat-inline-choice" onclick="selectGroupChatInlineMention('#${order}')">
+      ${orders.length ? orders.map(order => `
+        <button type="button" class="group-chat-inline-choice" onclick="selectGroupChatInlineMention('#${String(order.orderId || "").replace(/'/g, "\\'")}')">
           <span>🧾</span>
-          <strong>${order}</strong>
-          <small>Order mention</small>
+          <strong>${order.orderId || "Order"}</strong>
+          <small>${order.status || "Order"} • ${order.orderType || ""}</small>
         </button>
-      `).join("")}
+      `).join("") : `
+        <button type="button" class="group-chat-inline-choice" disabled>
+          <span>🧾</span>
+          <strong>No orders found</strong>
+          <small>Try typing full order ID</small>
+        </button>
+      `}
     `;
     panel.classList.add("open");
   }
@@ -2577,6 +2603,8 @@ function renderGroupChatComposer(channel){
 </div>`;
     return;
   }
+
+  loadGroupChatRecentOrderMentions();
 
   composer.innerHTML = `
 <div class="group-chat-emoji-panel" id="groupChatEmojiPanel"></div>

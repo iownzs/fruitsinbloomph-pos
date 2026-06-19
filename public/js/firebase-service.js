@@ -171,7 +171,31 @@
       };
     };
 
-    window.FIB.getOrderMentionById = async function(orderId){
+    
+window.FIB.getRecentOrderMentions = async function(limitCount = null){
+  if(!window.db) throw new Error("Firestore not ready.");
+
+  let query = window.db
+    .collection("orders")
+    .orderBy("createdAt", "desc");
+
+  if(limitCount && Number(limitCount) > 0){
+    query = query.limit(Number(limitCount));
+  }
+
+  const snapshot = await query.get();
+
+  return snapshot.docs.map(doc => {
+    const data = {
+      id: doc.id,
+      ...doc.data()
+    };
+
+    return window.FIB.normalizeOrderMentionData(data.orderId || doc.id, data);
+  });
+};
+
+window.FIB.getOrderMentionById = async function(orderId){
       if(!window.db) throw new Error("Firestore not ready.");
 
       const cleanId = String(orderId || "").trim().toUpperCase().replace(/^#/, "");
