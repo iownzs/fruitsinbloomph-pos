@@ -129,9 +129,30 @@
         .join(", ");
 
       const addressParts = [
-        delivery.address || order.address || "",
-        delivery.city || order.city || "",
-        delivery.area || order.area || ""
+        delivery.address,
+        delivery.fullAddress,
+        delivery.deliveryAddress,
+        delivery.street,
+        delivery.barangay,
+        delivery.area,
+        delivery.city,
+        delivery.landmark ? `Landmark: ${delivery.landmark}` : "",
+
+        pickup.address,
+        pickup.fullAddress,
+        pickup.pickupAddress,
+        pickup.location,
+        pickup.branch,
+
+        order.address,
+        order.fullAddress,
+        order.deliveryAddress,
+        order.pickupAddress,
+        order.street,
+        order.barangay,
+        order.area,
+        order.city,
+        order.landmark ? `Landmark: ${order.landmark}` : ""
       ].filter(Boolean);
 
       const rawTotal = order.total ?? order.grandTotal ?? order.orderTotal ?? payment.total ?? "";
