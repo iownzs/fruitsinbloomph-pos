@@ -259,7 +259,6 @@
         delivery.barangay,
         delivery.area,
         delivery.city,
-        delivery.landmark ? `Landmark: ${delivery.landmark}` : "",
 
         pickup.address,
         pickup.fullAddress,
@@ -275,7 +274,6 @@
         order.barangay,
         order.area,
         order.city,
-        order.landmark ? `Landmark: ${order.landmark}` : ""
       ].filter(Boolean);
 
       const rawTotal = order.total ?? order.grandTotal ?? order.orderTotal ?? payment.total ?? "";
@@ -302,6 +300,7 @@
         pickupDateTime: !isDelivery ? dateTime : "",
 
         address: addressParts.join(", "),
+        landmark: delivery.landmark || pickup.landmark || order.landmark || delivery.deliveryLandmark || order.deliveryLandmark || "",
         city: delivery.city || order.city || "",
 
         itemsCount: items.length,

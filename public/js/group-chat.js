@@ -1986,6 +1986,7 @@ function renderGroupChatOrderMentionChip(message){
   const recipientPhone = escapeGroupChatText(String(mention?.recipientPhone || ""));
   const dateTime = escapeGroupChatText(String(mention?.dateTime || mention?.deliveryDateTime || mention?.pickupDateTime || ""));
   const address = escapeGroupChatText(String(mention?.address || ""));
+  const landmark = escapeGroupChatText(String(mention?.landmark || ""));
   const items = escapeGroupChatText(String(mention?.itemsPreview || ""));
   const count = mention?.itemsCount ? `${mention.itemsCount} item${Number(mention.itemsCount) > 1 ? "s" : ""}` : "Items";
 
@@ -2027,6 +2028,11 @@ function renderGroupChatOrderMentionChip(message){
       <div class="group-chat-order-quick-row">
         <span>${addressLabel}</span>
         <strong>${address || "—"}</strong>
+      </div>
+
+      <div class="group-chat-order-quick-row">
+        <span>Landmark</span>
+        <strong>${landmark || "—"}</strong>
       </div>
 
       <div class="group-chat-order-quick-row">
@@ -3143,6 +3149,11 @@ async function openGroupChatFullOrderDetails(orderId){
       <div class="group-chat-full-order-section">
         <h4>Address</h4>
         <p><strong>${escapeGroupChatText(order.address || "—")}</strong></p>
+      </div>
+
+      <div class="group-chat-full-order-section">
+        <h4>Landmark</h4>
+        <p><strong>${escapeGroupChatText(order.landmark || "—")}</strong></p>
       </div>
 
       <div class="group-chat-full-order-section">
