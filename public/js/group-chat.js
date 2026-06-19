@@ -2042,17 +2042,37 @@ function closeGroupChatOrderMentionPreview(){
   document.getElementById("groupChatOrderMentionPreviewModal")?.remove();
 }
 
-function openGroupChatOrderMentionPreview(orderId){
-  const hidden = document.querySelector(`.group-chat-order-chip-hidden[data-order-id="${CSS.escape(orderId)}"]`);
-  if(!hidden){
+async function openGroupChatOrderMentionPreview(orderId){
+  const cleanOrderId = String(orderId || "").trim().toUpperCase().replace(/^#/, "");
+
+  let liveOrder = null;
+
+  try{
+    if(window.FIB_FIREBASE_READY && window.FIB?.getOrderMentionById){
+      liveOrder = await window.FIB.getOrderMentionById(cleanOrderId);
+    }
+  }catch(error){
+    console.warn("Could not fetch live order preview:", error);
+  }
+
+  if(!liveOrder){
+    alert(`Order ${cleanOrderId} not found in Firebase.`);
     return;
   }
 
   closeGroupChatOrderMentionPreview();
 
-  const source = hidden.dataset.source || "order";
+  const data = liveOrder;
+  const source = data.source || "order";
   const sourceLogo = getGroupChatSourceLogo(source);
   const sourceClass = getGroupChatSourceLogoClass(source);
+  const dateLabel = String(data.orderType || "").toLowerCase() === "pickup"
+    ? "Pickup Date/Time"
+    : "Delivery Date/Time";
+
+  const itemCountText = typeof data.itemsCount === "number"
+    ? `${data.itemsCount} item${data.itemsCount === 1 ? "" : "s"}`
+    : String(data.itemsCount || "Items");
 
   const modal = document.createElement("div");
   modal.id = "groupChatOrderMentionPreviewModal";
@@ -2062,7 +2082,7 @@ function openGroupChatOrderMentionPreview(orderId){
       <div class="group-chat-order-preview-head">
         <div>
           <small>Order Preview</small>
-          <strong>${escapeGroupChatText(orderId)}</strong>
+          <strong>${escapeGroupChatText(data.orderId || cleanOrderId)}</strong>
         </div>
         <button type="button" onclick="closeGroupChatOrderMentionPreview()">×</button>
       </div>
@@ -2070,33 +2090,33 @@ function openGroupChatOrderMentionPreview(orderId){
       <div class="group-chat-order-preview-status-row">
         <span class="group-chat-order-source-logo ${sourceClass}">${escapeGroupChatText(sourceLogo)}</span>
         <div>
-          <strong>${escapeGroupChatText(hidden.dataset.status || "Order Mention")}</strong>
-          <small>${escapeGroupChatText(hidden.dataset.payment || "Payment")} • ${escapeGroupChatText(hidden.dataset.type || "Order")}</small>
+          <strong>${escapeGroupChatText(data.status || "Order")}</strong>
+          <small>${escapeGroupChatText(data.paymentStatus || "Payment")} • ${escapeGroupChatText(data.orderType || "Order")}</small>
         </div>
       </div>
 
       <div class="group-chat-order-preview-date">
-        <small>Delivery Date/Time</small>
-        <strong>${escapeGroupChatText(hidden.dataset.dateTime || "—")}</strong>
+        <small>${dateLabel}</small>
+        <strong>${escapeGroupChatText(data.dateTime || data.deliveryDateTime || data.pickupDateTime || "—")}</strong>
       </div>
 
       <div class="group-chat-order-preview-grid">
         <div>
           <small>Customer</small>
-          <strong>${escapeGroupChatText(hidden.dataset.customer || "—")}</strong>
-          <span>${escapeGroupChatText(hidden.dataset.customerPhone || "—")}</span>
+          <strong>${escapeGroupChatText(data.customerName || "—")}</strong>
+          <span>${escapeGroupChatText(data.customerPhone || "—")}</span>
         </div>
         <div>
           <small>Recipient</small>
-          <strong>${escapeGroupChatText(hidden.dataset.recipient || "—")}</strong>
-          <span>${escapeGroupChatText(hidden.dataset.recipientPhone || "—")}</span>
+          <strong>${escapeGroupChatText(data.recipientName || "—")}</strong>
+          <span>${escapeGroupChatText(data.recipientPhone || "—")}</span>
         </div>
       </div>
 
       <button class="group-chat-order-preview-line" type="button">
         <span>
           <small>Address</small>
-          <strong>${escapeGroupChatText(hidden.dataset.address || "—")}</strong>
+          <strong>${escapeGroupChatText(data.address || "—")}</strong>
         </span>
         <em>›</em>
       </button>
@@ -2104,20 +2124,20 @@ function openGroupChatOrderMentionPreview(orderId){
       <button class="group-chat-order-preview-line" type="button">
         <span>
           <small>Items</small>
-          <strong>${escapeGroupChatText(hidden.dataset.count || "Items")}</strong>
-          <small>${escapeGroupChatText(hidden.dataset.items || "")}</small>
+          <strong>${escapeGroupChatText(itemCountText)}</strong>
+          <small>${escapeGroupChatText(data.itemsPreview || "")}</small>
         </span>
         <em>›</em>
       </button>
 
       <div class="group-chat-order-preview-total">
         <small>Total</small>
-        <strong>${escapeGroupChatText(hidden.dataset.total || "—")}</strong>
+        <strong>${escapeGroupChatText(data.total || "—")}</strong>
       </div>
 
       <div class="group-chat-order-preview-actions">
         <button type="button" onclick="closeGroupChatOrderMentionPreview()">Close</button>
-        <button type="button" class="primary" onclick="closeGroupChatOrderMentionPreview()">View Order</button>
+        <button type="button" class="primary" onclick="location.href='./orders.html?order=${encodeURIComponent(data.orderId || cleanOrderId)}'">View Order</button>
       </div>
     </section>
   `;
