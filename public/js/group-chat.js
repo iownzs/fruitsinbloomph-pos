@@ -1987,7 +1987,7 @@ function renderGroupChatOrderMentionChip(message){
   const count = mention?.itemsCount ? `${mention.itemsCount} item${Number(mention.itemsCount) > 1 ? "s" : ""}` : "Items";
 
   return `
-    <button class="group-chat-order-mention-chip" type="button" onclick="openGroupChatOrderMentionPreview('${escapeGroupChatText(orderId)}')">
+    <button class="group-chat-order-mention-chip" type="button" onclick="openGroupChatFullOrderDetails('${escapeGroupChatText(orderId)}')">
       <span class="group-chat-order-chip-id">#${escapeGroupChatText(orderId)}</span>
       <small>${source} • ${payment || "Payment"} • ${type || "Order"}</small>
       <em>${status}${total ? ` • ${total}` : ""}</em>
@@ -3137,8 +3137,7 @@ async function openGroupChatFullOrderDetails(orderId){
       </div>
 
       <div class="group-chat-order-preview-actions">
-        <button type="button" onclick="openGroupChatOrderMentionPreview('${escapeGroupChatText(order.orderId || cleanOrderId)}')">Back</button>
-        <button type="button" class="primary" onclick="closeGroupChatOrderMentionPreview()">Close</button>
+        <button type="button" onclick="closeGroupChatOrderMentionPreview()">Close</button>
       </div>
     </section>
   `;
