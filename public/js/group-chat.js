@@ -224,6 +224,7 @@ let groupChatAdminSettingsOpen = false;
 let groupChatScheduleEditMode = false;
 let activeGroupChatAdminChannel = "general";
 let activeGroupChatReplyQuote = null;
+let activeGroupChatOrderMention = null;
 
 /* Group Chat role permissions */
 const GROUP_CHAT_ROLE_PERMISSIONS = {
@@ -1221,6 +1222,8 @@ function normalizeGroupChatFirebaseMessage(message){
     role: message.senderRole || "",
     time: formatGroupChatMessageTime(message.createdAt),
     text: message.messageText || "",
+    orderMention: message.orderMention || null,
+    mentionedOrderId: message.mentionedOrderId || message.orderMention?.orderId || "",
     replyTo: normalizeGroupChatReplyTo(message.replyTo),
     reactions: Array.isArray(message.reactions) && message.reactions.length
       ? message.reactions.join(" ")
@@ -1375,15 +1378,27 @@ async function sendGroupChatMessageFromComposer(){
       quote: activeGroupChatReplyQuote.quote
     } : null;
 
+    const orderMentionPayload = activeGroupChatOrderMention && messageText.includes(`#${activeGroupChatOrderMention.orderId}`)
+      ? activeGroupChatOrderMention
+      : null;
+
     await window.FIB.sendGroupChatMessage(
       getGroupChatFirestoreChannelId(channel),
       messageText,
-      replyToPayload ? { replyTo: replyToPayload } : {}
+      {
+        ...(replyToPayload ? { replyTo: replyToPayload } : {}),
+        ...(orderMentionPayload ? {
+          orderMention: orderMentionPayload,
+          mentionedOrderId: orderMentionPayload.orderId,
+          mentionedOrderNumber: orderMentionPayload.orderId
+        } : {})
+      }
     );
 
     input.value = "";
     input.placeholder = "Message...";
     activeGroupChatReplyQuote = null;
+    activeGroupChatOrderMention = null;
     renderGroupChatReplyQuotePreview();
     scrollGroupChatToBottom();
   }catch(error){
@@ -1528,14 +1543,101 @@ function openGroupChatMentionOrder(){
   setTimeout(() => document.getElementById("groupChatOrderMentionInput")?.focus(), 50);
 }
 
+function getGroupChatSampleOrderMention(orderId){
+  const id = String(orderId || "").trim().toUpperCase();
+
+  const sampleOrders = {
+    "ORD-1024": {
+      orderId: "ORD-1024",
+      status: "Ready for Delivery",
+      source: "facebook",
+      paymentStatus: "Paid",
+      orderType: "Delivery",
+      customerName: "Emily Johnson",
+      recipientName: "Emily Johnson",
+      dateTime: "May 21, 2025 • 12:30 PM",
+      address: "Quezon City • Tap to view full address",
+      itemsCount: 2,
+      itemsPreview: "Chicken Teriyaki Bowl, Iced Thai Tea",
+      itemNotes: "Has item notes",
+      cardMessage: "Tap to preview",
+      total: "₱889"
+    },
+    "ORD-1025": {
+      orderId: "ORD-1025",
+      status: "Preparing",
+      source: "instagram",
+      paymentStatus: "Pending",
+      orderType: "Pickup",
+      customerName: "Maria Santos",
+      recipientName: "Maria Santos",
+      dateTime: "Today • 3:00 PM",
+      address: "Pickup at store",
+      itemsCount: 3,
+      itemsPreview: "Mango Sago, Fruit Box, Add-on Card",
+      itemNotes: "None",
+      cardMessage: "Has card message",
+      total: "₱1,240"
+    },
+    "ORD-1026": {
+      orderId: "ORD-1026",
+      status: "Waiting Pickup",
+      source: "website",
+      paymentStatus: "Paid",
+      orderType: "Pickup",
+      customerName: "Ben Cruz",
+      recipientName: "Ben Cruz",
+      dateTime: "Today • 5:30 PM",
+      address: "Pickup at store",
+      itemsCount: 1,
+      itemsPreview: "Fruit Bouquet",
+      itemNotes: "None",
+      cardMessage: "None",
+      total: "₱2,300"
+    }
+  };
+
+  return sampleOrders[id] || {
+    orderId: id,
+    status: "Order Mention",
+    source: "other",
+    paymentStatus: "Unknown",
+    orderType: "Order",
+    customerName: "",
+    recipientName: "",
+    dateTime: "",
+    address: "",
+    itemsCount: 0,
+    itemsPreview: "",
+    itemNotes: "",
+    cardMessage: "",
+    total: ""
+  };
+}
+
+function setGroupChatOrderMention(orderId){
+  const cleanId = String(orderId || "").trim().toUpperCase();
+  if(!cleanId){
+    return;
+  }
+
+  const normalizedId = cleanId.startsWith("ORD-")
+    ? cleanId
+    : `ORD-${cleanId.replace(/^ORD[-\s]?/i, "")}`;
+
+  activeGroupChatOrderMention = getGroupChatSampleOrderMention(normalizedId);
+  insertTextInGroupChatInput(`#${normalizedId}`);
+}
+
 function insertGroupChatOrderMention(){
   const raw = document.getElementById("groupChatOrderMentionInput")?.value || "";
   const cleaned = raw.trim().toUpperCase();
   if(!cleaned){
     return;
   }
+
   const orderId = cleaned.startsWith("ORD-") ? cleaned : `ORD-${cleaned.replace(/^ORD[-\s]?/i, "")}`;
-  insertTextInGroupChatInput(`#${orderId}`);
+  setGroupChatOrderMention(orderId);
   closeGroupChatLiteModal();
 }
 
@@ -1900,6 +2002,67 @@ function isGroupChatOwnMessage(message){
   return !!currentName && !!messageName && currentName === messageName;
 }
 
+function renderGroupChatOrderMentionChip(message){
+  const mention = message?.orderMention || null;
+  const orderId = mention?.orderId || message?.mentionedOrderId || "";
+
+  if(!orderId){
+    return "";
+  }
+
+  const source = escapeGroupChatText(String(mention?.source || "order"));
+  const status = escapeGroupChatText(String(mention?.status || "Order Mention"));
+  const total = escapeGroupChatText(String(mention?.total || ""));
+  const payment = escapeGroupChatText(String(mention?.paymentStatus || ""));
+  const type = escapeGroupChatText(String(mention?.orderType || ""));
+  const customer = escapeGroupChatText(String(mention?.customerName || ""));
+  const recipient = escapeGroupChatText(String(mention?.recipientName || ""));
+  const dateTime = escapeGroupChatText(String(mention?.dateTime || ""));
+  const address = escapeGroupChatText(String(mention?.address || ""));
+  const items = escapeGroupChatText(String(mention?.itemsPreview || ""));
+  const count = mention?.itemsCount ? `${mention.itemsCount} item${Number(mention.itemsCount) > 1 ? "s" : ""}` : "Items";
+
+  return `
+    <button class="group-chat-order-mention-chip" type="button" onclick="openGroupChatOrderMentionPreview('${escapeGroupChatText(orderId)}')">
+      <span class="group-chat-order-chip-id">#${escapeGroupChatText(orderId)}</span>
+      <small>${source} • ${payment || "Payment"} • ${type || "Order"}</small>
+      <em>${status}${total ? ` • ${total}` : ""}</em>
+      <span class="group-chat-order-chip-hidden"
+        data-order-id="${escapeGroupChatText(orderId)}"
+        data-status="${status}"
+        data-source="${source}"
+        data-payment="${payment}"
+        data-type="${type}"
+        data-customer="${customer}"
+        data-recipient="${recipient}"
+        data-date-time="${dateTime}"
+        data-address="${address}"
+        data-items="${items}"
+        data-count="${escapeGroupChatText(count)}"
+        data-total="${total}"></span>
+    </button>
+  `;
+}
+
+function openGroupChatOrderMentionPreview(orderId){
+  const hidden = document.querySelector(`.group-chat-order-chip-hidden[data-order-id="${CSS.escape(orderId)}"]`);
+  if(!hidden){
+    return;
+  }
+
+  alert(
+    `${orderId}\n` +
+    `${hidden.dataset.status || ""}\n` +
+    `${hidden.dataset.source || ""} • ${hidden.dataset.payment || ""} • ${hidden.dataset.type || ""}\n` +
+    `${hidden.dataset.dateTime || ""}\n\n` +
+    `Customer: ${hidden.dataset.customer || ""}\n` +
+    `Recipient: ${hidden.dataset.recipient || ""}\n` +
+    `Address: ${hidden.dataset.address || ""}\n` +
+    `Items: ${hidden.dataset.count || ""} - ${hidden.dataset.items || ""}\n` +
+    `Total: ${hidden.dataset.total || ""}`
+  );
+}
+
 function renderGroupChatMessages(channel){
   const messages = GROUP_CHAT_MESSAGES[channel.id] || [];
   const canEdit = canEditGroupChatChannel(channel.id);
@@ -1911,6 +2074,7 @@ ${messages.map((message, index) => {
   const role = escapeGroupChatText(message.role || "");
   const time = escapeGroupChatText(message.time || "");
   const text = escapeGroupChatText(message.text || "").replace(/\n/g, "<br>");
+  const orderMentionChipHtml = renderGroupChatOrderMentionChip(message);
   const replyTo = normalizeGroupChatReplyTo(message.replyTo);
   const replyQuoteHtml = replyTo ? `
     <div class="group-chat-msg-inline-quote">
@@ -1957,7 +2121,7 @@ ${messages.map((message, index) => {
           ontouchmove="moveGroupChatMessageHold(event)"
           ontouchend="cancelGroupChatMessageHold()"
           ontouchcancel="cancelGroupChatMessageHold()"
-          oncontextmenu="openGroupChatMessageActionMenu(event, ${index})">${replyQuoteHtml}<span class="group-chat-msg-text">${text}</span></div>
+          oncontextmenu="openGroupChatMessageActionMenu(event, ${index})">${replyQuoteHtml}<span class="group-chat-msg-text">${text}</span>${orderMentionChipHtml}</div>
 
         ${reactions ? `<button class="group-chat-msg-reactions" type="button" onclick="showGroupChatReactionUsers(${index})">${escapeGroupChatText(reactions)}</button>` : ""}
 
@@ -2714,6 +2878,8 @@ window.insertGroupChatEmoji = insertGroupChatEmoji;
 window.openGroupChatMentionStaff = openGroupChatMentionStaff;
 window.openGroupChatMentionOrder = openGroupChatMentionOrder;
 window.insertGroupChatOrderMention = insertGroupChatOrderMention;
+window.setGroupChatOrderMention = setGroupChatOrderMention;
+window.openGroupChatOrderMentionPreview = openGroupChatOrderMentionPreview;
 window.closeGroupChatLiteModal = closeGroupChatLiteModal;
 window.insertTextInGroupChatInput = insertTextInGroupChatInput;
 window.replyGroupChatMessage = replyGroupChatMessage;
