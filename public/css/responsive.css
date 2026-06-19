@@ -5303,3 +5303,145 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ord
 html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-preview-grid span {
   font-size: 8px !important;
 }
+
+/* FINAL: Group Chat full order details modal */
+body[data-page="group-chat"] .group-chat-full-order-card {
+  max-height: min(82vh, 720px) !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-section {
+  margin-top: 10px !important;
+  padding: 12px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(148, 163, 184, 0.14) !important;
+  background: rgba(15, 23, 42, 0.48) !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-section h4,
+body[data-page="group-chat"] .group-chat-full-order-two h4 {
+  margin: 0 0 8px !important;
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-section p {
+  display: grid !important;
+  gap: 3px !important;
+  margin: 0 0 8px !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-section p:last-child {
+  margin-bottom: 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-section span {
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-section strong {
+  color: #f8fafc !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-two {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  margin-top: 10px !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-two > div {
+  padding: 12px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(148, 163, 184, 0.14) !important;
+  background: rgba(15, 23, 42, 0.48) !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-two strong {
+  display: block !important;
+  color: #f8fafc !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-two small {
+  display: block !important;
+  margin-top: 5px !important;
+  color: #94a3b8 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-items {
+  display: grid !important;
+  gap: 8px !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-item {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  padding: 9px 0 !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12) !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-item:last-child {
+  border-bottom: 0 !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-item strong {
+  color: #f8fafc !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-item small {
+  display: block !important;
+  margin-top: 4px !important;
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+}
+
+body[data-page="group-chat"] .group-chat-full-order-item span {
+  color: #f8fafc !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 520px) {
+  body[data-page="group-chat"] .group-chat-full-order-two {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-section,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-two > div {
+  padding: 8px !important;
+  border-radius: 12px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-section h4,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-two h4 {
+  font-size: 8px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-section strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-two strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-item strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-item span {
+  font-size: 9px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-section span,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-two small,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-item small {
+  font-size: 8px !important;
+}

@@ -2137,7 +2137,7 @@ async function openGroupChatOrderMentionPreview(orderId){
 
       <div class="group-chat-order-preview-actions">
         <button type="button" onclick="closeGroupChatOrderMentionPreview()">Close</button>
-        <button type="button" class="primary" onclick="location.href='./orders.html?order=${encodeURIComponent(data.orderId || cleanOrderId)}'">View Order</button>
+        <button type="button" class="primary" onclick="openGroupChatFullOrderDetails('${escapeGroupChatText(data.orderId || cleanOrderId)}')">View Order</button>
       </div>
     </section>
   `;
@@ -3017,7 +3017,144 @@ window.openGroupChatMentionStaff = openGroupChatMentionStaff;
 window.openGroupChatMentionOrder = openGroupChatMentionOrder;
 window.insertGroupChatOrderMention = insertGroupChatOrderMention;
 window.setGroupChatOrderMention = setGroupChatOrderMention;
+
+async function openGroupChatFullOrderDetails(orderId){
+  const cleanOrderId = String(orderId || "").trim().toUpperCase().replace(/^#/, "");
+
+  let order = null;
+
+  try{
+    if(window.FIB_FIREBASE_READY && window.FIB?.getOrderMentionById){
+      order = await window.FIB.getOrderMentionById(cleanOrderId);
+    }
+  }catch(error){
+    console.warn("Could not fetch full order details:", error);
+  }
+
+  if(!order){
+    alert(`Order ${cleanOrderId} not found in Firebase.`);
+    return;
+  }
+
+  closeGroupChatOrderMentionPreview();
+
+  const source = order.source || "order";
+  const sourceLogo = getGroupChatSourceLogo(source);
+  const sourceClass = getGroupChatSourceLogoClass(source);
+  const dateLabel = String(order.orderType || "").toLowerCase() === "pickup"
+    ? "Pickup Date/Time"
+    : "Delivery Date/Time";
+
+  const items = Array.isArray(order.items) ? order.items : [];
+  const itemRows = items.length ? items.map(item => {
+    const qty = item.qty || item.quantity || 1;
+    const name = item.name || item.productName || item.title || "Item";
+    const price = item.price || item.total || item.amount || "";
+    const notes = item.notes || item.note || "";
+
+    return `
+      <div class="group-chat-full-order-item">
+        <div>
+          <strong>${escapeGroupChatText(qty)}x ${escapeGroupChatText(name)}</strong>
+          ${notes ? `<small>Note: ${escapeGroupChatText(notes)}</small>` : ""}
+        </div>
+        <span>${price ? escapeGroupChatText(String(price).startsWith("₱") ? price : `₱${price}`) : ""}</span>
+      </div>
+    `;
+  }).join("") : `
+    <div class="group-chat-full-order-item">
+      <div>
+        <strong>${escapeGroupChatText(order.itemsPreview || "No item details")}</strong>
+      </div>
+      <span></span>
+    </div>
+  `;
+
+  const modal = document.createElement("div");
+  modal.id = "groupChatOrderMentionPreviewModal";
+  modal.className = "group-chat-order-preview-modal group-chat-full-order-modal";
+  modal.innerHTML = `
+    <section class="group-chat-order-preview-card group-chat-full-order-card" role="dialog" aria-modal="true">
+      <div class="group-chat-order-preview-head">
+        <div>
+          <small>Full Order Details</small>
+          <strong>${escapeGroupChatText(order.orderId || cleanOrderId)}</strong>
+        </div>
+        <button type="button" onclick="closeGroupChatOrderMentionPreview()">×</button>
+      </div>
+
+      <div class="group-chat-order-preview-status-row">
+        <span class="group-chat-order-source-logo ${sourceClass}">${escapeGroupChatText(sourceLogo)}</span>
+        <div>
+          <strong>${escapeGroupChatText(order.status || "Order")}</strong>
+          <small>${escapeGroupChatText(order.paymentStatus || "Payment")} • ${escapeGroupChatText(order.orderType || "Order")}</small>
+        </div>
+      </div>
+
+      <div class="group-chat-full-order-section">
+        <h4>Schedule</h4>
+        <p><span>${dateLabel}</span><strong>${escapeGroupChatText(order.dateTime || order.deliveryDateTime || order.pickupDateTime || "—")}</strong></p>
+      </div>
+
+      <div class="group-chat-full-order-two">
+        <div>
+          <h4>Customer</h4>
+          <strong>${escapeGroupChatText(order.customerName || "—")}</strong>
+          <small>${escapeGroupChatText(order.customerPhone || "—")}</small>
+        </div>
+        <div>
+          <h4>Recipient / Pickup</h4>
+          <strong>${escapeGroupChatText(order.recipientName || "—")}</strong>
+          <small>${escapeGroupChatText(order.recipientPhone || "—")}</small>
+        </div>
+      </div>
+
+      <div class="group-chat-full-order-section">
+        <h4>Address</h4>
+        <p><strong>${escapeGroupChatText(order.address || "—")}</strong></p>
+      </div>
+
+      <div class="group-chat-full-order-section">
+        <h4>Items</h4>
+        <div class="group-chat-full-order-items">
+          ${itemRows}
+        </div>
+      </div>
+
+      <div class="group-chat-full-order-section">
+        <h4>Notes</h4>
+        <p><span>Item Notes</span><strong>${escapeGroupChatText(order.itemNotes || "None")}</strong></p>
+        <p><span>Delivery Notes</span><strong>${escapeGroupChatText(order.deliveryNotes || "None")}</strong></p>
+        <p><span>Pickup Notes</span><strong>${escapeGroupChatText(order.pickupNotes || "None")}</strong></p>
+        <p><span>Card Message</span><strong>${escapeGroupChatText(order.cardMessage || "None")}</strong></p>
+      </div>
+
+      <div class="group-chat-full-order-section">
+        <h4>Payment</h4>
+        <p><span>Method</span><strong>${escapeGroupChatText(order.paymentMethod || "—")}</strong></p>
+        <p><span>Status</span><strong>${escapeGroupChatText(order.paymentStatus || "—")}</strong></p>
+        <p><span>Total</span><strong>${escapeGroupChatText(order.total || "—")}</strong></p>
+      </div>
+
+      <div class="group-chat-order-preview-actions">
+        <button type="button" onclick="openGroupChatOrderMentionPreview('${escapeGroupChatText(order.orderId || cleanOrderId)}')">Back</button>
+        <button type="button" class="primary" onclick="closeGroupChatOrderMentionPreview()">Close</button>
+      </div>
+    </section>
+  `;
+
+  modal.addEventListener("click", event => {
+    if(event.target === modal){
+      closeGroupChatOrderMentionPreview();
+    }
+  });
+
+  document.body.appendChild(modal);
+}
+
+
 window.openGroupChatOrderMentionPreview = openGroupChatOrderMentionPreview;
+window.openGroupChatFullOrderDetails = openGroupChatFullOrderDetails;
 window.closeGroupChatOrderMentionPreview = closeGroupChatOrderMentionPreview;
 window.closeGroupChatLiteModal = closeGroupChatLiteModal;
 window.insertTextInGroupChatInput = insertTextInGroupChatInput;
