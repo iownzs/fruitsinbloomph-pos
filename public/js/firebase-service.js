@@ -109,14 +109,80 @@
       const isDelivery = String(type).toLowerCase() === "delivery";
 
       const dateValue = isDelivery
-        ? (delivery.date || order.deliveryDate || order.deliveryDateTime || "")
-        : (pickup.date || order.pickupDate || order.pickupDateTime || "");
+        ? (
+            delivery.date ||
+            delivery.deliveryDate ||
+            delivery.scheduledDate ||
+            delivery.scheduleDate ||
+            delivery.deliveryDateTime ||
+            delivery.dateTime ||
+            order.deliveryDate ||
+            order.scheduledDeliveryDate ||
+            order.deliveryScheduleDate ||
+            order.scheduleDate ||
+            order.deliveryDateTime ||
+            order.date ||
+            ""
+          )
+        : (
+            pickup.date ||
+            pickup.pickupDate ||
+            pickup.scheduledDate ||
+            pickup.scheduleDate ||
+            pickup.pickupDateTime ||
+            pickup.dateTime ||
+            order.pickupDate ||
+            order.scheduledPickupDate ||
+            order.pickupScheduleDate ||
+            order.scheduleDate ||
+            order.pickupDateTime ||
+            order.date ||
+            ""
+          );
 
       const timeValue = isDelivery
-        ? (delivery.time || order.deliveryTime || "")
-        : (pickup.time || order.pickupTime || "");
+        ? (
+            delivery.time ||
+            delivery.deliveryTime ||
+            delivery.scheduledTime ||
+            delivery.scheduleTime ||
+            order.deliveryTime ||
+            order.scheduledDeliveryTime ||
+            order.deliveryScheduleTime ||
+            order.time ||
+            ""
+          )
+        : (
+            pickup.time ||
+            pickup.pickupTime ||
+            pickup.scheduledTime ||
+            pickup.scheduleTime ||
+            order.pickupTime ||
+            order.scheduledPickupTime ||
+            order.pickupScheduleTime ||
+            order.time ||
+            ""
+          );
 
-      const dateTime = [dateValue, timeValue].filter(Boolean).join(" • ");
+      const rawDateTime = isDelivery
+        ? (
+            delivery.deliveryDateTime ||
+            delivery.dateTime ||
+            order.deliveryDateTime ||
+            order.deliverySchedule ||
+            order.scheduledDelivery ||
+            ""
+          )
+        : (
+            pickup.pickupDateTime ||
+            pickup.dateTime ||
+            order.pickupDateTime ||
+            order.pickupSchedule ||
+            order.scheduledPickup ||
+            ""
+          );
+
+      const dateTime = rawDateTime || [dateValue, timeValue].filter(Boolean).join(" • ");
 
       const items = Array.isArray(order.items) ? order.items : [];
       const itemsPreview = items
