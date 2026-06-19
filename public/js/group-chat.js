@@ -1378,9 +1378,14 @@ async function sendGroupChatMessageFromComposer(){
       quote: activeGroupChatReplyQuote.quote
     } : null;
 
+    const detectedOrderIdMatch = messageText.match(/#(ORD-\d+)/i);
+    const detectedOrderMention = detectedOrderIdMatch
+      ? getGroupChatSampleOrderMention(detectedOrderIdMatch[1].toUpperCase())
+      : null;
+
     const orderMentionPayload = activeGroupChatOrderMention && messageText.includes(`#${activeGroupChatOrderMention.orderId}`)
       ? activeGroupChatOrderMention
-      : null;
+      : detectedOrderMention;
 
     await window.FIB.sendGroupChatMessage(
       getGroupChatFirestoreChannelId(channel),
@@ -2366,15 +2371,27 @@ function selectGroupChatInlineMention(value){
     return;
   }
 
+  const rawValue = String(value || "").trim();
+  const isOrderMention = /^#?ORD-/i.test(rawValue);
+  const normalizedOrderId = isOrderMention
+    ? rawValue.replace(/^#/, "").toUpperCase()
+    : "";
+
+  const finalValue = isOrderMention ? `#${normalizedOrderId}` : rawValue;
+
+  if(isOrderMention){
+    activeGroupChatOrderMention = getGroupChatSampleOrderMention(normalizedOrderId);
+  }
+
   const active = getGroupChatMentionTrigger(input.value);
   if(!active){
-    insertTextInGroupChatInput(value);
+    insertTextInGroupChatInput(finalValue);
     return;
   }
 
   const before = input.value.slice(0, active.triggerIndex);
   const after = input.value.slice(active.triggerIndex + active.query.length + 1);
-  input.value = `${before}${value} ${after}`.replace(/\s+$/, " ");
+  input.value = `${before}${finalValue} ${after}`.replace(/\s+$/, " ");
   input.focus();
 
   panel?.classList.remove("open");
