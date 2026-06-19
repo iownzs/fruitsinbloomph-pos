@@ -2443,6 +2443,52 @@ async function loadGroupChatRecentOrderMentions(){
   }
 }
 
+
+function positionGroupChatInlineSuggestPanel(panel){
+  if(!panel){
+    return;
+  }
+
+  const hasTouch =
+    ("ontouchstart" in window) ||
+    (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) ||
+    (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+
+  const isWideTouch = hasTouch && window.innerWidth >= 900;
+
+  if(isWideTouch){
+    panel.style.position = "fixed";
+    panel.style.left = "50%";
+    panel.style.right = "auto";
+    panel.style.top = "auto";
+    panel.style.bottom = "180px";
+    panel.style.transform = "translateX(-50%)";
+    panel.style.width = "min(62vw, 460px)";
+    panel.style.maxHeight = "300px";
+    panel.style.overflowY = "auto";
+    panel.style.zIndex = "2147483647";
+    panel.style.display = "block";
+    panel.style.visibility = "visible";
+    panel.style.opacity = "1";
+    panel.style.pointerEvents = "auto";
+  }else{
+    panel.style.position = "";
+    panel.style.left = "";
+    panel.style.right = "";
+    panel.style.top = "";
+    panel.style.bottom = "";
+    panel.style.transform = "";
+    panel.style.width = "";
+    panel.style.maxHeight = "";
+    panel.style.overflowY = "";
+    panel.style.zIndex = "";
+    panel.style.display = "";
+    panel.style.visibility = "";
+    panel.style.opacity = "";
+    panel.style.pointerEvents = "";
+  }
+}
+
 function renderGroupChatInlineSuggest(){
   const input = document.getElementById("groupChatMessageInput");
   const panel = document.getElementById("groupChatInlineSuggest");
@@ -2475,6 +2521,7 @@ function renderGroupChatInlineSuggest(){
       `).join("")}
     `;
     panel.classList.add("open");
+    positionGroupChatInlineSuggestPanel(panel);
     return;
   }
 
@@ -2508,6 +2555,7 @@ function renderGroupChatInlineSuggest(){
       `}
     `;
     panel.classList.add("open");
+    positionGroupChatInlineSuggestPanel(panel);
   }
 }
 
