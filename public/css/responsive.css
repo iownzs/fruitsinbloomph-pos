@@ -5445,3 +5445,105 @@ html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ful
 html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-full-order-item small {
   font-size: 8px !important;
 }
+
+/* FINAL: Group Chat inline order mention quick details card */
+body[data-page="group-chat"] .group-chat-order-quick-card {
+  width: min(100%, 390px) !important;
+  display: grid !important;
+  gap: 7px !important;
+  padding: 12px !important;
+  text-align: left !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(20, 184, 166, 0.35) !important;
+  background: rgba(15, 23, 42, 0.74) !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18) !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-quick-top {
+  display: grid !important;
+  grid-template-columns: 1fr 36px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14) !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-quick-top strong {
+  display: block !important;
+  color: #f8fafc !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-quick-top small {
+  display: block !important;
+  margin-top: 2px !important;
+  color: #94a3b8 !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-quick-top .group-chat-order-source-logo {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-quick-row {
+  display: grid !important;
+  grid-template-columns: 112px 1fr !important;
+  gap: 8px !important;
+  align-items: start !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-quick-row span {
+  color: #94a3b8 !important;
+  font-size: 10px !important;
+  font-weight: 850 !important;
+}
+
+body[data-page="group-chat"] .group-chat-order-quick-row strong {
+  color: #f8fafc !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  line-height: 1.25 !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-quick-card {
+  width: min(100%, 280px) !important;
+  padding: 8px !important;
+  gap: 5px !important;
+  border-radius: 12px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-quick-top {
+  grid-template-columns: 1fr 28px !important;
+  gap: 6px !important;
+  padding-bottom: 5px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-quick-top .group-chat-order-source-logo {
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 9px !important;
+  font-size: 12px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-quick-row {
+  grid-template-columns: 82px 1fr !important;
+  gap: 5px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-quick-top strong,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-quick-row strong {
+  font-size: 9px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-quick-top small,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-order-quick-row span {
+  font-size: 8px !important;
+}
