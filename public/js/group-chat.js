@@ -1389,7 +1389,7 @@ async function sendGroupChatMessageFromComposer(){
         if(window.FIB_FIREBASE_READY && window.FIB?.getOrderMentionById){
           detectedOrderMention = await window.FIB.getOrderMentionById(detectedOrderId);
         }else{
-          detectedOrderMention = getGroupChatSampleOrderMention(detectedOrderId);
+          detectedOrderMention = null;
         }
       }catch(error){
         console.warn("Typed order mention lookup failed:", error);
@@ -1563,83 +1563,7 @@ function openGroupChatMentionOrder(){
 }
 
 function getGroupChatSampleOrderMention(orderId){
-  const id = String(orderId || "").trim().toUpperCase();
-
-  const sampleOrders = {
-    "ORD-1024": {
-      orderId: "ORD-1024",
-      status: "Ready for Delivery",
-      source: "facebook",
-      paymentStatus: "Paid",
-      orderType: "Delivery",
-      customerName: "Emily Johnson",
-      customerPhone: "0912 345 6789",
-      recipientName: "Emily Johnson",
-      recipientPhone: "0912 345 6789",
-      dateTime: "May 21, 2025 • 12:30 PM",
-      address: "Quezon City • Tap to view full address",
-      itemsCount: 2,
-      itemsPreview: "Chicken Teriyaki Bowl, Iced Thai Tea",
-      itemNotes: "Has item notes",
-      cardMessage: "Tap to preview",
-      total: "₱889"
-    },
-    "ORD-1025": {
-      orderId: "ORD-1025",
-      status: "Preparing",
-      source: "instagram",
-      paymentStatus: "Pending",
-      orderType: "Pickup",
-      customerName: "Maria Santos",
-      customerPhone: "0917 222 3344",
-      recipientName: "Maria Santos",
-      recipientPhone: "0917 222 3344",
-      dateTime: "Today • 3:00 PM",
-      address: "Pickup at store",
-      itemsCount: 3,
-      itemsPreview: "Mango Sago, Fruit Box, Add-on Card",
-      itemNotes: "None",
-      cardMessage: "Has card message",
-      total: "₱1,240"
-    },
-    "ORD-1026": {
-      orderId: "ORD-1026",
-      status: "Waiting Pickup",
-      source: "website",
-      paymentStatus: "Paid",
-      orderType: "Pickup",
-      customerName: "Ben Cruz",
-      customerPhone: "0998 777 1122",
-      recipientName: "Ben Cruz",
-      recipientPhone: "0998 777 1122",
-      dateTime: "Today • 5:30 PM",
-      address: "Pickup at store",
-      itemsCount: 1,
-      itemsPreview: "Fruit Bouquet",
-      itemNotes: "None",
-      cardMessage: "None",
-      total: "₱2,300"
-    }
-  };
-
-  return sampleOrders[id] || {
-    orderId: id,
-    status: "Order Mention",
-    source: "other",
-    paymentStatus: "Unknown",
-    orderType: "Order",
-    customerName: "",
-    customerPhone: "",
-    recipientName: "",
-    recipientPhone: "",
-    dateTime: "",
-    address: "",
-    itemsCount: 0,
-    itemsPreview: "",
-    itemNotes: "",
-    cardMessage: "",
-    total: ""
-  };
+  return null;
 }
 
 async function setGroupChatOrderMention(orderId){
@@ -1656,7 +1580,7 @@ async function setGroupChatOrderMention(orderId){
     if(window.FIB_FIREBASE_READY && window.FIB?.getOrderMentionById){
       activeGroupChatOrderMention = await window.FIB.getOrderMentionById(normalizedId);
     }else{
-      activeGroupChatOrderMention = getGroupChatSampleOrderMention(normalizedId);
+      throw new Error("Firebase order lookup is not ready.");
     }
   }catch(error){
     console.warn("Order mention Firebase lookup failed:", error);
@@ -2548,7 +2472,7 @@ async function selectGroupChatInlineMention(value){
       if(window.FIB_FIREBASE_READY && window.FIB?.getOrderMentionById){
         activeGroupChatOrderMention = await window.FIB.getOrderMentionById(normalizedOrderId);
       }else{
-        activeGroupChatOrderMention = getGroupChatSampleOrderMention(normalizedOrderId);
+        throw new Error("Firebase order lookup is not ready.");
       }
     }catch(error){
       console.warn("Inline order mention lookup failed:", error);
