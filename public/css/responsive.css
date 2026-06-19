@@ -5726,3 +5726,73 @@ body[data-page="group-chat"] .group-chat-order-quick-footer {
   border-top: 1px solid rgba(45, 212, 191, 0.22) !important;
 }
 
+
+/* FINAL: Fix @ staff and # order mention panel in mobile-desktop view */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-panel,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-chat,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-body,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-composer,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-ref-composer,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] #groupChatComposer {
+  overflow: visible !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-suggest {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: 88px !important;
+  transform: translateX(-50%) !important;
+  width: min(88vw, 340px) !important;
+  max-height: 210px !important;
+  overflow-y: auto !important;
+  z-index: 99999 !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(45, 212, 191, 0.35) !important;
+  background: rgba(15, 23, 42, 0.98) !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-suggest.open {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-choice {
+  min-height: 38px !important;
+  padding: 8px 10px !important;
+  display: grid !important;
+  grid-template-columns: 28px 1fr !important;
+  gap: 8px !important;
+  align-items: center !important;
+  touch-action: manipulation !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-choice strong {
+  font-size: 11px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-choice small {
+  font-size: 9px !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-title {
+  font-size: 10px !important;
+  padding: 8px 10px !important;
+}
+
+/* FINAL: Make @ staff and # order suggestions tappable in mobile-desktop view */
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-suggest,
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-suggest * {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+html.group-chat-mobile-desktop-mode body[data-page="group-chat"] .group-chat-inline-choice {
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
