@@ -586,3 +586,39 @@ document.getElementById("scheduleDateFilter")?.addEventListener("change", applyO
 document.getElementById("cityFilter")?.addEventListener("change", applyOrderFilters);
 
 loadOrders();
+
+/* FINAL: Auto-open order drawer from URL, e.g. orders.html?order=ORD-1024 */
+function openOrderFromUrlParam(){
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get("order");
+
+  if(!orderId){
+    return;
+  }
+
+  let tries = 0;
+  const maxTries = 30;
+
+  const timer = setInterval(() => {
+    tries += 1;
+
+    try{
+      const found = typeof findOrder === "function" ? findOrder(orderId) : null;
+
+      if(found && typeof showOrder === "function"){
+        clearInterval(timer);
+        showOrder(orderId);
+        return;
+      }
+    }catch(error){
+      console.warn("Auto-open order failed:", error);
+    }
+
+    if(tries >= maxTries){
+      clearInterval(timer);
+      console.warn(`Order ${orderId} was not found after loading orders.`);
+    }
+  }, 300);
+}
+
+window.addEventListener("load", openOrderFromUrlParam);
