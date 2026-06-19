@@ -99,6 +99,107 @@
 
 
 
+    window.FIB.normalizeOrderMentionData = function(orderId, order = {}){
+      const delivery = order.delivery || {};
+      const pickup = order.pickup || {};
+      const customer = order.customer || {};
+      const payment = order.payment || {};
+
+      const type = order.orderType || order.type || "";
+      const isDelivery = String(type).toLowerCase() === "delivery";
+
+      const dateValue = isDelivery
+        ? (delivery.date || order.deliveryDate || order.deliveryDateTime || "")
+        : (pickup.date || order.pickupDate || order.pickupDateTime || "");
+
+      const timeValue = isDelivery
+        ? (delivery.time || order.deliveryTime || "")
+        : (pickup.time || order.pickupTime || "");
+
+      const dateTime = [dateValue, timeValue].filter(Boolean).join(" • ");
+
+      const items = Array.isArray(order.items) ? order.items : [];
+      const itemsPreview = items
+        .slice(0, 3)
+        .map(item => {
+          const qty = item.qty || item.quantity || 1;
+          const name = item.name || item.productName || item.title || "Item";
+          return `${qty}x ${name}`;
+        })
+        .join(", ");
+
+      const addressParts = [
+        delivery.address || order.address || "",
+        delivery.city || order.city || "",
+        delivery.area || order.area || ""
+      ].filter(Boolean);
+
+      const rawTotal = order.total ?? order.grandTotal ?? order.orderTotal ?? payment.total ?? "";
+      const total = typeof rawTotal === "number"
+        ? `₱${rawTotal.toLocaleString("en-PH")}`
+        : String(rawTotal || "");
+
+      return {
+        orderId: order.orderId || orderId,
+        status: order.status || order.orderStatus || order.deliveryStatus || order.pickupStatus || "Order",
+        source: order.source || order.orderSource || order.sourceType || "other",
+        paymentStatus: order.paymentStatus || payment.status || "Unknown",
+        paymentMethod: order.paymentMethod || payment.method || "",
+        orderType: type || "Order",
+
+        customerName: customer.name || order.customerName || "",
+        customerPhone: customer.contact || customer.phone || order.customerContact || "",
+
+        recipientName: delivery.recipientName || order.recipientName || customer.name || order.customerName || "",
+        recipientPhone: delivery.recipientContact || delivery.recipientPhone || order.recipientContact || "",
+
+        dateTime,
+        deliveryDateTime: isDelivery ? dateTime : "",
+        pickupDateTime: !isDelivery ? dateTime : "",
+
+        address: addressParts.join(", "),
+        city: delivery.city || order.city || "",
+
+        itemsCount: items.length,
+        items,
+        itemsPreview,
+        itemNotes: order.itemNotes || order.notes?.items || "",
+        deliveryNotes: delivery.notes || order.deliveryNotes || "",
+        pickupNotes: pickup.notes || order.pickupNotes || "",
+        cardMessage: order.cardMessage || order.messageCard || "",
+        total
+      };
+    };
+
+    window.FIB.getOrderMentionById = async function(orderId){
+      if(!window.db) throw new Error("Firestore not ready.");
+
+      const cleanId = String(orderId || "").trim().toUpperCase().replace(/^#/, "");
+      if(!cleanId) throw new Error("Missing order ID.");
+
+      let doc = await window.db.collection("orders").doc(cleanId).get();
+
+      if(!doc.exists){
+        const snapshot = await window.db
+          .collection("orders")
+          .where("orderId", "==", cleanId)
+          .limit(1)
+          .get();
+
+        if(snapshot.empty){
+          throw new Error(`Order ${cleanId} not found.`);
+        }
+
+        doc = snapshot.docs[0];
+      }
+
+      return window.FIB.normalizeOrderMentionData(cleanId, {
+        id: doc.id,
+        ...doc.data()
+      });
+    };
+
+
     window.FIB.createOrder = async function(orderData){
       if(!window.db) throw new Error("Firestore not ready.");
 

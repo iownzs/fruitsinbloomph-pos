@@ -1379,9 +1379,22 @@ async function sendGroupChatMessageFromComposer(){
     } : null;
 
     const detectedOrderIdMatch = messageText.match(/#(ORD-\d+)/i);
-    const detectedOrderMention = detectedOrderIdMatch
-      ? getGroupChatSampleOrderMention(detectedOrderIdMatch[1].toUpperCase())
-      : null;
+    let detectedOrderMention = null;
+
+    if(detectedOrderIdMatch){
+      const detectedOrderId = detectedOrderIdMatch[1].toUpperCase();
+
+      try{
+        if(window.FIB_FIREBASE_READY && window.FIB?.getOrderMentionById){
+          detectedOrderMention = await window.FIB.getOrderMentionById(detectedOrderId);
+        }else{
+          detectedOrderMention = getGroupChatSampleOrderMention(detectedOrderId);
+        }
+      }catch(error){
+        console.warn("Typed order mention lookup failed:", error);
+        detectedOrderMention = null;
+      }
+    }
 
     const orderMentionPayload = activeGroupChatOrderMention && messageText.includes(`#${activeGroupChatOrderMention.orderId}`)
       ? activeGroupChatOrderMention
@@ -1628,7 +1641,7 @@ function getGroupChatSampleOrderMention(orderId){
   };
 }
 
-function setGroupChatOrderMention(orderId){
+async function setGroupChatOrderMention(orderId){
   const cleanId = String(orderId || "").trim().toUpperCase();
   if(!cleanId){
     return;
@@ -1638,11 +1651,22 @@ function setGroupChatOrderMention(orderId){
     ? cleanId
     : `ORD-${cleanId.replace(/^ORD[-\s]?/i, "")}`;
 
-  activeGroupChatOrderMention = getGroupChatSampleOrderMention(normalizedId);
+  try{
+    if(window.FIB_FIREBASE_READY && window.FIB?.getOrderMentionById){
+      activeGroupChatOrderMention = await window.FIB.getOrderMentionById(normalizedId);
+    }else{
+      activeGroupChatOrderMention = getGroupChatSampleOrderMention(normalizedId);
+    }
+  }catch(error){
+    console.warn("Order mention Firebase lookup failed:", error);
+    alert(error.message || `Order ${normalizedId} not found.`);
+    return;
+  }
+
   insertTextInGroupChatInput(`#${normalizedId}`);
 }
 
-function insertGroupChatOrderMention(){
+async function insertGroupChatOrderMention(){
   const raw = document.getElementById("groupChatOrderMentionInput")?.value || "";
   const cleaned = raw.trim().toUpperCase();
   if(!cleaned){
@@ -1650,7 +1674,7 @@ function insertGroupChatOrderMention(){
   }
 
   const orderId = cleaned.startsWith("ORD-") ? cleaned : `ORD-${cleaned.replace(/^ORD[-\s]?/i, "")}`;
-  setGroupChatOrderMention(orderId);
+  await setGroupChatOrderMention(orderId);
   closeGroupChatLiteModal();
 }
 
@@ -2478,7 +2502,7 @@ function renderGroupChatInlineSuggest(){
   }
 }
 
-function selectGroupChatInlineMention(value){
+async function selectGroupChatInlineMention(value){
   const input = document.getElementById("groupChatMessageInput");
   const panel = document.getElementById("groupChatInlineSuggest");
   if(!input){
@@ -2494,7 +2518,17 @@ function selectGroupChatInlineMention(value){
   const finalValue = isOrderMention ? `#${normalizedOrderId}` : rawValue;
 
   if(isOrderMention){
-    activeGroupChatOrderMention = getGroupChatSampleOrderMention(normalizedOrderId);
+    try{
+      if(window.FIB_FIREBASE_READY && window.FIB?.getOrderMentionById){
+        activeGroupChatOrderMention = await window.FIB.getOrderMentionById(normalizedOrderId);
+      }else{
+        activeGroupChatOrderMention = getGroupChatSampleOrderMention(normalizedOrderId);
+      }
+    }catch(error){
+      console.warn("Inline order mention lookup failed:", error);
+      alert(error.message || `Order ${normalizedOrderId} not found.`);
+      return;
+    }
   }
 
   const active = getGroupChatMentionTrigger(input.value);
