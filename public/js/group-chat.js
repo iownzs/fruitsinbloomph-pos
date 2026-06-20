@@ -226,6 +226,9 @@ let activeGroupChatAdminChannel = "general";
 let activeGroupChatReplyQuote = null;
 let activeGroupChatOrderMention = null;
 let groupChatRecentOrderMentions = [];
+const groupChatLiveOrderMentionCache = {};
+const groupChatLiveOrderMentionLoading = {};
+
 
 /* Group Chat role permissions */
 const GROUP_CHAT_ROLE_PERMISSIONS = {
@@ -1964,13 +1967,49 @@ function isGroupChatOwnMessage(message){
   return !!currentName && !!messageName && currentName === messageName;
 }
 
+
+function refreshGroupChatLiveOrderMention(orderId){
+  const cleanOrderId = String(orderId || "").trim().toUpperCase();
+
+  if(!cleanOrderId || groupChatLiveOrderMentionCache[cleanOrderId] || groupChatLiveOrderMentionLoading[cleanOrderId]){
+    return;
+  }
+
+  if(!window.FIB_FIREBASE_READY || !window.FIB?.getOrderMentionById){
+    return;
+  }
+
+  groupChatLiveOrderMentionLoading[cleanOrderId] = true;
+
+  window.FIB.getOrderMentionById(cleanOrderId)
+    .then(order => {
+      if(order){
+        groupChatLiveOrderMentionCache[cleanOrderId] = order;
+        const activeChannel = getActiveChannel();
+        if(activeChannel){
+          renderGroupChatMessages(activeChannel);
+        }
+      }
+    })
+    .catch(error => {
+      console.warn("Live order mention refresh failed:", cleanOrderId, error);
+    })
+    .finally(() => {
+      groupChatLiveOrderMentionLoading[cleanOrderId] = false;
+    });
+}
+
 function renderGroupChatOrderMentionChip(message){
-  const mention = message?.orderMention || null;
-  const orderId = String(mention?.orderId || message?.mentionedOrderId || "").trim().toUpperCase();
+  const savedMention = message?.orderMention || null;
+  const orderId = String(savedMention?.orderId || message?.mentionedOrderId || "").trim().toUpperCase();
 
   if(!orderId){
     return "";
   }
+
+  refreshGroupChatLiveOrderMention(orderId);
+
+  const mention = groupChatLiveOrderMentionCache[orderId] || savedMention || {};
 
   const sourceLogo = getGroupChatSourceLogo(mention?.source || "order");
   const sourceClass = getGroupChatSourceLogoClass(mention?.source || "order");
